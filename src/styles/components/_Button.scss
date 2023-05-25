@@ -1,1 +1,12 @@
-// scss 파일
+button{
+    height: 56px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    // 원하는 버튼 스타일이 있으면 className 정해서 스타일 지정해주기
+    &.common{
+        min-width: 100%;
+        color:#fff;
+        background-color: #4194F1;
+    }
+}
