@@ -1,7 +1,12 @@
 import React from 'react';
+import { Controller } from '../../components';
 
 function IntroTalk() {
-  return <div>IntroTalk</div>;
+  return (
+    <div>
+      <Controller />
+    </div>
+  );
 }
 
 export default IntroTalk;
