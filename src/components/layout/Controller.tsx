@@ -8,7 +8,6 @@ function Controller() {
   const location = useLocation();
 
   const page = location.pathname;
-  console.log('page:', page);
 
   const poorRoomController = () => {
     let pageName;
