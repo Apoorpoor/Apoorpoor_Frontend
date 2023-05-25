@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import '../../styles/components/_Layout.scss';
 
-function Layout() {
-  return <div>Layout</div>;
+type ChildrenType = {
+  children: ReactNode;
+}
+
+function Layout({ children }: ChildrenType) {
+  return (
+    <div className="Wrapper">
+      <div className="Container">
+        {children}
+      </div>
+    </div>
+  );
 }
 
 export default Layout;
