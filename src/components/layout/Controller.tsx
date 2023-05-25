@@ -10,25 +10,59 @@ function Controller() {
   const page = location.pathname;
   console.log('page:', page);
 
+  const poorRoomController = () => {
+    let pageName;
+    if (page === '/poorRoom') {
+      pageName = 'select';
+    } else {
+      pageName = 'noSelect';
+    }
+    return pageName;
+  };
+
+  const accountController = () => {
+    let pageName;
+    if (page === '/') {
+      pageName = 'select';
+    } else if (page === '/account') {
+      pageName = 'select';
+    } else {
+      pageName = 'noSelect';
+    }
+    return pageName;
+  };
+
+  const poorTalkController = () => {
+    let pageName;
+    if (page === '/introTalk') {
+      pageName = 'select';
+    } else if (page === '/poorTalk') {
+      pageName = 'select';
+    } else {
+      pageName = 'noSelect';
+    }
+    return pageName;
+  };
+
   return (
     <div className="controller">
       <button
         type="button"
-        className={`${page}` === '/poorRoom' ? 'select' : 'noSelect'}
+        className={poorRoomController()}
         onClick={() => navigate('/poorRoom')}
       >
         푸어룸
       </button>
       <button
         type="button"
-        className={`${page}` === '/' ? 'select' : 'noSelect'}
+        className={accountController()}
         onClick={() => navigate('/')}
       >
         자산
       </button>
       <button
         type="button"
-        className={`${page}` === '/introTalk' ? 'select' : 'noSelect'}
+        className={poorTalkController()}
         onClick={() => navigate('/introTalk')}
       >
         푸어톡
