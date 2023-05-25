@@ -2,6 +2,6 @@
 import React from 'react';
 import ChatComponent from '../../components/elements/Chat';
 
-const PoorTalk: React.FC = () => <ChatComponent />;
+const PoorTalk = () => React.createElement(ChatComponent, null);
 
 export default PoorTalk;
