@@ -1,1 +1,30 @@
-// scss 파일
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+    padding: 0 15px;
+}
+
+h1{
+    font-size: 14px;
+    color: #4194F1;
+    text-align: center;
+}
+h1>img{
+    display: block;
+    margin: 10px auto;
+}
+
+.socialLogin{
+    width: 100%;
+
+    button{
+        width: 100%;
+
+        img{
+            width: 100%;
+        }
+    }
+}

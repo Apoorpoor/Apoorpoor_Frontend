@@ -6,7 +6,7 @@ type ButtonChildren = {
   className: string;
 }
 
-function Button({ children, className }: ButtonChildren) {
+function Button({ children, className}: ButtonChildren) {
   return (
   <button type='button' className={className}>
     {children}
