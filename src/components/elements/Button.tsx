@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import '../../styles/components/_Button.scss';
 
-function Button() {
-  return <div>Button</div>;
+type ButtonChildren = {
+  children: ReactNode;
+  className: string;
 }
+
+function Button({ children, className}: ButtonChildren) {
+  return (
+  <button type='button' className={className}>
+    {children}
+  </button>
+  );
+} 
 
 export default Button;

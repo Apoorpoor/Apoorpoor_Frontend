@@ -1,1 +1,57 @@
-// scss 파일
+.Nickname{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 140px);
+    padding: 100px 15px 40px;
+
+    h1{
+        font-size: 26px;
+        padding-bottom: 30px;
+    }
+    .nicknameForm{
+        position:relative;
+
+        .nickname>input[type=text]{
+
+        }
+        .nicknameLabel{
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            font-size: 12px;
+            transition:.3s;
+        }
+        .nicknameLabel.active{
+            opacity:1;
+            top: 12px;
+            transform: initial;
+        }
+        .cursor{
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 20px;
+            background-color: #4194F1;
+        }
+        .cursor.active{
+            opacity: 1;
+            top: 32px;
+            transform: initial;
+        }
+        .nicknameValidationAlert{
+            position: absolute;
+            bottom: -23px;
+            left: 15px;
+            color: #FF3257;
+            font-size: 14px;
+        }
+    }
+
+    
+}

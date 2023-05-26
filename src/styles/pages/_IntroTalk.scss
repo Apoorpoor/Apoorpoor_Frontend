@@ -1,1 +1,85 @@
-// scss 파일
+.Wrappers {
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    padding: 15px
+}
+.PoorImage {
+    width: 250px;
+    height: 250px;
+    background-color: #f3f3f3;
+    border-radius: 130px;
+    margin: 30px auto 30px auto;
+}
+.RuleBox {
+    width: 100%;
+    height: 170px;
+    background-color: #f3f3f3;
+    border:2px solid #c0c2c4;
+    border-radius: 15px;
+    justify-content: center;
+}
+.Rule {
+    
+    width: 100%;
+    // height: 100px;
+    // background-color: red;
+    border-radius: 12px;
+    text-align: center;
+    padding-top: 40px;
+}
+.RuleText{
+    color:gray;
+}
+.TextAgree {
+    margin-top: 60px;
+    text-align: center;
+    color:orangered
+}
+.CheckBox1{
+    margin-top: 60px;
+    text-align: center;
+    color:#c0c2c4;
+    font-size: 20px;
+    cursor: pointer;
+}
+.CheckBoxPoint1{
+    margin-left: 15px;
+    text-align: center;
+    color:#c0c2c4;
+    font-size: 30px;
+    cursor: pointer;
+}
+.CheckBox2{
+    margin-top: 60px;
+    text-align: center;
+    color:black;
+    font-size: 20px;
+    cursor: pointer;
+}
+.CheckBoxPoint2{
+    margin-left: 15px;
+    text-align: center;
+    color:rgb(250, 184, 72);
+    font-size: 30px;
+    cursor: pointer;
+}
+.StartChat1{
+    color: white;
+    background-color: #4194f1;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 25px;
+    margin-top: 20px;
+    padding: 10px;
+    filter: opacity(50%);
+}
+.StartChat2{
+    color: white;
+    background-color: #4194f1;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 25px;
+    margin-top: 20px;
+    padding: 10px;
+}

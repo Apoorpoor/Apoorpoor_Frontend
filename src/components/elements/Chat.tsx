@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  stompClient,
-  sendMessage as sendStompMessage,
-} from '../../pages/poorTalk/StompClient';
+import { FaChevronLeft } from "react-icons/fa";
+import { stompClient, sendMessage as sendStompMessage, } from '../../pages/poorTalk/StompClient';
+import '../../styles/pages/_PoorTalk.scss';
+// eslint-disable-next-line import/order
+import { useNavigate } from 'react-router-dom';
 
 interface Message {
   content: string;
@@ -13,7 +14,7 @@ const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [connected, setConnected] = useState(false);
-
+  const navigate = useNavigate();
   const handleMessage = (message: Message) => {
     setMessages((prevMessages) => [...prevMessages, message]);
   };
@@ -47,26 +48,33 @@ const ChatComponent: React.FC = () => {
     };
   }, []);
   return (
-    <div>
-      {connected ? (
-        <p>Connected to WebSocket</p>
-      ) : (
-        <p>Not connected to WebSocket</p>
-      )}
-      <ul>
+    <div className='Wrappers'>
+      {connected ? <p>Connected to WebSocket</p> : <p>Not connected to WebSocket</p>}
+      <div className='Header'>
+        <button type='button' onClick={() => navigate("/introTalk")}>
+          <FaChevronLeft className='Arrow' />
+        </button>
+        <div className='HeaderText'>푸어talk</div>
+      </div>
+      <ul className='Messagesbox'>
         {messages.map((message, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <li key={index}>{message.content}</li>
         ))}
       </ul>
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-      />
-
-      {/*  eslint-disable-next-line react/button-has-type */}
-      <button onClick={sendMessage}>Send</button>
+      <div className='SandBox'>
+        <input
+          className='SandInput'
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        {/*  eslint-disable-next-line react/button-has-type */}
+        <button
+          className='SandButton'
+          type='button'
+          onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 };
