@@ -4,14 +4,14 @@ import '../../styles/pages/_Main.scss';
 import { FaPlus } from 'react-icons/fa';
 import { Controller } from '../../components';
 
-function Main() {
+function Main(): JSX.Element {
   const navigate = useNavigate();
 
   const [account, setAccount] = useState(false);
 
   const [accountNumber, setAccountNumber] = useState(0);
 
-  const addAccountHandler = () => {
+  const addAccountHandler = (): void => {
     setAccount(true);
     setAccountNumber(accountNumber + 1);
   };

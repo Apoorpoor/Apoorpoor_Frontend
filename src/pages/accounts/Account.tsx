@@ -10,7 +10,7 @@ import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import { Calendar, Controller } from '../../components';
 
-function Account() {
+function Account(): JSX.Element {
   const navigate = useNavigate();
 
   const [getMoment, setMoment] = useState(moment());

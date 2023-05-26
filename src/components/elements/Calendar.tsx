@@ -6,7 +6,7 @@ interface CalendarProps {
   today: Moment;
 }
 
-function Calendar({ today }: CalendarProps) {
+function Calendar({ today }: CalendarProps): JSX.Element {
   const firstWeek = today.clone().startOf('month').week();
   const lastWeek =
     today.clone().endOf('month').week() === 1
