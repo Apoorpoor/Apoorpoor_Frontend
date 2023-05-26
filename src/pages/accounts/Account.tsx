@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
 import {
@@ -7,11 +7,14 @@ import {
   AiFillCaretRight,
 } from 'react-icons/ai';
 import { BsFillPenFill } from 'react-icons/bs';
-import { Controller } from '../../components';
+import moment, { Moment } from 'moment';
+import { Calendar, Controller } from '../../components';
 
 function Account() {
   const navigate = useNavigate();
 
+  const [getMoment, setMoment] = useState(moment());
+  const today: Moment = getMoment;
   return (
     <>
       <Controller />
@@ -27,13 +30,23 @@ function Account() {
           </button>
 
           <div className="month">
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => {
+                setMoment(getMoment.clone().subtract(1, 'month'));
+              }}
+            >
               <AiFillCaretLeft />
             </button>
 
-            <h1>5월</h1>
+            <h1>{today.format('M')}월</h1>
 
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => {
+                setMoment(getMoment.clone().add(1, 'month'));
+              }}
+            >
               <AiFillCaretRight />
             </button>
           </div>
@@ -59,6 +72,7 @@ function Account() {
       </div>
 
       <div className="line"> </div>
+      <Calendar today={today} />
     </>
   );
 }
