@@ -10,7 +10,7 @@ function Login() {
   };
 
   return (
-    <main>
+    <main className='Login'>
       <h1>
         <img src={Logo} alt='로고' />
         나만의 거지 키우기
