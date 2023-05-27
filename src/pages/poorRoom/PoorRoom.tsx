@@ -1,7 +1,12 @@
 import React from 'react';
+import { Controller } from '../../components';
 
 function PoorRoom() {
-  return <div>PoorRoom</div>;
+  return (
+    <div>
+      <Controller />
+    </div>
+  );
 }
 
 export default PoorRoom;
