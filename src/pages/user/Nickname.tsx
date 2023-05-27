@@ -9,7 +9,6 @@ function Nickname() {
   const nicknameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   }; 
-
   
   return (
     <main className='Nickname'>
