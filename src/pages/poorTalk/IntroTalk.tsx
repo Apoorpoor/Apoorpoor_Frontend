@@ -40,7 +40,6 @@ function IntroTalk() {
       </div>
     </div>
   </div >
-
 }
 
 export default IntroTalk;
