@@ -1,0 +1,22 @@
+.finishedPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 140px);
+    padding: 44px 15px 1px;
+    
+    h1{
+        font-size: 26px;
+        padding-bottom: 10px;
+    }
+    .finishedInfo{
+        color: gray;
+
+    }
+    .finishedImage{
+        border: 3px soild red;
+        width: 250px;
+        height: 250px;
+        margin-left: 70px;
+    }
+}

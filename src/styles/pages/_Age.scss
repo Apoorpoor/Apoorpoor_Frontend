@@ -1,13 +1,17 @@
-.Nickname{
+.AgePage{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: calc(100vh - 140px);
-    padding: 100px 15px 40px;
-
+    padding: 44px 15px 1px;
+    
     h1{
         font-size: 26px;
+        padding-bottom: 10px;
+    }
+    .ageInfo{
         padding-bottom: 60px;
+
     }
     .nicknameForm{
         position:relative;
@@ -59,4 +63,42 @@
     color: #FF3257;
 }
     
+}
+
+.ageNumberBox{
+    margin: 10px -15px -95px;
+    background-color: gray;
+    height: 350px;
+}
+.ageNumberBoxs{
+    margin-left: 7px;
+    margin-top: 5px;
+    background-color: gray;
+    height: 250px;
+    
+}
+.ageNumber{
+    background-color: #fff;
+    width: 130px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
+    &:hover{
+        filter: brightness(90%);
+    }
+}
+.ageNumber2{
+    background-color: gray;
+    width: 130px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+.ageNumber3{
+    position: relative;
+    background-color: black;
+    width: 130px;
+    border-radius: 5px;
+    margin-left: 130px;
+    height: 8px;
 }

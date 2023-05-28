@@ -1,0 +1,32 @@
+.genderPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 140px);
+    padding: 44px 15px 1px;
+    
+    h1{
+        font-size: 26px;
+        padding-bottom: 10px;
+    }
+    .ageInfo{
+        padding-bottom: 60px;
+
+    }
+    .genderButton1{
+        border: 1px solid grey;
+        width: 170px;
+        height: 200px;
+        margin-left: 20px;
+        &:hover{
+            border: 3px solid #4194F1;
+        }
+    }
+    .genderButton2{
+        border: 3px solid #4194F1;
+        width: 170px;
+        height: 200px;
+        margin-left: 20px;
+    }
+}
+
