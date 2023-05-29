@@ -8,7 +8,7 @@ import {
 } from 'react-icons/ai';
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
-import { Calendar, Controller } from '../../components';
+import { Calendar, Chart } from '../../components';
 
 function Account(): JSX.Element {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function Account(): JSX.Element {
   const today: Moment = getMoment;
   return (
     <>
-      <Controller />
+      {/* <Controller /> */}
 
       <div className="_AccountBackground">
         <div className="header">
@@ -73,6 +73,9 @@ function Account(): JSX.Element {
 
       <div className="line"> </div>
       <Calendar today={today} />
+      <div className="line"> </div>
+      <Chart />
+      <div className="line"> </div>
     </>
   );
 }

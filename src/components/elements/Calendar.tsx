@@ -47,7 +47,7 @@ function Calendar({ today }: CalendarProps): JSX.Element {
               <td
                 className="td"
                 key={days.format('D')}
-                style={{ color: 'white' }}
+                style={{ color: '#f5f5f5' }}
               >
                 <span>{days.format('D')}</span>
               </td>
