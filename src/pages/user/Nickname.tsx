@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { Button, Input } from '../../components/index';
 import inputState from '../../shared/Atom';
@@ -9,6 +10,11 @@ function Nickname() {
   const nicknameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   }; 
+
+  const navigate = useNavigate();
+  const nextStepHandler = () => {
+    navigate('/');
+  }
   
   return (
     <main className='Nickname'>
@@ -30,7 +36,7 @@ function Nickname() {
         </div>
       </article>
       
-      <Button className='common'>
+      <Button className='common' onClick={nextStepHandler}>
         다음
       </Button>
     </main>
