@@ -4,6 +4,9 @@ import 'dotenv/config';
 const instance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true, 
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+    },
 })
 
 instance.interceptors.request.use(

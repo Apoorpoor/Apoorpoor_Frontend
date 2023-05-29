@@ -10,6 +10,10 @@ import {
   Nickname,
   PoorRoom,
   PoorTalk,
+  Redirection,
+  Age,
+  Gender,
+  Finished,
 } from './pages/index';
 
 function App() {
@@ -24,6 +28,10 @@ function App() {
         <Route path='/poorRoom' element={<PoorRoom />} />
         <Route path='/introTalk' element={<IntroTalk />} />
         <Route path='/poorTalk' element={<PoorTalk />} />
+        <Route path="/kakao" element={<Redirection />} />
+        <Route path="/age" element={<Age />} />
+        <Route path="/gender" element={<Gender />} />
+        <Route path="/finished" element={<Finished />} />
       </Routes>
     </Layout>
   );

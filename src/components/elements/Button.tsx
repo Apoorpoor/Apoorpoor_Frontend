@@ -13,6 +13,6 @@ function Button({ children, className, onClick}: ButtonChildren) {
     {children}
   </button>
   );
-} 
+}
 
 export default Button;

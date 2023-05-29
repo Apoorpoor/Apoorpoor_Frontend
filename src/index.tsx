@@ -7,12 +7,17 @@ import { RecoilRoot } from 'recoil';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+// eslint-disable-next-line import/order
+import axios from 'axios';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 const queryClient = new QueryClient();
+
+axios.defaults.baseURL = `${process.env.REACT_APP_SERVER_URL}`;
+axios.defaults.withCredentials = true;
 
 root.render(
   <RecoilRoot>
