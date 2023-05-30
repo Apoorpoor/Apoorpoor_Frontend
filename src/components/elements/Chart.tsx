@@ -53,6 +53,7 @@ function Chart(): JSX.Element {
           margin={{ top: 60, right: 50, bottom: 0, left: 50 }}
           innerRadius={0.55}
           activeOuterRadiusOffset={12}
+          isInteractive={false}
           borderWidth={1}
           borderColor={{
             from: 'color',

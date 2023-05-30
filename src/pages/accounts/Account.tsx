@@ -9,6 +9,7 @@ import {
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import { Calendar, Chart } from '../../components';
+import ChartLastMonth from '../../components/elements/ChartLastMonth';
 
 function Account(): JSX.Element {
   const navigate = useNavigate();
@@ -76,6 +77,19 @@ function Account(): JSX.Element {
       <div className="line"> </div>
       <Chart />
       <div className="line"> </div>
+      <ChartLastMonth />
+      <div className="line"> </div>
+
+      <div className="accountBackground">
+        <div className="accountHeader">
+          <div className="accountFilter">
+            <div className="accountFilterBtn">전체</div>
+            <div className="accountFilterBtn">수입</div>
+            <div className="accountFilterBtn">지출</div>
+          </div>
+          <div>카테고리 셀렉트바</div>
+        </div>
+      </div>
     </>
   );
 }

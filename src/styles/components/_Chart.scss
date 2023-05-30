@@ -16,6 +16,12 @@
   margin-bottom: 62px;
 }
 
+.barChart {
+  width: 100%;
+  height: 300px;
+  // margin-bottom: 62px;
+}
+
 .innerChart {
   width: 80px;
   height: 80px;
@@ -65,4 +71,13 @@
 .chartPrice {
   font-weight: 700;
   font-size: 16px;
+}
+
+.chartBarPrice {
+  margin: 0 auto;
+  margin-top: 60px;
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
 }
