@@ -1,10 +1,8 @@
-/* eslint-disable no-console */
-/* eslint-disable no-alert */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable no-restricted-globals */
 /* eslint-disable react/function-component-definition */
+/* eslint-disable import/no-extraneous-dependencies */
+
+import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -22,7 +20,7 @@ const Redirection: React.FC = () => {
                 const { accessToken } = response.headers.Authorization.split(" ")[1];
                 const refreshToken = response.headers['Authorization-Refresh'].split(" ")[1];
                 localStorage.setItem('ACC_Token', accessToken);
-                localStorage.setItem('REF_Token', refreshToken);
+                Cookies.set('REF_Token', refreshToken, { expires: 7 });
                 alert("로그인 성공");
                 navigate(`/nickname`);
             } catch (error) {
@@ -30,6 +28,7 @@ const Redirection: React.FC = () => {
                 console.log(error);
             }
         };
+
 
         const url = new URL(window.location.href);
         const urlCode = url.searchParams.get('code');
