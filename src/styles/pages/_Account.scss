@@ -72,3 +72,79 @@
   height: 12px;
   background-color: #f5f5f5;
 }
+
+.accountHeader {
+  margin-top: 60px;
+}
+
+.accountFilter {
+  display: flex;
+}
+
+.accountFilterBtn {
+  width: 48px;
+  height: 32px;
+  border: 1px solid #e8e8e8;
+  border-radius: 999px;
+  text-align: center;
+  line-height: 32px;
+  margin-right: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.accountFocusFilterBtn {
+  width: 48px;
+  height: 32px;
+  background-color: #ffd12e;
+  border: 1px solid #ffd12e;
+  color: white;
+  border-radius: 999px;
+  text-align: center;
+  line-height: 32px;
+  margin-right: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.accountBody {
+  margin-top: 28px;
+}
+
+.accountDate {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b7b7b7;
+}
+
+.accountBodyLine {
+  width: 100%;
+  border: 1px solid #f5f5f5;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.accountBodyContents {
+  margin-bottom: 20px;
+}
+
+.accountLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.accountLabelEx {
+  font-weight: 700;
+}
+
+.accountLabelIn {
+  font-weight: 700;
+  color: #b7b7b7;
+}
+
+.accountCategory {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #b7b7b7;
+}
