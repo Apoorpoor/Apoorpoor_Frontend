@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable import/prefer-default-export */
 import instance from "./instance";
 
 // 닉네임 중복체크 
@@ -17,4 +15,4 @@ const getNickNameDoubleCheck = async (nickname: string): Promise<React.MouseEven
     }
 };
 
-export { getNickNameDoubleCheck };
+export default { getNickNameDoubleCheck };

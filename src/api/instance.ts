@@ -1,5 +1,4 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
-import 'dotenv/config';
+import axios from 'axios';
 
 const instance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
@@ -9,14 +8,14 @@ const instance = axios.create({
     },
 })
 
-instance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+// instance.interceptors.request.use(
+//     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
 
-    //   const accessToken = sessionStorage.getItem('access_token');
-    //   const refreshToken = localStorage.getItem('refresh_token');
+//     //   const accessToken = sessionStorage.getItem('access_token');
+//     //   const refreshToken = localStorage.getItem('refresh_token');
   
-      return config;
-    }
-);
+//       return config;
+//     }
+// );
 
 export default instance;

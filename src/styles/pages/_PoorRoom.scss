@@ -1,1 +1,9 @@
-// scss 파일
+#myPoorRoom{
+    &>article{
+        padding-bottom: 120px;
+        &>section{
+            padding: 60px 15px;
+            border-bottom: 12px solid #F5F5F5;
+        }
+    }
+}
