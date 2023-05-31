@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment, { Moment } from 'moment';
 import '../../styles/components/_Calender.scss';
+import CalendarModal from './CalendarModal';
 
 interface CalendarProps {
   today: Moment;
 }
 
 function Calendar({ today }: CalendarProps): JSX.Element {
+  // 날짜 클릭 시 상세 모달
+  const [calendarModal, setCalendarModal] = useState<boolean>(false);
+
+  const calendarModalOpen = (): void => {
+    setCalendarModal(true);
+  };
+
   const firstWeek = today.clone().startOf('month').week();
   const lastWeek =
     today.clone().endOf('month').week() === 1
@@ -30,15 +38,17 @@ function Calendar({ today }: CalendarProps): JSX.Element {
 
           if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
             return (
-              <td
+              <button
+                type="button"
                 className="td"
                 key={days.format('D')}
                 style={{ color: 'black' }}
+                onClick={calendarModalOpen}
               >
                 <div className="todaySt">
                   <span>{days.format('D')}</span>
                 </div>
-              </td>
+              </button>
             );
           }
 
@@ -47,7 +57,7 @@ function Calendar({ today }: CalendarProps): JSX.Element {
               <td
                 className="td"
                 key={days.format('D')}
-                style={{ color: 'white' }}
+                style={{ color: '#f5f5f5' }}
               >
                 <span>{days.format('D')}</span>
               </td>
@@ -73,6 +83,7 @@ function Calendar({ today }: CalendarProps): JSX.Element {
   };
   return (
     <div className="calBackground">
+      {calendarModal && <CalendarModal setCalendarModal={setCalendarModal} />}
       <div className="days">
         <p className="sun">일</p>
         <p>월</p>
