@@ -1,58 +1,69 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable no-alert */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-console */
 /* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React, { useState } from 'react';
 import { FaChevronLeft } from "react-icons/fa";
-import { useRecoilState } from 'recoil';
 import { Button, Input } from '../../components/index';
 import inputState from '../../shared/Atom';
 import '../../styles/pages/_Age.scss';
-import { useQuery, useMutation, useQueryClient } from "react-query";
 import instance from '../../api/instance';
-import { getNickNameDoubleCheck } from '../../api/members';
 import { useNavigate } from 'react-router';
 
 function Age() {
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = React.useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [nextButton, setNextButton] = useState(false);
+
+    const token = localStorage.getItem("AToken");
+
     const modalHandler = () => {
         setModalOpen(!modalOpen);
     }
-    const { isLoading, isError, data } = useQuery(
-        ["nickname", inputValue],
-        () => getNickNameDoubleCheck(inputValue)
-    );
-    console.log("data = ", data)
 
+    const navigate = useNavigate();
 
     const nicknameChangeHandler = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setInputValue(e.target.value)
-        setNextButton(!nextButton)
+        if (e.target.value.length >= 1) {
+            setNextButton(true)
+        }
         if (e.target.value.length > 2) {
             alert("너무 많습니다")
             setInputValue("");
+            setNextButton(false)
         }
     }
-    // 
+
     const ageButtonHandler = (event: string) => {
         const value = (inputValue + event)
         setInputValue(value)
         if (inputValue.length > 1) {
             alert("너무 많습니다")
             setInputValue("");
+            setNextButton(false)
         }
     }
     const ageRemoveButtonHandler = (event: string) => {
         const value = inputValue.slice(0, -1)
         setInputValue(value)
     }
-    const navigate = useNavigate();
+    const onNextClickButton = async () => {
+        try {
+            const response = await instance.put(`/user/age`, {
+                age: inputValue
+            },
+                {
+                    headers: {
+                        ACCESS_KEY: `Bearer ${token}`,
+                    },
+                });
+            navigate("/gender")
+            return response.data;
+        } catch (err) {
+            console.log(`나이입력  API 오류 발생: ${err}`);
+            throw err;
+        }
+    }
     return (
         <main className='AgePage'>
             <div className='between'>
@@ -79,7 +90,7 @@ function Age() {
                 </article>
             </div>
             <div>
-                {nextButton ? <button className='common' type='button' onClick={() => navigate("/gender")}>다음</button>
+                {nextButton ? <button className='common' type='button' onClick={onNextClickButton}>다음</button>
                     : <button className='common' type='button' onClick={() => alert("나이를 입력해주세요")}>다음</button>
                 }
 

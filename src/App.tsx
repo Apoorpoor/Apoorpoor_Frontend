@@ -28,7 +28,7 @@ function App() {
         <Route path='/poorRoom' element={<PoorRoom />} />
         <Route path='/introTalk' element={<IntroTalk />} />
         <Route path='/poorTalk' element={<PoorTalk />} />
-        <Route path="/kakao" element={<Redirection />} />
+        <Route path="/oauth/kakao" element={<Redirection />} />
         <Route path="/age" element={<Age />} />
         <Route path="/gender" element={<Gender />} />
         <Route path="/finished" element={<Finished />} />

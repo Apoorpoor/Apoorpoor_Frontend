@@ -1,13 +1,15 @@
+.currentBackGround {
+    margin: 20px 20px 20px 20px;
+  }
 .Header{
     padding-bottom: 15px;
     border-bottom: 2px solid #f3f3f3;;
-    gap: 140px;
+    gap: 120px;
     display: flex;
 }
 .HeaderText{
     font-size: 1.5em;
     font-weight: 700;
-
 }
 .Arrow{
     // justify-content: flex-start;
@@ -15,26 +17,96 @@
     
 }
 .Messagesbox{
-    height: 650px;
-    background-color: red;
+    // @include center;
+    // width: 300px;
+    height: 300px;
+    // max-height: 500px;
+    // z-index: 2;
+    // overflow: hidden;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+    // background: rgba(0, 0, 0, .5);
+    // border-radius: 20px;
+    //  display:inline-block;
+    justify-content: space-between;
+    flex-direction: column;
+    
 }
-.SandBox{
-    height: 40px;
-    margin-left: 10px;
-    margin-right: 10px;
-    position: relative;
+.commentsBox{
+    background-color: #f3f3f3;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    height: 41px;
+    padding: 0px 12px 0px 12px;
+    border-radius: 40px 100px 100px 100px;
+    margin-bottom: 36px;
+    justify-content:start;
+
+}
+.myCommentsBox{
+    background-color: #4194F1;
+    color :white;
+    font-weight: 100;
+    display: inline-flex;
+    align-items: center;
+    height: 41px;
+    padding: 0px 12px 0px 12px;
+    border-radius: 100px 40px 100px 100px;
+    margin-bottom: 36px;
+    justify-content:end;
+    
 }
 .SandInput{
-    width: 100%;
+    width: 390px;
     border: 1px solid #c0c2c4;
-    border-radius: 20px;
+    border-radius: 30px;
     padding: 20px 80px 20px 20px;
     box-sizing: border-box;
+    position: absolute;
+    top: 90%;
+    transform: translateY(-30%);
 }
 .SandButton{
     position: absolute;
-    top: 50%;
+    top: 90.5%;
     transform: translateY(-30%);
     right: 3px;
     font-size: 30px;
+    color: #999;
+    left: 75%;
+    &:hover{
+        color: #4194F1;
+    }
+}
+.filebox label {
+    position: absolute;
+    top: 90.5%;
+    transform: translateY(-30%);
+    left: 68%;
+//   display: inline-block;
+//   line-height: normal;
+//   border: 1px solid #ebebeb;
+//   border-radius: .25em;
+  padding: .5em .75em;
+  color: #999;
+  font-size: inherit;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border-bottom-color: #e2e2e2;
+}
+
+.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+.PoorTalkCamera{
+  width: 25px;
+  height: 25px;
 }
