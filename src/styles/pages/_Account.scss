@@ -36,10 +36,9 @@ $gray-500: #777777;
   display: flex;
   align-items: center;
   justify-content: space-around;
-}
-
-.month button {
-  color: $gray-500;
+  .sideBtn {
+    color: $gray-500;
+  }
 }
 
 ._AccountName {
@@ -58,27 +57,25 @@ $gray-500: #777777;
 .total {
   margin-top: 70px;
   font-weight: 700;
-}
-
-.totalMoney {
-  color: $primary;
-  font-size: 30px;
+  .totalMoney {
+    color: $primary;
+    font-size: 30px;
+  }
 }
 
 .incmExpnd {
   margin-top: 20px;
   color: $gray-500;
   line-height: 30px;
-}
+  .incm {
+    font-weight: 700;
+    color: $gray-400;
+  }
 
-.incm {
-  font-weight: 700;
-  color: $gray-400;
-}
-
-.expnd {
-  font-weight: 700;
-  color: black;
+  .expnd {
+    font-weight: 700;
+    color: black;
+  }
 }
 
 .line {
@@ -89,76 +86,68 @@ $gray-500: #777777;
 
 .accountHeader {
   margin-top: 60px;
-}
+  .accountFilter {
+    display: flex;
+    .accountFilterBtn {
+      width: 48px;
+      height: 32px;
+      border: 1px solid $gray-250;
+      border-radius: 999px;
+      text-align: center;
+      line-height: 32px;
+      margin-right: 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
-.accountFilter {
-  display: flex;
-}
-
-.accountFilterBtn {
-  width: 48px;
-  height: 32px;
-  border: 1px solid $gray-250;
-  border-radius: 999px;
-  text-align: center;
-  line-height: 32px;
-  margin-right: 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.accountFocusFilterBtn {
-  width: 48px;
-  height: 32px;
-  background-color: $secondary;
-  border: 1px solid $secondary;
-  color: white;
-  border-radius: 999px;
-  text-align: center;
-  line-height: 32px;
-  margin-right: 12px;
-  font-size: 14px;
-  cursor: pointer;
+    .accountFocusFilterBtn {
+      width: 48px;
+      height: 32px;
+      background-color: $secondary;
+      border: 1px solid $secondary;
+      color: white;
+      border-radius: 999px;
+      text-align: center;
+      line-height: 32px;
+      margin-right: 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
 }
 
 .accountBody {
   margin-top: 28px;
-}
+  .accountDate {
+    font-size: 14px;
+    font-weight: 700;
+    color: $gray-400;
+  }
+  .accountBodyLine {
+    width: 100%;
+    border: 1px solid $gray-150;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .accountBodyContents {
+    margin-bottom: 20px;
+    .accountLabel {
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      .accountLabelEx {
+        font-weight: 700;
+      }
+      .accountLabelIn {
+        font-weight: 700;
+        color: $gray-400;
+      }
+    }
 
-.accountDate {
-  font-size: 14px;
-  font-weight: 700;
-  color: $gray-400;
-}
-
-.accountBodyLine {
-  width: 100%;
-  border: 1px solid $gray-150;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-.accountBodyContents {
-  margin-bottom: 20px;
-}
-
-.accountLabel {
-  display: flex;
-  justify-content: space-between;
-  font-size: 16px;
-}
-
-.accountLabelEx {
-  font-weight: 700;
-}
-
-.accountLabelIn {
-  font-weight: 700;
-  color: $gray-400;
-}
-
-.accountCategory {
-  margin-top: 6px;
-  font-size: 12px;
-  color: $gray-400;
+    .accountCategory {
+      margin-top: 6px;
+      font-size: 12px;
+      color: $gray-400;
+    }
+  }
 }

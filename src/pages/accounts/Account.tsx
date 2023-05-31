@@ -12,6 +12,7 @@ import Select from 'react-select';
 import { Calendar, Chart, Controller } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
+import AccountMonth from '../../components/elements/AccountMonth';
 
 function Account(): JSX.Element {
   const navigate = useNavigate();
@@ -21,6 +22,13 @@ function Account(): JSX.Element {
 
   const nameModalOpen = (): void => {
     setNameModal(true);
+  };
+
+  // 월별 조회 모달창
+  const [monthModal, setMonthModal] = useState<boolean>(false);
+
+  const monthModalOpen = (): void => {
+    setMonthModal(true);
   };
 
   // 캘린더 날짜 받는 라이브러리
@@ -173,6 +181,7 @@ function Account(): JSX.Element {
     <>
       <Controller />
       {nameModal && <AccountName setNameModal={setNameModal} />}
+      {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
 
       <div className="_AccountBackground">
         <div className="header">
@@ -186,6 +195,7 @@ function Account(): JSX.Element {
 
           <div className="month">
             <button
+              className="sideBtn"
               type="button"
               onClick={() => {
                 setMoment(getMoment.clone().subtract(1, 'month'));
@@ -194,10 +204,13 @@ function Account(): JSX.Element {
               <AiFillCaretLeft />
             </button>
 
-            <h1>{today.format('M')}월</h1>
+            <button type="button" onClick={monthModalOpen}>
+              <h1>{today.format('M')}월</h1>
+            </button>
 
             <button
               type="button"
+              className="sideBtn"
               onClick={() => {
                 setMoment(getMoment.clone().add(1, 'month'));
               }}

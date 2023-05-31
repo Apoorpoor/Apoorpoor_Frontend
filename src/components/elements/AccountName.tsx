@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Portal from '../../shared/Portal';
-import '../../styles/components/_AccountName.scss';
+import '../../styles/components/_AccountModal.scss';
 import Input from './Input';
 
 interface AccountNameProps {
@@ -19,7 +19,7 @@ function AccountName({ setNameModal }: AccountNameProps) {
   };
   return (
     <Portal>
-      <div className="accountNameModalBg">
+      <div className="accountModalBg">
         <div className="accountNameModalBox">
           <Input
             value={accountNameInput}

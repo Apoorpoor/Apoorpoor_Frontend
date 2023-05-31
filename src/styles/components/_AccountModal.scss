@@ -1,0 +1,86 @@
+$primary: #4194f1;
+$secondary: #ffd12e;
+$gray-150: #f5f5f5;
+$gray-200: #efefef;
+$gray-250: #e8e8e8;
+$gray-300: #dfdfdf;
+$gray-350: #c8c8c8;
+$gray-400: #b7b7b7;
+$gray-450: #949494;
+$gray-500: #777777;
+
+.accountModalBg {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: -0px;
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  .accountNameModalBox {
+    box-sizing: border-box;
+    width: 320px;
+    height: 219px;
+    border-radius: 12px;
+    background-color: white;
+    margin: auto;
+    margin-top: 266px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 45px;
+    padding-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    .accountNameBtn {
+      width: 280px;
+      height: 56px;
+      background-color: $primary;
+      border-radius: 12px;
+      color: white;
+    }
+  }
+
+  .accountMonthModalBox::-webkit-scrollbar {
+    display: none;
+  }
+  .accountMonthModalBox {
+    box-sizing: border-box;
+    width: 430px;
+    background-color: white;
+    max-height: 527px;
+    position: absolute;
+    bottom: 0px;
+    border-radius: 28px 28px 0px 0px;
+    padding: 0 40px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    .titleRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .title {
+        color: $primary;
+      }
+      .closeBtnBox {
+        // background-color: skyblue;
+        width: 44px;
+        height: 44px;
+        margin-top: 40px;
+        .closeBtn {
+          color: $gray-400;
+          font-size: 24px;
+        }
+      }
+    }
+    .selectMonthList {
+      margin-top: 16px;
+      line-height: 40px;
+      .selectMonth {
+        font-size: 14px;
+        color: $gray-500;
+      }
+    }
+  }
+}
