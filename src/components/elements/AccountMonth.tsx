@@ -14,7 +14,7 @@ function AccountMonth({ setMonthModal }: AccountMonthProps) {
   return (
     <Portal>
       <div className="accountModalBg">
-        <div className="accountMonthModalBox">
+        <div className="accountModalBox">
           <div className="titleRow">
             <h2 className="title">월 선택하기</h2>
             <button
