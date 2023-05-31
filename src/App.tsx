@@ -7,12 +7,12 @@ import {
   IntroTalk,
   Login,
   Main,
-  // Nickname,
+  Nickname,
   PoorRoom,
   PoorTalk,
   Redirection,
-  // Age,
-  // Gender,
+  Age,
+  Gender,
   Finished,
 } from './pages/index';
 
@@ -21,16 +21,16 @@ function App() {
     <Layout>
       <Routes>
         <Route path='/login' element={<Login />} />
-        {/* <Route path='/nickname' element={<Nickname />} /> */}
+        <Route path='/nickname' element={<Nickname />} />
         <Route path='/' element={<Main />} />
         <Route path='/addAccount' element={<AddAccount />} />
         <Route path='/account' element={<Account />} />
         <Route path='/poorRoom' element={<PoorRoom />} />
         <Route path='/introTalk' element={<IntroTalk />} />
         <Route path='/poorTalk' element={<PoorTalk />} />
-        <Route path="/kakao" element={<Redirection />} />
-        {/* <Route path="/age" element={<Age />} /> */}
-        {/* <Route path="/gender" element={<Gender />} /> */}
+        <Route path="/oauth/kakao" element={<Redirection />} />
+        <Route path="/age" element={<Age />} />
+        <Route path="/gender" element={<Gender />} />
         <Route path="/finished" element={<Finished />} />
       </Routes>
     </Layout>
