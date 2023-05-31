@@ -9,11 +9,19 @@ import {
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
-import { Calendar, Chart } from '../../components';
+import { Calendar, Chart, Controller } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
+import AccountName from '../../components/elements/AccountName';
 
 function Account(): JSX.Element {
   const navigate = useNavigate();
+
+  // 가계부 이름 수정 모달창
+  const [nameModal, setNameModal] = useState<boolean>(false);
+
+  const nameModalOpen = (): void => {
+    setNameModal(true);
+  };
 
   // 캘린더 날짜 받는 라이브러리
   const [getMoment, setMoment] = useState(moment());
@@ -69,7 +77,7 @@ function Account(): JSX.Element {
       'border': `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
       'fontSize': '14px',
       'textAlign': 'center',
-      'paddingLeft': '13.6px',
+      'paddingLeft': '15px',
       '&:hover': {
         border: `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
       },
@@ -130,7 +138,7 @@ function Account(): JSX.Element {
       'border': `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
       'fontSize': '14px',
       'textAlign': 'center',
-      'paddingLeft': '13.6px',
+      'paddingLeft': '15px',
       '&:hover': {
         border: `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
       },
@@ -163,7 +171,8 @@ function Account(): JSX.Element {
 
   return (
     <>
-      {/* <Controller /> */}
+      <Controller />
+      {nameModal && <AccountName setNameModal={setNameModal} />}
 
       <div className="_AccountBackground">
         <div className="header">
@@ -198,7 +207,7 @@ function Account(): JSX.Element {
           </div>
         </div>
 
-        <button type="button" className="_AccountName">
+        <button type="button" className="_AccountName" onClick={nameModalOpen}>
           <span>가계부 이름</span> <BsFillPenFill />
         </button>
 
@@ -245,7 +254,7 @@ function Account(): JSX.Element {
           </div>
           {category[1].selected === true ? (
             <Select
-              defaultValue={inOptions[0]}
+              placeholder="수입 카테고리"
               options={inOptions}
               onChange={(e: any) => setSelectInValue(e.value)}
               styles={inSelectCustom}
@@ -253,7 +262,7 @@ function Account(): JSX.Element {
           ) : null}
           {category[2].selected === true ? (
             <Select
-              defaultValue={exOptions[0]}
+              placeholder="지출 카테고리"
               options={exOptions}
               onChange={(e: any) => setSelectExValue(e.value)}
               styles={exSelectCustom}
