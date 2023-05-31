@@ -1,47 +1,63 @@
-/* eslint-disable no-alert */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-console */
 /* eslint-disable import/order */
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { Button, Input } from '../../components/index';
 import inputState from '../../shared/Atom';
 import '../../styles/pages/_Nickname.scss';
-import { useQuery, useMutation, useQueryClient } from "react-query";
 import instance from '../../api/instance';
-import { getNickNameDoubleCheck } from '../../api/members';
 import { useNavigate } from 'react-router';
+import Cookies from 'js-cookie';
 
 function Nickname() {
   const [inputValue, setInputValue] = useRecoilState(inputState);
   const [dbNameCheck, setDbNameCheck] = useState(false);
-  const [checkError, setCheckError] = useState("");
+  const [checkError, setCheckError] = useState("닉네임은 2글자 이상이여야합니다");
 
-  const { isLoading, isError, data } = useQuery(
-    ["nickname", inputValue],
-    () => getNickNameDoubleCheck(inputValue)
-  );
-  console.log("data = ", data)
+  const navigate = useNavigate();
+  const token = localStorage.getItem("AToken");
+  const Rtoken = Cookies.get('RToken');
 
   const nicknameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-    if (event.target.value !== "data" && event.target.value.length > 0) {
-      setCheckError("사용가능 닉네임");
-      setDbNameCheck(true);
-    } else {
-      if (event.target.value === "data") setCheckError("※ 이미 다른 사용자가 사용 중 입니다.");
-      else setCheckError("");
+    if (event.target.value.length <= 1) {
+      setCheckError("닉네임은 2글자 이상이여야합니다");
       setDbNameCheck(false);
-
+    } else if (event.target.value.length > 8) {
+      setCheckError("닉네임은 8글자 이하여야합니다");
+      setDbNameCheck(false)
     }
-  }
-  const navigate = useNavigate();
+    if (event.target.value.length < 8 && event.target.value.length >= 2) {
+      setCheckError("※ 가능한 닉네임입니다.");
+      setDbNameCheck(true)
+    } if (event.target.value === "data") {
+      setCheckError("※ 이미 다른 사용자가 사용 중 입니다.");
+      setDbNameCheck(false)
+    }
 
-  const checkNickname = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    navigate("/age")
+  }
+  // setCheckError("※ 이미 다른 사용자가 사용 중 입니다.");
+  // setCheckError("사용가능 닉네임");
+
+  const checkNickname = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    try {
+      const response = await instance.post(`/beggar`, {
+        nickname: inputValue
+      },
+        {
+          headers: {
+            ACCESS_KEY: `Bearer ${token}`,
+          },
+        });
+      navigate("/age")
+      return response.data;
+
+    } catch (err) {
+      console.log(`닉네임  API 오류 발생: ${err}`);
+      throw err;
+    }
   }
   const checkNickname2 = (event: React.MouseEvent<HTMLButtonElement>): void => {
     alert("닉네임 체크해주세요.!")
@@ -65,7 +81,8 @@ function Nickname() {
           </label>
         </div>
         <div className='checkError'>
-          {dbNameCheck ? "※" : "※ checkError"}
+          {checkError}
+          {/* {dbNameCheck ? "" : checkError} */}
         </div>
       </article>
 
@@ -82,7 +99,7 @@ function Nickname() {
         : <button
           className='common'
           type='button'
-          onClick={checkNickname2}>다음
+          onClick={checkNickname2}>다음가짜
         </button>}
     </main>
   );

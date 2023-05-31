@@ -9,13 +9,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { FaChevronLeft, FaCheckSquare } from "react-icons/fa";
-import { useRecoilState } from 'recoil';
-import { Button, Input } from '../../components/index';
-import inputState from '../../shared/Atom';
 import '../../styles/pages/_Gender.scss';
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import instance from '../../api/instance';
-import { getNickNameDoubleCheck } from '../../api/members';
 import { useNavigate } from 'react-router';
 import male from '../../static/image/gender/male.svg';
 import female from '../../static/image/gender/female.svg';
@@ -25,17 +21,22 @@ function Age() {
     const [malecheck, setMalecheck] = React.useState(false);
     const [femalecheck, setFemalecheck] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
+
+    const token = localStorage.getItem("AToken");
+
+    const navigate = useNavigate();
+
     const malegenderHandler = () => {
         setMalecheck(!malecheck);
         setFemalecheck(false)
         setChecked(false)
-        setInputValue("남자")
+        setInputValue("male")
     }
     const femalegenderHandler = () => {
         setFemalecheck(!femalecheck);
         setMalecheck(false)
         setChecked(false)
-        setInputValue("여자")
+        setInputValue("female")
     }
     const CheckBoxHandler = function () {
         setChecked(!checked)
@@ -43,15 +44,24 @@ function Age() {
         setFemalecheck(false)
         setInputValue("기타")
     };
-    console.log("inputValue = ", inputValue)
 
-    const { isLoading, isError, data } = useQuery(
-        ["gender", inputValue],
-        () => getNickNameDoubleCheck(inputValue)
-    );
-    console.log("data = ", data)
-
-    const navigate = useNavigate();
+    const onNextClickButton = async () => {
+        try {
+            const response = await instance.put(`/user/gender`, {
+                gender: inputValue
+            },
+                {
+                    headers: {
+                        ACCESS_KEY: `Bearer ${token}`,
+                    },
+                });
+            navigate("/finished")
+            return response.data;
+        } catch (err) {
+            console.log(`나이입력  API 오류 발생: ${err}`);
+            throw err;
+        }
+    }
 
     return (
         <main className='genderPage'>
@@ -92,7 +102,7 @@ function Age() {
                     ? <button
                         className='common'
                         type='button'
-                        onClick={() => navigate("/finished")}
+                        onClick={onNextClickButton}
                     >다음
                     </button>
                     : <button
