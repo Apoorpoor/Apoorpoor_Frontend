@@ -120,8 +120,12 @@ const PoorTalk: React.FC = () => {
                     </div>
                 ))}
             </ul>
-            <li className='commentsBox'>다른 푸어 보낸 메세지</li>
-            <li>내가 보낸 메세지</li>
+            <div className='Messagesbox'>
+                <div className='commentsBox'>메세지</div>
+                <div className='myCommentsBox'>내가 보낸 메세지</div>
+                <div className='commentsBox'>메세지</div>
+                <div className='myCommentsBox'>내가 보낸 메세지</div>
+            </div>
             <form onSubmit={handleSubmit}>
 
                 <input className='SandInput' type="text" value={inputValue} onChange={handleInputChange} />
