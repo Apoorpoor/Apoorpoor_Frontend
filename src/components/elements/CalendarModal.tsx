@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../styles/components/_AccountModal.scss';
 import { BsXLg, BsPlusLg } from 'react-icons/bs';
+import { useNavigate } from 'react-router';
 import Portal from '../../shared/Portal';
 
 interface CalendarModalProps {
@@ -8,6 +9,7 @@ interface CalendarModalProps {
 }
 
 function CalendarModal({ setCalendarModal }: CalendarModalProps) {
+  const navigate = useNavigate();
   const calendarModalClose = (): void => {
     setCalendarModal(false);
   };
@@ -42,7 +44,11 @@ function CalendarModal({ setCalendarModal }: CalendarModalProps) {
             <p className="accountCategory">수입 {'>'} 주식</p>
           </div>
 
-          <button type="button" className="accountAddBtn">
+          <button
+            type="button"
+            className="accountAddBtn"
+            onClick={() => navigate('/addAccount')}
+          >
             <div className="accountAddBtnIcon">
               <BsPlusLg />
             </div>

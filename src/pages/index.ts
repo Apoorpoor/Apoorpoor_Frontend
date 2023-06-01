@@ -1,5 +1,5 @@
 import Account from './accounts/Account';
-import AddAccount from './main/AddAccount';
+import AddAccount from './accounts/AddAccount';
 import Main from './main/Main';
 import PoorRoom from './poorRoom/PoorRoom';
 import IntroTalk from './poorTalk/IntroTalk';
@@ -28,5 +28,4 @@ export {
   Age,
   Gender,
   Finished,
-
 };

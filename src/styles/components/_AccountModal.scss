@@ -100,6 +100,7 @@
     .accountAddBtn {
       display: flex;
       align-items: center;
+      margin-bottom: 12px;
       .accountAddBtnIcon {
         width: 44px;
         height: 44px;
@@ -107,6 +108,9 @@
         background-color: $gray-150;
         margin-right: 8px;
         color: $gray-400;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .accountAddBtnSpan {
         font-size: 14px;
