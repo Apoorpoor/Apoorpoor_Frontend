@@ -1,0 +1,56 @@
+@import "../_Palette.scss";
+
+@mixin medalImg($level, $path: "../../static/image/medal/medal_", $format: "svg") {
+    background-image: url("#{$path}#{$level}.#{$format}");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 40px;
+    height: 60px;
+}
+
+#levelMedal{
+    position: relative;
+    width: 40px;
+    height: 60px;
+
+    &>p{
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    &.level1,&.level2{
+        @include medalImg('level1');
+        &>p{
+            color: $primary;
+        };
+    }
+    &.level3,&.level4{
+        @include medalImg('level3');
+        &>p{
+            color: $secondary;
+        };
+    }
+    &.level5,&.level6{
+        @include medalImg('level5');
+        &>p{
+            color: #FF832C;
+        };
+    }
+    &.level7,&.level8{
+        @include medalImg('level7');
+        &>p{
+            color: #B62C1D;
+        };
+    }
+    &.level9,&.level10{
+        @include medalImg('level9');
+        &>p{
+            color: #B43DEB;
+        };
+    }
+}
