@@ -33,10 +33,45 @@
         font-size: 16px;
         font-weight: 700;
       }
-      .addAccountRadio {
+      .addAccountRadioBox {
         margin-top: 20px;
+        display: flex;
+        input[type='radio'],
+        input[type='radio']:checked {
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 100%;
+          margin-right: 10px;
+        }
+        input[type='radio'] {
+          background-color: white;
+          border: 1px solid $gray-300;
+          width: 15.5px;
+          height: 15.5px;
+        }
+        input[type='radio'] + label {
+          color: $gray-300;
+        }
+        input[type='radio']:checked {
+          // outline: 1px solid $secondary;
+          background-color: $secondary;
+          border: 5px double white;
+        }
+        input[type='radio']:checked + label {
+          color: black;
+          font-weight: 700;
+        }
       }
     }
+  }
+  .addAccountDoneBtn {
+    margin-top: 114px;
+    width: 320px;
+    height: 56px;
+    border-radius: 12px;
+    background-color: $primary;
+    color: white;
   }
 }
 

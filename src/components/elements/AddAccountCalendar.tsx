@@ -52,7 +52,7 @@ function AddAccountCalendar() {
       locale={ko} // 언어설정 한국어
       ref={calendar}
       onInputClick={() => openDatePicker()}
-      dateFormat="yyyy년 MM월 dd일" // 날짜 형식 설정
+      dateFormat="M월 d일" // 날짜 형식 설정
       className="datePickerInput" // 클래스 명 지정 css주기 위해
       shouldCloseOnSelect={false} // 날짜를 선택하면 datepicker가 자동으로 닫힘
       maxDate={new Date()} // 선택할 수 있는 최대 날짜값 지정
