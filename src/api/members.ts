@@ -52,5 +52,22 @@ const firstLogin = async () => {
         throw err;
     }
 }
+const getUser = async () => {
+    // 토큰
+    const token = localStorage.getItem("AToken");
+    try {
+        const response = await instance.get(`/beggar`,
+            {
+                headers: {
+                    ACCESS_KEY: `Bearer ${token}`,
+                },
+            });
+        return response.data;
 
-export { getNickNameDoubleCheck, firstLogin };
+    } catch (err) {
+        console.log(`거지조회  API 오류 발생: ${err}`);
+        throw err;
+    }
+}
+
+export { getNickNameDoubleCheck, firstLogin, getUser };
