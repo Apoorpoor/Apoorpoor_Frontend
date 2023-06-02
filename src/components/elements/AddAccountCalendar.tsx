@@ -4,6 +4,7 @@ import { BsChevronLeft, BsChevronRight, BsXLg } from 'react-icons/bs';
 import { ko } from 'date-fns/esm/locale';
 import '../../styles/pages/_AddAccount.scss';
 import 'react-datepicker/dist/react-datepicker.css';
+import '../../styles/components/react-datePicker.css';
 import { getYear, getMonth } from 'date-fns';
 
 function AddAccountCalendar() {
