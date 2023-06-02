@@ -17,7 +17,7 @@ function AccountName({ setNameModal }: AccountNameProps) {
   // const [accountNameInput, setAccountNameInput] = useState('');
   const [inputValue, setInputValue] = useRecoilState(inputState);
 
-  const accounNameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const accountNameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
   return (
@@ -29,7 +29,7 @@ function AccountName({ setNameModal }: AccountNameProps) {
             id="accountNameInput"
             placeholder="가계부 이름"
             className="accountName"
-            onChange={accounNameOnchange}
+            onChange={accountNameOnchange}
           />
           <label
             htmlFor="accountNameInput"

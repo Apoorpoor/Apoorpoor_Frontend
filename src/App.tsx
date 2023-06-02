@@ -15,7 +15,7 @@ import {
   Age,
   Gender,
   Finished,
-  StompClient
+  StompClient,
 } from './pages/index';
 
 function App() {
