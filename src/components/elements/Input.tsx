@@ -12,7 +12,7 @@ type InputType = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
-function Input({ value, id, placeholder, className, onChange}:InputType) {
+function Input({ value, id, placeholder, className, onChange }:InputType) {
   const [inputValue, setInputValue] = useRecoilState(inputState);
 
   const inputChangeHandler = (event : React.ChangeEvent<HTMLInputElement>) => {

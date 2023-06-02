@@ -8,7 +8,10 @@
   align-items: center;
   position: fixed;
   z-index: 100;
-  bottom: 70px;
+  // top: 700px;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
   -webkit-box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }

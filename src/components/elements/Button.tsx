@@ -4,15 +4,14 @@ import '../../styles/components/_Button.scss';
 type ButtonChildren = {
   children: ReactNode;
   className: string;
-  onClick: () => React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // onChange: () => React.ChangeEvent<HTMLInputElement>;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-function Button({ children, className, onClick }: ButtonChildren) {
+function Button({ children, className, onClick}: ButtonChildren) {
   return (
-    <button type='button' className={className} onClick={onClick} >
-      {children}
-    </button>
+  <button type='button' className={className} onClick={onClick}>
+    {children}
+  </button>
   );
 }
 
