@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../styles/pages/_PoorRoom.scss';
+import '../../styles/components/_Slickslider.scss';
 import {
   Controller,
   Header,
@@ -7,6 +8,7 @@ import {
   NivoLine,
   NivoRadar,
   ProgressBar,
+  SlickSlider,
 } from '../../components';
 import badgeMedical from '../../static/image/badge/badge_medical.svg';
 
@@ -43,32 +45,30 @@ function PoorRoom() {
         </section>
         <section id="consumeBadgeArea">
           <h1>소비뱃지</h1>
-          <ul className="badgeList">
-            <li>
-              <div>
-                <img src={badgeMedical} alt="병원비" />
-              </div>
+          <SlickSlider
+            id="badgeSlide"
+            loop={false}
+            slidesToShow={3}
+            slidesToScroll={1}
+            arrows={false}
+          >
+            <div className="item">
+              <img src={badgeMedical} alt="" />
               <p>아프면 손드세요</p>
-            </li>
-            <li>
-              <div>
-                <img src={badgeMedical} alt="병원비" />
-              </div>
+            </div>
+            <div className="item">
+              <img src={badgeMedical} alt="" />
               <p>아프면 손드세요</p>
-            </li>
-            <li>
-              <div>
-                <img src={badgeMedical} alt="병원비" />
-              </div>
+            </div>
+            <div className="item">
+              <img src={badgeMedical} alt="" />
               <p>아프면 손드세요</p>
-            </li>
-            <li>
-              <div>
-                <img src={badgeMedical} alt="병원비" />
-              </div>
+            </div>
+            <div className="item">
+              <img src={badgeMedical} alt="" />
               <p>아프면 손드세요</p>
-            </li>
-          </ul>
+            </div>
+          </SlickSlider>
         </section>
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>

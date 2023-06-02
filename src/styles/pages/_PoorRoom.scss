@@ -57,11 +57,14 @@
     #consumeBadgeArea{
         &>.badgeList{
             width: 100%;
-            overflow-x: auto;
+            overflow-x: scroll;
             display: flex;
             gap: 20px;
             margin: 20px 0;
-            touch-action:  pan-x; 
+            touch-action:  pan-x;
+            &::-webkit-scrollbar{
+                display: none;
+            }
             
             &>li{
                 position: relative;

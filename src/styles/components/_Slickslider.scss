@@ -1,0 +1,16 @@
+@import '../_Palette.scss';
+
+// 푸어룸 : 뱃지 슬라이더
+#badgeSlider {
+  & > .slick-slider {
+    background-color: #f00;
+  }
+  &.item {
+    position: relative;
+    width: 112px;
+    height: 155px;
+    flex: 0 0 auto;
+    border-radius: 20px;
+    background-color: $gray-150;
+  }
+}

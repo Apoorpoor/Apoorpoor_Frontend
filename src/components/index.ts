@@ -11,6 +11,7 @@ import NivoRadar from './charts/Radarchart';
 import NivoLine from './charts/Linechart';
 import LevelMedal from './elements/LevelMedal';
 import Tooltip from './elements/Tooltip';
+import SlickSlider from './elements/SlickSlider';
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   NivoLine,
   LevelMedal,
   Tooltip,
+  SlickSlider,
 };
