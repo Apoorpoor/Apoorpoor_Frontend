@@ -7,7 +7,7 @@ function Header({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   return (
     <div id="header">
-      <button type="button" onClick={() => navigate('/')}>
+      <button type="button" onClick={() => navigate(-1)}>
         <AiOutlineLeft />
       </button>
       <h1>{children}</h1>

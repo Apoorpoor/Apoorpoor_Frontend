@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
 import {
+  Button,
   Controller,
   Header,
   LevelMedal,
@@ -10,9 +12,14 @@ import {
   ProgressBar,
   SlickSlider,
 } from '../../components';
-import badgeMedical from '../../static/image/badge/badge_medical.svg';
+import communication from '../../static/image/badge/badge_communication.svg';
+import culture from '../../static/image/badge/badge_culture.svg';
+import deposit from '../../static/image/badge/badge_deposit.svg';
+import education from '../../static/image/badge/badge_education.svg';
+import food from '../../static/image/badge/badge_food.svg';
 
 function PoorRoom() {
+  const navigate = useNavigate();
   return (
     <main id="myPoorRoom">
       <Header>MY</Header>
@@ -53,22 +60,32 @@ function PoorRoom() {
             arrows={false}
           >
             <div className="item">
-              <img src={badgeMedical} alt="" />
-              <p>아프면 손드세요</p>
+              <img src={communication} alt="" />
+              <p>여보세요?</p>
             </div>
             <div className="item">
-              <img src={badgeMedical} alt="" />
-              <p>아프면 손드세요</p>
+              <img src={culture} alt="" />
+              <p>#여유 #휴식</p>
             </div>
             <div className="item">
-              <img src={badgeMedical} alt="" />
-              <p>아프면 손드세요</p>
+              <img src={deposit} alt="" />
+              <p>티끌모아 태산</p>
             </div>
             <div className="item">
-              <img src={badgeMedical} alt="" />
-              <p>아프면 손드세요</p>
+              <img src={education} alt="" />
+              <p>공부의 신</p>
+            </div>
+            <div className="item">
+              <img src={food} alt="" />
+              <p>햄버억</p>
             </div>
           </SlickSlider>
+          <Button
+            className="whiteCommon"
+            onClick={() => navigate('/badgeList')}
+          >
+            모든 뱃지 보기
+          </Button>
         </section>
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>
@@ -98,10 +115,26 @@ function PoorRoom() {
             <ul className="detailOfPointList">
               <li>
                 <p className="title">
-                  포인트 상세 내역 <span>날짜 &#62; 카테고리</span>
+                  가계부 작성 <span>05.22 &#62; 가계부 작성</span>
                 </p>
                 <p className="value save">
                   +10P <span>적립</span>
+                </p>
+              </li>
+              <li>
+                <p className="title">
+                  나이키 에어포스 <span>05.27 &#62; 아이템 구매</span>
+                </p>
+                <p className="value use">
+                  -20P <span>사용</span>
+                </p>
+              </li>
+              <li>
+                <p className="title">
+                  뱃지 획득 <span>05.28 &#62; 뱃지</span>
+                </p>
+                <p className="value save">
+                  +20P <span>적립</span>
                 </p>
               </li>
             </ul>

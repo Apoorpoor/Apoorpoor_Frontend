@@ -39,7 +39,7 @@ function SlickSlider({
           },
         },
         {
-          breakpoint: 427,
+          breakpoint: 600,
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
