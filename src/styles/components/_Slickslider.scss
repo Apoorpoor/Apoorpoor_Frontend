@@ -1,5 +1,17 @@
 @import '../_Palette.scss';
 
+.slick-track {
+  margin: 0;
+}
+.slick-initialized .slick-slide {
+  position: relative;
+  width: 112px;
+  height: 155px;
+  border-radius: 20px;
+  background-color: $gray-150;
+  margin-right: 12px;
+}
+
 // 푸어룸 : 뱃지 슬라이더
 #badgeSlider {
   & > .slick-slider {

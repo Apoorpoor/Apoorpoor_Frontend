@@ -29,7 +29,7 @@ button {
   background-color: transparent;
 }
 
-.react-datepicker {
+/* .react-datepicker {
   font-family: 'Pretendard', sans-serif;
   border: 2px solid #dfdfdf;
   border-radius: 12px 12px 0px 0px;
@@ -86,7 +86,7 @@ button {
   }
   .react-datepicker__triangle {
     display: none;
-  }
+  } */
 ol,ul,dl{
   list-style: none;
   padding: 0;
