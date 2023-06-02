@@ -3,7 +3,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
-
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';

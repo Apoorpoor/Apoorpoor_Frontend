@@ -4,6 +4,7 @@ import { Layout } from './components';
 import {
   Account,
   AddAccount,
+  AddAccountDone,
   IntroTalk,
   Login,
   Main,
@@ -21,14 +22,15 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/nickname' element={<Nickname />} />
-        <Route path='/' element={<Main />} />
-        <Route path='/addAccount' element={<AddAccount />} />
-        <Route path='/account' element={<Account />} />
-        <Route path='/poorRoom' element={<PoorRoom />} />
-        <Route path='/introTalk' element={<IntroTalk />} />
-        <Route path='/poorTalk' element={<PoorTalk />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/nickname" element={<Nickname />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/addAccount" element={<AddAccount />} />
+        <Route path="/addAccountDone" element={<AddAccountDone />} />
+        <Route path="/poorRoom" element={<PoorRoom />} />
+        <Route path="/introTalk" element={<IntroTalk />} />
+        <Route path="/poorTalk" element={<PoorTalk />} />
         <Route path="/oauth/kakao" element={<Redirection />} />
         <Route path="/age" element={<Age />} />
         <Route path="/gender" element={<Gender />} />

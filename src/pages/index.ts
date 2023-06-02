@@ -1,5 +1,6 @@
 import Account from './accounts/Account';
-import AddAccount from './main/AddAccount';
+import AddAccount from './accounts/AddAccount';
+import AddAccountDone from './accounts/AddAccountDone';
 import Main from './main/Main';
 import PoorRoom from './poorRoom/PoorRoom';
 import IntroTalk from './poorTalk/IntroTalk';
@@ -17,6 +18,7 @@ import StompClient from './poorTalk/StompClient';
 export {
   Account,
   AddAccount,
+  AddAccountDone,
   Main,
   PoorRoom,
   IntroTalk,
