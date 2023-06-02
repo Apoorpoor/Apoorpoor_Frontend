@@ -1,5 +1,6 @@
 import Account from './accounts/Account';
-import AddAccount from './main/AddAccount';
+import AddAccount from './accounts/AddAccount';
+import AddAccountDone from './accounts/AddAccountDone';
 import Main from './main/Main';
 import PoorRoom from './poorRoom/PoorRoom';
 import IntroTalk from './poorTalk/IntroTalk';
@@ -16,6 +17,7 @@ import Finished from './user/Finished';
 export {
   Account,
   AddAccount,
+  AddAccountDone,
   Main,
   PoorRoom,
   IntroTalk,
@@ -28,5 +30,4 @@ export {
   Age,
   Gender,
   Finished,
-
 };

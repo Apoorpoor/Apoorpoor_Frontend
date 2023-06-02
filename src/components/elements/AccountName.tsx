@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useRecoilState } from 'recoil';
 import Portal from '../../shared/Portal';
 import '../../styles/components/_AccountModal.scss';
+import inputState from '../../shared/Atom';
 import Input from './Input';
 
 interface AccountNameProps {
@@ -12,22 +14,29 @@ function AccountName({ setNameModal }: AccountNameProps) {
     setNameModal(false);
   };
 
-  const [accountNameInput, setAccountNameInput] = useState('');
+  // const [accountNameInput, setAccountNameInput] = useState('');
+  const [inputValue, setInputValue] = useRecoilState(inputState);
 
   const accounNameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAccountNameInput(event.target.value);
+    setInputValue(event.target.value);
   };
   return (
     <Portal>
       <div className="accountModalBg">
         <div className="accountNameModalBox">
           <Input
-            value={accountNameInput}
+            value={inputValue}
             id="accountNameInput"
             placeholder="가계부 이름"
             className="accountName"
             onChange={accounNameOnchange}
           />
+          <label
+            htmlFor="accountNameInput"
+            className={`cursor ${inputValue.length > 0 ? 'active' : ''}`}
+          >
+            {' '}
+          </label>
           <button
             className="accountNameBtn"
             type="button"
