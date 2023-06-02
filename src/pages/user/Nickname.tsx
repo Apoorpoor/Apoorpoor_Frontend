@@ -96,9 +96,8 @@ function Nickname() {
           </label>
           <label
             htmlFor="nicknameInput"
-            className={`nicknameValidationAlert ${
-              inputValue.length > 0 ? 'active' : ''
-            }`}
+            className={`nicknameValidationAlert ${inputValue.length > 0 ? 'active' : ''
+              }`}
           >
             ※ 욕설 및 성희롱을 연상하게 하는 이름은 쓸 수 없어요.
           </label>
