@@ -29,13 +29,15 @@
     .addAccountContents {
       width: 320px;
       margin-bottom: 40px;
+      position: relative;
       .addAccountContentsTitle {
         font-size: 16px;
         font-weight: 700;
       }
-      .addAccountRadioBox {
+      .addAccountRadioBoxes {
         margin-top: 20px;
         display: flex;
+        align-items: center;
         input[type='radio'],
         input[type='radio']:checked {
           appearance: none;
@@ -52,6 +54,7 @@
         }
         input[type='radio'] + label {
           color: $gray-300;
+          margin-right: 24px;
         }
         input[type='radio']:checked {
           // outline: 1px solid $secondary;
@@ -62,6 +65,41 @@
           color: black;
           font-weight: 700;
         }
+      }
+      .warningBox {
+        margin-top: 8px;
+        margin-left: 10px;
+        color: $systemError;
+        display: flex;
+        align-items: center;
+        .warningIcon {
+          font-size: 18px;
+          margin-right: 4px;
+        }
+      }
+      .warningMsg {
+        font-size: 14px;
+      }
+      .cursor {
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 20px;
+        background-color: #4194f1;
+      }
+      .cursor.active {
+        opacity: 1;
+        top: 32px;
+        transform: initial;
+      }
+      .cursor.warning {
+        opacity: 1;
+        top: 32px;
+        transform: initial;
+        background-color: $systemError;
       }
     }
   }
@@ -85,6 +123,8 @@
   box-sizing: border-box;
   padding: 16px;
   margin-top: 20px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -120,7 +160,7 @@
 }
 
 .calCloseBox {
-  width: 390px;
+  width: 410px;
   // background-color: skyblue;
   display: flex;
   justify-content: center;

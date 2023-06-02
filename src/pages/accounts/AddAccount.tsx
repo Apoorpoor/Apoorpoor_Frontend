@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { RiErrorWarningFill } from 'react-icons/ri';
 import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
+import inputState from '../../shared/Atom';
 import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 
@@ -10,11 +13,34 @@ function AddAccount(): JSX.Element {
   const navigate = useNavigate();
 
   // 금액 입력
-  const [accountPriceInput, setAccountPriceInput] = useState('');
+  // const [accountPriceInput, setAccountPriceInput] = useState('');
+  const [inputValue, setInputValue] = useRecoilState(inputState);
 
-  const accountPriceOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAccountPriceInput(event.target.value);
+  // 천단위 콤마
+  const comma = (price: string) => {
+    const inputPrice = price.replace(/[^0-9]/g, '');
+    const addComma = inputPrice
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return addComma;
   };
+
+  const accountPriceOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target as HTMLInputElement;
+    const str = value.replaceAll(',', '');
+    setInputValue(str);
+  };
+
+  // 100원 미만일 경우 경고 메세지
+  const [showWarning, setShowWarning] = useState(false);
+
+  useEffect(() => {
+    if (inputValue && parseInt(inputValue, 10) <= 99) {
+      setShowWarning(true);
+    } else {
+      setShowWarning(false);
+    }
+  }, [inputValue]);
 
   // 수입 지출 분류 선택
   const [radio, setRadio] = useState('radioEx');
@@ -35,7 +61,6 @@ function AddAccount(): JSX.Element {
   ];
 
   const [selectInValue, setSelectInValue] = useState('');
-  console.log('선택:', selectInValue);
 
   const inSelectCustom = {
     control: (provided: any, state: any) => ({
@@ -44,12 +69,12 @@ function AddAccount(): JSX.Element {
       'width': '320px',
       'height': '48px',
       'borderRadius': '12px',
-      'border': `2px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+      'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
       'fontSize': '14px',
       'paddingLeft': '10px',
       'cursor': 'pointer',
       '&:hover': {
-        border: `2px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+        border: `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
       },
       'boxShadow': 'none',
     }),
@@ -95,7 +120,6 @@ function AddAccount(): JSX.Element {
   ];
 
   const [selectExValue, setSelectExValue] = useState('');
-  console.log('선택:', selectExValue);
 
   const exSelectCustom = {
     control: (provided: any, state: any) => ({
@@ -104,12 +128,12 @@ function AddAccount(): JSX.Element {
       'width': '320px',
       'height': '48px',
       'borderRadius': '12px',
-      'border': `2px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+      'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
       'fontSize': '14px',
       'paddingLeft': '10px',
       'cursor': 'pointer',
       '&:hover': {
-        border: `2px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+        border: `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
       },
       'boxShadow': 'none',
     }),
@@ -137,6 +161,71 @@ function AddAccount(): JSX.Element {
     indicatorSeparator: () => ({ display: 'none' }),
   };
 
+  // 결제수단 셀렉트 박스
+  const payment: { value: string; label: string }[] = [
+    { value: 'CASH', label: '현금' },
+    { value: 'BANK_TRANSFER', label: '계좌이체' },
+    { value: 'DEBIT_CARD', label: '체크카드' },
+    { value: 'CREDIT_CARD', label: '신용카드' },
+    { value: 'NAVER_PAY', label: '네이버페이' },
+    { value: 'OTHER', label: '기타' },
+  ];
+
+  const [selectPayValue, setSelectPayValue] = useState('');
+
+  const paySelectCustom = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      'marginTop': '20px',
+      'width': '320px',
+      'height': '48px',
+      'borderRadius': '12px',
+      'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
+      'fontSize': '14px',
+      'paddingLeft': '10px',
+      'cursor': 'pointer',
+      '&:hover': {
+        border: `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
+      },
+      'boxShadow': 'none',
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      'backgroundColor': state.isSelected ? '#FFF3C7' : 'ffffff',
+      'borderRadius': '5px',
+      'color': state.isSelected ? 'black' : 'black',
+      'fontSize': '14px',
+      'paddingLeft': '14px',
+      '&:hover': { backgroundColor: '#F5F5F5' },
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      borderRadius: '10px',
+      width: '320px',
+    }),
+    dropdownIndicator: (provided: any) => ({
+      ...provided,
+      '& svg': {
+        width: '20px',
+        height: '20px',
+      },
+    }),
+    indicatorSeparator: () => ({ display: 'none' }),
+  };
+
+  console.log(
+    '금액:',
+    inputValue,
+    '분류:',
+    radio,
+    '날짜:',
+    '연결안됨',
+    '결제수단:',
+    selectPayValue,
+    '카테고리:',
+    selectInValue,
+    selectExValue
+  );
   return (
     <div className="addAccountBg">
       <div className="header">
@@ -156,37 +245,45 @@ function AddAccount(): JSX.Element {
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">금액</p>
           <Input
-            value={accountPriceInput}
+            value={comma(inputValue)}
             id="accountPriceInput"
             placeholder="얼마를 입력할까요?"
-            className="accountPrice"
+            className={showWarning ? 'accountPriceValid' : 'accountPrice'}
             onChange={accountPriceOnchange}
           />
+          <label
+            htmlFor="nicknameInput"
+            className={`cursor ${showWarning ? 'warning' : 'active'}`}
+          >
+            {' '}
+          </label>
+          {showWarning ? (
+            <div className="warningBox">
+              <RiErrorWarningFill className="warningIcon" />
+              <p className="warningMsg">100원 이상 등록해주세요</p>
+            </div>
+          ) : null}
         </div>
 
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">분류</p>
-          <div className="addAccountRadioBox">
-            <div className="addAccountRadioBox">
-              <input
-                type="radio"
-                id="radioEx"
-                checked={radio === 'radioEx'}
-                onClick={() => handleRadio('radioEx')}
-                className="addAccountRadioBtn"
-              />
-              <label htmlFor="radioEx">지출</label>
-            </div>
+          <div className="addAccountRadioBoxes">
+            <input
+              type="radio"
+              id="radioEx"
+              checked={radio === 'radioEx'}
+              onClick={() => handleRadio('radioEx')}
+              className="addAccountRadioBtn"
+            />
+            <label htmlFor="radioEx">지출</label>
 
-            <div className="addAccountRadioBox">
-              <input
-                type="radio"
-                id="radioIn"
-                checked={radio === 'radioIn'}
-                onClick={() => handleRadio('radioIn')}
-              />
-              <label htmlFor="radioIn">수입</label>
-            </div>
+            <input
+              type="radio"
+              id="radioIn"
+              checked={radio === 'radioIn'}
+              onClick={() => handleRadio('radioIn')}
+            />
+            <label htmlFor="radioIn">수입</label>
           </div>
         </div>
 
@@ -197,7 +294,12 @@ function AddAccount(): JSX.Element {
 
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">결제수단</p>
-          <span>사용자가 등록한 결제수단 목록</span>
+          <Select
+            placeholder="카테고리 선택"
+            options={payment}
+            onChange={(e: any) => setSelectPayValue(e.value)}
+            styles={paySelectCustom}
+          />
         </div>
 
         <div className="addAccountContents">

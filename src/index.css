@@ -30,11 +30,12 @@ button {
 .react-datepicker {
   font-family: 'Pretendard', sans-serif;
   border: 2px solid #dfdfdf;
-  border-radius: 12px;
-  width: 400px;
+  border-radius: 12px 12px 0px 0px;
+  width: 430px;
   height: 65%;
   position: absolute;
   bottom: 0px;
+  transform: translateX(-50%);
 
   .react-datepicker__header {
     background-color: white;
@@ -42,7 +43,7 @@ button {
     border-radius: 12px;
 
     .react-datepicker__day-names {
-      width: 400px;
+      width: 430px;
       display: flex;
       justify-content: space-around;
       align-items: center;

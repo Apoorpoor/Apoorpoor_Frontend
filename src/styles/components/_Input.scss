@@ -6,6 +6,7 @@
   input {
     width: 100%;
     box-sizing: border-box;
+    font-family: 'Pretendard', sans-serif;
 
     &::placeholder {
       color: $gray-350;
@@ -42,7 +43,18 @@
       height: 48px;
       outline: none;
       border: none;
+      font-size: 20px;
+      padding: 0 20px;
       border-bottom: 1px solid $primary;
+    }
+    &.accountPriceValid {
+      width: 320px;
+      height: 48px;
+      outline: none;
+      border: none;
+      font-size: 20px;
+      padding: 0 20px;
+      border-bottom: 1px solid $systemError;
     }
   }
   // Input 공통 부분 : 글 작성 시작되면 오른쪽에 전체 삭제
