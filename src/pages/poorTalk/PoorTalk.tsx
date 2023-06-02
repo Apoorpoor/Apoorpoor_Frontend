@@ -15,19 +15,17 @@ import { FaCamera, FaArrowCircleUp, FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router";
 
 interface IJoinMessage {
-    type: "JOIN";
+    type: "ENTER";
     sender: string;
-    content: string;
-    user_id: string | number;
-    id: string | number;
+    message: string;
+    beggar_id: string | number;
 }
 
 interface ITalkMessage {
     type: "TALK";
     sender: string;
-    content: string;
-    user_id: string | number;
-    id: string | number;
+    message: string;
+    beggar_id: string | number;
 }
 
 type IMessage = IJoinMessage | ITalkMessage;
@@ -81,26 +79,24 @@ function PoorTalk() {
                     client.publish({
                         destination: "/pub/chat/enter",
                         body: JSON.stringify({
-                            id: data.id,
-                            user_id: data.user_id,
+                            beggar_id: data.beggar_id,
                             sender: data.nickname,
-                            type: "JOIN",
-                            content: message,
+                            type: "ENTER",
+                            message: `${data.nickname}님 입장하123셨습니다.`,
                         }),
                     });
                 },
-                // onDisconnect: () => {
-                //     client.publish({
-                //         destination: "/pub/chat/leave",
-                //         body: JSON.stringify({
-                //             id: data.id,
-                //             user_id: data.user_id,
-                //             sender: data.nickname,
-                //             type: "TALK",
-                //             content: message,
-                //         }),
-                //     });
-                // },
+                onDisconnect: () => {
+                    client.publish({
+                        destination: "/pub/chat/LEAVE",
+                        body: JSON.stringify({
+                            beggar_id: data.beggar_id,
+                            sender: data.nickname,
+                            type: "LEAVE",
+                            message: `${data.nickname}님 입장하123셨습니다.`,
+                        }),
+                    });
+                },
             });
             stompClientRef.current = client;
             client.activate();
@@ -112,18 +108,17 @@ function PoorTalk() {
                 stompClientRef.current.deactivate();
             }
         };
-    }, [data, message, token]);
+    }, [data, token]);
 
     const sendMessage = (message: string) => {
         if (message.trim() === "")
             return console.log("내용을 입력해주세요.");
 
         const sendList = {
-            id: data.id,
-            user_id: data.user_id,
+            beggar_id: data.beggar_id,
             sender: data.nickname,
             type: "TALK",
-            content: message.trim(),
+            message: message.trim(),
         };
 
         if (stompClientRef.current) {
@@ -140,6 +135,7 @@ function PoorTalk() {
     const now = `${date.getHours()}:${date.getMinutes()}`;
     const now2 = `${today.split(" ")[3]} : ${now}`;
 
+    // console.log("user = ", user)
     return (
         <div className='currentBackGround'>
             <div className='Header'>
@@ -153,14 +149,14 @@ function PoorTalk() {
                 <div className='Messagesbox'>
                     {chatMessages?.map((message, index) => (
                         <div className="chatBox" key={index}>
-                            {message.sender === data?.nickname ? <button type="button" className="yourChatProfile">.</button>
-                                : ""
+                            {message.sender === data?.nickname ? ""
+                                : <button type="button" className="yourChatProfile">.</button>
                             }
-                            <div className={message.sender === data?.nickname ? 'yourChat ' : 'myChat'}>
-                                {message.content}
+                            <div className={message.sender === data?.nickname ? 'myChat ' : 'yourChat'}>
+                                {message.message}
                             </div>
                             <div
-                                className={message.sender === data?.nickname ? 'nowTime2 ' : 'nowTime1'}
+                                className={message.sender === data?.nickname ? 'nowTime1 ' : 'nowTime2'}
                             >{now2}</div>
 
                         </div>
