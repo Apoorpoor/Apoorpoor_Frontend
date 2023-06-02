@@ -179,3 +179,60 @@
   margin-right: 30px;
   color: $gray-400;
 }
+
+.doneBg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  .doneTitle {
+    margin-top: 193px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    .donePoint {
+      width: 92px;
+      height: 26px;
+      border-radius: 999px;
+      background-color: $secondaryL-600;
+      font-size: 12px;
+      line-height: 26px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .doneImg {
+      margin-top: 36px;
+      width: 270px;
+    }
+  }
+  .doneTitle p {
+    margin-top: 8px;
+    font-weight: 700;
+    color: $primary;
+    font-size: 14px;
+  }
+
+  .doneFooter {
+    margin-top: 135px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .doneBtn {
+      width: 97px;
+      height: 44px;
+      font-size: 14px;
+      color: $primary;
+      font-weight: 400;
+      text-decoration: underline solid $primary;
+      margin-bottom: 11px;
+    }
+    .goPoorRoomBtn {
+      width: 320px;
+      height: 56px;
+      border-radius: 12px;
+      background-color: $primary;
+      color: white;
+    }
+  }
+}

@@ -320,7 +320,11 @@ function AddAccount(): JSX.Element {
             />
           )}
         </div>
-        <button className="addAccountDoneBtn" type="button">
+        <button
+          className="addAccountDoneBtn"
+          type="button"
+          onClick={() => navigate('/addAccountDone')}
+        >
           등록하기
         </button>
       </div>
