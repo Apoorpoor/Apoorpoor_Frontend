@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
@@ -6,5 +6,16 @@ const instance = axios.create({
     headers: {
         "Access-Control-Allow-Origin": "*",
     },
-});
+})
+
+// instance.interceptors.request.use(
+//     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+
+//     //   const accessToken = sessionStorage.getItem('access_token');
+//     //   const refreshToken = localStorage.getItem('refresh_token');
+  
+//       return config;
+//     }
+// );
+
 export default instance;

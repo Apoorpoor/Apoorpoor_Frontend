@@ -1,8 +1,7 @@
 @import '../src/static/fonts/font.css';
 
 html,
-body,
-button {
+body {
   font-family: 'Pretendard', sans-serif;
   padding: 0;
   margin: 0;
@@ -22,6 +21,9 @@ a {
   cursor: pointer;
 }
 button {
+  font-family: 'Pretendard', sans-serif;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -85,4 +87,8 @@ button {
   .react-datepicker__triangle {
     display: none;
   }
+ol,ul,dl{
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
