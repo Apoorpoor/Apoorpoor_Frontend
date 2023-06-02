@@ -1,108 +1,144 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable react/no-this-in-sfc */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable consistent-return */
-/* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable import/order */
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable consistent-return */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable react/function-component-definition */
-import React, { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
+import React, { useEffect, useRef, useState } from "react";
+import { Client, Message, Stomp, StompSubscription } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import { useQuery } from "react-query";
+import { getUser } from "../../api/members";
 import '../../styles/pages/_PoorTalk.scss';
 import { FaCamera, FaArrowCircleUp, FaChevronLeft } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router";
 
-const PoorTalk: React.FC = () => {
-    const [messages, setMessages] = useState<string[]>([]);
-    const [typeValue, setTypeValue] = React.useState('TALK');
-    const [senderValue, setSenderValue] = React.useState('string');
-    const [memberIdValue, setMemberIdValue] = React.useState('long');
-    const [timeValue, setTimeValue] = React.useState('string');
-    const [roomIdValue, setRoomIdValue] = React.useState('string');
-    const [inputValue, setInputValue] = React.useState('message');
-    const [imageValue, setImageValue] = React.useState(null);
+interface IJoinMessage {
+    type: "JOIN";
+    sender: string;
+    content: string;
+    user_id: string | number;
+    id: string | number;
+}
+
+interface ITalkMessage {
+    type: "TALK";
+    sender: string;
+    content: string;
+    user_id: string | number;
+    id: string | number;
+}
+
+type IMessage = IJoinMessage | ITalkMessage;
+
+function PoorTalk() {
+    const [inputValue, setInputValue] = React.useState('');
+    // 처음에 받아오는 내 푸어 정보
+    const [user, setUser] = useState<any>(null);
+    // const [stompClient, setStompClient] = useState(null);
+    const [messageList, setMessageList] = useState<IMessage[]>([]);
+    // 보여지는 메세지들, 닉네임 정보
+    const [chatMessages, setChatMessages] = useState<IMessage[]>([]);
+    // 보내는 메세지
+    const [message, setMessage] = useState<string>("");
+    // 토큰
+    const token = localStorage.getItem("AToken");
+    // 유저 정보 받아오기
+    const { isLoading, isError, data } = useQuery("getUser", getUser);
+    // 소켓
+    const socket = new SockJS('http://3.34.85.5:8080/ws-edit');
+    // 클라이언트
+    const stompClientRef = useRef<Client | null>(null);
+    // 네비게이트
     const navigate = useNavigate();
 
+
     useEffect(() => {
-        const getMessages = async () => {
-            const token = Cookies.get('ACC_Token');
-            const response = await fetch('/api/messages', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+        if (data) {
+            setUser(data);
+            // 소켓 연결
+            const client = new Client({
+                webSocketFactory: () =>
+                    new SockJS(`http://3.34.85.5:8080/ws-edit`),
+                connectHeaders: {
+                    'ACCESS_KEY': `Bearer ${token}`,
                 },
+                // debug: (str: string) => {
+                //     console.log("debug == ", str);
+                // },
+                reconnectDelay: 5000,
+                heartbeatIncoming: 4000,
+                heartbeatOutgoing: 4000,
+                // 접속했을 때
+                onConnect: (message) => {
+                    console.log("Connected: ", message);
+                    client.subscribe("/sub/chat/room", (message) => {
+                        const parsedMessage = JSON.parse(message.body) as IMessage;
+                        setChatMessages((chatMessages) => [...chatMessages, parsedMessage]);
+                    });
+
+                    client.publish({
+                        destination: "/pub/chat/enter",
+                        body: JSON.stringify({
+                            id: data.id,
+                            user_id: data.user_id,
+                            sender: data.nickname,
+                            type: "JOIN",
+                            content: message,
+                        }),
+                    });
+                },
+                // onDisconnect: () => {
+                //     client.publish({
+                //         destination: "/pub/chat/leave",
+                //         body: JSON.stringify({
+                //             id: data.id,
+                //             user_id: data.user_id,
+                //             sender: data.nickname,
+                //             type: "TALK",
+                //             content: message,
+                //         }),
+                //     });
+                // },
             });
-            const data = await response.json();
-            setMessages(data);
-        };
-        getMessages();
-    }, []);
-
-    // 들어갈 메세지 핸들러
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
-    };
-    // 들어갈 이미지 핸들러
-    const handleFileInput = (e: any) => {
-        setImageValue(e.target.files[0]);
-    };
-    console.log("imageValue = ", imageValue);
-    const date = new Date();
-    const today = date.toLocaleString()
-    console.log("today = ", today.split(" ")[3], today.split(" ")[4]);
-
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        const newList = new FormData();
-        newList.append("type", typeValue);
-        newList.append("sender", senderValue);
-        newList.append("memberId", memberIdValue);
-        newList.append("time", timeValue);
-        newList.append("roomId", roomIdValue);
-        newList.append("message", inputValue);
-        if (imageValue) {
-            return newList.append("image", imageValue);
+            stompClientRef.current = client;
+            client.activate();
         }
-        const sendSocket = new WebSocket('ws://15.164.247.53:8080/chat.send');
-        sendSocket.onopen = () => {
-            sendSocket.send(newList as any);
-            sendSocket.close();
-        };
-        setInputValue('');
-    };
-
-    useEffect(() => {
-        let socket: WebSocket;
-
-        const connectWebSocket = () => {
-            socket = new WebSocket('ws://15.164.247.53:8080/chat.register');
-
-            socket.onopen = () => {
-                console.log('WebSocket 연결!');
-                subscribe();
-            };
-
-            socket.onmessage = (event) => {
-                const message = event.data;
-                setMessages((prevMessages) => [...prevMessages, message]);
-            };
-
-            socket.onclose = () => {
-                console.log('WebSocket 닫힘!');
-            };
-        };
-
-        const subscribe = () => {
-            socket.send('/topic/public');
-        };
-        connectWebSocket();
 
         return () => {
-            socket.close();
+            // 컴포넌트가 언마운트될 때 연결을 끊음
+            if (stompClientRef.current) {
+                stompClientRef.current.deactivate();
+            }
         };
-    }, []);
+    }, [data, message, token]);
+
+    const sendMessage = (message: string) => {
+        if (message.trim() === "")
+            return console.log("내용을 입력해주세요.");
+
+        const sendList = {
+            id: data.id,
+            user_id: data.user_id,
+            sender: data.nickname,
+            type: "TALK",
+            content: message.trim(),
+        };
+
+        if (stompClientRef.current) {
+            stompClientRef.current.publish({
+                destination: "/pub/chat/send",
+                body: JSON.stringify(sendList),
+            });
+        }
+        setMessage("");
+    };
+
+    const date = new Date();
+    const today = date.toLocaleString();
+    const now = `${date.getHours()}:${date.getMinutes()}`;
+    const now2 = `${today.split(" ")[3]} : ${now}`;
 
     return (
         <div className='currentBackGround'>
@@ -112,29 +148,48 @@ const PoorTalk: React.FC = () => {
                 </button>
                 <div className='HeaderText'>푸어talk</div>
             </div>
-            <ul className='Messagesbox'>
-                {messages.map((message, index) => (
-                    <div>
-                        <li key={index}>{message}</li>
 
-                    </div>
-                ))}
-            </ul>
-            <div className='Messagesbox'>
-                <div className='commentsBox'>메세지</div>
-                <div className='myCommentsBox'>내가 보낸 메세지</div>
-                <div className='commentsBox'>메세지</div>
-                <div className='myCommentsBox'>내가 보낸 메세지</div>
-            </div>
-            <form onSubmit={handleSubmit}>
+            {chatMessages && chatMessages.length > 0 && (
+                <div className='Messagesbox'>
+                    {chatMessages?.map((message, index) => (
+                        <div className="chatBox" key={index}>
+                            {message.sender === data?.nickname ? <button type="button" className="yourChatProfile">.</button>
+                                : ""
+                            }
+                            <div className={message.sender === data?.nickname ? 'yourChat ' : 'myChat'}>
+                                {message.content}
+                            </div>
+                            <div
+                                className={message.sender === data?.nickname ? 'nowTime2 ' : 'nowTime1'}
+                            >{now2}</div>
 
-                <input className='SandInput' type="text" value={inputValue} onChange={handleInputChange} />
-                <button className='SandButton' type="submit"><FaArrowCircleUp /></button>
+                        </div>
+                    ))}
+                </div>
+            )}
+            <div>
+                <input
+                    className='SandInput'
+                    type="text"
+                    placeholder="message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyPress={(e) => e.which === 13 && sendMessage(message)}
+                />
+                <button
+                    className='SandButton'
+                    type="button"
+                    onClick={() => sendMessage(message)}
+                ><FaArrowCircleUp /></button>
                 <div className="filebox">
                     <label htmlFor="ex_file"><FaCamera className='PoorTalkCamera' /></label>
-                    <input type="file" id="ex_file" onChange={handleFileInput} />
+                    <input
+                        type="file"
+                        id="ex_file"
+                    // onChange={handleFileInput} 
+                    />
                 </div>
-            </form>
+            </div>
         </div>
     );
 };

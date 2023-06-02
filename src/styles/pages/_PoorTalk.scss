@@ -1,9 +1,9 @@
 .currentBackGround {
-    margin: 20px 20px 20px 20px;
+    margin-top: 46px;
   }
 .Header{
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f3f3f3;;
+    // padding-bottom: 15px;
+    border-bottom: 1px solid #f5f5f5;;
     gap: 120px;
     display: flex;
 }
@@ -13,49 +13,81 @@
 }
 .Arrow{
     // justify-content: flex-start;
-    font-size: 1.8em;
+    font-size: 1.6em;
+    margin-top: -20px;
     
 }
+// 전체 메세지 폼
 .Messagesbox{
-    // @include center;
-    // width: 300px;
-    height: 300px;
-    // max-height: 500px;
-    // z-index: 2;
-    // overflow: hidden;
+    width: 100%;
+    max-height: 680px;
     box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
-    // background: rgba(0, 0, 0, .5);
-    // border-radius: 20px;
-    //  display:inline-block;
-    justify-content: space-between;
+    display: flex;
     flex-direction: column;
+    padding-top: 20px;
     
 }
-.commentsBox{
-    background-color: #f3f3f3;
-    font-weight: 400;
-    display: inline-flex;
-    align-items: center;
-    height: 41px;
-    padding: 0px 12px 0px 12px;
-    border-radius: 40px 100px 100px 100px;
-    margin-bottom: 36px;
-    justify-content:start;
-
+// 메세지들 map돌려서 하나씩 정리
+.chatBox {
+    // display:block;
+    // justify-content: flex-end;
+    // min-height: 71px;
+    
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  }
+  // 다른 유저가 쓴 메세지
+  .yourChat{
+      background-color: #f5f5f5;
+      font-weight: 400;
+      border-radius: 40px 100px 100px 100px;
+      padding: 10px;
+      align-self: flex-start;
+      margin-left: 60px;
+    max-width: 260px;
+    }
+    // 다른 유저 프로필
+    .yourChatProfile {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #f5f5f5;
+        margin-right: 10px;
+        position: absolute;
+        left: 5%;
+      }
+// 다른 유저가 쓴 메세지에 붙을 시간
+.nowTime2{
+    color: #b7b7b7;
+    font-size: 10px;
+    margin-bottom: 5px;
+    align-self: flex-start;
+    margin-left: 70px;
 }
-.myCommentsBox{
+// 내가 쓴 메세지
+.myChat {
     background-color: #4194F1;
-    color :white;
+    color: #FFF;
     font-weight: 100;
-    display: inline-flex;
-    align-items: center;
-    height: 41px;
-    padding: 0px 12px 0px 12px;
     border-radius: 100px 40px 100px 100px;
-    margin-bottom: 36px;
-    justify-content:end;
-    
+    margin-right: 20px;
+    padding: 12px 12px 12px 15px;
+    align-self: flex-end;
+    max-width: 260px;
+    // text-align: right;
+   
 }
+// 내가 쓴 메세지에 붙을 시간
+.nowTime1{
+    color: #b7b7b7;
+    font-size: 10px;
+    margin-bottom: 5px;
+    align-self: flex-end;
+    margin-right: 30px;
+}
+// 메세지 인풋값
 .SandInput{
     width: 390px;
     border: 1px solid #c0c2c4;
@@ -65,7 +97,9 @@
     position: absolute;
     top: 90%;
     transform: translateY(-30%);
+    margin-left: 20px;
 }
+// 메세지 sand 버튼
 .SandButton{
     position: absolute;
     top: 90.5%;
@@ -78,6 +112,7 @@
         color: #4194F1;
     }
 }
+// 카메라
 .filebox label {
     position: absolute;
     top: 90.5%;
@@ -95,7 +130,7 @@
   cursor: pointer;
   border-bottom-color: #e2e2e2;
 }
-
+// 카메라 인풋 파일선택 숨기기
 .filebox input[type="file"] {  /* 파일 필드 숨기기 */
   position: absolute;
   width: 1px;
@@ -106,7 +141,11 @@
   clip:rect(0,0,0,0);
   border: 0;
 }
+// 카메라 크기
 .PoorTalkCamera{
   width: 25px;
   height: 25px;
+  &:hover{
+      color: #4194F1;
+  }
 }
