@@ -1,1 +1,238 @@
-// scss 파일
+@import '../Palette';
+
+.addAccountBg {
+  padding: 20px;
+
+  .header {
+    height: 44px;
+    line-height: 44px;
+    margin-bottom: 60px;
+    .headerPreBtn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      float: left;
+    }
+    .headerTitle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .addAccountBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .addAccountContents {
+      width: 320px;
+      margin-bottom: 40px;
+      position: relative;
+      .addAccountContentsTitle {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .addAccountRadioBoxes {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        input[type='radio'],
+        input[type='radio']:checked {
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 100%;
+          margin-right: 10px;
+        }
+        input[type='radio'] {
+          background-color: white;
+          border: 1px solid $gray-300;
+          width: 15.5px;
+          height: 15.5px;
+        }
+        input[type='radio'] + label {
+          color: $gray-300;
+          margin-right: 24px;
+        }
+        input[type='radio']:checked {
+          // outline: 1px solid $secondary;
+          background-color: $secondary;
+          border: 5px double white;
+        }
+        input[type='radio']:checked + label {
+          color: black;
+          font-weight: 700;
+        }
+      }
+      .warningBox {
+        margin-top: 8px;
+        margin-left: 10px;
+        color: $systemError;
+        display: flex;
+        align-items: center;
+        .warningIcon {
+          font-size: 18px;
+          margin-right: 4px;
+        }
+      }
+      .warningMsg {
+        font-size: 14px;
+      }
+      .cursor {
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 20px;
+        background-color: #4194f1;
+      }
+      .cursor.active {
+        opacity: 1;
+        top: 32px;
+        transform: initial;
+      }
+      .cursor.warning {
+        opacity: 1;
+        top: 32px;
+        transform: initial;
+        background-color: $systemError;
+      }
+    }
+  }
+  .addAccountDoneBtn {
+    margin-top: 114px;
+    width: 320px;
+    height: 56px;
+    border-radius: 12px;
+    background-color: $primary;
+    color: white;
+  }
+}
+
+// DatePicker input
+.datePickerInput {
+  width: 320px;
+  height: 48px;
+  border-radius: 12px;
+  border: 2px solid $gray-300;
+  color: $gray-450;
+  box-sizing: border-box;
+  padding: 16px;
+  margin-top: 20px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.datePickerHeaderBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .datePickerHeader {
+    height: 20px;
+    margin: 30px;
+    display: flex;
+    align-items: center;
+    .calControlBtn {
+      margin-right: 10px;
+    }
+    .calYearSel {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: $primary;
+      border: none;
+      height: 30px;
+      margin-right: 5px;
+    }
+    .calYear {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: $primary;
+      margin-right: 10px;
+    }
+  }
+}
+
+.calCloseBox {
+  width: 410px;
+  // background-color: skyblue;
+  display: flex;
+  justify-content: center;
+  .calCloseBtn {
+    margin-top: 25px;
+    width: 360px;
+    height: 56px;
+    border-radius: 12px;
+    background-color: $primary;
+    color: white;
+  }
+}
+
+.calCancleBtn {
+  font-size: 24px;
+  margin-right: 30px;
+  color: $gray-400;
+}
+
+.doneBg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  .doneTitle {
+    margin-top: 193px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    .donePoint {
+      width: 92px;
+      height: 26px;
+      border-radius: 999px;
+      background-color: $secondaryL-600;
+      font-size: 12px;
+      line-height: 26px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .doneImg {
+      margin-top: 36px;
+      width: 270px;
+    }
+  }
+  .doneTitle p {
+    margin-top: 8px;
+    font-weight: 700;
+    color: $primary;
+    font-size: 14px;
+  }
+
+  .doneFooter {
+    margin-top: 135px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .doneBtn {
+      width: 97px;
+      height: 44px;
+      font-size: 14px;
+      color: $primary;
+      font-weight: 400;
+      text-decoration: underline solid $primary;
+      margin-bottom: 11px;
+    }
+    .goPoorRoomBtn {
+      width: 320px;
+      height: 56px;
+      border-radius: 12px;
+      background-color: $primary;
+      color: white;
+    }
+  }
+}

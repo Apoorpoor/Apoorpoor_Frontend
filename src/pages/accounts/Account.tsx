@@ -78,7 +78,6 @@ function Account(): JSX.Element {
   const inSelectCustom = {
     control: (provided: any, state: any) => ({
       ...provided,
-      'marginTop': '16px',
       'width': '180px',
       'height': '32px',
       'borderRadius': '999px',
@@ -139,7 +138,6 @@ function Account(): JSX.Element {
   const exSelectCustom = {
     control: (provided: any, state: any) => ({
       ...provided,
-      'marginTop': '16px',
       'width': '180px',
       'height': '32px',
       'borderRadius': '999px',
@@ -265,22 +263,24 @@ function Account(): JSX.Element {
               </div>
             ))}
           </div>
-          {category[1].selected === true ? (
-            <Select
-              placeholder="수입 카테고리"
-              options={inOptions}
-              onChange={(e: any) => setSelectInValue(e.value)}
-              styles={inSelectCustom}
-            />
-          ) : null}
-          {category[2].selected === true ? (
-            <Select
-              placeholder="지출 카테고리"
-              options={exOptions}
-              onChange={(e: any) => setSelectExValue(e.value)}
-              styles={exSelectCustom}
-            />
-          ) : null}
+          <div className="accountFilterSelect">
+            {category[1].selected === true ? (
+              <Select
+                placeholder="수입 카테고리"
+                options={inOptions}
+                onChange={(e: any) => setSelectInValue(e.value)}
+                styles={inSelectCustom}
+              />
+            ) : null}
+            {category[2].selected === true ? (
+              <Select
+                placeholder="지출 카테고리"
+                options={exOptions}
+                onChange={(e: any) => setSelectExValue(e.value)}
+                styles={exSelectCustom}
+              />
+            ) : null}
+          </div>
         </div>
 
         <div className="accountBody">
@@ -290,7 +290,7 @@ function Account(): JSX.Element {
           <div className="accountBodyContents">
             <div className="accountLabel">
               <p>저축</p>
-              <p className="accountLabelEx">-25,000원</p>
+              <p className="accountLabelSave">25,000원</p>
             </div>
             <p className="accountCategory">지출 {'>'} 저축</p>
           </div>
