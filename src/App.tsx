@@ -16,6 +16,7 @@ import {
   Gender,
   Finished,
   StompClient,
+  BadgeList,
 } from './pages/index';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/gender" element={<Gender />} />
         <Route path="/finished" element={<Finished />} />
         <Route path="/poorTalk22" element={<StompClient />} />
+        <Route path="/badgeList" element={<BadgeList />} />
       </Routes>
     </Layout>
   );
