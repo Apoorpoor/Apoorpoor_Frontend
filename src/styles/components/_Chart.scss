@@ -1,12 +1,17 @@
+@import '../_Palette.scss';
+
 .chartBackground {
   padding: 20px;
   margin-bottom: 40px;
-}
-
-.chartHeader {
-  margin-top: 60px;
-  line-height: 30px;
-  // margin-bottom: 60px;
+  .chartHeader {
+    margin-top: 60px;
+    line-height: 30px;
+    // margin-bottom: 60px;
+    .chartHeaderTitle {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .pieChart {

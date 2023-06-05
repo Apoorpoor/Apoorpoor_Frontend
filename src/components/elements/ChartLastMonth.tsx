@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
+import Select from 'react-select';
 import '../../styles/components/_Chart.scss';
 
 function ChartLastMonth(): JSX.Element {
@@ -11,6 +12,54 @@ function ChartLastMonth(): JSX.Element {
   //   },
   // };
 
+  const compareOptions: { value: string; label: string }[] = [
+    { value: 'lastMonth', label: '지난달' },
+    { value: 'sameMonthLastYear', label: '작년 동월' },
+    { value: 'sameQuarterLastYear', label: '작년 동분기' },
+  ];
+
+  const [selectCpValue, setSelectCpValue] = useState('');
+  console.log('선택:', selectCpValue);
+
+  const cpSelectCustom = {
+    control: (provided: any) => ({
+      ...provided,
+      'width': '166px',
+      'height': '32px',
+      'border': 'none',
+      'fontSize': '24px',
+      'fontWeight': 'bold',
+      'textAlign': 'center',
+      '&:hover': {
+        border: 'none',
+      },
+      'boxShadow': 'none',
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      'backgroundColor': state.isSelected ? '#FFF3C7' : 'ffffff',
+      'borderRadius': '5px',
+      'color': state.isSelected ? 'black' : 'black',
+      'fontSize': '24px',
+      'textAlign': 'center',
+      '&:hover': { backgroundColor: '#F5F5F5' },
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      borderRadius: '10px',
+      width: '166px',
+    }),
+    dropdownIndicator: (provided: any) => ({
+      ...provided,
+      '& svg': {
+        width: '20px',
+        height: '20px',
+      },
+    }),
+    indicatorSeparator: () => ({ display: 'none' }),
+  };
+
+  // 비교 데이터
   type BarDatum = {
     month: string;
     last?: number;
@@ -36,7 +85,15 @@ function ChartLastMonth(): JSX.Element {
   return (
     <div className="chartBackground">
       <div className="chartHeader">
-        <h2>지난달 대비 지출내역</h2>
+        <div className="chartHeaderTitle">
+          <Select
+            defaultValue={compareOptions[0]}
+            options={compareOptions}
+            onChange={(e: any) => setSelectCpValue(e.value)}
+            styles={cpSelectCustom}
+          />{' '}
+          <h2>대비 지출내역</h2>
+        </div>
         <p>4월보다 5만원 더 쓰셨네요.</p>
       </div>
       <div className="chartBarPrice">
