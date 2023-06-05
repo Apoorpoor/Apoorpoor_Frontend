@@ -13,7 +13,6 @@ import Redirection from './user/Redirection';
 import Age from './user/Age';
 import Gender from './user/Gender';
 import Finished from './user/Finished';
-import StompClient from './poorTalk/StompClient';
 
 export {
   Account,
@@ -31,5 +30,4 @@ export {
   Age,
   Gender,
   Finished,
-  StompClient,
 };
