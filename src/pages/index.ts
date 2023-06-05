@@ -13,7 +13,6 @@ import Redirection from './user/Redirection';
 import Age from './user/Age';
 import Gender from './user/Gender';
 import Finished from './user/Finished';
-import StompClient from './poorTalk/StompClient';
 import BadgeList from './poorRoom/BadgeList';
 
 export {
@@ -32,6 +31,5 @@ export {
   Age,
   Gender,
   Finished,
-  StompClient,
   BadgeList,
 };
