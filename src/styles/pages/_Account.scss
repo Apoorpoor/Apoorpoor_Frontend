@@ -5,6 +5,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 70px;
 }
 
 // .header {
@@ -81,37 +82,58 @@
   justify-content: space-between;
   margin-top: 60px;
   height: 32px;
-  .accountFilter {
-    display: flex;
-    float: left;
-    .accountFilterBtn {
-      width: 48px;
-      height: 32px;
-      border: 1px solid $gray-250;
-      border-radius: 999px;
-      text-align: center;
-      line-height: 32px;
-      margin-right: 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .accountFocusFilterBtn {
-      width: 48px;
-      height: 32px;
-      background-color: $secondary;
-      border: 1px solid $secondary;
-      color: white;
-      border-radius: 999px;
-      text-align: center;
-      line-height: 32px;
-      margin-right: 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
+  margin-bottom: 46px;
+  .accountFilterBtn {
+    width: 65px;
+    height: 32px;
+    border: 1px solid $gray-250;
+    border-radius: 999px;
+    text-align: center;
+    line-height: 32px;
+    // margin-right: 12px;
+    font-size: 14px;
+    cursor: pointer;
   }
+
+  .accountFocusFilterBtn {
+    width: 65px;
+    height: 32px;
+    background-color: $secondary;
+    border: 1px solid $secondary;
+    color: white;
+    border-radius: 999px;
+    text-align: center;
+    line-height: 32px;
+    // margin-right: 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.InExFilter {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  border-bottom: 1px solid $gray-200;
+  margin-bottom: 40px;
+
   .accountFilterSelect {
-    float: right;
+    margin-right: 70px;
+  }
+
+  & > button {
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 0px;
+    color: $gray-450;
+    cursor: pointer;
+  }
+  & > button.checked {
+    border-bottom: 2px solid #333;
+    font-weight: 700;
+    color: #333;
   }
 }
 

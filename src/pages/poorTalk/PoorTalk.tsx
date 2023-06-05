@@ -28,7 +28,6 @@ interface IJoinMessage {
     date: string;
     image?: string;
 }
-
 interface ITalkMessage {
     type: "TALK";
     sender: string;

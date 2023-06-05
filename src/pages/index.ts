@@ -13,6 +13,7 @@ import Redirection from './user/Redirection';
 import Age from './user/Age';
 import Gender from './user/Gender';
 import Finished from './user/Finished';
+import BadgeList from './poorRoom/BadgeList';
 
 export {
   Account,
@@ -30,4 +31,5 @@ export {
   Age,
   Gender,
   Finished,
+  BadgeList,
 };
