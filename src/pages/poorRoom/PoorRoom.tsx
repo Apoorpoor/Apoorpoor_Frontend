@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useQuery, UseQueryResult } from 'react-query';
+import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
 import {
@@ -7,8 +9,8 @@ import {
   Controller,
   Header,
   LevelMedal,
-  NivoLine,
-  NivoRadar,
+  RecentMyConsumechart,
+  MyConsumePropensitychart,
   ProgressBar,
   SlickSlider,
 } from '../../components';
@@ -20,6 +22,33 @@ import food from '../../static/image/badge/badge_food.svg';
 
 function PoorRoom() {
   const navigate = useNavigate();
+  // const queryClient = useQueryClient();
+
+  // 마이푸어룸 데이터 불러오기
+  interface MyData {
+    id: string;
+    username: string;
+    kakaoId: number;
+    age: number;
+    gender: string;
+  }
+
+  const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
+    'getMyPoorRoom',
+    beggars.getMyPoorRoom
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+
+  const addMention = () => {
+    navigate('/badgeList')
+  }
+
   return (
     <main id="myPoorRoom">
       <Header>MY</Header>
@@ -27,8 +56,10 @@ function PoorRoom() {
         <section id="myPoorInfo">
           <div className="poorProfile">{/* 나중에 이미지 삽입 */}</div>
           <LevelMedal level="2" />
-          <h2 className="nickname">만수르</h2>
-          <p className="info">남 / 24</p>
+          <h2 className="nickname">{data?.kakaoId}</h2>
+          <p className="info">
+            {data?.gender === 'female' ? '여' : '남'} / {data?.age}
+          </p>
         </section>
         {/* <section id="myPoorCharacter">
           <div className="poor">푸어 캐릭터</div>
@@ -47,7 +78,7 @@ function PoorRoom() {
             <li>#뚜벅이</li>
           </ul>
           <div style={{ width: '100%', height: '370px' }}>
-            <NivoRadar />
+            <MyConsumePropensitychart />
           </div>
         </section>
         <section id="consumeBadgeArea">
@@ -59,7 +90,7 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            <div className="item">
+            <div className="item" onClick={() =>addMention()} onKeyDown={addMention} role="button" tabIndex={0}>
               <img src={communication} alt="" />
               <p>여보세요?</p>
             </div>
@@ -91,7 +122,7 @@ function PoorRoom() {
           <h1>최근 6개월 소비근황</h1>
           <p>단위 : 만원</p>
           <div style={{ width: '100%', height: '370px' }}>
-            <NivoLine />
+            <RecentMyConsumechart />
           </div>
         </section>
         <section id="myPointBreakdown">

@@ -34,7 +34,7 @@ const Redirection: React.FC = () => {
                 // axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
                 localStorage.setItem('AToken', AToken);
                 Cookies.set('RToken', RToken, { expires: 7 });
-                nickname === "true" ? navigate(`/`) : navigate(`/nickname`)
+                nickname === true ? navigate(`/`) : navigate(`/nickname`);
                 // navigate(`/nickname`);
             } catch (error) {
                 // 에러 처리

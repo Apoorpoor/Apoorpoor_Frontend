@@ -7,8 +7,8 @@ import Layout from './layout/Layout';
 import TopButton from './layout/TopButton';
 import ProgressBar from './elements/ProgressBar';
 import Header from './layout/Header';
-import NivoRadar from './charts/Radarchart';
-import NivoLine from './charts/Linechart';
+import MyConsumePropensitychart from './charts/MyConsumePropensitychart';
+import RecentMyConsumechart from './charts/RecentMyConsumechart';
 import LevelMedal from './elements/LevelMedal';
 import Tooltip from './elements/Tooltip';
 import SlickSlider from './elements/SlickSlider';
@@ -23,8 +23,8 @@ export {
   TopButton,
   ProgressBar,
   Header,
-  NivoRadar,
-  NivoLine,
+  MyConsumePropensitychart,
+  RecentMyConsumechart,
   LevelMedal,
   Tooltip,
   SlickSlider,

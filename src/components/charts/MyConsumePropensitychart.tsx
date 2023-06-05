@@ -1,34 +1,36 @@
 import React from 'react';
 import { ResponsiveRadar } from '@nivo/radar';
+import { useQuery } from 'react-query';
+import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
 
-const data = [
-  {
-    "category": '교통',
-    "value": 30,
-  },
-  {
-    "category": '문화',
-    "value": 35,
-  },
-  {
-    "category": '식비',
-    "value": 50,
-  },
-  {
-    "category": '여가활동',
-    "value": 30,
-  },
-  {
-    "category": '쇼핑',
-    "value": 40,
-  },
-  {
-    "category": '건강',
-    "value": 15,
-  },
-];
+// const data = [
+//   {
+//     category: '교통',
+//     value: 30,
+//   },
+//   {
+//     category: '문화',
+//     value: 35,
+//   },
+//   {
+//     category: '식비',
+//     value: 50,
+//   },
+//   {
+//     category: '여가활동',
+//     value: 30,
+//   },
+//   {
+//     category: '쇼핑',
+//     value: 40,
+//   },
+//   {
+//     category: '건강',
+//     value: 15,
+//   },
+// ];
 
-function nivoRadar() {
+function MyConsumePropensitychart() {
   const theme = {
     background: 'transparent', // 배경 설정
     fontFamily: 'Pretendard, sans-serif', // 원하는 폰트 패밀리로 변경
@@ -55,6 +57,19 @@ function nivoRadar() {
       },
     },
   };
+
+  const { isLoading, error, data } = useQuery(
+    'getMyConsumePropensity',
+    getMyConsumePropensity
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+
   return (
     <ResponsiveRadar
       data={data}
@@ -76,4 +91,4 @@ function nivoRadar() {
   );
 }
 
-export default nivoRadar;
+export default MyConsumePropensitychart;
