@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
 import {
   AiOutlineLeft,
@@ -9,6 +9,8 @@ import {
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
+import { UseQueryResult, useQuery } from 'react-query';
+import accounts from '../../api/accounts';
 import { Calendar, Chart, Controller } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
@@ -16,6 +18,23 @@ import AccountMonth from '../../components/elements/AccountMonth';
 
 function Account(): JSX.Element {
   const navigate = useNavigate();
+
+  const { id } = useParams<{ id?: string }>();
+
+  // 거래내역 조회
+  interface MyAccounts {
+    id: number;
+    title: string;
+    userId?: number;
+    ledgerHistoryResponseDtoList?: [];
+    balance: number | null; // 잔액
+  }
+
+  const { isLoading, error, data }: UseQueryResult<MyAccounts> = useQuery(
+    ['getAccount', id],
+    () => accounts.getAccount(id as string)
+  );
+  console.log('data 호출:', data);
 
   // 가계부 이름 수정 모달창
   const [nameModal, setNameModal] = useState<boolean>(false);
@@ -178,6 +197,13 @@ function Account(): JSX.Element {
     indicatorSeparator: () => ({ display: 'none' }),
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+
   return (
     <>
       <Controller />
@@ -222,7 +248,8 @@ function Account(): JSX.Element {
         </div>
 
         <button type="button" className="_AccountName" onClick={nameModalOpen}>
-          <span>가계부 이름</span> <BsFillPenFill />
+          <span>{data?.title}</span>
+          <BsFillPenFill />
         </button>
 
         <div className="total">

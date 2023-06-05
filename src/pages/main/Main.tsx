@@ -10,19 +10,19 @@ function Main(): JSX.Element {
   const navigate = useNavigate();
 
   // 가계부 목록 조회
-  interface MyAccounts {
+  interface MyAccountsList {
     id: string;
     title: string;
     user_id?: string;
     balance: number | null; // 잔액
   }
 
-  const { isLoading, error, data, refetch }: UseQueryResult<MyAccounts[]> =
-    useQuery('getAccount', accounts.getAccount);
+  const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
+    useQuery('getAccountList', accounts.getAccountList);
 
   // 가계부 생성
   const addAccountMutation = useMutation(
-    (title: string) => accounts.addAccount(title),
+    (title: string) => accounts.addAccountList(title),
     {
       onSuccess: () => {
         refetch();
@@ -43,8 +43,17 @@ function Main(): JSX.Element {
   };
 
   // 가계부들 잔액의 합
-  const calculateTotalBalance = () =>
-    data?.reduce((sum, item) => sum + (item.balance || 0), 0) || 0;
+  const calculateTotalBalance = () => {
+    if (data && Array.isArray(data)) {
+      return data.reduce((sum, item) => sum + (item.balance || 0), 0);
+    }
+    return 0;
+  };
+
+  // 가계부 상세페이지 이동
+  const handleGoToAccount = (accountId: string) => {
+    navigate(`/account/${accountId}`);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -77,7 +86,7 @@ function Main(): JSX.Element {
               <button
                 type="button"
                 className="goAccountBtn"
-                onClick={() => navigate('/account')}
+                onClick={() => handleGoToAccount(item.id)}
               >
                 자세히
               </button>

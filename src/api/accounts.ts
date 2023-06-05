@@ -1,22 +1,22 @@
 import instance from './instance';
 
-// 가계부 조회
-const getAccount = async () => {
+// (메인) 가계부 조회
+const getAccountList = async () => {
   try {
     const response = await instance.get('/accounts');
     console.log(response);
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
 
-// 가계부 추가
-export const addAccount = async (title: string) => {
+// (메인) 가계부 추가
+export const addAccountList = async (title: string) => {
   try {
     const response = await instance.post('/account', { title });
-    console.log('가계부 추가 성공:', response);
+    console.log('가계부 추가 성공:', response.data);
     return response.data;
   } catch (error) {
     console.log('가계부 추가 실패:', error);
@@ -24,4 +24,16 @@ export const addAccount = async (title: string) => {
   }
 };
 
-export default { getAccount, addAccount };
+// (상세) 거래내역 조회
+const getAccount = async (id: string) => {
+  try {
+    const response = await instance.get(`/accounts/${id}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export default { getAccountList, addAccountList, getAccount };

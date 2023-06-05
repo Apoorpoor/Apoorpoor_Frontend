@@ -26,7 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/nickname" element={<Nickname />} />
         <Route path="/" element={<Main />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/account/:id" element={<Account />} />
         <Route path="/addAccount" element={<AddAccount />} />
         <Route path="/addAccountDone" element={<AddAccountDone />} />
         <Route path="/poorRoom" element={<PoorRoom />} />
