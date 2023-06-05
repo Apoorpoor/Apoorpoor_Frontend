@@ -1,193 +1,193 @@
-@import "../_Palette.scss";
+@import '../_Palette.scss';
 
-#myPoorRoom{
-    &>article{
-        padding-bottom: 120px;
-        &>section{
-            padding: 60px 15px;
-            border-bottom: 12px solid $gray-150;
+#myPoorRoom {
+  & > article {
+    padding-bottom: 120px;
+    & > section {
+      padding: 60px 15px;
+      border-bottom: 12px solid $gray-150;
 
-            // 섹션별 제목 공통 스타일
-            &>h1{
-                font-size: 20px;
-            }
+      // 섹션별 제목 공통 스타일
+      & > h1 {
+        font-size: 20px;
+      }
+    }
+  }
+
+  // 푸어 기본정보
+  #myPoorInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & > .poorProfile {
+      width: 240px;
+      height: 240px;
+      border-radius: 120px;
+      background-color: $gray-150;
+      margin: 0 auto;
+    }
+    & > .nickname {
+      font-size: 24px;
+    }
+    & > .info {
+      padding: 10px 0;
+      color: $gray-500;
+    }
+  }
+
+  // 소비성향
+  #myConsumePropensity {
+    & > .consumeStyle {
+      display: flex;
+      gap: 10px;
+      margin: 12px 0;
+
+      & > li {
+        background-color: $secondary;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 14px;
+        color: #fff;
+      }
+    }
+  }
+
+  // 소비뱃지 : 2차 스코프
+  #consumeBadgeArea {
+    & > .badgeList {
+      width: 100%;
+      overflow-x: auto;
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+      touch-action: pan-x;
+
+      & > li {
+        position: relative;
+        width: 112px;
+        height: 155px;
+        flex: 0 0 auto;
+        border-radius: 20px;
+        background-color: $gray-150;
+        & > div {
+          position: absolute;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 72px;
+          height: 72px;
+          border-radius: 20px;
+          background-color: #fff;
+          & > img {
+            width: 40px;
+            padding: calc((100% - 40px) / 2);
+          }
         }
+        & > p {
+          position: absolute;
+          top: 107px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 50px;
+          word-break: keep-all;
+          text-align: center;
+          font-size: 14px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  // 6개월 소비근황
+  #myConsumeRecentGraph {
+    & > p {
+      color: $gray-450;
+      padding: 10px 0;
+    }
+  }
+
+  // 푸어포인트
+  #myPointBreakdown {
+    & > h1 {
+      text-align: center;
+    }
+    & > .periodInquiry {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: right;
+      gap: 12px;
+      margin: 20px 0;
+      & > li {
+        background-color: #fff;
+        border: 1px solid $gray-250;
+        border-radius: 20px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      & > li.checked {
+        background-color: $secondary;
+        border: none;
+        color: #fff;
+      }
     }
 
-    // 푸어 기본정보
-    #myPoorInfo{
+    & > .detailOfPoint {
+      width: 100%;
+
+      & > .detailOfPointFilter {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: right;
 
-        &>.poorProfile{
-            width: 240px;
-            height: 240px;
-            border-radius: 120px;
-            background-color: $gray-150;
-            margin: 0 auto;
+        & > li {
+          width: 44px;
+          text-align: center;
+          font-size: 16px;
+          padding: 13.5px 10px;
+          color: $gray-450;
+          cursor: pointer;
         }
-        &>.nickname{
-            font-size: 24px;
+        & > li.checked {
+          border-bottom: 2px solid #333;
+          font-weight: 700;
+          color: #333;
         }
-        &>.info{
-            padding: 10px 0;
-            color: $gray-500;
-        }   
+      }
+      & > .detailOfPointList {
+        width: 100%;
+        border-top: 1px solid $gray-200;
+
+        & > li {
+          padding: 20px 0;
+          display: flex;
+          justify-content: space-around;
+          border-bottom: 1px solid $gray-200;
+          & > p {
+            margin: 0;
+            font-size: 18px;
+          }
+          & > p > span {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            color: $gray-400;
+            padding-top: 6px;
+          }
+
+          & > p.value {
+            text-align: right;
+            font-weight: bold;
+          }
+          & > p.save {
+            text-align: right;
+            color: $primary;
+          }
+          & > p.use {
+            text-align: right;
+            color: #333;
+          }
+        }
+      }
     }
-
-    // 소비성향
-    #myConsumePropensity{
-        &>.consumeStyle{
-            display: flex;
-            gap:10px;
-            margin: 12px 0;
-
-            &>li{
-                background-color: $secondary;
-                padding: 4px 8px;
-                border-radius: 12px;
-                font-size: 14px;
-                color: #fff;
-            }
-        }
-    }
-
-    // 소비뱃지 : 2차 스코프
-    #consumeBadgeArea{
-        &>.badgeList{
-            width: 100%;
-            overflow-x: auto;
-            display: flex;
-            gap: 20px;
-            margin: 20px 0;
-            touch-action:  pan-x; 
-            
-            &>li{
-                position: relative;
-                width: 112px;
-                height: 155px;
-                flex: 0 0 auto;
-                border-radius: 20px;
-                background-color: $gray-150;
-                &>div{
-                    position: absolute;
-                    top: 20px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width:72px;
-                    height: 72px;
-                    border-radius: 20px;
-                    background-color: #fff;
-                    &>img{
-                        width: 40px;
-                        padding: calc((100% - 40px)/2)
-                    }
-                }
-                &>p{
-                    position: absolute;
-                    top: 107px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width:50px;
-                    word-break: keep-all;
-                    text-align: center;
-                    font-size: 14px;
-                    font-weight: 700;
-                }
-            }
-        }
-    }
-
-    // 6개월 소비근황
-    #myConsumeRecentGraph{
-        &>p{
-            color: $gray-450;
-            padding: 10px 0;
-        }
-    }
-
-    // 푸어포인트
-    #myPointBreakdown{
-        &>h1{
-            text-align: center;
-        }
-        &>.periodInquiry{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: right;
-            gap: 12px;
-            margin: 20px 0;
-            &>li{
-                background-color: #fff;
-                border: 1px solid $gray-250;
-                border-radius: 20px;
-                padding: 8px 12px;
-                cursor:pointer;
-            }
-            &>li.checked{
-                background-color: $secondary;
-                border:none; 
-                color:#fff;
-            }
-        }
-
-        &>.detailOfPoint{
-            width:100%;
-
-            &>.detailOfPointFilter{
-                display: flex;
-                justify-content: right;
-
-                &>li{
-                    width: 44px;
-                    text-align: center;
-                    font-size: 16px;
-                    padding: 13.5px 10px;
-                    color: $gray-450;
-                    cursor:pointer;
-                }
-                &>li.checked{
-                    border-bottom: 2px solid #333;
-                    font-weight: 700;
-                    color: #333;
-                }
-            }
-            &>.detailOfPointList{
-                width: 100%;
-                border-top: 1px solid $gray-200;
-
-                &>li{
-                    padding: 20px 0;
-                    display: flex;
-                    justify-content: space-around;
-                    border-bottom: 1px solid $gray-200;
-                    &>p{
-                        margin: 0;
-                        font-size: 18px;
-                    }
-                    &>p>span{
-                        display: block;
-                        font-size: 16px;
-                        font-weight: 500;
-                        color: $gray-400;
-                        padding-top: 6px;
-                    }
-
-                    &>p.value{
-                        text-align: right;
-                        font-weight: bold;
-                    }
-                    &>p.save{
-                        text-align: right;
-                        color: $primary;
-                    }
-                    &>p.use{
-                        text-align: right;
-                        color: #333;
-                    }
-                }
-            }
-        }
-    }
+  }
 }

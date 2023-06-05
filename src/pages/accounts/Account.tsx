@@ -36,31 +36,38 @@ function Account(): JSX.Element {
   const today: Moment = getMoment;
 
   // 하단 사용내역 카테고리 필터링 버튼
-  type Category = {
+  type Term = {
     name: string;
     selected: boolean;
   };
 
-  const [category, setCategory] = useState<Category[]>([
-    { name: '전체', selected: true },
-    { name: '수입', selected: false },
-    { name: '지출', selected: false },
+  const [term, setTerm] = useState<Term[]>([
+    { name: '1주일', selected: false },
+    { name: '1개월', selected: false },
+    { name: '3개월', selected: false },
+    { name: '6개월', selected: false },
+    { name: '1년', selected: false },
   ]);
-  const [currentCategory] = category.filter((e) => e.selected === true);
-  console.log('현재선택:', currentCategory?.name);
 
   const categoryOnclick = (idx: number): void => {
-    const updatedCategory = category.map((el, index) => {
+    const updatedTerm = term.map((el, index) => {
       if (index === idx) {
-        return { ...el, selected: true };
+        return { ...el, selected: !el.selected };
       }
       return { ...el, selected: false };
     });
-    setCategory(updatedCategory);
+    setTerm(updatedTerm);
   };
 
-  // 하단 사용내역 카테고리 셀렉트 박스
+  const [currentTerm] = term.filter((e) => e.selected === true);
+  console.log('현재선택:', currentTerm?.name);
 
+  // 하단 사용내역 카테고리 셀렉트 박스
+  const [selectedInExFilter, setSelectedInExFilter] = useState('전체');
+
+  const handleInExFilter = (filter: string) => {
+    setSelectedInExFilter(filter);
+  };
   // 수입 셀렉트 박스
   const inOptions: { value: string; label: string }[] = [
     { value: 'EMPLOYMENT_INCOME', label: '근로소득' },
@@ -76,17 +83,15 @@ function Account(): JSX.Element {
   console.log('선택:', selectInValue);
 
   const inSelectCustom = {
-    control: (provided: any, state: any) => ({
+    control: (provided: any) => ({
       ...provided,
       'width': '180px',
       'height': '32px',
-      'borderRadius': '999px',
-      'border': `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+      'border': 'none',
       'fontSize': '14px',
       'textAlign': 'center',
-      'paddingLeft': '15px',
       '&:hover': {
-        border: `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+        border: 'none',
       },
       'boxShadow': 'none',
     }),
@@ -136,17 +141,15 @@ function Account(): JSX.Element {
   console.log('선택:', selectExValue);
 
   const exSelectCustom = {
-    control: (provided: any, state: any) => ({
+    control: (provided: any) => ({
       ...provided,
       'width': '180px',
       'height': '32px',
-      'borderRadius': '999px',
-      'border': `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+      'border': 'none',
       'fontSize': '14px',
       'textAlign': 'center',
-      'paddingLeft': '15px',
       '&:hover': {
-        border: `1px solid ${state.isFocused ? '#FFD12E' : '#e8e8e8'}`,
+        border: 'none',
       },
       'boxShadow': 'none',
     }),
@@ -247,24 +250,24 @@ function Account(): JSX.Element {
 
       <div className="_AccountBackground">
         <div className="accountHeader">
-          <div className="accountFilter">
-            {category.map((el, i) => (
-              <div
-                key={el.name}
-                role="button"
-                onClick={() => categoryOnclick(i)}
-                onKeyDown={() => categoryOnclick(i)}
-                tabIndex={0}
-                className={
-                  el.selected ? 'accountFocusFilterBtn' : 'accountFilterBtn'
-                }
-              >
-                {el.name}
-              </div>
-            ))}
-          </div>
+          {term.map((el, i) => (
+            <div
+              key={el.name}
+              role="button"
+              onClick={() => categoryOnclick(i)}
+              onKeyDown={() => categoryOnclick(i)}
+              tabIndex={0}
+              className={
+                el.selected ? 'accountFocusFilterBtn' : 'accountFilterBtn'
+              }
+            >
+              {el.name}
+            </div>
+          ))}
+        </div>
+        <ul className="InExFilter">
           <div className="accountFilterSelect">
-            {category[1].selected === true ? (
+            {selectedInExFilter === '수입' ? (
               <Select
                 placeholder="수입 카테고리"
                 options={inOptions}
@@ -272,7 +275,7 @@ function Account(): JSX.Element {
                 styles={inSelectCustom}
               />
             ) : null}
-            {category[2].selected === true ? (
+            {selectedInExFilter === '지출' ? (
               <Select
                 placeholder="지출 카테고리"
                 options={exOptions}
@@ -281,7 +284,35 @@ function Account(): JSX.Element {
               />
             ) : null}
           </div>
-        </div>
+
+          <button
+            type="button"
+            className={`detailOfInExFilterItem ${
+              selectedInExFilter === '전체' ? 'checked' : ''
+            }`}
+            onClick={() => handleInExFilter('전체')}
+          >
+            전체
+          </button>
+          <button
+            type="button"
+            className={`detailOfInExFilterItem ${
+              selectedInExFilter === '수입' ? 'checked' : ''
+            }`}
+            onClick={() => handleInExFilter('수입')}
+          >
+            수입
+          </button>
+          <button
+            type="button"
+            className={`detailOfInExFilterItem ${
+              selectedInExFilter === '지출' ? 'checked' : ''
+            }`}
+            onClick={() => handleInExFilter('지출')}
+          >
+            지출
+          </button>
+        </ul>
 
         <div className="accountBody">
           <p className="accountDate">14일 일요일</p>
