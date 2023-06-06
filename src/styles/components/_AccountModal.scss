@@ -94,10 +94,46 @@
 
     .accountBodyContents {
       margin-bottom: 20px;
+      .accountRow {
+        display: flex;
+        justify-content: space-between;
+        height: 28px;
+        & > div {
+          margin-top: 8px;
+          margin-right: 20px;
+          width: 88px;
+          height: 28px;
+          background-color: $gray-150;
+          border-radius: 4px;
+        }
+        & > div > .editBtn {
+          font-size: 12px;
+          width: 44px;
+          height: 28px;
+          font-weight: 400;
+          color: $systemError;
+        }
+        & > div > .delBtn {
+          font-size: 12px;
+          width: 44px;
+          height: 28px;
+          font-weight: 400;
+          color: black;
+        }
+      }
       .accountLabel {
         display: flex;
         justify-content: space-between;
         font-size: 16px;
+        & > div {
+          display: flex;
+          align-items: center;
+          & > .editDelMenu {
+            margin-left: 10px;
+            color: #d9d9d9;
+            cursor: pointer;
+          }
+        }
         .accountLabelEx {
           font-weight: 700;
         }

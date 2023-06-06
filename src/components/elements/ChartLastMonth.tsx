@@ -24,7 +24,7 @@ function ChartLastMonth(): JSX.Element {
   const cpSelectCustom = {
     control: (provided: any) => ({
       ...provided,
-      'width': '166px',
+      // 'width': '166px',
       'height': '32px',
       'border': 'none',
       'fontSize': '24px',
@@ -40,14 +40,14 @@ function ChartLastMonth(): JSX.Element {
       'backgroundColor': state.isSelected ? '#FFF3C7' : 'ffffff',
       'borderRadius': '5px',
       'color': state.isSelected ? 'black' : 'black',
-      'fontSize': '24px',
+      'fontSize': '14px',
       'textAlign': 'center',
       '&:hover': { backgroundColor: '#F5F5F5' },
     }),
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '10px',
-      width: '166px',
+      // width: '166px',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,

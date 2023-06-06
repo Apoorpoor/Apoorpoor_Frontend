@@ -94,22 +94,22 @@ function Age() {
                     : <button className='common' type='button' onClick={() => alert("나이를 입력해주세요")}>다음</button>
                 }
 
-                 {modalOpen ? <div className='ageNumberBox'>
-                     <div className='ageNumberBoxs'>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("1")}>1</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("2")}>2</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("3")}>3</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("4")}>4</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("5")}>5</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("6")}>6</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("7")}>7</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("8")}>8</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("9")}>9</button>
-                         <button className='ageNumber2' type='button' onClick={modalHandler}>.</button>
-                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("0")}>0</button>
-                         <button className='ageNumber2' type='button' onClick={() => ageRemoveButtonHandler("아무거나 넣었습니다")}>지우기</button>
-                     </div>
-                 </div>
+                {modalOpen ? <div className='ageNumberBox'>
+                    <div className='ageNumberBoxs'>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("1")}>1</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("2")}>2</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("3")}>3</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("4")}>4</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("5")}>5</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("6")}>6</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("7")}>7</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("8")}>8</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("9")}>9</button>
+                        <button className='ageNumber2' type='button' onClick={modalHandler}>.</button>
+                        <button className='ageNumber' type='button' onClick={() => ageButtonHandler("0")}>0</button>
+                        <button className='ageNumber2' type='button' onClick={() => ageRemoveButtonHandler("아무거나 넣었습니다")}>지우기</button>
+                    </div>
+                </div>
                     : <button className='ageNumber3' type='button' onClick={modalHandler}>.</button>
                 }
 

@@ -15,8 +15,6 @@ import {
   Age,
   Gender,
   Finished,
-  StompClient,
-  BadgeList,
 } from './pages/index';
 
 function App() {
@@ -26,7 +24,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/nickname" element={<Nickname />} />
         <Route path="/" element={<Main />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/account/:id" element={<Account />} />
         <Route path="/addAccount" element={<AddAccount />} />
         <Route path="/addAccountDone" element={<AddAccountDone />} />
         <Route path="/poorRoom" element={<PoorRoom />} />
@@ -36,8 +34,6 @@ function App() {
         <Route path="/age" element={<Age />} />
         <Route path="/gender" element={<Gender />} />
         <Route path="/finished" element={<Finished />} />
-        <Route path="/poorTalk22" element={<StompClient />} />
-        <Route path="/badgeList" element={<BadgeList />} />
       </Routes>
     </Layout>
   );

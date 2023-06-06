@@ -1,11 +1,11 @@
 .currentBackGround {
-  // margin-top: 46px;
-}
-.Header {
-  // padding-bottom: 15px;
-  border-bottom: 1px solid #f5f5f5;
-  gap: 120px;
-  display: flex;
+    // margin-top: 46px;
+  }
+.Header{
+    // padding-bottom: 15px;
+    border-bottom: 1px solid #f5f5f5;;
+    gap: 120px;
+    display: flex;
 }
 .HeaderText {
   font-size: 1.5em;
@@ -17,16 +17,17 @@
   margin-top: -20px;
 }
 // 전체 메세지 폼
-.Messagesbox {
-  width: 100%;
-  max-height: 680px;
-  overflow: auto;
-  // box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-  scrollbar-width: thin;
-  scrollbar-color: #888888 #f5f5f5;
+.Messagesbox{
+    width: 100%;
+    max-height: 680px;
+    overflow: auto;
+    // box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #888888 #f5f5f5;
+    
 }
 .Messagesbox::-webkit-scrollbar {
   width: 6px;
@@ -41,28 +42,29 @@
 }
 // 메세지들 map돌려서 하나씩 정리
 .chatBox {
-  // display:block;
-  // justify-content: flex-end;
-  // min-height: 71px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-bottom: 10px;
-}
-// 입장 메세지
-.introMessage {
-  color: #777777;
-  font-size: 14px;
-  margin: 0px auto;
-}
-// 퇴장 메세지
-.goodByeMessage {
-  color: #777;
-  font-size: 14px;
-  margin: 0px auto;
-}
-// 다른 유저가 쓴 메세지
-.yourChat {
+    // display:block;
+    // justify-content: flex-end;
+    // min-height: 71px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 10px;
+  }
+  // 입장 메세지
+  .introMessage{
+    color: #777777;
+    font-size: 14px;
+    margin: 0px auto;
+
+  }
+  // 퇴장 메세지
+  .goodByeMessage{
+    color: #777777;
+    font-size: 14px;
+    margin: 0px auto;
+  }
+  // 다른 유저가 쓴 메세지
+.yourChat{
   background-color: #f5f5f5;
   font-weight: 400;
   border-radius: 40px 100px 100px 100px;
@@ -74,23 +76,23 @@
 }
 // 다른 유저 프로필
 .yourChatProfile {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: #f5f5f5;
-  align-self: flex-start;
-  // margin-right: 10px;
-  position: relative;
-  top: 30px;
-  left: 20px;
-}
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    align-self: flex-start;
+    // margin-right: 10px;
+    position: relative;
+    top: 30px;
+    left: 20px;
+  }
 // 다른 유저 이미지
-.sendYourImageBox {
-  background-color: #f5f5f5;
-  width: 200px;
-  height: 150px;
-  margin-right: 20px;
-  border-radius: 10px;
+.sendYourImageBox{
+    background-color: #f5f5f5;
+    width: 200px;
+    height: 150px;
+    margin-right: 20px;
+    border-radius: 10px;
   margin: -12px -12px -16px -15px;
 }
 // 다른 유저가 쓴 메세지에 붙을 시간
@@ -103,22 +105,23 @@
 }
 // 내가 쓴 메세지
 .myChat {
-  background-color: #4194f1;
-  color: #fff;
-  font-weight: 100;
-  border-radius: 100px 40px 100px 100px;
-  margin-right: 20px;
-  padding: 12px 12px 12px 15px;
-  align-self: flex-end;
-  max-width: 260px;
-  // text-align: right;
+    background-color: #4194F1;
+    color: #FFF;
+    font-weight: 100;
+    border-radius: 100px 40px 100px 100px;
+    margin-right: 20px;
+    padding: 12px 12px 12px 15px;
+    align-self: flex-end;
+    max-width: 260px;
+    // text-align: right;
+   
 }
 // 내가 쓴 이미지
-.sendMyImageBox {
+.sendMyImageBox{
   // border-radius: 100px 40px 100px 100px;
   background-color: #f5f5f5;
   width: 200px;
-  height: 150px;
+  // height: 150px;
   margin-right: 20px;
   border-radius: 10px;
   margin: -12px -12px -16px -15px;
@@ -132,7 +135,20 @@
   margin-right: 30px;
 }
 // 메세지 인풋값
-.SandInput {
+.SandInput{
+    width: 390px;
+    border: 1px solid #c0c2c4;
+    border-radius: 30px;
+    padding: 20px 80px 20px 20px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 90%;
+    transform: translateY(-30%);
+    margin-left: 20px;
+    
+}
+// 썸네일 인풋값
+.SandThumbnailInput{
   width: 390px;
   border: 1px solid #c0c2c4;
   border-radius: 30px;
@@ -140,8 +156,21 @@
   box-sizing: border-box;
   position: absolute;
   top: 90%;
-  transform: translateY(-30%);
+  transform: translateY(-80%);
   margin-left: 20px;
+  height:200px;
+  
+}
+
+// 썸네일 이미지값
+.SanthumbnailImage{
+    width: 130px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 90%;
+    margin-left: 30px;
+  transform: translateY(-80%);
 }
 // 메세지 sand 버튼
 .SandButton {
