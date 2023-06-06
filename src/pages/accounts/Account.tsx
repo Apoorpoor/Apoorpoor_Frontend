@@ -30,10 +30,9 @@ function Account(): JSX.Element {
 
   const { id } = useParams<{ id?: string }>();
 
-  const { isLoading, error, data }: UseQueryResult<MyAccounts> = useQuery(
-    ['getAccount', id],
-    () => accounts.getAccount(id as string)
-  );
+  // 상세 내역 조회
+  const { isLoading, error, data, refetch }: UseQueryResult<MyAccounts> =
+    useQuery(['getAccount', id], () => accounts.getAccount(id as string));
   console.log('data 호출:', data);
 
   // 가계부 이름 수정 모달창
@@ -41,6 +40,11 @@ function Account(): JSX.Element {
 
   const nameModalOpen = (): void => {
     setNameModal(true);
+  };
+
+  const nameModalClose = (): void => {
+    setNameModal(false);
+    refetch();
   };
 
   // 월별 조회 모달창
@@ -207,7 +211,14 @@ function Account(): JSX.Element {
   return (
     <>
       <Controller />
-      {nameModal && <AccountName setNameModal={setNameModal} data={data} />}
+      {nameModal && (
+        <AccountName
+          nameModalClose={nameModalClose}
+          data={
+            data ? { title: data.title, id: data.id.toString() } : undefined
+          }
+        />
+      )}
       {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
 
       <div className="_AccountBackground">

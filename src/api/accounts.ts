@@ -36,4 +36,16 @@ const getAccount = async (id: string) => {
   }
 };
 
-export default { getAccountList, addAccountList, getAccount };
+// (상세) 가계부 이름 수정
+export const editAccountName = async (id: string, title: string) => {
+  try {
+    const response = await instance.patch(`/accounts/${id}`, { title });
+    console.log('가계부 이름 수정 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('가계부 이름 수정 실패:', error);
+    throw error;
+  }
+};
+
+export default { getAccountList, addAccountList, getAccount, editAccountName };
