@@ -97,13 +97,7 @@ function Main(): JSX.Element {
   return (
     <>
       <Controller />
-      {delModal && (
-        <MainDelModal
-          key={delModal}
-          id={delModal}
-          delModalClose={delModalClose}
-        />
-      )}
+      {delModal && <MainDelModal id={delModal} delModalClose={delModalClose} />}
 
       <div className="background">
         <div className="title">
@@ -115,34 +109,39 @@ function Main(): JSX.Element {
           <p>
             가계부 <span>{data?.length}</span>
           </p>
-          {data?.map((item) => (
-            <div key={item.id} className="account">
-              <div>
-                <p className="accountName">{item.title}</p>
-                <p className="accountMoney">
-                  {priceComma(
-                    typeof item.balance === 'string'
-                      ? item.balance
-                      : item.balance?.expenditureTotal || 0
-                  )}
-                  원
-                </p>
+          {data?.map((item) => {
+            if (!item) {
+              return '';
+            }
+            return (
+              <div key={item.id} className="account">
+                <div>
+                  <p className="accountName">{item.title}</p>
+                  <p className="accountMoney">
+                    {priceComma(
+                      typeof item.balance === 'string'
+                        ? item.balance
+                        : item.balance?.expenditureTotal || 0
+                    )}
+                    원
+                  </p>
+                </div>
+                <div className="moreNdelBtn">
+                  <button
+                    type="button"
+                    className="goAccountBtn"
+                    onClick={() => handleGoToAccount(item.id)}
+                  >
+                    자세히
+                  </button>
+                  <BsThreeDotsVertical
+                    className="mainDelBtn"
+                    onClick={() => delModalOpen(item.id)}
+                  />
+                </div>
               </div>
-              <div className="moreNdelBtn">
-                <button
-                  type="button"
-                  className="goAccountBtn"
-                  onClick={() => handleGoToAccount(item.id)}
-                >
-                  자세히
-                </button>
-                <BsThreeDotsVertical
-                  className="mainDelBtn"
-                  onClick={() => delModalOpen(item.id)}
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <button

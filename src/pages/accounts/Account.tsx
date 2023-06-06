@@ -449,57 +449,66 @@ function Account(): JSX.Element {
             지출
           </button>
         </ul>
-        {Object.entries(groupData).map(([date, items]) => (
-          <div className="accountBody" key={date}>
-            <p className="accountDate">{dateWithDay(date)}</p>
-            <div className="accountBodyLine" />
+        {Object.entries(groupData).map(([date, items]) => {
+          // 현재 보여지는 월에 대해서만 상세내역 반환
+          const month = moment(date).format('M');
+          if (month === today.format('M')) {
+            return (
+              <div className="accountBody" key={date}>
+                <p className="accountDate">{dateWithDay(date)}</p>
+                <div className="accountBodyLine" />
 
-            {items.map((item) => {
-              // 수입, 지출, 저축에 따른 금액 className
-              let className = '';
-              if (item.accountType === 'INCOME') {
-                className = 'accountLabelIn';
-              } else if (
-                item.accountType === 'EXPENDITURE' &&
-                item.expenditureType === 'SAVINGS'
-              ) {
-                className = 'accountLabelSave';
-              } else {
-                className = 'accountLabelEx';
-              }
+                {items.map((item) => {
+                  // 수입, 지출, 저축에 따른 금액 className
+                  let className = '';
+                  if (item.accountType === 'INCOME') {
+                    className = 'accountLabelIn';
+                  } else if (
+                    item.accountType === 'EXPENDITURE' &&
+                    item.expenditureType === 'SAVINGS'
+                  ) {
+                    className = 'accountLabelSave';
+                  } else {
+                    className = 'accountLabelEx';
+                  }
 
-              // 수입, 지출 각 카테고리 반환
-              let result;
+                  // 수입, 지출 각 카테고리 반환
+                  let result;
 
-              if (item.accountType === 'EXPENDITURE') {
-                if (item.expenditureType !== null) {
-                  result = expenditureType(item.expenditureType);
-                } else {
-                  result = '';
-                }
-              } else {
-                result = incomeType(item.incomeType);
-              }
+                  if (item.accountType === 'EXPENDITURE') {
+                    if (item.expenditureType !== null) {
+                      result = expenditureType(item.expenditureType);
+                    } else {
+                      result = '';
+                    }
+                  } else {
+                    result = incomeType(item.incomeType);
+                  }
 
-              return (
-                <div className="accountBodyContents" key={item.id}>
-                  <div className="accountLabel">
-                    <p>{item.title}</p>
-                    <p className={className}>
-                      {item.income ? '+' : '-'}
-                      {priceComma(item.income ? item.income : item.expenditure)}
-                      원
-                    </p>
-                  </div>
-                  <p className="accountCategory">
-                    {item.accountType === 'EXPENDITURE' ? '지출' : '수입'} {'>'}{' '}
-                    {result}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        ))}
+                  return (
+                    <div className="accountBodyContents" key={item.id}>
+                      <div className="accountLabel">
+                        <p>{item.title}</p>
+                        <p className={className}>
+                          {item.income ? '+' : '-'}
+                          {priceComma(
+                            item.income ? item.income : item.expenditure
+                          )}
+                          원
+                        </p>
+                      </div>
+                      <p className="accountCategory">
+                        {item.accountType === 'EXPENDITURE' ? '지출' : '수입'}{' '}
+                        {'>'} {result}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          }
+          return null;
+        })}
       </div>
     </>
   );
