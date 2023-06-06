@@ -16,19 +16,19 @@ import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
 
+// 거래내역 조회
+interface MyAccounts {
+  id: number;
+  title: string;
+  userId?: number;
+  ledgerHistoryResponseDtoList?: [];
+  balance: number | null; // 잔액
+}
+
 function Account(): JSX.Element {
   const navigate = useNavigate();
 
   const { id } = useParams<{ id?: string }>();
-
-  // 거래내역 조회
-  interface MyAccounts {
-    id: number;
-    title: string;
-    userId?: number;
-    ledgerHistoryResponseDtoList?: [];
-    balance: number | null; // 잔액
-  }
 
   const { isLoading, error, data }: UseQueryResult<MyAccounts> = useQuery(
     ['getAccount', id],
@@ -207,7 +207,7 @@ function Account(): JSX.Element {
   return (
     <>
       <Controller />
-      {nameModal && <AccountName setNameModal={setNameModal} />}
+      {nameModal && <AccountName setNameModal={setNameModal} data={data} />}
       {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
 
       <div className="_AccountBackground">
