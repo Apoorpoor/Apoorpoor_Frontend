@@ -4,8 +4,7 @@ import instance from './instance';
 const getMyPoorRoom = async () => {
   try {
     const response = await instance.get('/user/mypage');
-    console.log(response);
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;

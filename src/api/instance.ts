@@ -26,7 +26,7 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  (response: AxiosResponse<any, any>) => response.data,
+  (response: AxiosResponse<any, any>) => response,
   (error: Error): Promise<never> => {
     console.log(error.message);
     return Promise.reject(error);

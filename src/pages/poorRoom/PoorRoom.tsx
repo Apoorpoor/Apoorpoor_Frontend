@@ -29,6 +29,7 @@ function PoorRoom() {
     id: string;
     username: string;
     kakaoId: number;
+    nickname: string;
     age: number;
     gender: string;
   }
@@ -43,10 +44,6 @@ function PoorRoom() {
   }
   if (error) {
     return <div>Error</div>;
-  }
-
-  const addMention = () => {
-    navigate('/badgeList')
   }
 
   return (
@@ -72,12 +69,7 @@ function PoorRoom() {
         </section> */}
         <section id="myConsumePropensity">
           <h1>소비성향</h1>
-          <ul className="consumeStyle">
-            <li>#Flex</li>
-            <li>#문화생활</li>
-            <li>#뚜벅이</li>
-          </ul>
-          <div style={{ width: '100%', height: '370px' }}>
+          <div style={{ width: '100%', height: '430px' }}>
             <MyConsumePropensitychart />
           </div>
         </section>
@@ -90,7 +82,7 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            <div className="item" onClick={() =>addMention()} onKeyDown={addMention} role="button" tabIndex={0}>
+            <div className="item">
               <img src={communication} alt="" />
               <p>여보세요?</p>
             </div>
