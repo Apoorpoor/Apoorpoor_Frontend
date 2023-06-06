@@ -62,7 +62,58 @@ function Account(): JSX.Element {
     groupData[date].push(item);
   });
 
-  // 수입, 지출, 저축별 className
+  // 백에서 받는 수입, 지출, 저축 카테고리 출력
+  // 카테고리가 수입일 경우
+  const incomeType = (type: string): string => {
+    switch (type) {
+      case 'EMPLOYMENT_INCOME':
+        return '근로소득';
+      case 'BUSINESS':
+        return '사업';
+      case 'STOCKS':
+        return '주식';
+      case 'INVESTMENT':
+        return '투자';
+      case 'ALLOWANCE':
+        return '용돈';
+      case 'FIXED_DEPOSIT_MATURITY':
+        return '적금 만기';
+      default:
+        return '기타';
+    }
+  };
+
+  // 카테고리가 지출일 경우
+  const expenditureType = (type: string): string => {
+    switch (type) {
+      case 'UTILITY_BILL':
+        return '월세/관리비/공과금';
+      case 'CONDOLENCE_EXPENSE':
+        return '경조사비';
+      case 'TRANSPORTATION':
+        return '교통비';
+      case 'COMMUNICATION_EXPENSES':
+        return '통신비';
+      case 'INSURANCE':
+        return '보험';
+      case 'EDUCATION':
+        return '교육';
+      case 'SAVINGS':
+        return '저축';
+      case 'CULTURE':
+        return '문화';
+      case 'HEALTH':
+        return '건강';
+      case 'FOOD_EXPENSES':
+        return '식비';
+      case 'SHOPPING':
+        return '쇼핑';
+      case 'LEISURE_ACTIVITIES':
+        return '여가활동';
+      default:
+        return '기타';
+    }
+  };
 
   // 가계부 이름 수정 모달창
   const [nameModal, setNameModal] = useState<boolean>(false);
@@ -230,6 +281,10 @@ function Account(): JSX.Element {
     }),
     indicatorSeparator: () => ({ display: 'none' }),
   };
+
+  // 천단위 콤마
+  const priceComma = (price: number | null): string =>
+    price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -400,18 +455,32 @@ function Account(): JSX.Element {
                 className = 'accountLabelEx';
               }
 
+              // 수입, 지출 각 카테고리 반환
+              let result;
+
+              if (item.accountType === 'EXPENDITURE') {
+                if (item.expenditureType !== null) {
+                  result = expenditureType(item.expenditureType);
+                } else {
+                  result = '';
+                }
+              } else {
+                result = incomeType(item.incomeType);
+              }
+
               return (
                 <div className="accountBodyContents" key={item.id}>
                   <div className="accountLabel">
                     <p>{item.title}</p>
                     <p className={className}>
                       {item.income ? '+' : '-'}
-                      {item.income ? item.income : item.expenditure}원
+                      {priceComma(item.income ? item.income : item.expenditure)}
+                      원
                     </p>
                   </div>
                   <p className="accountCategory">
                     {item.accountType === 'EXPENDITURE' ? '지출' : '수입'} {'>'}{' '}
-                    저축
+                    {result}
                   </p>
                 </div>
               );

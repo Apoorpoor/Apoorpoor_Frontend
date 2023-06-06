@@ -13,8 +13,15 @@ function Main(): JSX.Element {
   interface MyAccountsList {
     id: string;
     title: string;
-    user_id?: string;
-    balance: number | null; // 잔액
+    userId?: number;
+    balance: MyBalance | null; // 잔액
+    ledgerHistoryResponseDtoList: [];
+  }
+
+  interface MyBalance {
+    id: number;
+    incomeTotal: number;
+    expenditureTotal: number;
   }
 
   const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
@@ -44,8 +51,15 @@ function Main(): JSX.Element {
 
   // 가계부들 잔액의 합
   const calculateTotalBalance = () => {
-    if (data && Array.isArray(data)) {
-      return data.reduce((sum, item) => sum + (item.balance || 0), 0);
+    if (Array.isArray(data)) {
+      return data.reduce(
+        (sum, item) =>
+          sum +
+          (typeof item.balance === 'number'
+            ? item.balance
+            : item.balance?.expenditureTotal || 0),
+        0
+      );
     }
     return 0;
   };
@@ -80,7 +94,10 @@ function Main(): JSX.Element {
               <div>
                 <p className="accountName">{item.title}</p>
                 <p className="accountMoney">
-                  {item.balance === null ? '0' : item.balance}원
+                  {typeof item.balance === 'string'
+                    ? item.balance
+                    : item.balance?.expenditureTotal || 0}
+                  원
                 </p>
               </div>
               <button
