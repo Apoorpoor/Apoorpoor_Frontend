@@ -24,6 +24,18 @@ export const addAccountList = async (title: string) => {
   }
 };
 
+// (메인) 가계부 삭제
+export const delAccountList = async (id: string) => {
+  try {
+    const response = await instance.delete(`/accounts/${id}`);
+    console.log('가계부 삭제 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('가계부 삭제 실패:', error);
+    throw error;
+  }
+};
+
 // (상세) 거래내역 조회
 const getAccount = async (id: string) => {
   try {
@@ -48,4 +60,10 @@ export const editAccountName = async (id: string, title: string) => {
   }
 };
 
-export default { getAccountList, addAccountList, getAccount, editAccountName };
+export default {
+  getAccountList,
+  addAccountList,
+  delAccountList,
+  getAccount,
+  editAccountName,
+};

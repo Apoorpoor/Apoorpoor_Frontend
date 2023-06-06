@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Main.scss';
 import { FaPlus } from 'react-icons/fa';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
 import { Controller } from '../../components';
+import MainDelModal from '../../components/elements/MainDelModal';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -69,6 +71,18 @@ function Main(): JSX.Element {
     navigate(`/account/${accountId}`);
   };
 
+  // 가계부 삭제 모달창 상태 관리
+  const [delModal, setDelModal] = useState<string | null>(null);
+
+  const delModalOpen = (accountId: string): void => {
+    setDelModal(accountId);
+  };
+
+  const delModalClose = (): void => {
+    setDelModal(null);
+    refetch();
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -76,13 +90,25 @@ function Main(): JSX.Element {
     return <div>Error</div>;
   }
 
+  // 천단위 콤마
+  const priceComma = (price: number): string =>
+    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   return (
     <>
       <Controller />
+      {delModal && (
+        <MainDelModal
+          key={delModal}
+          id={delModal}
+          delModalClose={delModalClose}
+        />
+      )}
+
       <div className="background">
         <div className="title">
           <p>내 가계부</p>
-          <h1>{calculateTotalBalance()}원</h1>
+          <h1>{priceComma(calculateTotalBalance())}원</h1>
         </div>
 
         <div className="accountList">
@@ -94,19 +120,27 @@ function Main(): JSX.Element {
               <div>
                 <p className="accountName">{item.title}</p>
                 <p className="accountMoney">
-                  {typeof item.balance === 'string'
-                    ? item.balance
-                    : item.balance?.expenditureTotal || 0}
+                  {priceComma(
+                    typeof item.balance === 'string'
+                      ? item.balance
+                      : item.balance?.expenditureTotal || 0
+                  )}
                   원
                 </p>
               </div>
-              <button
-                type="button"
-                className="goAccountBtn"
-                onClick={() => handleGoToAccount(item.id)}
-              >
-                자세히
-              </button>
+              <div className="moreNdelBtn">
+                <button
+                  type="button"
+                  className="goAccountBtn"
+                  onClick={() => handleGoToAccount(item.id)}
+                >
+                  자세히
+                </button>
+                <BsThreeDotsVertical
+                  className="mainDelBtn"
+                  onClick={() => delModalOpen(item.id)}
+                />
+              </div>
             </div>
           ))}
         </div>

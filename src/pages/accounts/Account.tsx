@@ -40,6 +40,7 @@ interface MyAccounts {
 function Account(): JSX.Element {
   const navigate = useNavigate();
 
+  // 현재 가계부의 id 조회
   const { id } = useParams<{ id?: string }>();
 
   // 상세내역 조회
@@ -286,6 +287,18 @@ function Account(): JSX.Element {
   const priceComma = (price: number | null): string =>
     price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
 
+  // 년, 월, 일, 요일 변환 함수
+  const dateWithDay = (dateString: string): string => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1);
+    const day = String(date.getDate());
+    const dayOfWeek = days[date.getDay()];
+
+    return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -438,7 +451,7 @@ function Account(): JSX.Element {
         </ul>
         {Object.entries(groupData).map(([date, items]) => (
           <div className="accountBody" key={date}>
-            <p className="accountDate">{date}</p>
+            <p className="accountDate">{dateWithDay(date)}</p>
             <div className="accountBodyLine" />
 
             {items.map((item) => {
