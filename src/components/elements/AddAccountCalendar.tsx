@@ -1,13 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { BsChevronLeft, BsChevronRight, BsXLg } from 'react-icons/bs';
 import { ko } from 'date-fns/esm/locale';
 import '../../styles/pages/_AddAccount.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../styles/components/react-datePicker.css';
-import { getYear, getMonth } from 'date-fns';
+import { getYear, getMonth, getDate } from 'date-fns';
 
-function AddAccountCalendar() {
+// AddAccount.tsx에서 전달받은 props
+interface AddAccountCalendarProps {
+  setOnDateChange: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
   const months = [
     '1월',
     '2월',
@@ -46,6 +51,18 @@ function AddAccountCalendar() {
     setCurrentDate(selectedDate);
     calendar.current?.setOpen(false);
   };
+
+  // "yyyy-mm-dd" 형식으로 변환
+  useEffect(() => {
+    if (currentDate) {
+      const formattedDate = `${getYear(currentDate)}-${(
+        getMonth(currentDate) + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${getDate(currentDate).toString().padStart(2, '0')}`;
+      setOnDateChange(formattedDate);
+    }
+  }, [currentDate, setOnDateChange]);
 
   return (
     <DatePicker

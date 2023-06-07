@@ -5,13 +5,21 @@ import CalendarModal from './CalendarModal';
 
 interface CalendarProps {
   today: Moment;
+  incomeType: (type: string) => string;
+  expenditureType: (type: string) => string;
 }
 
-function Calendar({ today }: CalendarProps): JSX.Element {
+function Calendar({
+  today,
+  incomeType,
+  expenditureType,
+}: CalendarProps): JSX.Element {
   // 날짜 클릭 시 상세 모달
   const [calendarModal, setCalendarModal] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<string>('');
 
-  const calendarModalOpen = (): void => {
+  const calendarModalOpen = (date: string): void => {
+    setSelectedDate(date);
     setCalendarModal(true);
   };
 
@@ -41,9 +49,9 @@ function Calendar({ today }: CalendarProps): JSX.Element {
               <button
                 type="button"
                 className="td"
-                key={days.format('D')}
+                key={days.format('YYYY-MM-DD')}
                 style={{ color: 'black' }}
-                onClick={calendarModalOpen}
+                onClick={() => calendarModalOpen(days.format('YYYY-MM-DD'))}
               >
                 <div className="todaySt">
                   <span>{days.format('D')}</span>
@@ -56,7 +64,7 @@ function Calendar({ today }: CalendarProps): JSX.Element {
             return (
               <td
                 className="td"
-                key={days.format('D')}
+                key={days.format('YYYY-MM-DD')}
                 style={{ color: '#f5f5f5' }}
               >
                 <span>{days.format('D')}</span>
@@ -65,9 +73,14 @@ function Calendar({ today }: CalendarProps): JSX.Element {
           }
 
           return (
-            <td className="td" key={days.format('YYYY-MM-DD')}>
+            <button
+              type="button"
+              className="td"
+              key={days.format('YYYY-MM-DD')}
+              onClick={() => calendarModalOpen(days.format('YYYY-MM-DD'))}
+            >
               <span>{days.format('D')}</span>
-            </td>
+            </button>
           );
         });
 
@@ -83,7 +96,14 @@ function Calendar({ today }: CalendarProps): JSX.Element {
   };
   return (
     <div className="calBackground">
-      {calendarModal && <CalendarModal setCalendarModal={setCalendarModal} />}
+      {calendarModal && (
+        <CalendarModal
+          setCalendarModal={setCalendarModal}
+          selectedDate={selectedDate}
+          incomeType={incomeType}
+          expenditureType={expenditureType}
+        />
+      )}
       <div className="days">
         <p className="sun">일</p>
         <p>월</p>
