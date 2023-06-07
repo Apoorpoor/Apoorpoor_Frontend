@@ -60,10 +60,48 @@ export const editAccountName = async (id: string, title: string) => {
   }
 };
 
+// (상세 -> 일자별) 거래내역 조회
+const getAccountsDate = async (id: string, selectedDate: string) => {
+  try {
+    const response = await instance.get(
+      `/accounts/${id}/status?date=${selectedDate}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// (상세 -> 일자별) 거래내역 추가
+// export const addAccount = async (requestData: {
+//   accountId: string;
+//   title: string;
+//   accountType: string;
+//   incomeType: string;
+//   expenditureType: string;
+//   paymentMethod: string;
+//   income: number;
+//   expenditure: number;
+//   dateTime: string;
+// }) => {
+//   try {
+//     const response = await instance.post('/ledgerhistory', requestData);
+//     console.log('거래내역 추가 성공:', response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.log('거래내역 추가 실패:', error);
+//     throw error;
+//   }
+// };
+
 export default {
   getAccountList,
   addAccountList,
   delAccountList,
   getAccount,
   editAccountName,
+  getAccountsDate,
+  // addAccount,
 };

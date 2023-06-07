@@ -17,7 +17,7 @@ import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
 
 // 거래내역 조회
-type LedgerHistoryResponseDto = {
+interface LedgerHistoryResponseDto {
   accountType: string;
   date: string;
   expenditure: number | null;
@@ -27,7 +27,7 @@ type LedgerHistoryResponseDto = {
   incomeType: string;
   paymentMethod: string | null;
   title: string;
-};
+}
 
 interface MyAccounts {
   id: number;
@@ -66,6 +66,9 @@ function Account(): JSX.Element {
   // 백에서 받는 수입, 지출, 저축 카테고리 출력
   // 카테고리가 수입일 경우
   const incomeType = (type: string): string => {
+    if (type === null) {
+      return '';
+    }
     switch (type) {
       case 'EMPLOYMENT_INCOME':
         return '근로소득';
@@ -86,6 +89,9 @@ function Account(): JSX.Element {
 
   // 카테고리가 지출일 경우
   const expenditureType = (type: string): string => {
+    if (type === null) {
+      return '';
+    }
     switch (type) {
       case 'UTILITY_BILL':
         return '월세/관리비/공과금';
@@ -377,7 +383,11 @@ function Account(): JSX.Element {
       </div>
 
       <div className="line"> </div>
-      <Calendar today={today} />
+      <Calendar
+        today={today}
+        incomeType={incomeType}
+        expenditureType={expenditureType}
+      />
       <div className="line"> </div>
       <Chart />
       <div className="line"> </div>
