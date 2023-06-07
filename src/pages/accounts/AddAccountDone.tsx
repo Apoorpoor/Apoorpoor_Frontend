@@ -1,10 +1,13 @@
 import React from 'react';
 import '../../styles/pages/_AddAccount.scss';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import doneImg from '../../static/image/addAccountDone/Group 4257.png';
 
 function AddAccountDone() {
   const navigate = useNavigate();
+
+  const { id } = useParams<{ id: string | undefined }>();
+
   return (
     <div className="doneBg">
       <div className="doneTitle">
@@ -16,7 +19,7 @@ function AddAccountDone() {
 
       <div className="doneFooter">
         <button
-          onClick={() => navigate('/account')}
+          onClick={() => navigate(`/account/${id}`)}
           className="doneBtn"
           type="button"
         >
