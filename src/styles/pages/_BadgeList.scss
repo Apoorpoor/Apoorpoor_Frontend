@@ -2,10 +2,10 @@
 
 #BadgeList {
   & > ul {
-    width: 100%;
+    width: calc(100% - (100% - 320px));
+    padding: 0 calc((100% - 320px) / 2);
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 16px;
     & > li {
       position: relative;
@@ -13,6 +13,7 @@
       height: 132px;
       background-color: $gray-150;
       border-radius: 12px;
+      cursor: pointer;
       & > div img {
         position: absolute;
         top: 20px;
@@ -32,6 +33,53 @@
         font-size: 14px;
         font-weight: 700;
       }
+    }
+  }
+}
+
+.modal {
+  & .badge {
+    position: relative;
+    width: 96px;
+    height: 132px;
+    background-color: $gray-150;
+    border-radius: 12px;
+    & > div img {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+    }
+    & > p {
+      position: absolute;
+      left: 50%;
+      top: 90px;
+      transform: translateX(-50%);
+      width: 53px;
+      word-break: keep-all;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+  & > p {
+    background-color: $gray-150;
+    width: 320px;
+    height: 155px;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    text-align: center;
+    word-break: keep-all;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 2;
+
+    & span {
+      display: block;
+      color: $systemError;
     }
   }
 }

@@ -5,13 +5,22 @@ import instance from '../instance';
 // const year = today.getFullYear();
 // const month = today.getMonth() + 1;
 
+// interface MyData {
+//   month: string;
+//   expenditureType: string;
+//   month_sum: number;
+// }
+
 const getMyConsumePropensity = async () => {
   try {
-    const response = await instance.get(
-      //   `user/mypage/status?date=${year - month}`
-      `user/mypage/status?date=2022-05`
+    const response = await instance.get('/user/mypage/status');
+
+    const sortedData = [...response.data]?.sort(
+      (a, b) => b.total_sum - a.total_sum
     );
-    return response.data;
+    const topSix = sortedData.slice(0, 6);
+
+    return topSix;
   } catch (error) {
     console.log(error);
     throw error;

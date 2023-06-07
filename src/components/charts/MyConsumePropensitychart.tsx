@@ -3,33 +3,6 @@ import { ResponsiveRadar } from '@nivo/radar';
 import { useQuery } from 'react-query';
 import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
 
-// const data = [
-//   {
-//     category: '교통',
-//     value: 30,
-//   },
-//   {
-//     category: '문화',
-//     value: 35,
-//   },
-//   {
-//     category: '식비',
-//     value: 50,
-//   },
-//   {
-//     category: '여가활동',
-//     value: 30,
-//   },
-//   {
-//     category: '쇼핑',
-//     value: 40,
-//   },
-//   {
-//     category: '건강',
-//     value: 15,
-//   },
-// ];
-
 function MyConsumePropensitychart() {
   const theme = {
     background: 'transparent', // 배경 설정
@@ -70,24 +43,101 @@ function MyConsumePropensitychart() {
     return <div>Error</div>;
   }
 
+  if (data === undefined) {
+    return <div>데이터가 충분히 모이지 않았습니다 ㅜㅠ</div>;
+  }
+
+  const newIndex = (expenditureType: string) => {
+    switch (expenditureType) {
+      case 'UTILITY_BILL':
+        return '월세/관리비/공과금';
+      case 'CONDOLENCE_EXPENSE':
+        return '경조사비';
+      case 'TRANSPORTATION':
+        return '교통비';
+      case 'COMMUNICATION_EXPENSES':
+        return '통신비';
+      case 'INSURANCE':
+        return '보험';
+      case 'EDUCATION':
+        return '교육';
+      case 'SAVINGS':
+        return '저축';
+      case 'CULTURE':
+        return '문화';
+      case 'HEALTH':
+        return '건강';
+      case 'FOOD_EXPENSES':
+        return '식비';
+      case 'SHOPPING':
+        return '쇼핑';
+      case 'LEISURE_ACTIVITIES':
+        return '여가활동';
+      case 'OTHER':
+        return '기타';
+      default:
+        return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
+    }
+  };
+
+  const consumeKeyword = (expenditureType: string) => {
+    switch (expenditureType) {
+      case 'UTILITY_BILL':
+        return '집순이';
+      case 'CONDOLENCE_EXPENSE':
+        return '프로참석러';
+      case 'TRANSPORTATION':
+        return '동에번쩍 서에번쩍';
+      case 'COMMUNICATION_EXPENSES':
+        return '데이터 만수르';
+      case 'INSURANCE':
+        return '이달의 보험왕';
+      case 'EDUCATION':
+        return '지식왕';
+      case 'SAVINGS':
+        return '절약이 곧 재테크';
+      case 'CULTURE':
+        return '교~호~양';
+      case 'HEALTH':
+        return '건강 지킴이';
+      case 'FOOD_EXPENSES':
+        return '위대한 미식가';
+      case 'SHOPPING':
+        return '쇼핑 마니아';
+      case 'LEISURE_ACTIVITIES':
+        return '취미 수집가';
+      case 'OTHER':
+        return '기타';
+      default:
+        return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
+    }
+  };
+
   return (
-    <ResponsiveRadar
-      data={data}
-      keys={['value']}
-      indexBy="category"
-      valueFormat=">-.2f"
-      margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
-      borderColor={{ from: 'color' }}
-      gridShape="linear"
-      gridLabelOffset={36}
-      dotSize={10}
-      dotColor="#4194f1"
-      dotBorderWidth={2}
-      colors="#4194f1"
-      blendMode="multiply"
-      motionConfig="wobbly"
-      theme={theme}
-    />
+    <>
+      <ul className="consumeStyle">
+        {data.map((d) => (
+          <li key={d}>#{consumeKeyword(String(d.expenditureType))}</li>
+        ))}
+      </ul>
+      <ResponsiveRadar
+        data={data}
+        keys={['month_sum']}
+        indexBy={(d) => newIndex(d.expenditureType)}
+        valueFormat=">-.2f"
+        margin={{ top: 0, right: 80, bottom: 40, left: 80 }}
+        borderColor={{ from: 'color' }}
+        gridShape="linear"
+        gridLabelOffset={36}
+        dotSize={10}
+        dotColor="#4194f1"
+        dotBorderWidth={2}
+        colors="#4194f1"
+        blendMode="multiply"
+        motionConfig="wobbly"
+        theme={theme}
+      />
+    </>
   );
 }
 

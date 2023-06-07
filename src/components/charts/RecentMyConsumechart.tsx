@@ -1,10 +1,9 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
+import { useQuery } from 'react-query';
+import getRecentMyConsume from '../../api/charts/RecentMyConsumechart';
 
-// state로 data 받기
-// 리액트 쿼리
-
-function nivoLine() {
+function RecentMyConsumechart() {
   const theme = {
     background: 'transparent', // 배경 설정
     fontFamily: 'Pretendard, sans-serif', // 원하는 폰트 패밀리로 변경
@@ -32,29 +31,39 @@ function nivoLine() {
     },
   };
 
-  const data = [
-    {
-      id: 'monthlyConsume',
-      data: [
-        { x: '1월', y: 100 },
-        { x: '2월', y: 200 },
-        { x: '3월', y: 300 },
-        { x: '4월', y: 200 },
-        { x: '5월', y: 400 },
-        { x: '6월', y: 500 },
-      ],
-    },
-  ];
-  
+  const { isLoading, error, data } = useQuery(
+    'getRecentMyConsume',
+    getRecentMyConsume
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+
+  if (data === undefined) {
+    return <div>데이터가 충분히 모이지 않았습니다 ㅜㅠ</div>;
+  }
+
   return (
     <ResponsiveLine
-      data={data}
+      data={[
+        {
+          id: 'line',
+          data: data.map(({ month, month_sum } : {month : string, month_sum: number}) => ({
+            x: month,
+            y: month_sum,
+          })),
+        },
+      ]}
       margin={{ top: 50, right: 20, bottom: 50, left: 50 }}
       xScale={{ type: 'point' }}
       yScale={{
         type: 'linear',
-        min: Math.min(...data[0].data.map((d) => d.y)) - 100,
-        max: Math.max(...data[0].data.map((d) => d.y)) + 100,
+        min: 'auto',
+        max: 'auto',
         stacked: true,
         reverse: false,
       }}
@@ -91,4 +100,4 @@ function nivoLine() {
   );
 }
 
-export default nivoLine;
+export default RecentMyConsumechart;
