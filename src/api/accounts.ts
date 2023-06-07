@@ -60,6 +60,20 @@ export const editAccountName = async (id: string, title: string) => {
   }
 };
 
+// (상세) 월별 수입/지출 금액, 일별 수입/지출 금액
+const getAccountsMonth = async (id: string, currentMonth: string) => {
+  try {
+    const response = await instance.get(
+      `/accounts/${id}/totalStatus?date=${currentMonth}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // (상세 -> 일자별) 거래내역 조회
 const getAccountsDate = async (id: string, selectedDate: string) => {
   try {
@@ -102,6 +116,7 @@ export default {
   delAccountList,
   getAccount,
   editAccountName,
+  getAccountsMonth,
   getAccountsDate,
   addAccount,
 };

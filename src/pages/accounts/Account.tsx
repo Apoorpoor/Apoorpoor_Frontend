@@ -37,19 +37,39 @@ interface MyAccounts {
   balance: number | null; // 잔액
 }
 
+// 월별, 일별 수입/지출 총 금액 조회
+interface TotalStatus {
+  day: string;
+  expenditure_sum: number | null;
+  income_sum: number | null;
+}
+
 function Account(): JSX.Element {
   const navigate = useNavigate();
 
   // 현재 가계부의 id 조회
   const { id } = useParams<{ id?: string }>();
 
+  // 캘린더 날짜 받는 라이브러리
+  const [getMoment, setMoment] = useState(moment());
+  const today: Moment = getMoment;
+
+  // 현재 조회하고 있는 달
+  const currentMonth = today.format('YYYY-MM');
+
   // 상세내역 조회
-  const { isLoading, error, data, refetch }: UseQueryResult<MyAccounts> =
-    useQuery(['getAccount', id], () => accounts.getAccount(id as string));
-  console.log('data 호출:', data);
+  const {
+    isLoading,
+    error,
+    data: getAccount,
+    refetch,
+  }: UseQueryResult<MyAccounts> = useQuery(['getAccount', id], () =>
+    accounts.getAccount(id as string)
+  );
+  console.log('data 호출:', getAccount);
 
   // 상세내역 월별 그룹화
-  const allData = data?.ledgerHistoryResponseDtoList;
+  const allData = getAccount?.ledgerHistoryResponseDtoList;
   console.log('data 상세내역:', allData);
 
   const groupData: { [date: string]: LedgerHistoryResponseDto[] } = {};
@@ -62,6 +82,18 @@ function Account(): JSX.Element {
     }
     groupData[date].push(item);
   });
+
+  // 월별, 일별 수입/지출 총 금액 조회
+  const {
+    isLoading: getAccountsMonthIsLoading,
+    error: getAccountsMonthError,
+    data: getAccountsMonth,
+    refetch: getAccountsMonthRefetch,
+  }: UseQueryResult<TotalStatus> = useQuery(
+    ['getAccountsMonth', id, currentMonth],
+    () => accounts.getAccountsMonth(id as string, currentMonth)
+  );
+  console.log('총 금액 호출:', getAccountsMonth);
 
   // 백에서 받는 수입, 지출, 저축 카테고리 출력
   // 카테고리가 수입일 경우
@@ -141,10 +173,6 @@ function Account(): JSX.Element {
   const monthModalOpen = (): void => {
     setMonthModal(true);
   };
-
-  // 캘린더 날짜 받는 라이브러리
-  const [getMoment, setMoment] = useState(moment());
-  const today: Moment = getMoment;
 
   // 하단 사용내역 카테고리 필터링 버튼
   type Term = {
@@ -305,10 +333,10 @@ function Account(): JSX.Element {
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
   };
 
-  if (isLoading) {
+  if (isLoading || getAccountsMonthIsLoading) {
     return <div>Loading...</div>;
   }
-  if (error) {
+  if (error || getAccountsMonthError) {
     return <div>Error</div>;
   }
 
@@ -319,7 +347,9 @@ function Account(): JSX.Element {
         <AccountName
           nameModalClose={nameModalClose}
           data={
-            data ? { title: data.title, id: data.id.toString() } : undefined
+            getAccount
+              ? { title: getAccount.title, id: getAccount.id.toString() }
+              : undefined
           }
         />
       )}
@@ -341,6 +371,7 @@ function Account(): JSX.Element {
               type="button"
               onClick={() => {
                 setMoment(getMoment.clone().subtract(1, 'month'));
+                getAccountsMonthRefetch();
               }}
             >
               <AiFillCaretLeft />
@@ -355,6 +386,7 @@ function Account(): JSX.Element {
               className="sideBtn"
               onClick={() => {
                 setMoment(getMoment.clone().add(1, 'month'));
+                getAccountsMonthRefetch();
               }}
             >
               <AiFillCaretRight />
@@ -363,21 +395,33 @@ function Account(): JSX.Element {
         </div>
 
         <button type="button" className="_AccountName" onClick={nameModalOpen}>
-          <span>{data?.title}</span>
+          <span>{getAccount?.title}</span>
           <BsFillPenFill />
         </button>
 
         <div className="total">
           <p>이번달 모은 금액</p>
-          <p className="totalMoney">20,000원</p>
+          <p className="totalMoney">
+            {priceComma(
+              (getAccountsMonth?.income_sum ?? 0) -
+                (getAccountsMonth?.expenditure_sum ?? 0)
+            )}
+            원
+          </p>
         </div>
 
         <div className="incmExpnd">
           <p>
-            수입 <span className="incm">80,000원</span>
+            수입{' '}
+            <span className="incm">
+              {priceComma(getAccountsMonth?.income_sum ?? 0)}원
+            </span>
           </p>
           <p>
-            지출 <span className="expnd">60,000원</span>
+            지출{' '}
+            <span className="expnd">
+              {priceComma(getAccountsMonth?.expenditure_sum ?? 0)}원
+            </span>
           </p>
         </div>
       </div>
