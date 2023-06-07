@@ -75,26 +75,26 @@ const getAccountsDate = async (id: string, selectedDate: string) => {
 };
 
 // (상세 -> 일자별) 거래내역 추가
-// export const addAccount = async (requestData: {
-//   accountId: string;
-//   title: string;
-//   accountType: string;
-//   incomeType: string;
-//   expenditureType: string;
-//   paymentMethod: string;
-//   income: number;
-//   expenditure: number;
-//   dateTime: string;
-// }) => {
-//   try {
-//     const response = await instance.post('/ledgerhistory', requestData);
-//     console.log('거래내역 추가 성공:', response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.log('거래내역 추가 실패:', error);
-//     throw error;
-//   }
-// };
+export const addAccount = async (requestData: {
+  accountId: string;
+  title: string;
+  accountType: string;
+  incomeType: string;
+  expenditureType: string;
+  paymentMethod: string;
+  income: number;
+  expenditure: number;
+  dateTime: string;
+}) => {
+  try {
+    const response = await instance.post('/ledgerhistory', requestData);
+    console.log('거래내역 추가 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('거래내역 추가 실패:', error);
+    throw error;
+  }
+};
 
 export default {
   getAccountList,
