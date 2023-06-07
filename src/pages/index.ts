@@ -14,6 +14,8 @@ import Age from './user/Age';
 import Gender from './user/Gender';
 import Finished from './user/Finished';
 import BadgeList from './poorRoom/BadgeList';
+import PoorItemSetting from './poorRoom/PoorItemSetting';
+import UsersProfilePage from './poorTalk/UsersProfilePage';
 
 export {
   Account,
@@ -32,4 +34,6 @@ export {
   Gender,
   Finished,
   BadgeList,
+  PoorItemSetting,
+  UsersProfilePage,
 };

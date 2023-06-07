@@ -20,4 +20,17 @@ button {
     font-size: 14px;
     color: $gray-350;
   }
+  &.nav {
+    color: $gray-350;
+    font-weight: 500;
+    border-radius: 0;
+    height: inherit;
+  }
+  &.itemButton {
+    width: 96px;
+    height: 32px;
+    border-radius: 20px;
+    color: #fff;
+    background-color: $secondary;
+  }
 }

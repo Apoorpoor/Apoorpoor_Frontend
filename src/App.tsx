@@ -15,6 +15,7 @@ import {
   Age,
   Gender,
   Finished,
+  PoorItemSetting,
 } from './pages/index';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/addAccount" element={<AddAccount />} />
         <Route path="/addAccountDone" element={<AddAccountDone />} />
         <Route path="/poorRoom" element={<PoorRoom />} />
+        <Route path="/poorItemSetting" element={<PoorItemSetting />} />
         <Route path="/introTalk" element={<IntroTalk />} />
         <Route path="/poorTalk" element={<PoorTalk />} />
         <Route path="/oauth/kakao" element={<Redirection />} />
