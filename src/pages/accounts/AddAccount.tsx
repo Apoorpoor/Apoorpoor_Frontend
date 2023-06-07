@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+// import { useRecoilState } from 'recoil';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
-import inputState from '../../shared/Atom';
+// import inputState from '../../shared/Atom';
 import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 
@@ -13,8 +13,8 @@ function AddAccount(): JSX.Element {
   const navigate = useNavigate();
 
   // 금액 입력
-  // const [accountPriceInput, setAccountPriceInput] = useState('');
-  const [inputValue, setInputValue] = useRecoilState(inputState);
+  const [accountPriceInput, setAccountPriceInput] = useState('');
+  // const [inputValue, setInputValue] = useRecoilState(inputState);
 
   // 천단위 콤마
   const comma = (price: string) => {
@@ -25,28 +25,49 @@ function AddAccount(): JSX.Element {
     return addComma;
   };
 
+  // 금액 onChange -> 숫자만 입력 가능
   const accountPriceOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
     const str = value.replaceAll(',', '');
-    setInputValue(str);
+    setAccountPriceInput(str);
+  };
+
+  // 엑스 버튼 누르면 금액 삭제
+  const handleAccountPriceInputClear = () => {
+    setAccountPriceInput('');
   };
 
   // 100원 미만일 경우 경고 메세지
   const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
-    if (inputValue && parseInt(inputValue, 10) <= 99) {
+    if (accountPriceInput && parseInt(accountPriceInput, 10) <= 99) {
       setShowWarning(true);
     } else {
       setShowWarning(false);
     }
-  }, [inputValue]);
+  }, [accountPriceInput]);
+
+  // 내용 입력
+  const [title, setTitle] = useState('');
+
+  // 내용 onChange
+  const handleTitleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setTitle(event.target.value);
+  };
+
+  // 엑스 버튼 누르면 내용 삭제
+  const handleTitleInputClear = () => {
+    setTitle('');
+  };
 
   // 수입 지출 분류 선택
-  const [radio, setRadio] = useState('radioEx');
+  const [accountType, setAccountType] = useState('EXPENDITURE');
 
-  const handleRadio = (radioId: string): void => {
-    setRadio(radioId);
+  const handleAccountType = (radioId: string): void => {
+    setAccountType(radioId);
   };
 
   // 수입 셀렉트 박스
@@ -60,7 +81,7 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [selectInValue, setSelectInValue] = useState('');
+  const [incomeType, setIncomeType] = useState<string | null>(null);
 
   const inSelectCustom = {
     control: (provided: any, state: any) => ({
@@ -119,7 +140,7 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [selectExValue, setSelectExValue] = useState('');
+  const [expenditureType, setExpenditureType] = useState<string | null>(null);
 
   const exSelectCustom = {
     control: (provided: any, state: any) => ({
@@ -171,7 +192,7 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [selectPayValue, setSelectPayValue] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   const paySelectCustom = {
     control: (provided: any, state: any) => ({
@@ -213,26 +234,52 @@ function AddAccount(): JSX.Element {
     indicatorSeparator: () => ({ display: 'none' }),
   };
 
-  console.log(
-    '금액:',
-    inputValue,
-    '분류:',
-    radio,
-    '날짜:',
-    '연결안됨',
-    '결제수단:',
-    selectPayValue,
-    '카테고리:',
-    selectInValue,
-    selectExValue
-  );
+  // AddAccountCalendar.tsx에서 받아온 날짜
+  const [date, setOnDateChange] = useState('');
+
+  const [expenditure, setExpenditure] = useState<string | null>(null);
+  const [income, setIncome] = useState<string | null>(null);
+
+  // 지출, 수입 둘 중 하나가 null이면 inputValue를 해당 카테고리에 할당
+  useEffect(() => {
+    if (expenditureType === null) {
+      setExpenditure(null);
+      setIncome(accountPriceInput);
+    } else if (incomeType === null) {
+      setIncome(null);
+      setExpenditure(accountPriceInput);
+    }
+  }, [expenditureType, incomeType, accountPriceInput]);
+
+  // 등록 완료 버튼
+  const handleRegister = () => {
+    console.log(
+      '금액:',
+      income,
+      expenditure,
+      '내용title:',
+      title,
+      '분류accountType:',
+      accountType,
+      '날짜date:',
+      date,
+      '결제수단paymentMethod:',
+      paymentMethod,
+      '카테고리:',
+      incomeType,
+      expenditureType
+    );
+    setAccountPriceInput('');
+    setTitle('');
+  };
+
   return (
     <div className="addAccountBg">
       <div className="header">
         <button
           type="button"
           className="headerPreBtn"
-          onClick={() => navigate('/account')}
+          onClick={() => navigate(-1)}
         >
           <BsChevronLeft />
         </button>
@@ -245,11 +292,12 @@ function AddAccount(): JSX.Element {
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">금액</p>
           <Input
-            value={comma(inputValue)}
+            value={comma(accountPriceInput)}
             id="accountPriceInput"
             placeholder="얼마를 입력할까요?"
             className={showWarning ? 'accountPriceValid' : 'accountPrice'}
             onChange={accountPriceOnchange}
+            onClear={handleAccountPriceInputClear}
           />
           <label
             htmlFor="nicknameInput"
@@ -266,30 +314,48 @@ function AddAccount(): JSX.Element {
         </div>
 
         <div className="addAccountContents">
+          <p className="addAccountContentsTitle">내용</p>
+          <Input
+            value={title}
+            id="titleInput"
+            placeholder="내용을 입력해주세요"
+            className={showWarning ? 'accountPriceValid' : 'accountPrice'}
+            onChange={handleTitleInputChange}
+            onClear={handleTitleInputClear}
+          />
+          <label
+            htmlFor="nicknameInput"
+            className={`cursor ${showWarning ? 'warning' : 'active'}`}
+          >
+            {' '}
+          </label>
+        </div>
+
+        <div className="addAccountContents">
           <p className="addAccountContentsTitle">분류</p>
           <div className="addAccountRadioBoxes">
             <input
               type="radio"
-              id="radioEx"
-              checked={radio === 'radioEx'}
-              onClick={() => handleRadio('radioEx')}
+              id="EXPENDITURE"
+              checked={accountType === 'EXPENDITURE'}
+              onClick={() => handleAccountType('EXPENDITURE')}
               className="addAccountRadioBtn"
             />
-            <label htmlFor="radioEx">지출</label>
+            <label htmlFor="EXPENDITURE">지출</label>
 
             <input
               type="radio"
-              id="radioIn"
-              checked={radio === 'radioIn'}
-              onClick={() => handleRadio('radioIn')}
+              id="INCOME"
+              checked={accountType === 'INCOME'}
+              onClick={() => handleAccountType('INCOME')}
             />
-            <label htmlFor="radioIn">수입</label>
+            <label htmlFor="INCOME">수입</label>
           </div>
         </div>
 
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">날짜</p>
-          <AddAccountCalendar />
+          <AddAccountCalendar setOnDateChange={setOnDateChange} />
         </div>
 
         <div className="addAccountContents">
@@ -297,25 +363,25 @@ function AddAccount(): JSX.Element {
           <Select
             placeholder="카테고리 선택"
             options={payment}
-            onChange={(e: any) => setSelectPayValue(e.value)}
+            onChange={(e: any) => setPaymentMethod(e.value)}
             styles={paySelectCustom}
           />
         </div>
 
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">카테고리</p>
-          {radio === 'radioIn' ? (
+          {accountType === 'INCOME' ? (
             <Select
               placeholder="카테고리 선택"
               options={inOptions}
-              onChange={(e: any) => setSelectInValue(e.value)}
+              onChange={(e: any) => setIncomeType(e.value)}
               styles={inSelectCustom}
             />
           ) : (
             <Select
               placeholder="카테고리 선택"
               options={exOptions}
-              onChange={(e: any) => setSelectExValue(e.value)}
+              onChange={(e: any) => setExpenditureType(e.value)}
               styles={exSelectCustom}
             />
           )}
@@ -323,7 +389,7 @@ function AddAccount(): JSX.Element {
         <button
           className="addAccountDoneBtn"
           type="button"
-          onClick={() => navigate('/addAccountDone')}
+          onClick={handleRegister}
         >
           등록하기
         </button>
