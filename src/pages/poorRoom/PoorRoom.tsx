@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import { useQuery, UseQueryResult } from 'react-query';
 import beggars from '../../api/beggars';
@@ -19,9 +21,11 @@ import culture from '../../static/image/badge/badge_culture.svg';
 import deposit from '../../static/image/badge/badge_deposit.svg';
 import education from '../../static/image/badge/badge_education.svg';
 import food from '../../static/image/badge/badge_food.svg';
+import myPoorState from '../../shared/MyPoor';
 
 function PoorRoom() {
   const navigate = useNavigate();
+  const [myPoorLevel, setMyPoorLevel] = useRecoilState(myPoorState);
   // const queryClient = useQueryClient();
 
   // 마이푸어룸 데이터 불러오기
@@ -41,15 +45,19 @@ function PoorRoom() {
     beggars.getMyPoorRoom
   );
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    if (data !== undefined) {
+      setMyPoorLevel(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, setMyPoorLevel]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
   if (error) {
     return <div>Error</div>;
-  }
-
-  const addMention = () => {
-    navigate('/badgeList')
   }
 
   return (
@@ -63,6 +71,12 @@ function PoorRoom() {
           <p className="info">
             {data?.gender === 'female' ? '여' : '남'} / {data?.age}
           </p>
+          <Button
+            className="whiteButton"
+            onClick={() => navigate('/poorItemSetting')}
+          >
+            아이템
+          </Button>
         </section>
         {/* <section id="myPoorCharacter">
           <div className="poor">푸어 캐릭터</div>
@@ -75,12 +89,7 @@ function PoorRoom() {
         </section> */}
         <section id="myConsumePropensity">
           <h1>소비성향</h1>
-          <ul className="consumeStyle">
-            <li>#Flex</li>
-            <li>#문화생활</li>
-            <li>#뚜벅이</li>
-          </ul>
-          <div style={{ width: '100%', height: '370px' }}>
+          <div style={{ width: '100%', height: '430px' }}>
             <MyConsumePropensitychart />
           </div>
         </section>

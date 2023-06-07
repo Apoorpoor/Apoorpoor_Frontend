@@ -79,12 +79,12 @@ export const addAccount = async (requestData: {
   accountId: string;
   title: string;
   accountType: string;
-  incomeType: string;
-  expenditureType: string;
+  incomeType: string | null;
+  expenditureType: string | null;
   paymentMethod: string;
-  income: number;
-  expenditure: number;
-  dateTime: string;
+  income: string | null;
+  expenditure: string | null;
+  date: string;
 }) => {
   try {
     const response = await instance.post('/ledgerhistory', requestData);
@@ -103,5 +103,5 @@ export default {
   getAccount,
   editAccountName,
   getAccountsDate,
-  // addAccount,
+  addAccount,
 };

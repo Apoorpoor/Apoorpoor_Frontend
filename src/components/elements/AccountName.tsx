@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useState, useRef } from 'react';
 import { useMutation } from 'react-query';
 import Portal from '../../shared/Portal';
 import accounts from '../../api/accounts';
 import '../../styles/components/_AccountModal.scss';
-import inputState from '../../shared/Atom';
 import Input from './Input';
 
 interface AccountNameProps {
@@ -13,11 +11,26 @@ interface AccountNameProps {
 }
 
 function AccountName({ nameModalClose, data }: AccountNameProps) {
-  const [inputValue, setInputValue] = useRecoilState(inputState);
+  const [accountName, setAccountName] = useState('');
   const [accountNameInput, setAccountNameInput] = useState(data?.title || '');
 
+  // 배경 누르면 모달 닫힘
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === modalRef.current) {
+      // 배경을 클릭한 경우에만 모달을 닫기
+      nameModalClose();
+    }
+  };
+
+  // 엑스 버튼 누르면 내용 삭제
+  const handleAccountNameInputClear = () => {
+    setAccountName('');
+  };
+
   const accountNameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    setAccountName(event.target.value);
     setAccountNameInput(event.target.value);
   };
 
@@ -28,6 +41,10 @@ function AccountName({ nameModalClose, data }: AccountNameProps) {
 
   const handleEditAccountName = async () => {
     try {
+      if (!accountNameInput) {
+        console.log('가계부 이름을 작성해주세요.');
+        return;
+      }
       await editAccountNameMutation.mutateAsync(accountNameInput);
       console.log('가계부 이름 수정 성공!');
       nameModalClose();
@@ -42,7 +59,12 @@ function AccountName({ nameModalClose, data }: AccountNameProps) {
 
   return (
     <Portal>
-      <div className="accountModalBg">
+      <div
+        ref={modalRef}
+        className="accountModalBg"
+        onClick={handleBackgroundClick}
+        aria-hidden="true"
+      >
         <div className="accountNameModalBox">
           <Input
             value={accountNameInput}
@@ -50,10 +72,11 @@ function AccountName({ nameModalClose, data }: AccountNameProps) {
             placeholder="가계부 이름"
             className="accountName"
             onChange={accountNameOnchange}
+            onClear={handleAccountNameInputClear}
           />
           <label
             htmlFor="accountNameInput"
-            className={`cursor ${inputValue.length > 0 ? 'active' : ''}`}
+            className={`cursor ${accountName.length > 0 ? 'active' : ''}`}
           >
             {' '}
           </label>
