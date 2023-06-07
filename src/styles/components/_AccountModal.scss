@@ -134,12 +134,16 @@
             cursor: pointer;
           }
         }
+        .accountLabelSave {
+          font-weight: 700;
+          color: $primary;
+        }
         .accountLabelEx {
           font-weight: 700;
+          color: black;
         }
         .accountLabelIn {
           font-weight: 700;
-          color: $gray-400;
         }
       }
 

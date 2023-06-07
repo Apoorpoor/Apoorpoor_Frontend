@@ -1,26 +1,39 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { useMutation } from 'react-query';
 import Portal from '../../shared/Portal';
+import accounts from '../../api/accounts';
 import '../../styles/components/_AccountModal.scss';
 import inputState from '../../shared/Atom';
 import Input from './Input';
 
 interface AccountNameProps {
-  setNameModal: React.Dispatch<React.SetStateAction<boolean>>;
-  data: { title: string } | undefined;
+  nameModalClose: () => void;
+  data: { title: string; id: string } | undefined;
 }
 
-function AccountName({ setNameModal, data }: AccountNameProps) {
-  const nameModalClose = (): void => {
-    setNameModal(false);
-  };
-
+function AccountName({ nameModalClose, data }: AccountNameProps) {
   const [inputValue, setInputValue] = useRecoilState(inputState);
   const [accountNameInput, setAccountNameInput] = useState(data?.title || '');
 
   const accountNameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     setAccountNameInput(event.target.value);
+  };
+
+  // 가계부 이름 수정
+  const editAccountNameMutation = useMutation((title: string) =>
+    accounts.editAccountName(data?.id || '', title)
+  );
+
+  const handleEditAccountName = async () => {
+    try {
+      await editAccountNameMutation.mutateAsync(accountNameInput);
+      console.log('가계부 이름 수정 성공!');
+      nameModalClose();
+    } catch (error) {
+      console.log('가계부 이름 수정 실패:', error);
+    }
   };
 
   if (!data) {
@@ -47,7 +60,7 @@ function AccountName({ setNameModal, data }: AccountNameProps) {
           <button
             className="accountNameBtn"
             type="button"
-            onClick={nameModalClose}
+            onClick={handleEditAccountName}
           >
             확인
           </button>
