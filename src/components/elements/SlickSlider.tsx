@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useMemo } from 'react';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';

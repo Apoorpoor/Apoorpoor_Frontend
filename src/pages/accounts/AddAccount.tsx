@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
-// import { useRecoilState } from 'recoil';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Select from 'react-select';
-// import inputState from '../../shared/Atom';
+import { useMutation } from 'react-query';
 import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
+import accounts from '../../api/accounts';
 
 function AddAccount(): JSX.Element {
   const navigate = useNavigate();
 
+  // 현재 가계부의 id 조회
+  // const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string | undefined }>();
+
   // 금액 입력
   const [accountPriceInput, setAccountPriceInput] = useState('');
-  // const [inputValue, setInputValue] = useRecoilState(inputState);
 
   // 천단위 콤마
   const comma = (price: string) => {
@@ -244,33 +247,61 @@ function AddAccount(): JSX.Element {
   useEffect(() => {
     if (expenditureType === null) {
       setExpenditure(null);
-      setIncome(accountPriceInput);
+      if (incomeType !== null && accountPriceInput !== '') {
+        setIncome(accountPriceInput);
+      }
     } else if (incomeType === null) {
-      setIncome(null);
-      setExpenditure(accountPriceInput);
+      if (expenditureType !== null && accountPriceInput !== '') {
+        setExpenditure(accountPriceInput);
+      }
     }
   }, [expenditureType, incomeType, accountPriceInput]);
 
-  // 등록 완료 버튼
-  const handleRegister = () => {
-    console.log(
-      '금액:',
-      income,
-      expenditure,
-      '내용title:',
-      title,
-      '분류accountType:',
-      accountType,
-      '날짜date:',
-      date,
-      '결제수단paymentMethod:',
-      paymentMethod,
-      '카테고리:',
-      incomeType,
-      expenditureType
-    );
-    setAccountPriceInput('');
-    setTitle('');
+  // 거래내역 추가
+  const addAccountMutation = useMutation(
+    (requestData: {
+      accountId: string;
+      title: string;
+      accountType: string;
+      incomeType: string | null;
+      expenditureType: string | null;
+      paymentMethod: string;
+      income: string | null;
+      expenditure: string | null;
+      date: string;
+    }) => accounts.addAccount(requestData),
+    {
+      onSuccess: (response) => {
+        console.log('거래내역 추가 성공:', response);
+      },
+      onError: (error) => {
+        console.log('거래내역 추가 실패:', error);
+      },
+    }
+  );
+
+  const handleRegister = async () => {
+    try {
+      const requestData = {
+        accountId: id || '',
+        title: title || '',
+        accountType: accountType || '',
+        incomeType: incomeType || null,
+        expenditureType: expenditureType || null,
+        paymentMethod: paymentMethod || '',
+        income: accountPriceInput === '' ? null : income,
+        expenditure: expenditure === '' ? null : expenditure,
+        date: date || '',
+      };
+
+      await addAccountMutation.mutateAsync(requestData);
+      console.log('거래내역 추가 요청 완료');
+      setAccountPriceInput('');
+      setTitle('');
+      navigate(`/addAccountDone/${id}`);
+    } catch (error) {
+      console.log('거래내역 추가 실패:', error);
+    }
   };
 
   return (

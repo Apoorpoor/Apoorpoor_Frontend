@@ -18,6 +18,11 @@ function Nickname() {
   const token = localStorage.getItem('AToken');
   const Rtoken = Cookies.get('RToken');
 
+  const ExcludingSpecialCharacters = (nickName: string) => {
+    const inputNumber = nickName.replace(/[~!@#$%";'^,&*()_+|</>=>`?:{[\\}]/g, '');
+    return inputNumber;
+  };
+
   const nicknameChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -38,8 +43,6 @@ function Nickname() {
       setDbNameCheck(false);
     }
   };
-  // setCheckError("※ 이미 다른 사용자가 사용 중 입니다.");
-  // setCheckError("사용가능 닉네임");
 
   const checkNickname = async (
     event: React.MouseEvent<HTMLButtonElement>
@@ -76,7 +79,7 @@ function Nickname() {
         </h1>
         <div className="nicknameForm">
           <Input
-            value={inputValue}
+            value={ExcludingSpecialCharacters(inputValue)}
             id="nicknameInput"
             placeholder="닉네임을 입력하세요"
             className="nickname"
@@ -104,22 +107,15 @@ function Nickname() {
         </div>
         <div className="checkError">
           {checkError}
-          {/* {dbNameCheck ? "" : checkError} */}
         </div>
       </article>
-
-      {/* <Button
-        className='common'
-        onClick={() => checknickname()}>
-        다음
-      </Button> */}
       {dbNameCheck ? (
         <Button className="common" onClick={checkNickname}>
           다음
         </Button>
       ) : (
         <Button className="common" onClick={checkNickname2}>
-          다음가짜
+          다음
         </Button>
       )}
     </main>

@@ -22,6 +22,11 @@ function Age() {
 
     const navigate = useNavigate();
 
+    const onlyNumber = (age: string) => {
+        const inputNumber = age.replace(/[^0-9]/g, '');
+        return inputNumber;
+    };
+
     const nicknameChangeHandler = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setInputValue(e.target.value)
         if (e.target.value.length >= 1) {
@@ -75,7 +80,7 @@ function Age() {
                     <div className='ageInfo'>나이, 성별 등 개인정보는 소셜 기능에 사용돼요.</div>
                     <div className='nicknameForm'>
                         <Input
-                            value={inputValue}
+                            value={onlyNumber(inputValue)}
                             id='nicknameInput'
                             placeholder='나이를 입력하세요'
                             className='nickname'
