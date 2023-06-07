@@ -72,7 +72,6 @@ const getUser = async () => {
 const getUsersProfile = async (userId: any) => {
     // 토큰
     const token = localStorage.getItem("AToken");
-    console.log("userId = ", userId)
     try {
         const response = await instance.get(`/beggar/${userId}`,
             {
@@ -80,7 +79,6 @@ const getUsersProfile = async (userId: any) => {
                     ACCESS_KEY: `Bearer ${token}`,
                 },
             });
-        console.log("받아온 유저 데이터 = ", response.data)
         return response.data;
 
     } catch (err) {

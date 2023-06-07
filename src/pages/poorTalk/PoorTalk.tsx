@@ -83,6 +83,8 @@ function PoorTalk() {
     const [image, setImage] = useState<string | Blob>("");
     // 섬네일 이미지
     const [thumbnailImage, setThumbnailImage] = useState<string>("");
+    // 메세지에서 추출한 유저 아이디
+    const [onMessageUserId, setOnMessageUserId] = useState<number>(user?.userId);
     // 토큰
     const token = localStorage.getItem("AToken");
     // 유정 고유 아이디 
@@ -274,31 +276,25 @@ function PoorTalk() {
         }
     };
 
-    // 다른 유저 프로필(마이페이지) 조회
-    const usersProfileHandler = (userId: undefined | any | number) => {
-        mutation.mutate(userId)
-        console.log("userId = ", userId)
+    const usersProfileHandler = (userId: number) => {
+        setOnMessageUserId(userId)
         setModalOpen(true);
+
     }
-
-    // 유저 정보 받아오기
-    // const { data: dataUsersProfile } = useQuery("getOtherPeople", getUsersProfile);
-    // console.log("dataUsersProfile =", dataUsersProfile)
-
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    // }
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
     if (error) {
         navigate("/login")
         return <div>Error</div>;
     }
-    console.log("chatMessages = ", chatMessages)
+    // console.log("chatMessages = ", chatMessages)
     // console.log("data = ", data)
     // console.log("userId = ", userId)
     return (
         <div className='currentBackGround'>
             <Header>푸어talk</Header>
-            {modalOpen && <UsersProfilePage setModalOpen={setModalOpen} />}
+            {modalOpen && <UsersProfilePage setModalOpen={setModalOpen} onMessageUserId={onMessageUserId} />}
             {chatMessages && chatMessages.length > 0 && (
                 <div className='Messagesbox' ref={messagesEndRef}>
                     {chatMessages?.map((message, index) => (
@@ -320,7 +316,7 @@ function PoorTalk() {
                                                         <img className="sendMyImageBox" src={message.image} />
                                                     </div>
                                                 ) : (
-                                                    <div>{message.message}<button onClick={() => usersProfileHandler(message.userId)}>123</button>
+                                                    <div>{message.message}
                                                         {/* <button onClick={showModal}>Modal 1</button> */}</div>
                                                 )}
                                             </div>
@@ -329,7 +325,9 @@ function PoorTalk() {
                                     ) : (
                                         // 다른 사용자가 보낸 메시지인 경우
                                         <>
-                                            <button type="button" className="yourChatProfile" onClick={() => usersProfileHandler(message.userId)}>.</button>
+                                            <button type="button" className="yourChatProfile"
+                                                onClick={() => usersProfileHandler(message.userId)}
+                                            >.</button>
                                             <div className="yourChat">
                                                 {message.image ? (
                                                     <div>

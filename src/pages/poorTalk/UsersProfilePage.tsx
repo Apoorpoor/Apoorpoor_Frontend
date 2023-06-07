@@ -13,6 +13,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 import {
     Button,
     SlickSlider,
+    LevelMedal,
 } from '../../components';
 import communication from '../../static/image/badge/badge_communication.svg';
 import culture from '../../static/image/badge/badge_culture.svg';
@@ -24,6 +25,7 @@ import instance from '../../api/instance';
 
 interface AccountNameProps {
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    onMessageUserId: number
 }
 
 interface dataUsersProfile {
@@ -42,10 +44,10 @@ interface dataUsersProfile {
     userId: number
 }
 
-function UsersProfilePage({ setModalOpen, }: AccountNameProps) {
+function UsersProfilePage({ setModalOpen, onMessageUserId }: AccountNameProps): JSX.Element {
 
     // 처음에 받아오는 내 푸어 정보
-    const [user, setUser] = useState<any>(null);
+    // const [user, setUser] = useState<any>(null);
     const navigate = useNavigate();
 
     // 모달 끄기 
@@ -57,15 +59,15 @@ function UsersProfilePage({ setModalOpen, }: AccountNameProps) {
         navigate('/badgeList')
     }
     // 유저 정보 받아오기
-    const { data: dataUsersProfile }: UseQueryResult<dataUsersProfile> = useQuery("getUsersProfile", getUsersProfile);
-    console.log("dataUsersProfile2 = ", dataUsersProfile)
+    const { data: dataUsersProfile }: UseQueryResult<dataUsersProfile> = useQuery("getUsersProfile", () => getUsersProfile(onMessageUserId));
+    // console.log("dataUsersProfile = ", dataUsersProfile)
+    // console.log("onMessageUserId = ", onMessageUserId)
 
-    useEffect(() => {
-        if (dataUsersProfile) {
-            setUser(dataUsersProfile)
-        }
-    }, [dataUsersProfile])
-
+    // useEffect(() => {
+    //     if (dataUsersProfile) {
+    //         // setUser(dataUsersProfile)
+    //     }
+    // }, [dataUsersProfile])
     return (
         <div className='ModalOverlay'>
             <div id="header">
@@ -76,9 +78,11 @@ function UsersProfilePage({ setModalOpen, }: AccountNameProps) {
             </div>
             <div className='ModalContent'>
                 <div className='OtherPeopleBeggarImage'>Image</div>
-                <div className='OtherPeopleBeggarMedal'>Medal</div>
-                <div className='OtherPeopleBeggarNickName'>dataUsersProfile?.nickname</div>
-                <div className='OtherPeopleBeggarGenderAge'>dataUsersProfile?.gender / dataUsersProfile?.age</div>
+                <div className='OtherPeopleBeggarMedal'>
+                    <LevelMedal level={dataUsersProfile?.level as number} />
+                </div>
+                <div className='OtherPeopleBeggarNickName'>{dataUsersProfile?.nickname}</div>
+                <div className='OtherPeopleBeggarGenderAge'>{dataUsersProfile?.gender}/ {dataUsersProfile?.age}</div>
             </div>
 
             <div className='ModalContent'>

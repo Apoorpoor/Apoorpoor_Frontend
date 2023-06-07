@@ -26,9 +26,12 @@ function PoorRoom() {
 
   // 마이푸어룸 데이터 불러오기
   interface MyData {
-    id: string;
-    username: string;
-    kakaoId: number;
+    beggarId: string;
+    userId: string;
+    nickname: string;
+    point: number;
+    level: number;
+    description: string;
     age: number;
     gender: string;
   }
@@ -55,8 +58,8 @@ function PoorRoom() {
       <article>
         <section id="myPoorInfo">
           <div className="poorProfile">{/* 나중에 이미지 삽입 */}</div>
-          <LevelMedal level="2" />
-          <h2 className="nickname">{data?.kakaoId}</h2>
+          <LevelMedal level={data?.level as number} />
+          <h2 className="nickname">{data?.nickname}</h2>
           <p className="info">
             {data?.gender === 'female' ? '여' : '남'} / {data?.age}
           </p>
@@ -90,7 +93,7 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            <div className="item" onClick={() =>addMention()} onKeyDown={addMention} role="button" tabIndex={0}>
+            <div className="item" onClick={() => addMention()} onKeyDown={addMention} role="button" tabIndex={0}>
               <img src={communication} alt="" />
               <p>여보세요?</p>
             </div>
