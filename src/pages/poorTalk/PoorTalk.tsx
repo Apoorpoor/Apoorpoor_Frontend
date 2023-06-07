@@ -1,3 +1,5 @@
+/* eslint-disable react/no-this-in-sfc */
+/* eslint-disable react/button-has-type */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -12,13 +14,15 @@
 import React, { useEffect, useRef, useState, ChangeEvent } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { useQuery } from "react-query";
-import { getUser } from "../../api/members";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { getUser, getUsersProfile } from "../../api/members";
 import '../../styles/pages/_PoorTalk.scss';
 import { FaCamera, FaArrowCircleUp } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { Header } from '../../components';
 import instance from "../../api/instance";
+import UsersProfilePage from "./UsersProfilePage";
+// import imageCompression from 'browser-image-compression';  
 
 interface IJoinMessage {
     type: "ENTER";
@@ -26,6 +30,8 @@ interface IJoinMessage {
     message: string;
     beggar_id: string | number;
     date: string;
+    username: string
+    userId: number
     image?: string;
 }
 interface ITalkMessage {
@@ -34,6 +40,8 @@ interface ITalkMessage {
     message: string;
     beggar_id: string | number;
     date: string;
+    username: string
+    userId: number
     image?: string;
 }
 
@@ -43,6 +51,8 @@ interface ILEAVEMessage {
     message: string;
     beggar_id: string | number;
     date: string;
+    username: string
+    userId: number
     image?: string;
 }
 
@@ -78,21 +88,27 @@ function PoorTalk() {
     // 유정 고유 아이디 
     const userId = localStorage.getItem("userId");
     // 유저 정보 받아오기
-    const { isLoading, isError, data } = useQuery("getUser", getUser);
+    const { isLoading, error, data } = useQuery("getUser", getUser);
     // 소켓
     const socket = new SockJS(`http://3.34.85.5:8080/ws-edit`);
     // 클라이언트
     const stompClientRef = useRef<Client | null>(null);
     // 최신글이 올라오면 맨 밑으로 포커싱
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
-    // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
-    useEffect(() => {
-        messagesEndRef.current &&
-            // (messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight);
-            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [chatMessages]);
-
+    // 네비게이터
+    const navigate = useNavigate();
+    // 상대 유저들 모달창
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    // 모달창 노출
+    const showModal = (): void => {
+        setModalOpen(true);
+    };
+    const queryClient = useQueryClient();
+    const mutation = useMutation(getUsersProfile, {
+        onSuccess: () => {
+            console.log(" 상대 푸어 정보 가져오기 완료");
+        },
+    });
     // 날짜 데이터 
     let today = new Date(); // today 객체에 Date()의 결과를 넣어줬다
     let time = {
@@ -105,8 +121,16 @@ function PoorTalk() {
     };
     let timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours} : ${time.minutes} ${time.seconds}초`;
 
+    // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
     useEffect(() => {
-        if (data) {
+        messagesEndRef.current &&
+            // (messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight);
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chatMessages]);
+
+    useEffect(() => {
+        if (data !== undefined) {
+            setUser(data)
             // 소켓 연결
             const client = new Client({
                 webSocketFactory: () => socket,
@@ -121,11 +145,11 @@ function PoorTalk() {
                 heartbeatOutgoing: 4000,
                 // 접속했을 때
                 onConnect: (message) => {
-                    console.log("message = ", message);
+                    // console.log("message = ", message);
                     client.subscribe("/sub/chat/room", (message) => {
                         const parsedMessage = JSON.parse(message.body) as IMessage;
 
-                        console.log("parsedMessage== ", parsedMessage);
+                        // console.log("parsedMessage== ", parsedMessage);
                         if (parsedMessage.beggar_id !== null) {
                             setChatMessages((chatMessages) => [...chatMessages, parsedMessage]);
                         }
@@ -138,11 +162,12 @@ function PoorTalk() {
                     client.publish({
                         destination: "/pub/chat/enter",
                         body: JSON.stringify({
-                            beggar_id: data.beggarId,
+                            beggar_id: data?.beggarId,
                             sender: data.nickname,
                             type: "ENTER",
                             message: `${data.nickname}님 입장하123셨습니다.`,
                             date: timestring,
+                            userId: data.userId,
                         }),
                     });
                 },
@@ -181,6 +206,8 @@ function PoorTalk() {
             type: "TALK",
             message: message.trim(),
             date: timestring,
+            username: data.username,
+            userId: data.userId,
         };
 
         if (stompClientRef.current) {
@@ -228,7 +255,9 @@ function PoorTalk() {
                 type: "TALK",
                 message: "",
                 image: imageData,
-                data: timestring,
+                date: timestring,
+                username: data.username,
+                userId: data.userId,
             };
 
             if (stompClientRef.current) {
@@ -245,11 +274,31 @@ function PoorTalk() {
         }
     };
 
+    // 다른 유저 프로필(마이페이지) 조회
+    const usersProfileHandler = (userId: undefined | any | number) => {
+        mutation.mutate(userId)
+        console.log("userId = ", userId)
+        setModalOpen(true);
+    }
+
+    // 유저 정보 받아오기
+    // const { data: dataUsersProfile } = useQuery("getOtherPeople", getUsersProfile);
+    // console.log("dataUsersProfile =", dataUsersProfile)
+
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
+    // }
+    if (error) {
+        navigate("/login")
+        return <div>Error</div>;
+    }
     console.log("chatMessages = ", chatMessages)
-    console.log("data = ", data)
+    // console.log("data = ", data)
+    // console.log("userId = ", userId)
     return (
         <div className='currentBackGround'>
             <Header>푸어talk</Header>
+            {modalOpen && <UsersProfilePage setModalOpen={setModalOpen} />}
             {chatMessages && chatMessages.length > 0 && (
                 <div className='Messagesbox' ref={messagesEndRef}>
                     {chatMessages?.map((message, index) => (
@@ -262,7 +311,7 @@ function PoorTalk() {
                             )}
                             {message.type === "TALK" && message.beggar_id !== null && (
                                 <>
-                                    {message.sender === data?.nickname ? (
+                                    {message.sender === data.nickname ? (
                                         // 자신이 보낸 메시지인 경우
                                         <>
                                             <div className="myChat">
@@ -271,15 +320,16 @@ function PoorTalk() {
                                                         <img className="sendMyImageBox" src={message.image} />
                                                     </div>
                                                 ) : (
-                                                    <div>{message.message}</div>
+                                                    <div>{message.message}<button onClick={() => usersProfileHandler(message.userId)}>123</button>
+                                                        {/* <button onClick={showModal}>Modal 1</button> */}</div>
                                                 )}
                                             </div>
-                                            <div className="nowTime1">{timestring.slice(13, -3)}</div>
+                                            <div className="nowTime1">{message.date.slice(13, -3)}</div>
                                         </>
                                     ) : (
                                         // 다른 사용자가 보낸 메시지인 경우
                                         <>
-                                            <button type="button" className="yourChatProfile">.</button>
+                                            <button type="button" className="yourChatProfile" onClick={() => usersProfileHandler(message.userId)}>.</button>
                                             <div className="yourChat">
                                                 {message.image ? (
                                                     <div>
@@ -289,7 +339,7 @@ function PoorTalk() {
                                                     <div>{message.message}</div>
                                                 )}
                                             </div>
-                                            <div className="nowTime2">{timestring.slice(13, -3)}</div>
+                                            <div className="nowTime2">{message.date.slice(13, -3)}</div>
                                         </>
                                     )}
                                     <div ref={messagesEndRef} />

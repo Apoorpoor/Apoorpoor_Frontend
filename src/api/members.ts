@@ -69,4 +69,24 @@ const getUser = async () => {
     }
 }
 
-export { getNickNameDoubleCheck, firstLogin, getUser };
+const getUsersProfile = async (userId: any) => {
+    // 토큰
+    const token = localStorage.getItem("AToken");
+    console.log("userId = ", userId)
+    try {
+        const response = await instance.get(`/beggar/${userId}`,
+            {
+                headers: {
+                    ACCESS_KEY: `Bearer ${token}`,
+                },
+            });
+        console.log("받아온 유저 데이터 = ", response.data)
+        return response.data;
+
+    } catch (err) {
+        console.log(`다른유저 조회 API 오류 발생: ${err}`);
+        throw err;
+    }
+}
+
+export { getNickNameDoubleCheck, firstLogin, getUser, getUsersProfile };

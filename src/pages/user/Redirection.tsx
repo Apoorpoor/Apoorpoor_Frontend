@@ -12,13 +12,13 @@ import Cookies from 'js-cookie';
 import instance from '../../api/instance';
 
 const Redirection: React.FC = () => {
-  const JWTEXPIRYTIME = 24 * 3600 * 1000; // 만료 시간 (24시간 밀리 초로 표현)
+  const JWTEXPIRYTIME = 2 * 3600 * 1000; // 만료 시간 (24시간 밀리 초로 표현)
   const navigate = useNavigate();
 
   useEffect(() => {
     const getAccessToken = async (urlCode: string): Promise<void> => {
       try {
-        const response = await axios.get(`http://3.34.85.5:8080/oauth/kakao?code=${urlCode}`
+        const response = await instance.get(`oauth/kakao?code=${urlCode}`
           // , {urlCode}
         );
         const accessToken = response.headers.access_key;
@@ -35,10 +35,8 @@ const Redirection: React.FC = () => {
 
         // 닉네임이 있는지 확인 체크 있으면 메인페이지로
         const nickname = response.headers.nickname_flag;
-
-
         nickname === 'true' && nickname ? navigate(`/`) : navigate(`/nickname`);
-        // navigate(`/nickname`);
+
       } catch (error) {
         // 에러 처리
         console.log(error);
@@ -46,11 +44,12 @@ const Redirection: React.FC = () => {
     };
 
     const onSilentRefresh = () => {
-      axios
-        .post('/silent-refresh')
+      instance
+        .get(`oauth/kakao?code=${urlCode}`)
         .then(onLoginSuccess)
         .catch((error) => {
           // ... 로그인 실패 처리
+          console.log(error);
         });
     };
 
@@ -58,7 +57,7 @@ const Redirection: React.FC = () => {
       const { accessToken } = response.data;
 
       // accessToken 설정
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      instance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       // accessToken 만료하기 1분 전에 로그인 연장
       setTimeout(onSilentRefresh, JWTEXPIRYTIME - 60000);
