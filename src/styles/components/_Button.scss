@@ -32,5 +32,10 @@ button {
     border-radius: 20px;
     color: #fff;
     background-color: $secondary;
+    font-size: 14px;
+  }
+  &.itemButton:disabled {
+    opacity: 0.5;
+    cursor:default;
   }
 }

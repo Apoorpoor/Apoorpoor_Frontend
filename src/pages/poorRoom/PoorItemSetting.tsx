@@ -1,7 +1,12 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { useQuery, UseQueryResult } from 'react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from 'react-query';
 import { useRecoilValue } from 'recoil';
 import beggars from '../../api/beggars';
 import { Button, Header } from '../../components';
@@ -10,6 +15,7 @@ import '../../styles/pages/_PoorItemSetting.scss';
 
 function PoorItemSetting() {
   const myPoorInfo = useRecoilValue(myPoorState);
+  const queryClient = useQueryClient();
 
   interface MyData {
     itemNum: number;
@@ -27,6 +33,12 @@ function PoorItemSetting() {
 
   const [selectedItem, setSelectedItem] = useState<string | null>('top');
 
+  const poorItemMutation = useMutation(beggars.patchPoorItem, {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries('getMyPoorItem');
+    },
+  });
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -34,15 +46,18 @@ function PoorItemSetting() {
     return <div>Error</div>;
   }
 
-  console.log('data', data);
-
   const tabMenuHandler = (category: string) => {
     setSelectedItem(category);
   };
 
   const changeItemStateHandler = () => {
-    console.log('클릭!');
+    const itemChangeInfo = {
+      itemListEnum: 'ITEM_0',
+      unWearEnum: 'UN_WEAR_TOPS',
+    };
   };
+
+  const disabled = true;
 
   return (
     <main id="poorItemSetting">
@@ -105,19 +120,26 @@ function PoorItemSetting() {
                     />
                     <p>{item.itemName}</p>
                   </div>
-                  {item.itemState === null}
-                  <Button
+                  <button
+                    type="button"
                     className={`itemButton ${
-                      item.itemState === 'null'
+                      item.itemState === null
                         ? 'null'
-                        : item.itemState === 'equipped'
+                        : item.itemState === 'EQUIPPED'
                         ? 'equipped'
-                        : ''
+                        : 'Done'
                     }`}
+                    disabled={
+                      item.levelLimit > myPoorInfo.level ? disabled : false
+                    }
                     onClick={changeItemStateHandler}
                   >
-                    {item.itemState === 'EQUIPPED' ? '해제하기' : '착용하기'}
-                  </Button>
+                    {item.itemState === null
+                      ? `${item.itemPrice} P`
+                      : item.itemState === 'EQUIPPED'
+                      ? '해제하기'
+                      : '착용하기'}
+                  </button>
                 </li>
               ))}
           </ul>
@@ -147,10 +169,26 @@ function PoorItemSetting() {
                     />
                     <p>{item.itemName}</p>
                   </div>
-                  {item.itemState === null}
-                  {/* <Button className="itemButton" onClick={}>
-                  {item.itemPrice}
-                </Button> */}
+                  <button
+                    type="button"
+                    className={`itemButton ${
+                      item.itemState === null
+                        ? 'null'
+                        : item.itemState === 'EQUIPPED'
+                        ? 'equipped'
+                        : 'Done'
+                    }`}
+                    disabled={
+                      item.levelLimit > myPoorInfo.level ? disabled : false
+                    }
+                    onClick={changeItemStateHandler}
+                  >
+                    {item.itemState === null
+                      ? `${item.itemPrice} P`
+                      : item.itemState === 'EQUIPPED'
+                      ? '해제하기'
+                      : '착용하기'}
+                  </button>
                 </li>
               ))}
           </ul>
@@ -180,10 +218,26 @@ function PoorItemSetting() {
                     />
                     <p>{item.itemName}</p>
                   </div>
-                  {item.itemState === null}
-                  {/* <Button className="itemButton" onClick={}>
-                  {item.itemPrice}
-                </Button> */}
+                  <button
+                    type="button"
+                    className={`itemButton ${
+                      item.itemState === null
+                        ? 'null'
+                        : item.itemState === 'EQUIPPED'
+                        ? 'equipped'
+                        : 'Done'
+                    }`}
+                    disabled={
+                      item.levelLimit > myPoorInfo.level ? disabled : false
+                    }
+                    onClick={changeItemStateHandler}
+                  >
+                    {item.itemState === null
+                      ? `${item.itemPrice} P`
+                      : item.itemState === 'EQUIPPED'
+                      ? '해제하기'
+                      : '착용하기'}
+                  </button>
                 </li>
               ))}
           </ul>
@@ -213,18 +267,34 @@ function PoorItemSetting() {
                     />
                     <p>{item.itemName}</p>
                   </div>
-                  {item.itemState === null}
-                  {/* <Button className="itemButton" onClick={}>
-                  {item.itemPrice}
-                </Button> */}
+                  <button
+                    type="button"
+                    className={`itemButton ${
+                      item.itemState === null
+                        ? 'null'
+                        : item.itemState === 'EQUIPPED'
+                        ? 'equipped'
+                        : 'Done'
+                    }`}
+                    disabled={
+                      item.levelLimit > myPoorInfo.level ? disabled : false
+                    }
+                    onClick={changeItemStateHandler}
+                  >
+                    {item.itemState === null
+                      ? `${item.itemPrice} P`
+                      : item.itemState === 'EQUIPPED'
+                      ? '해제하기'
+                      : '착용하기'}
+                  </button>
                 </li>
               ))}
           </ul>
         </section>
-        <section className={selectedItem === 'costume' ? 'active' : ''}>
+        <section className={selectedItem === 'custom' ? 'active' : ''}>
           <ul>
             {data
-              ?.filter((item: MyData) => item.itemType === 'costume')
+              ?.filter((item: MyData) => item.itemType === 'custom')
               .map((item: MyData) => (
                 <li
                   key={item.itemNum}
@@ -246,10 +316,26 @@ function PoorItemSetting() {
                     />
                     <p>{item.itemName}</p>
                   </div>
-                  {item.itemState === null}
-                  {/* <Button className="itemButton" onClick={}>
-                  {item.itemPrice}
-                </Button> */}
+                  <button
+                    type="button"
+                    className={`itemButton ${
+                      item.itemState === null
+                        ? 'null'
+                        : item.itemState === 'EQUIPPED'
+                        ? 'equipped'
+                        : 'Done'
+                    }`}
+                    disabled={
+                      item.levelLimit > myPoorInfo.level ? disabled : false
+                    }
+                    onClick={changeItemStateHandler}
+                  >
+                    {item.itemState === null
+                      ? `${item.itemPrice} P`
+                      : item.itemState === 'EQUIPPED'
+                      ? '해제하기'
+                      : '착용하기'}
+                  </button>
                 </li>
               ))}
           </ul>

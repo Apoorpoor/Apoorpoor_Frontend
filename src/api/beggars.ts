@@ -11,7 +11,7 @@ const getMyPoorRoom = async () => {
   }
 };
 
-// 푸어 캐릭터 아이템
+// 푸어 캐릭터 아이템 조회
 const getMyPoorItem = async () => {
   try {
     const response = await instance.get('/item?itemType=total');
@@ -22,4 +22,19 @@ const getMyPoorItem = async () => {
   }
 };
 
-export default { getMyPoorRoom, getMyPoorItem };
+// 푸어 캐릭터 아이템 착용 & 해제
+interface MyData {
+  itemListEnum: string;
+  unWearEnum: string;
+}
+const patchPoorItem = async () => {
+  try {
+    const response = await instance.patch('/beggar/custom', data<MyData>);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export default { getMyPoorRoom, getMyPoorItem, patchPoorItem };
