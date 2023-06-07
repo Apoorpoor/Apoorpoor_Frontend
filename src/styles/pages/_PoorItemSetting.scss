@@ -1,0 +1,113 @@
+@import '../_Palette.scss';
+
+#poorItemSetting {
+  & > nav {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    & > button {
+      padding: 15px 10px;
+    }
+    & > button.active {
+      font-weight: 700;
+      border-bottom: 2px solid $primary;
+      color: $primary;
+    }
+  }
+
+  & > article {
+    position: relative;
+    width: 100%;
+
+    & > section {
+      position: absolute;
+      display: none;
+    }
+    & > section.active {
+      display: block;
+    }
+    & > section ul {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+      & li {
+        width: 96px;
+        height: 132px;
+        border-radius: 15px;
+        background-color: $gray-150;
+        overflow: hidden;
+
+        & > .itemBox {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-around;
+
+          & .itemImg {
+            width: 56px;
+            height: 85px;
+            background-size: 134%;
+            background-position: center -35px;
+          }
+          & > p {
+            width: 64px;
+            text-align: center;
+            font-size: 14px;
+            word-break: keep-all;
+          }
+        }
+      }
+      // 레벨에 따라 아이템 open, closed
+      & li.open {
+        & .disabled {
+          display: none;
+        }
+      }
+      & li.closed {
+        & > .itemBox {
+          & .itemImg {
+            filter: blur(3px);
+          }
+          & > p {
+            position: absolute;
+            z-index: 10;
+            color: #fff;
+            bottom: 10px;
+          }
+        }
+        & .disabled {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(20, 48, 92, 0.5);
+          & > p {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            padding-top: 15px;
+            box-sizing: border-box;
+          }
+        }
+      }
+    }
+  }
+}
