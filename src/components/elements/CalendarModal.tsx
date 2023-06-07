@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../../styles/components/_AccountModal.scss';
 import { BsXLg, BsPlusLg, BsThreeDotsVertical } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router';
@@ -50,6 +50,16 @@ function CalendarModal({
     setCalendarModal(false);
   };
 
+  // 배경 누르면 모달 닫힘
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === modalRef.current) {
+      // 배경을 클릭한 경우에만 모달을 닫기
+      calendarModalClose();
+    }
+  };
+
   // 거래내역 수정 삭제 버튼 보이기
   const [editDelBtn, setEditDelBtn] = useState<{ [key: string]: boolean }>({});
 
@@ -90,7 +100,12 @@ function CalendarModal({
 
   return (
     <Portal>
-      <div className="accountModalBg">
+      <div
+        ref={modalRef}
+        className="accountModalBg"
+        onClick={handleBackgroundClick}
+        aria-hidden="true"
+      >
         <div className="accountModalBox">
           <div className="titleRow">
             <h2 className="title">{dateWithDay(selectedDate)}</h2>
@@ -138,7 +153,9 @@ function CalendarModal({
                     <p className={className}>
                       {item.accountType === 'INCOME' ? null : '-'}
                       {priceComma(
-                        item.income === null ? item.expenditure : item.income
+                        item.income === 0 || item.income === null
+                          ? item.expenditure
+                          : item.income
                       )}
                       원
                     </p>
@@ -171,7 +188,7 @@ function CalendarModal({
           <button
             type="button"
             className="accountAddBtn"
-            onClick={() => navigate('/addAccount')}
+            onClick={() => navigate(`/addAccount/${id}`)}
           >
             <div className="accountAddBtnIcon">
               <BsPlusLg />
