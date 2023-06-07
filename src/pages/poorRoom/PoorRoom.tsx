@@ -102,7 +102,7 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            <div className="item">
+            <div className="item" onClick={() => addMention()} onKeyDown={addMention} role="button" tabIndex={0}>
               <img src={communication} alt="" />
               <p>여보세요?</p>
             </div>
