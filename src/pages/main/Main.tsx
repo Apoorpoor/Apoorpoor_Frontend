@@ -54,14 +54,17 @@ function Main(): JSX.Element {
   // 가계부들 잔액의 합
   const calculateTotalBalance = () => {
     if (Array.isArray(data)) {
-      return data.reduce(
-        (sum, item) =>
-          sum +
-          (typeof item.balance === 'number'
-            ? item.balance
-            : item.balance?.expenditureTotal || 0),
-        0
-      );
+      return data.reduce((sum, item) => {
+        let balance = 0;
+        if (typeof item.balance === 'object' && item.balance !== null) {
+          balance =
+            (item.balance.incomeTotal || 0) -
+            (item.balance.expenditureTotal || 0);
+        } else if (typeof item.balance === 'number') {
+          balance = item.balance;
+        }
+        return sum + balance;
+      }, 0);
     }
     return 0;
   };
@@ -113,18 +116,21 @@ function Main(): JSX.Element {
             if (!item) {
               return '';
             }
+
+            // 수입 잔액 - 지출 잔액
+            let balanceValue = 0;
+            if (typeof item.balance === 'object' && item.balance !== null) {
+              balanceValue =
+                (item.balance.incomeTotal || 0) -
+                (item.balance.expenditureTotal || 0);
+            } else if (typeof item.balance === 'string') {
+              balanceValue = item.balance;
+            }
             return (
               <div key={item.id} className="account">
                 <div>
                   <p className="accountName">{item.title}</p>
-                  <p className="accountMoney">
-                    {priceComma(
-                      typeof item.balance === 'string'
-                        ? item.balance
-                        : item.balance?.expenditureTotal || 0
-                    )}
-                    원
-                  </p>
+                  <p className="accountMoney">{priceComma(balanceValue)}원</p>
                 </div>
                 <div className="moreNdelBtn">
                   <button
