@@ -1,64 +1,62 @@
 @import '../_Palette.scss';
 
-.slick-track {
-  margin: 20px 0;
-}
-.slick-initialized .slick-slide {
-  position: relative;
-  width: 120px;
-  height: 155px;
-
-  &:first-child > div {
-    transform: translateX(22px);
-  }
-  &:nth-child(2) > div {
-    transform: translateX(12px);
-  }
-  &:nth-child(3) > div {
-    transform: translateX(2px);
-  }
-  &:nth-child(4) > div {
-    transform: translateX(-7px);
-  }
-  & > div {
-    width: 112px;
-    transform: translateX(-15px);
-  }
-
-  & .item {
-    position: relative;
-    height: 155px;
-    flex: 0 0 auto;
-    border-radius: 20px;
-    background-color: $gray-150;
-    & > img {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 72px;
-      height: 72px;
-    }
-    & p {
-      position: absolute;
-      left: 50%;
-      bottom: 20px;
-      transform: translateX(-50%);
-      width: 50px;
-      word-break: keep-all;
-      text-align: center;
-      font-weight: 700;
-    }
-  }
-}
-
-.slick-slider .slick-track {
-  position: relative;
-  left: -24px;
-}
-
-// 푸어룸 : 뱃지 슬라이더
 #badgeSlider {
+  & .slick-track {
+    margin: 20px 0;
+  }
+  & .slick-initialized .slick-slide {
+    position: relative;
+    width: 120px;
+    height: 155px;
+
+    &:first-child > div {
+      transform: translateX(22px);
+    }
+    &:nth-child(2) > div {
+      transform: translateX(12px);
+    }
+    &:nth-child(3) > div {
+      transform: translateX(2px);
+    }
+    &:nth-child(4) > div {
+      transform: translateX(-7px);
+    }
+    & > div {
+      width: 112px;
+      transform: translateX(-15px);
+    }
+
+    & .item {
+      position: relative;
+      height: 155px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      background-color: $gray-150;
+      & > img {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 72px;
+        height: 72px;
+      }
+      & p {
+        position: absolute;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%);
+        width: 50px;
+        word-break: keep-all;
+        text-align: center;
+        font-weight: 700;
+      }
+    }
+  }
+
+  & .slick-slider .slick-track {
+    position: relative;
+    left: -24px;
+  }
   & > .slick-slider {
     background-color: #f00;
   }
