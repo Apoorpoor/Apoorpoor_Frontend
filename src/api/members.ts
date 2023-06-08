@@ -69,20 +69,18 @@ const getUser = async () => {
 
 const getUsersProfile = async (userId: any) => {
   // 토큰
-  const token = localStorage.getItem("AToken");
+  const token = localStorage.getItem('AToken');
   try {
-    const response = await instance.get(`/beggar/${userId}`,
-      {
-        headers: {
-          ACCESS_KEY: `Bearer ${token}`,
-        },
-      });
+    const response = await instance.get(`/beggar/${userId}`, {
+      headers: {
+        ACCESS_KEY: `Bearer ${token}`,
+      },
+    });
     return response.data;
-
   } catch (err) {
     console.log(`다른유저 조회 API 오류 발생: ${err}`);
     throw err;
   }
-}
+};
 
 export { getNickNameDoubleCheck, firstLogin, getUser, getUsersProfile };

@@ -81,7 +81,7 @@ function ProgressBar() {
           strokeLinecap="round"
         />
       </svg>
-      <p id="AccumulatePoint">누적 5,000 P</p>
+      <p id="AccumulatePoint">누적 {myPoorInfo.exp} P</p>
       <p id="Point">
         <span>{myPoorInfo.point}</span> P
       </p>
