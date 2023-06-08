@@ -22,6 +22,7 @@ import deposit from '../../static/image/badge/badge_deposit.svg';
 import education from '../../static/image/badge/badge_education.svg';
 import food from '../../static/image/badge/badge_food.svg';
 import myPoorState from '../../shared/MyPoor';
+import PoorCharacter from './PoorCharacter';
 
 function PoorRoom() {
   const navigate = useNavigate();
@@ -33,17 +34,24 @@ function PoorRoom() {
     beggarId: string;
     userId: string;
     nickname: string;
+    exp: number;
     point: number;
     level: number;
     description: string;
     age: number;
     gender: string;
+    topImage: string;
+    bottomImage: string;
+    accImage: string;
+    customImage: string;
   }
 
   const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
     'getMyPoorRoom',
     beggars.getMyPoorRoom
   );
+
+  console.log('beggardata', data);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -65,18 +73,26 @@ function PoorRoom() {
       <Header>MY</Header>
       <article>
         <section id="myPoorInfo">
-          <div className="poorProfile">{/* 나중에 이미지 삽입 */}</div>
+          <div className="poorProfile">
+            <PoorCharacter />
+          </div>
           <LevelMedal level={data?.level as number} />
           <h2 className="nickname">{data?.nickname}</h2>
           <p className="info">
             {data?.gender === 'female' ? '여' : '남'} / {data?.age}
+            <Button
+              className="whiteRoundCommon"
+              onClick={() => navigate('/poorItemSetting')}
+            >
+              아이템
+            </Button>
+            <Button
+              className="textType"
+              onClick={() => navigate('/poorItemSetting')}
+            >
+              로그아웃
+            </Button>
           </p>
-          <Button
-            className="whiteButton"
-            onClick={() => navigate('/poorItemSetting')}
-          >
-            아이템
-          </Button>
         </section>
         {/* <section id="myPoorCharacter">
           <div className="poor">푸어 캐릭터</div>
@@ -102,7 +118,7 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            <div className="item" onClick={() => addMention()} onKeyDown={addMention} role="button" tabIndex={0}>
+            <div className="item">
               <img src={communication} alt="" />
               <p>여보세요?</p>
             </div>

@@ -43,6 +43,8 @@ function MyConsumePropensitychart() {
     return <div>Error</div>;
   }
 
+  console.log(data);
+
   if (data === undefined) {
     return <div>데이터가 충분히 모이지 않았습니다 ㅜㅠ</div>;
   }
@@ -122,7 +124,7 @@ function MyConsumePropensitychart() {
       </ul>
       <ResponsiveRadar
         data={data}
-        keys={['month_sum']}
+        keys={['total_sum']}
         indexBy={(d) => newIndex(d.expenditureType)}
         valueFormat=">-.2f"
         margin={{ top: 0, right: 80, bottom: 40, left: 80 }}

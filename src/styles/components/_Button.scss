@@ -20,6 +20,22 @@ button {
     font-size: 14px;
     color: $gray-350;
   }
+  &.whiteRoundCommon {
+    height: initial;
+    padding: 7.5px 12px;
+    border: 1px solid $gray-250;
+    border-radius: 20px;
+    color: #949494;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  &.textType{
+    height: initial;
+    color: $gray-500;
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 14px;;
+  }
   &.nav {
     color: $gray-350;
     font-weight: 500;
@@ -36,6 +52,6 @@ button {
   }
   &.itemButton:disabled {
     opacity: 0.5;
-    cursor:default;
+    cursor: default;
   }
 }

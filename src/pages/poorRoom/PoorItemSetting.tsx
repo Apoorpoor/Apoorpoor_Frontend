@@ -45,16 +45,28 @@ function PoorItemSetting() {
   if (error) {
     return <div>Error</div>;
   }
+  // console.log(data);
 
   const tabMenuHandler = (category: string) => {
     setSelectedItem(category);
   };
 
-  const changeItemStateHandler = () => {
+  const changeItemStateHandler = ({
+    itemType,
+    itemImage,
+  }: {
+    itemType: string;
+    itemImage: string;
+  }) => {
+    const regex = /\/([^/]+)\.svg$/;
+    const match = itemImage.match(regex);
+    const extractedValue = match ? match[1] : '';
+
     const itemChangeInfo = {
-      itemListEnum: 'ITEM_0',
-      unWearEnum: 'UN_WEAR_TOPS',
+      itemListEnum: extractedValue,
+      unWearEnum: `UN_WEAR_${itemType}`,
     };
+    poorItemMutation.mutate(itemChangeInfo);
   };
 
   const disabled = true;
@@ -88,8 +100,8 @@ function PoorItemSetting() {
           악세사리
         </Button>
         <Button
-          className={`nav ${selectedItem === 'costume' ? 'active' : ''}`}
-          onClick={() => tabMenuHandler('costume')}
+          className={`nav ${selectedItem === 'custum' ? 'active' : ''}`}
+          onClick={() => tabMenuHandler('custum')}
         >
           코스튬
         </Button>
@@ -132,7 +144,12 @@ function PoorItemSetting() {
                     disabled={
                       item.levelLimit > myPoorInfo.level ? disabled : false
                     }
-                    onClick={changeItemStateHandler}
+                    onClick={() =>
+                      changeItemStateHandler({
+                        itemType: item.itemType,
+                        itemImage: item.itemImage,
+                      })
+                    }
                   >
                     {item.itemState === null
                       ? `${item.itemPrice} P`
@@ -181,7 +198,12 @@ function PoorItemSetting() {
                     disabled={
                       item.levelLimit > myPoorInfo.level ? disabled : false
                     }
-                    onClick={changeItemStateHandler}
+                    onClick={() =>
+                      changeItemStateHandler({
+                        itemType: item.itemType,
+                        itemImage: item.itemImage,
+                      })
+                    }
                   >
                     {item.itemState === null
                       ? `${item.itemPrice} P`
@@ -230,7 +252,12 @@ function PoorItemSetting() {
                     disabled={
                       item.levelLimit > myPoorInfo.level ? disabled : false
                     }
-                    onClick={changeItemStateHandler}
+                    onClick={() =>
+                      changeItemStateHandler({
+                        itemType: item.itemType,
+                        itemImage: item.itemImage,
+                      })
+                    }
                   >
                     {item.itemState === null
                       ? `${item.itemPrice} P`
@@ -279,7 +306,12 @@ function PoorItemSetting() {
                     disabled={
                       item.levelLimit > myPoorInfo.level ? disabled : false
                     }
-                    onClick={changeItemStateHandler}
+                    onClick={() =>
+                      changeItemStateHandler({
+                        itemType: item.itemType,
+                        itemImage: item.itemImage,
+                      })
+                    }
                   >
                     {item.itemState === null
                       ? `${item.itemPrice} P`
@@ -328,7 +360,12 @@ function PoorItemSetting() {
                     disabled={
                       item.levelLimit > myPoorInfo.level ? disabled : false
                     }
-                    onClick={changeItemStateHandler}
+                    onClick={() =>
+                      changeItemStateHandler({
+                        itemType: item.itemType,
+                        itemImage: item.itemImage,
+                      })
+                    }
                   >
                     {item.itemState === null
                       ? `${item.itemPrice} P`

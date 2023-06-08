@@ -27,9 +27,9 @@ interface MyData {
   itemListEnum: string;
   unWearEnum: string;
 }
-const patchPoorItem = async () => {
+const patchPoorItem = async (data: MyData) => {
   try {
-    const response = await instance.patch('/beggar/custom', data<MyData>);
+    const response = await instance.patch('/beggar/custom', data);
     return response;
   } catch (error) {
     console.log(error);
