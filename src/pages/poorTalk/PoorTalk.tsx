@@ -240,9 +240,7 @@ function PoorTalk(): JSX.Element {
                                                         <img className="sendMyImageBox" src={message.image} alt="images" />
                                                     </div>
                                                 ) : (
-                                                    <div><button type="button" className="yourChatProfile"
-                                                        onClick={() => usersProfileHandler(message.userId)}
-                                                    ><img src={basicPoor} alt='거지 이미지' /></button> {/* <button onClick={showModal}>Modal 1</button> */}{message.message}
+                                                    <div>{message.message}
                                                     </div>
                                                 )}
                                             </div>
