@@ -3,19 +3,19 @@ import '../../styles/pages/_IntroTalk.scss'
 import { FaExclamationCircle, FaCheckSquare } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom';
 import { Controller } from '../../components';
+import basicPoor from '../../static/image/gender/basicPoor.png'
 
 function IntroTalk() {
   const navigate = useNavigate();
 
   const [checked, setChecked] = React.useState(false);
-  // eslint-disable-next-line func-names
-  const CheckBoxHandler = function () {
+  const CheckBoxHandler = () => {
     setChecked(!checked)
   };
   return <div className='IntroTalkLayout'>
 
     <Controller />
-    <div className='PoorImage'>.</div>
+    <div className='PoorImage'><img src={basicPoor} alt='거지 이미지' /></div>
     <div className='RuleBox'>
       <div className='Rule'>
         <h2>푸어TALK 이용규칙</h2><br />
@@ -28,11 +28,9 @@ function IntroTalk() {
       </div>
       {checked ?
         <div className='CheckBox2'>이해했어요
-          {/* eslint-disable-next-line react/jsx-no-bind */}
           <FaCheckSquare className='CheckBoxPoint2' onClick={CheckBoxHandler} />
         </div> :
         <div className='CheckBox1'>이해했어요
-          {/* eslint-disable-next-line react/jsx-no-bind */}
           <FaCheckSquare className='CheckBoxPoint1' onClick={CheckBoxHandler} />
         </div>
       }
