@@ -26,12 +26,13 @@ import carousel3 from '../../static/image/carousel/carousel3.png';
 function Login() {
   // 캐러셀
   const settings = {
-    infinite: false,
+    infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
+    speed: 800,
+    autoplaySpeed: 5000,
     dots: true,
-    // dotsClass: 'dots_custom',
     swipe: true,
   };
 
@@ -54,6 +55,8 @@ function Login() {
           autoplay={settings.autoplay}
           dots={settings.dots}
           swipe={settings.swipe}
+          speed={settings.speed}
+          autoplaySpeed={settings.autoplaySpeed}
         >
           <div className="carousel">
             <div className="carouselText">
