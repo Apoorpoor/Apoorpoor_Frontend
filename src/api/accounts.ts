@@ -74,6 +74,20 @@ const getTotalMonthDate = async (id: string, currentMonth: string) => {
   }
 };
 
+// (상세) 이번달 상세 지출 내역 파이그래프
+const getMonthPieChart = async (id: string, currentMonth: string) => {
+  try {
+    const response = await instance.get(
+      `/accounts/${id}/statistics?date=${currentMonth}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // (상세 -> 일자별) 거래내역 조회
 const getAccountsDate = async (id: string, selectedDate: string) => {
   try {
@@ -116,6 +130,7 @@ export default {
   delAccountList,
   getAccount,
   editAccountName,
+  getMonthPieChart,
   getTotalMonthDate,
   getAccountsDate,
   addAccount,
