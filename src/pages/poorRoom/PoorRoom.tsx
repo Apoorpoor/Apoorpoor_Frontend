@@ -2,7 +2,12 @@
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
-import { useQuery, UseQueryResult } from 'react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from 'react-query';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
@@ -27,9 +32,18 @@ import PoorCharacter from './PoorCharacter';
 function PoorRoom() {
   const navigate = useNavigate();
   const [myPoorLevel, setMyPoorLevel] = useRecoilState(myPoorState);
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   // 마이푸어룸 데이터 불러오기
+  type Badge = {
+    badgeImage: string;
+    badgeNum: number;
+    badgeTitle: string;
+    createdAt: string;
+    id: number;
+    modifiedAt: string;
+  };
+
   interface MyData {
     beggarId: string;
     userId: string;
@@ -44,6 +58,16 @@ function PoorRoom() {
     bottomImage: string;
     accImage: string;
     customImage: string;
+    badgeList: Badge[];
+  }
+
+  interface MyPointData {
+    point_id: number;
+    pointDescription: string;
+    earnedPoint: number | null;
+    usedPoints: number | null;
+    beggar_id: number;
+    createdAt: string;
   }
 
   const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
@@ -51,14 +75,45 @@ function PoorRoom() {
     beggars.getMyPoorRoom
   );
 
-  console.log('beggardata', data);
+  const {
+    isLoading: PointLoading,
+    error: PointError,
+    data: PointData,
+  } = useQuery<MyPointData[]>(
+    ['getMyPointInquiry', { dateType: 'week', kind: null, page: 0 }],
+    () => beggars.getMyPointInquiry({ dateType: 'week', kind: null, page: 0 })
+  );
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // 포인트 내역 조회 mutation
+  const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries('getMyPointInquiry');
+    },
+  });
+
+  const getPointInquiry = (
+    newDateType: string,
+    newKind: string | null,
+    newPage: number
+  ) => {
+    pointInquiryMutation.mutate({
+      dateType: newDateType,
+      kind: newKind,
+      page: newPage,
+    });
+  };
+
+  console.log('PointData', PointData);
+
+  // 포인트 내역 기간별 조회하기
+  // const pointInquirybyPeriod = ({}) => {
+  //   getPointInquiry('newDateType', 'newKind', newPage);
+  // };
+
   useEffect(() => {
     if (data !== undefined) {
       setMyPoorLevel(data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorLevel]);
 
   if (isLoading) {
@@ -94,15 +149,6 @@ function PoorRoom() {
             </Button>
           </p>
         </section>
-        {/* <section id="myPoorCharacter">
-          <div className="poor">푸어 캐릭터</div>
-          <div className="poorItemStorage">
-            <ul>
-              <li>모자</li>
-              <li>장갑</li>
-            </ul>
-          </div>
-        </section> */}
         <section id="myConsumePropensity">
           <h1>소비성향</h1>
           <div style={{ width: '100%', height: '430px' }}>
@@ -118,26 +164,14 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            <div className="item">
-              <img src={communication} alt="" />
-              <p>여보세요?</p>
-            </div>
-            <div className="item">
-              <img src={culture} alt="" />
-              <p>#여유 #휴식</p>
-            </div>
-            <div className="item">
-              <img src={deposit} alt="" />
-              <p>티끌모아 태산</p>
-            </div>
-            <div className="item">
-              <img src={education} alt="" />
-              <p>공부의 신</p>
-            </div>
-            <div className="item">
-              <img src={food} alt="" />
-              <p>햄버억</p>
-            </div>
+            {data?.badgeList
+              .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
+              .map((item) => (
+                <div key={item.badgeNum} className="item">
+                  <img src={item.badgeImage} alt={item.badgeTitle} />
+                  <p>{item.badgeTitle}</p>
+                </div>
+              ))}
           </SlickSlider>
           <Button
             className="whiteCommon"
@@ -157,7 +191,11 @@ function PoorRoom() {
           <h1>
             만수르님의 푸어포인트 <span className="tooltip">!</span>
           </h1>
-          <ProgressBar />
+          {data && (
+            <ProgressBar
+              data={{ exp: data.exp, point: data.point, level: data.level }}
+            />
+          )}
           <ul className="periodInquiry">
             <li className="checked">1주일</li>
             <li>1개월</li>
@@ -172,30 +210,24 @@ function PoorRoom() {
               <li>사용</li>
             </ul>
             <ul className="detailOfPointList">
-              <li>
-                <p className="title">
-                  가계부 작성 <span>05.22 &#62; 가계부 작성</span>
-                </p>
-                <p className="value save">
-                  +10P <span>적립</span>
-                </p>
-              </li>
-              <li>
-                <p className="title">
-                  나이키 에어포스 <span>05.27 &#62; 아이템 구매</span>
-                </p>
-                <p className="value use">
-                  -20P <span>사용</span>
-                </p>
-              </li>
-              <li>
-                <p className="title">
-                  뱃지 획득 <span>05.28 &#62; 뱃지</span>
-                </p>
-                <p className="value save">
-                  +20P <span>적립</span>
-                </p>
-              </li>
+              {PointData?.map((list) => (
+                <li key={list.point_id}>
+                  <p className="title">
+                    {list.pointDescription} <span>05.22 &#62;</span>
+                  </p>
+                  <p
+                    className={`value ${
+                      list.usedPoints === null ? 'save' : 'use'
+                    }`}
+                  >
+                    {list.usedPoints === null ? '+' : '-'}
+                    {list.usedPoints === null
+                      ? list.earnedPoint
+                      : list.usedPoints}
+                    P <span>{list.usedPoints === null ? '적립' : '사용'}</span>
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
         </section>

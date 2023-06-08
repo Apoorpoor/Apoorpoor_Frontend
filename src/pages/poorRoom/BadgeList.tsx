@@ -1,5 +1,9 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 import React, { useState } from 'react';
+import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router';
+import { MdLock } from 'react-icons/md';
+import beggars from '../../api/beggars';
 import { Button, Header } from '../../components';
 import Portal from '../../shared/Portal';
 import '../../styles/pages/_BadgeList.scss';
@@ -19,6 +23,49 @@ import transportation from '../../static/image/badge/badge_transportation.svg';
 import tribute from '../../static/image/badge/badge_tribute.svg';
 
 function BadgeList() {
+  const navigate = useNavigate();
+
+  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // 마이푸어룸 데이터 불러오기
+  type BadgeList = {
+    badgeImage: string;
+    badgeNum: number;
+    badgeTitle: string;
+    createdAt: string;
+    id: number;
+    modifiedAt: string;
+  };
+
+  interface MyData {
+    beggarId: string;
+    userId: string;
+    nickname: string;
+    exp: number;
+    point: number;
+    level: number;
+    description: string;
+    age: number;
+    gender: string;
+    topImage: string;
+    bottomImage: string;
+    accImage: string;
+    customImage: string;
+    badgeList: BadgeList[];
+  }
+
+  const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
+    'getMyPoorRoom',
+    beggars.getMyPoorRoom
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+
   type Badge = {
     title: string;
     name: string;
@@ -82,7 +129,7 @@ function BadgeList() {
     },
     {
       title: transportation,
-      name: '열차 들어옵니다',
+      name: '열차 들어옵니다.',
       description: '교통비 12만원 이하로 지출하셨어요',
     },
     {
@@ -92,15 +139,12 @@ function BadgeList() {
     },
   ];
 
-  const navigate = useNavigate();
-
-  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleBadgeClick = (badge: Badge) => {
     setIsModalOpen(!isModalOpen);
     setSelectedBadge(badge);
   };
+
+  console.log(data?.badgeList);
 
   return (
     <main id="BadgeList">
@@ -108,20 +152,31 @@ function BadgeList() {
       <ul>
         {badgeList.map((item) => (
           <li
-            key={item.title}
+            key={item.name}
+            className={
+              data?.badgeList.some((badge) => badge.badgeTitle === item.name)
+                ? 'have'
+                : 'dontHave'
+            }
             onClick={() => handleBadgeClick(item)}
             onKeyDown={() => handleBadgeClick(item)}
             // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
             role="button"
             tabIndex={0}
           >
+            <div className="disabled">
+              <p>
+                <MdLock />
+              </p>
+            </div>
             <div>
-              <img src={item.title} alt={item.title} />
+              <img src={item.title} alt={item.name} />
             </div>
             <p>{item.name}</p>
           </li>
         ))}
       </ul>
+
       <Portal>
         <div
           className={`modalbg ${isModalOpen ? 'active' : ''}`}

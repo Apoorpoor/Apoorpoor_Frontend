@@ -29,12 +29,12 @@ button {
     font-size: 14px;
     font-weight: 500;
   }
-  &.textType{
+  &.textType {
     height: initial;
     color: $gray-500;
     text-decoration: underline;
     font-weight: 500;
-    font-size: 14px;;
+    font-size: 14px;
   }
   &.nav {
     color: $gray-350;
@@ -49,6 +49,13 @@ button {
     color: #fff;
     background-color: $secondary;
     font-size: 14px;
+  }
+  &.itemButton.Done {
+    background-color: $gray-500;
+  }
+  &.itemButton.equipped {
+    background-color: $gray-150;
+    color: $gray-500;
   }
   &.itemButton:disabled {
     opacity: 0.5;

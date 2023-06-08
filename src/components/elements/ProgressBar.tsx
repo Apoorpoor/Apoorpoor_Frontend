@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import myPoorState from '../../shared/MyPoor';
 import '../../styles/components/_ProgressBar.scss';
 
 // 게이지 기본 속성값
 const RADIUS = 140; // 반지름
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+interface DataProps {
+  exp: number;
+  point: number;
+  level: number;
+}
 
-function ProgressBar() {
-  const myPoorInfo = useRecoilValue(myPoorState);
-
+function ProgressBar({ data }: { data: DataProps }) {
+  console.log('포인트게이지props', data);
   // 레벨 별 필요 포인트
   const requiredPoint: { [key: number]: number } = {
     1: 99,
@@ -25,8 +27,8 @@ function ProgressBar() {
   };
 
   // 현재 레벨 진행 상태
-  const levelGage = (myPoorInfo.point / requiredPoint[myPoorInfo.level]) * 100;
-  console.log(levelGage);
+  const levelGage = (data.point / requiredPoint[data.level]) * 100;
+  console.log('레벨 게이지', levelGage);
 
   // circle svg 저장용
   const barRef = useRef<SVGCircleElement | null>(null);
@@ -81,12 +83,12 @@ function ProgressBar() {
           strokeLinecap="round"
         />
       </svg>
-      <p id="AccumulatePoint">누적 {myPoorInfo.exp} P</p>
+      <p id="AccumulatePoint">누적 {data.exp} P</p>
       <p id="Point">
-        <span>{myPoorInfo.point}</span> P
+        <span>{data.point}</span> P
       </p>
-      <p className="Level currentLevel">Lv {myPoorInfo.level}</p>
-      <p className="Level nextLevel">Lv {myPoorInfo.level + 1}</p>
+      <p className="Level currentLevel">Lv {data.level}</p>
+      <p className="Level nextLevel">Lv {data.level + 1}</p>
     </div>
   );
 }
