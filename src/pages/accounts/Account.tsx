@@ -85,15 +85,15 @@ function Account(): JSX.Element {
 
   // 월별, 일별 수입/지출 총 금액 조회
   const {
-    isLoading: getAccountsMonthIsLoading,
-    error: getAccountsMonthError,
-    data: getAccountsMonth,
-    refetch: getAccountsMonthRefetch,
+    isLoading: getTotalMonthDateIsLoading,
+    error: getTotalMonthDateError,
+    data: getTotalMonthDate,
+    refetch: getTotalMonthDateRefetch,
   }: UseQueryResult<TotalStatus> = useQuery(
-    ['getAccountsMonth', id, currentMonth],
-    () => accounts.getAccountsMonth(id as string, currentMonth)
+    ['getTotalMonthDate', id, currentMonth],
+    () => accounts.getTotalMonthDate(id as string, currentMonth)
   );
-  console.log('총 금액 호출:', getAccountsMonth);
+  console.log('총 금액 호출:', getTotalMonthDate);
 
   // 백에서 받는 수입, 지출, 저축 카테고리 출력
   // 카테고리가 수입일 경우
@@ -172,6 +172,7 @@ function Account(): JSX.Element {
 
   const monthModalOpen = (): void => {
     setMonthModal(true);
+    getTotalMonthDateRefetch();
   };
 
   // 하단 사용내역 카테고리 필터링 버튼
@@ -318,8 +319,8 @@ function Account(): JSX.Element {
   };
 
   // 천단위 콤마
-  const priceComma = (price: number | null): string =>
-    price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
+  const priceComma = (price: number | null | undefined): string =>
+    price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
 
   // 년, 월, 일, 요일 변환 함수
   const dateWithDay = (dateString: string): string => {
@@ -333,10 +334,10 @@ function Account(): JSX.Element {
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
   };
 
-  if (isLoading || getAccountsMonthIsLoading) {
+  if (isLoading || getTotalMonthDateIsLoading) {
     return <div>Loading...</div>;
   }
-  if (error || getAccountsMonthError) {
+  if (error || getTotalMonthDateError) {
     return <div>Error</div>;
   }
 
@@ -371,7 +372,7 @@ function Account(): JSX.Element {
               type="button"
               onClick={() => {
                 setMoment(getMoment.clone().subtract(1, 'month'));
-                getAccountsMonthRefetch();
+                getTotalMonthDateRefetch();
               }}
             >
               <AiFillCaretLeft />
@@ -386,7 +387,7 @@ function Account(): JSX.Element {
               className="sideBtn"
               onClick={() => {
                 setMoment(getMoment.clone().add(1, 'month'));
-                getAccountsMonthRefetch();
+                getTotalMonthDateRefetch();
               }}
             >
               <AiFillCaretRight />
@@ -403,8 +404,8 @@ function Account(): JSX.Element {
           <p>이번달 모은 금액</p>
           <p className="totalMoney">
             {priceComma(
-              (getAccountsMonth?.income_sum ?? 0) -
-                (getAccountsMonth?.expenditure_sum ?? 0)
+              (getTotalMonthDate?.income_sum ?? 0) -
+                (getTotalMonthDate?.expenditure_sum ?? 0)
             )}
             원
           </p>
@@ -414,13 +415,13 @@ function Account(): JSX.Element {
           <p>
             수입{' '}
             <span className="incm">
-              {priceComma(getAccountsMonth?.income_sum ?? 0)}원
+              {priceComma(getTotalMonthDate?.income_sum ?? 0)}원
             </span>
           </p>
           <p>
             지출{' '}
             <span className="expnd">
-              {priceComma(getAccountsMonth?.expenditure_sum ?? 0)}원
+              {priceComma(getTotalMonthDate?.expenditure_sum ?? 0)}원
             </span>
           </p>
         </div>

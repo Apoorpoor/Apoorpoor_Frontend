@@ -61,7 +61,7 @@ export const editAccountName = async (id: string, title: string) => {
 };
 
 // (상세) 월별 수입/지출 금액, 일별 수입/지출 금액
-const getAccountsMonth = async (id: string, currentMonth: string) => {
+const getTotalMonthDate = async (id: string, currentMonth: string) => {
   try {
     const response = await instance.get(
       `/accounts/${id}/totalStatus?date=${currentMonth}`
@@ -116,7 +116,7 @@ export default {
   delAccountList,
   getAccount,
   editAccountName,
-  getAccountsMonth,
+  getTotalMonthDate,
   getAccountsDate,
   addAccount,
 };

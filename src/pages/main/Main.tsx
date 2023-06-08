@@ -130,14 +130,7 @@ function Main(): JSX.Element {
               <div key={item.id} className="account">
                 <div>
                   <p className="accountName">{item.title}</p>
-                  <p className="accountMoney">
-                    {/* {priceComma(
-                      typeof item.balance === 'string'
-                        ? item.balance
-                        : item.balance?.expenditureTotal || 0
-                    )} */}
-                    {priceComma(balanceValue)}원
-                  </p>
+                  <p className="accountMoney">{priceComma(balanceValue)}원</p>
                 </div>
                 <div className="moreNdelBtn">
                   <button
