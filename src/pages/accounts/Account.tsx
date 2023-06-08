@@ -434,7 +434,7 @@ function Account(): JSX.Element {
         expenditureType={expenditureType}
       />
       <div className="line"> </div>
-      <Chart />
+      <Chart id={id} currentMonth={currentMonth} />
       <div className="line"> </div>
       <ChartLastMonth />
       <div className="line"> </div>
