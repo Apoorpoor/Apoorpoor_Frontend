@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import { Button, Input } from '../../components/index';
@@ -16,7 +14,6 @@ function Nickname() {
 
   const navigate = useNavigate();
   const token = localStorage.getItem('AToken');
-  const Rtoken = Cookies.get('RToken');
 
   const ExcludingSpecialCharacters = (nickName: string) => {
     const inputNumber = nickName.replace(/[~!@#$%";'^,&*()_+|</>=>`?:{[\\}]/g, '');
@@ -44,9 +41,7 @@ function Nickname() {
     }
   };
 
-  const checkNickname = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ): Promise<void> => {
+  const checkNickname = async (): Promise<void> => {
     try {
       const response = await instance.post(
         `/beggar`,
@@ -66,7 +61,7 @@ function Nickname() {
       throw err;
     }
   };
-  const checkNickname2 = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const checkNickname2 = (): void => {
     alert('닉네임 체크해주세요.!');
   };
   return (
@@ -85,23 +80,9 @@ function Nickname() {
             className="nickname"
             onChange={nicknameChangeHandler}
           />
-          <label
-            htmlFor="nicknameInput"
-            className={`nicknameLabel ${inputValue.length > 0 ? 'active' : ''}`}
-          >
-            닉네임
-          </label>
-          <label
-            htmlFor="nicknameInput"
-            className={`cursor ${inputValue.length > 0 ? 'active' : ''}`}
-          >
-            {' '}
-          </label>
-          <label
-            htmlFor="nicknameInput"
-            className={`nicknameValidationAlert ${inputValue.length > 0 ? 'active' : ''
-              }`}
-          >
+          <label htmlFor="nicknameInput" className={`nicknameLabel ${inputValue.length > 0 ? 'active' : ''}`} > 닉네임</label>
+          <label htmlFor="nicknameInput" className={`cursor ${inputValue.length > 0 ? 'active' : ''}`} >{' '} </label>
+          <label htmlFor="nicknameInput" className={`nicknameValidationAlert ${inputValue.length > 0 ? 'active' : ''}`}>
             ※ 욕설 및 성희롱을 연상하게 하는 이름은 쓸 수 없어요.
           </label>
         </div>
