@@ -1,9 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable react/button-has-type */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router';
 import { AiOutlineLeft } from 'react-icons/ai';
 import "../../styles/components/_UsersProfilePage.scss"
@@ -21,14 +16,14 @@ import deposit from '../../static/image/badge/badge_deposit.svg';
 import education from '../../static/image/badge/badge_education.svg';
 import food from '../../static/image/badge/badge_food.svg';
 import { getUsersProfile } from '../../api/members';
-import instance from '../../api/instance';
+import basicPoor from '../../static/image/gender/basicPoor.png'
 
 interface AccountNameProps {
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     onMessageUserId: number
 }
 
-interface dataUsersProfile {
+interface DataUsersProfile {
     accImage: null | string
     age: number
     beggarId: number
@@ -46,28 +41,18 @@ interface dataUsersProfile {
 
 function UsersProfilePage({ setModalOpen, onMessageUserId }: AccountNameProps): JSX.Element {
 
-    // 처음에 받아오는 내 푸어 정보
-    // const [user, setUser] = useState<any>(null);
     const navigate = useNavigate();
-
     // 모달 끄기 
     const closeModal = () => {
         setModalOpen(false);
     };
-
+    // 
     const addMention = () => {
         navigate('/badgeList')
     }
     // 유저 정보 받아오기
-    const { data: dataUsersProfile }: UseQueryResult<dataUsersProfile> = useQuery("getUsersProfile", () => getUsersProfile(onMessageUserId));
-    // console.log("dataUsersProfile = ", dataUsersProfile)
-    // console.log("onMessageUserId = ", onMessageUserId)
+    const { data: dataUsersProfile }: UseQueryResult<DataUsersProfile> = useQuery("getUsersProfile", () => getUsersProfile(onMessageUserId));
 
-    // useEffect(() => {
-    //     if (dataUsersProfile) {
-    //         // setUser(dataUsersProfile)
-    //     }
-    // }, [dataUsersProfile])
     return (
         <div className='ModalOverlay'>
             <div id="header">
@@ -77,7 +62,7 @@ function UsersProfilePage({ setModalOpen, onMessageUserId }: AccountNameProps): 
                 <h1>프로필</h1>
             </div>
             <div className='ModalContent'>
-                <div className='OtherPeopleBeggarImage'>Image</div>
+                <div className='OtherPeopleBeggarImage'><img src={basicPoor} alt='거지 이미지' /></div>
                 <div className='OtherPeopleBeggarMedal'>
                     <LevelMedal level={dataUsersProfile?.level as number} />
                 </div>

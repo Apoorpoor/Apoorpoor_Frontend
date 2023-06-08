@@ -1,16 +1,14 @@
-/* eslint-disable import/order */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { useState } from 'react';
 import { FaChevronLeft } from "react-icons/fa";
-import { Button, Input } from '../../components/index';
+import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router';
+import { Input } from '../../components/index';
 import inputState from '../../shared/Atom';
 import '../../styles/pages/_Age.scss';
 import instance from '../../api/instance';
-import { useNavigate } from 'react-router';
 
 function Age() {
-    const [inputValue, setInputValue] = React.useState("");
+    const [inputValue, setInputValue] = useRecoilState(inputState);
     const [modalOpen, setModalOpen] = useState(false);
     const [nextButton, setNextButton] = useState(false);
 
@@ -48,7 +46,7 @@ function Age() {
             setNextButton(false)
         }
     }
-    const ageRemoveButtonHandler = (event: string) => {
+    const ageRemoveButtonHandler = () => {
         const value = inputValue.slice(0, -1)
         setInputValue(value)
     }
@@ -112,12 +110,11 @@ function Age() {
                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("9")}>9</button>
                         <button className='ageNumber2' type='button' onClick={modalHandler}>.</button>
                         <button className='ageNumber' type='button' onClick={() => ageButtonHandler("0")}>0</button>
-                        <button className='ageNumber2' type='button' onClick={() => ageRemoveButtonHandler("아무거나 넣었습니다")}>지우기</button>
+                        <button className='ageNumber2' type='button' onClick={() => ageRemoveButtonHandler()}>지우기</button>
                     </div>
                 </div>
                     : <button className='ageNumber3' type='button' onClick={modalHandler}>.</button>
                 }
-
             </div>
         </main>
     );
