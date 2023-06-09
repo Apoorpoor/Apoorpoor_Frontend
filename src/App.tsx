@@ -1,5 +1,6 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { Layout } from './components';
 import {
   Account,
@@ -20,6 +21,16 @@ import {
 } from './pages/index';
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem('AToken') || Cookies.get('RToken');
+
+    if (!token && location.pathname !== '/login') {
+      navigate('/login');
+    }
+  }, [navigate, location]);
   return (
     <Layout>
       <Routes>
