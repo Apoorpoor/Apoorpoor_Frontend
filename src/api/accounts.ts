@@ -124,6 +124,18 @@ export const addAccount = async (requestData: {
   }
 };
 
+// (상세 -> 일자별) 거래내역 삭제
+export const delAccount = async (id: number) => {
+  try {
+    const response = await instance.delete(`/ledgerhistory/${id}`);
+    console.log('거래내역 삭제 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('거래내역 삭제 실패:', error);
+    throw error;
+  }
+};
+
 export default {
   getAccountList,
   addAccountList,
@@ -134,4 +146,5 @@ export default {
   getTotalMonthDate,
   getAccountsDate,
   addAccount,
+  delAccount,
 };

@@ -2,7 +2,12 @@ import React, { useState, useRef } from 'react';
 import '../../styles/components/_AccountModal.scss';
 import { BsXLg, BsPlusLg, BsThreeDotsVertical } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router';
-import { UseQueryResult, useQuery } from 'react-query';
+import {
+  QueryObserverResult,
+  UseQueryResult,
+  useMutation,
+  useQuery,
+} from 'react-query';
 import Portal from '../../shared/Portal';
 import accounts from '../../api/accounts';
 
@@ -12,6 +17,8 @@ interface CalendarModalProps {
   selectedDate: string;
   incomeType: (type: string) => string;
   expenditureType: (type: string) => string;
+  getAccountRefetch: QueryObserverResult['refetch'];
+  getTotalMonthDateRefetch: QueryObserverResult['refetch'];
 }
 
 // 데이터 get할 때의 객체 interface
@@ -32,6 +39,8 @@ function CalendarModal({
   selectedDate,
   incomeType,
   expenditureType,
+  getAccountRefetch,
+  getTotalMonthDateRefetch,
 }: CalendarModalProps) {
   const navigate = useNavigate();
 
@@ -39,15 +48,17 @@ function CalendarModal({
   const { id } = useParams<{ id?: string }>();
 
   // 일자별 거래내역 조회
-  const { isLoading, error, data }: UseQueryResult<LedgerItem[]> = useQuery(
-    ['getAccountsDate', id, selectedDate],
-    () => accounts.getAccountsDate(id as string, selectedDate as string)
-  );
+  const { isLoading, error, data, refetch }: UseQueryResult<LedgerItem[]> =
+    useQuery(['getAccountsDate', id, selectedDate], () =>
+      accounts.getAccountsDate(id as string, selectedDate as string)
+    );
   console.log('일자별 거래내역 호출:', data);
 
   // 모달창 닫기
   const calendarModalClose = (): void => {
     setCalendarModal(false);
+    getAccountRefetch();
+    getTotalMonthDateRefetch();
   };
 
   // 배경 누르면 모달 닫힘
@@ -57,6 +68,8 @@ function CalendarModal({
     if (event.target === modalRef.current) {
       // 배경을 클릭한 경우에만 모달을 닫기
       calendarModalClose();
+      getAccountRefetch();
+      getTotalMonthDateRefetch();
     }
   };
 
@@ -69,6 +82,33 @@ function CalendarModal({
       updatedState[item] = !prevState[item];
       return updatedState;
     });
+  };
+
+  // 거래내역 삭제
+  const delAccountMutation = useMutation(
+    (delId: number) => accounts.delAccount(delId),
+    {
+      onSuccess: () => {
+        console.log('거래내역 삭제 성공!');
+      },
+      onError: (err) => {
+        console.log('거래내역 삭제 실패:', err);
+      },
+    }
+  );
+
+  const handledelAccount = async (delId: number) => {
+    try {
+      await delAccountMutation.mutateAsync(delId);
+      setEditDelBtn((prevState) => {
+        const updatedState = { ...prevState };
+        updatedState[delId] = false;
+        return updatedState;
+      });
+      refetch();
+    } catch (err) {
+      console.log('가계부 삭제 실패:', err);
+    }
   };
 
   if (isLoading) {
@@ -172,7 +212,11 @@ function CalendarModal({
                   </p>
                   {editDelBtn[String(index)] ? (
                     <div>
-                      <button type="button" className="editBtn">
+                      <button
+                        type="button"
+                        className="editBtn"
+                        onClick={() => handledelAccount(item.id)}
+                      >
                         삭제
                       </button>
                       <button type="button" className="delBtn">

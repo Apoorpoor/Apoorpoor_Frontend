@@ -15,6 +15,7 @@ import { Calendar, Chart, Controller } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
+import NumberAnimation from '../../components/elements/NumberAnimation';
 
 // 거래내역 조회
 interface LedgerHistoryResponseDto {
@@ -62,7 +63,7 @@ function Account(): JSX.Element {
     isLoading,
     error,
     data: getAccount,
-    refetch,
+    refetch: getAccountRefetch,
   }: UseQueryResult<MyAccounts> = useQuery(['getAccount', id], () =>
     accounts.getAccount(id as string)
   );
@@ -164,7 +165,7 @@ function Account(): JSX.Element {
   // 모달창 닫으면서 refetch로 데이터 재렌더링
   const nameModalClose = (): void => {
     setNameModal(false);
-    refetch();
+    getAccountRefetch();
   };
 
   // 월별 조회 모달창
@@ -403,10 +404,12 @@ function Account(): JSX.Element {
         <div className="total">
           <p>이번달 모은 금액</p>
           <p className="totalMoney">
-            {priceComma(
-              (getTotalMonthDate?.income_sum ?? 0) -
+            <NumberAnimation
+              targetNumber={
+                (getTotalMonthDate?.income_sum ?? 0) -
                 (getTotalMonthDate?.expenditure_sum ?? 0)
-            )}
+              }
+            />
             원
           </p>
         </div>
@@ -415,13 +418,19 @@ function Account(): JSX.Element {
           <p>
             수입{' '}
             <span className="incm">
-              {priceComma(getTotalMonthDate?.income_sum ?? 0)}원
+              <NumberAnimation
+                targetNumber={getTotalMonthDate?.income_sum ?? 0}
+              />
+              원
             </span>
           </p>
           <p>
             지출{' '}
             <span className="expnd">
-              {priceComma(getTotalMonthDate?.expenditure_sum ?? 0)}원
+              <NumberAnimation
+                targetNumber={getTotalMonthDate?.expenditure_sum ?? 0}
+              />
+              원
             </span>
           </p>
         </div>
@@ -432,6 +441,8 @@ function Account(): JSX.Element {
         today={today}
         incomeType={incomeType}
         expenditureType={expenditureType}
+        getAccountRefetch={getAccountRefetch}
+        getTotalMonthDateRefetch={getTotalMonthDateRefetch}
       />
       <div className="line"> </div>
       <Chart id={id} currentMonth={currentMonth} />

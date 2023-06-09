@@ -10,18 +10,21 @@ interface MainDelModalProps {
 
 function MainDelModal({ delModalClose, id }: MainDelModalProps) {
   // 가계부 삭제
-  const delAccountMutation = useMutation(() => accounts.delAccountList(id), {
-    onSuccess: () => {
-      console.log('가계부 이름 삭제 성공!');
-    },
-    onError: (err) => {
-      console.log('가계부 삭제 실패:', err);
-    },
-  });
+  const delAccountListMutation = useMutation(
+    () => accounts.delAccountList(id),
+    {
+      onSuccess: () => {
+        console.log('가계부 이름 삭제 성공!');
+      },
+      onError: (err) => {
+        console.log('가계부 삭제 실패:', err);
+      },
+    }
+  );
 
-  const handledelAccount = async () => {
+  const handledelAccountList = async () => {
     try {
-      await delAccountMutation.mutateAsync();
+      await delAccountListMutation.mutateAsync();
       delModalClose();
     } catch (err) {
       console.log('가계부 삭제 실패:', err);
@@ -37,7 +40,11 @@ function MainDelModal({ delModalClose, id }: MainDelModalProps) {
             <button className="cancleBtn" type="button" onClick={delModalClose}>
               취소
             </button>
-            <button className="delBtn" type="button" onClick={handledelAccount}>
+            <button
+              className="delBtn"
+              type="button"
+              onClick={handledelAccountList}
+            >
               삭제하기
             </button>
           </div>
