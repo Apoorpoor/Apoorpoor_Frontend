@@ -7,6 +7,7 @@ import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
 import { Controller } from '../../components';
 import MainDelModal from '../../components/elements/MainDelModal';
+import NumberAnimation from '../../components/elements/NumberAnimation';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ function Main(): JSX.Element {
       <div className="background">
         <div className="title">
           <p>내 가계부</p>
+          <NumberAnimation />
           <h1>{priceComma(calculateTotalBalance())}원</h1>
         </div>
 
