@@ -13,11 +13,16 @@
         color: gray;
 
     }
+    .finishedImages{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+    }
     .finishedImage{
         border: 3px soild red;
         width: 290px;
         height: 260px;
-        margin-left: 53px;
         position: absolute;
         top: 275px;
     }
@@ -25,7 +30,6 @@
         border: 3px soild red;
         width: 350px;
         height: 310px;
-        margin-left: 23px;
         position: absolute;
         top: 250px;
     }
