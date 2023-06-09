@@ -1,41 +1,40 @@
 import React, { useState, useEffect } from 'react';
 
-// interface NumberAnimationProps {
-//   targetNumber: number;
-// }
+interface NumberAnimationProps {
+  targetNumber: number;
+}
 
-function NumberAnimation(): JSX.Element {
+function NumberAnimation({ targetNumber }: NumberAnimationProps): JSX.Element {
   // 숫자 증가 애니메이션
-  const [number, setNumber] = useState(0);
-
-  const targetNumber = 99999;
+  const [displayNumber, setDisplayNumber] = useState(0);
+  const duration = 3000;
 
   useEffect(() => {
-    const animationDuration = 5000; // 5초
-    const framesPerSecond = 60; // 초당 프레임 수
-    const framesCount = (animationDuration / 1000) * framesPerSecond; // 총 프레임 수
-    const increment = targetNumber / framesCount; // 프레임당 증가량 계산
+    const startTime = performance.now();
+    let animationFrame: number;
 
-    const animate = () => {
-      setNumber((prevNumber) => {
-        const nextNumber = prevNumber + increment;
+    const animate = (timestamp: number) => {
+      const elapsedTime = timestamp - startTime;
+      let progress = elapsedTime / duration;
 
-        if (nextNumber >= targetNumber) {
-          return targetNumber;
-        }
+      if (progress > 1) progress = 1;
 
-        requestAnimationFrame(animate);
-        return nextNumber;
-      });
+      const nextNumber = Math.floor(targetNumber * progress);
+      setDisplayNumber(nextNumber);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        setDisplayNumber(targetNumber);
+      }
     };
 
-    const animationId = requestAnimationFrame(animate);
+    animationFrame = requestAnimationFrame(animate);
 
-    // 컴포넌트가 언마운트되면 애니메이션을 멈춥니다.
-    return () => cancelAnimationFrame(animationId);
-  }, [targetNumber]);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [targetNumber, duration]);
 
-  return <div>{Math.floor(number)}</div>;
+  return <>{displayNumber.toLocaleString()}</>;
 }
 
 export default NumberAnimation;
