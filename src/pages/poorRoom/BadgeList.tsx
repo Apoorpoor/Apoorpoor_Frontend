@@ -21,6 +21,8 @@ import medical from '../../static/image/badge/badge_medical.svg';
 import shopping from '../../static/image/badge/badge_shopping.svg';
 import transportation from '../../static/image/badge/badge_transportation.svg';
 import tribute from '../../static/image/badge/badge_tribute.svg';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 function BadgeList() {
   const navigate = useNavigate();
@@ -60,10 +62,10 @@ function BadgeList() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
 
   type Badge = {

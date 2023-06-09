@@ -8,6 +8,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from 'react-query';
+import { BsFillCaretRightFill } from 'react-icons/bs';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
@@ -28,6 +29,8 @@ import education from '../../static/image/badge/badge_education.svg';
 import food from '../../static/image/badge/badge_food.svg';
 import myPoorState from '../../shared/MyPoor';
 import PoorCharacter from './PoorCharacter';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 function PoorRoom() {
   const navigate = useNavigate();
@@ -117,10 +120,10 @@ function PoorRoom() {
   }, [data, setMyPoorLevel]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
 
   return (
@@ -139,7 +142,7 @@ function PoorRoom() {
               className="whiteRoundCommon"
               onClick={() => navigate('/poorItemSetting')}
             >
-              아이템
+              아이템 <BsFillCaretRightFill />
             </Button>
             <Button
               className="textType"
