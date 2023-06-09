@@ -14,15 +14,16 @@ const Redirection: React.FC = () => {
   useEffect(() => {
     const getAccessToken = async (urlCode: string): Promise<void> => {
       try {
-        const response = await instance.get(`/oauth/kakao?code=${urlCode}`
+        const response = await instance.get(
+          `/oauth/kakao?code=${urlCode}`
           // , {urlCode}
         );
         const accessToken = response.headers.access_key;
-        const AToken = accessToken.split(" ")[1];
+        const AToken = accessToken.split(' ')[1];
         localStorage.setItem('AToken', AToken);
 
         const refreshToken = response.headers.refresh_key;
-        const RToken = refreshToken.split(" ")[1];
+        const RToken = refreshToken.split(' ')[1];
         Cookies.set('RToken', RToken, { expires: 7 });
 
         // 유저아이디 받기
