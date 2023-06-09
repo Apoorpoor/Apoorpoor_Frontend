@@ -15,6 +15,7 @@ import '../../styles/pages/_PoorItemSetting.scss';
 
 function PoorItemSetting() {
   const queryClient = useQueryClient();
+  const MyPoorInfo = useRecoilValue(myPoorState);
 
   interface MyData {
     itemNum: number;
@@ -25,6 +26,7 @@ function PoorItemSetting() {
     levelLimit: number;
     itemImage: string;
   }
+
   const { isLoading, error, data }: UseQueryResult<MyData[]> = useQuery(
     'getMyPoorItem',
     beggars.getMyPoorItem
@@ -134,7 +136,7 @@ function PoorItemSetting() {
                 <li
                   key={item.itemNum}
                   className={
-                    item.levelLimit > myLevel.level ? 'closed' : 'open'
+                    item.levelLimit > MyPoorInfo.level ? 'closed' : 'open'
                   }
                 >
                   <div className="itemBox">
@@ -161,7 +163,7 @@ function PoorItemSetting() {
                         : 'Done'
                     }`}
                     disabled={
-                      item.levelLimit > myLevel.level ? disabled : false
+                      item.levelLimit > MyPoorInfo.level ? disabled : false
                     }
                     onClick={() =>
                       changeItemStateHandler({
@@ -189,7 +191,7 @@ function PoorItemSetting() {
                 <li
                   key={item.itemNum}
                   className={
-                    item.levelLimit > myLevel.level ? 'closed' : 'open'
+                    item.levelLimit > MyPoorInfo.level ? 'closed' : 'open'
                   }
                 >
                   <div className="itemBox">
@@ -216,7 +218,7 @@ function PoorItemSetting() {
                         : 'Done'
                     }`}
                     disabled={
-                      item.levelLimit > myLevel.level ? disabled : false
+                      item.levelLimit > MyPoorInfo.level ? disabled : false
                     }
                     onClick={() =>
                       changeItemStateHandler({
@@ -244,7 +246,7 @@ function PoorItemSetting() {
                 <li
                   key={item.itemNum}
                   className={
-                    item.levelLimit > myLevel.level ? 'closed' : 'open'
+                    item.levelLimit > MyPoorInfo.level ? 'closed' : 'open'
                   }
                 >
                   <div className="itemBox">
@@ -271,7 +273,7 @@ function PoorItemSetting() {
                         : 'Done'
                     }`}
                     disabled={
-                      item.levelLimit > myLevel.level ? disabled : false
+                      item.levelLimit > MyPoorInfo.level ? disabled : false
                     }
                     onClick={() =>
                       changeItemStateHandler({
@@ -299,7 +301,7 @@ function PoorItemSetting() {
                 <li
                   key={item.itemNum}
                   className={
-                    item.levelLimit > myLevel.level ? 'closed' : 'open'
+                    item.levelLimit > MyPoorInfo.level ? 'closed' : 'open'
                   }
                 >
                   <div className="itemBox">
@@ -326,7 +328,7 @@ function PoorItemSetting() {
                         : 'Done'
                     }`}
                     disabled={
-                      item.levelLimit > myLevel.level ? disabled : false
+                      item.levelLimit > MyPoorInfo.level ? disabled : false
                     }
                     onClick={() =>
                       changeItemStateHandler({
@@ -354,7 +356,7 @@ function PoorItemSetting() {
                 <li
                   key={item.itemNum}
                   className={
-                    item.levelLimit > myLevel.level ? 'closed' : 'open'
+                    item.levelLimit > MyPoorInfo.level ? 'closed' : 'open'
                   }
                 >
                   <div className="itemBox">
@@ -381,7 +383,7 @@ function PoorItemSetting() {
                         : 'Done'
                     }`}
                     disabled={
-                      item.levelLimit > myLevel.level ? disabled : false
+                      item.levelLimit > MyPoorInfo.level ? disabled : false
                     }
                     onClick={() =>
                       changeItemStateHandler({
