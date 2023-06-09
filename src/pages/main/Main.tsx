@@ -95,8 +95,8 @@ function Main(): JSX.Element {
   }
 
   // 천단위 콤마
-  const priceComma = (price: number): string =>
-    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  // const priceComma = (price: number): string =>
+  //   price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
     <>
@@ -106,8 +106,10 @@ function Main(): JSX.Element {
       <div className="background">
         <div className="title">
           <p>내 가계부</p>
-          <NumberAnimation />
-          <h1>{priceComma(calculateTotalBalance())}원</h1>
+          <h1>
+            <NumberAnimation targetNumber={calculateTotalBalance()} />원
+          </h1>
+          {/* <h1>{priceComma(calculateTotalBalance())}원</h1> */}
         </div>
 
         <div className="accountList">
@@ -132,7 +134,9 @@ function Main(): JSX.Element {
               <div key={item.id} className="account">
                 <div>
                   <p className="accountName">{item.title}</p>
-                  <p className="accountMoney">{priceComma(balanceValue)}원</p>
+                  <p className="accountMoney">
+                    <NumberAnimation targetNumber={balanceValue} />원
+                  </p>
                 </div>
                 <div className="moreNdelBtn">
                   <button
