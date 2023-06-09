@@ -18,7 +18,7 @@ const Redirection: React.FC = () => {
   useEffect(() => {
     const getAccessToken = async (urlCode: string): Promise<void> => {
       try {
-        const response = await instance.get(`oauth/kakao?code=${urlCode}`
+        const response = await instance.get(`/oauth/kakao?code=${urlCode}`
           // , {urlCode}
         );
         const accessToken = response.headers.access_key;
