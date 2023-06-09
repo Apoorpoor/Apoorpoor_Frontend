@@ -20,21 +20,42 @@
   }
   & > div:first-child {
     height: calc(100% - 228px);
-    & h1{
-        font-size: 40px;
-        margin-bottom: 12px;
+    & h1 {
+      font-size: 40px;
+      margin-bottom: 12px;
     }
     & p {
-        font-size:16px;
-        margin-bottom: 52px;
+      font-size: 16px;
+      margin-bottom: 52px;
     }
   }
   & > div:last-child {
-    & button:first-child{
-        margin-bottom: 20px;
+    & button:first-child {
+      margin-bottom: 20px;
     }
   }
   & img {
     width: 180px;
+  }
+}
+
+// 데이터 부족 에러 컴포넌트
+.dataNone {
+  width: 100%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & img {
+    width: 180px;
+  }
+  & p {
+    text-align: center;
+    font-size: 16px;
+    padding-top: 45px;
+    font-weight: 700;
+    line-height: 1.5;
   }
 }

@@ -52,6 +52,23 @@ function ProgressBar({ data }: { data: DataProps }) {
   };
 
   useEffect(() => {
+    let startValue = 0;
+
+    const interval = setInterval(() => {
+      setValue(startValue);
+      startValue += 1;
+
+      if (startValue > levelGage) {
+        clearInterval(interval);
+      }
+    }, 10);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [levelGage]);
+
+  useEffect(() => {
     progress(value);
   }, [value]);
 

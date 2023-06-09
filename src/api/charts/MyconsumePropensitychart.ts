@@ -1,15 +1,6 @@
 import instance from '../instance';
 
 // 나의 소비성향 조회
-// const today = new Date();
-// const year = today.getFullYear();
-// const month = today.getMonth() + 1;
-
-// interface MyData {
-//   month: string;
-//   expenditureType: string;
-//   month_sum: number;
-// }
 
 const getMyConsumePropensity = async () => {
   try {

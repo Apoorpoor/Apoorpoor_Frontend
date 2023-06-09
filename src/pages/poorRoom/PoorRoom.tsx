@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import {
@@ -22,20 +23,16 @@ import {
   ProgressBar,
   SlickSlider,
 } from '../../components';
-import communication from '../../static/image/badge/badge_communication.svg';
-import culture from '../../static/image/badge/badge_culture.svg';
-import deposit from '../../static/image/badge/badge_deposit.svg';
-import education from '../../static/image/badge/badge_education.svg';
-import food from '../../static/image/badge/badge_food.svg';
 import myPoorState from '../../shared/MyPoor';
 import PoorCharacter from './PoorCharacter';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
+import containerPositionState from '../../shared/ScrollContainer';
 
 function PoorRoom() {
   const navigate = useNavigate();
-  const [myPoorLevel, setMyPoorLevel] = useRecoilState(myPoorState);
   const queryClient = useQueryClient();
+  const [scroll, setScroll] = useState(false);
 
   // 마이푸어룸 데이터 불러오기
   type Badge = {
@@ -78,6 +75,7 @@ function PoorRoom() {
     beggars.getMyPoorRoom
   );
 
+  // 포인트 내역 조회
   const {
     isLoading: PointLoading,
     error: PointError,
@@ -106,18 +104,18 @@ function PoorRoom() {
     });
   };
 
-  console.log('PointData', PointData);
-
   // 포인트 내역 기간별 조회하기
   // const pointInquirybyPeriod = ({}) => {
   //   getPointInquiry('newDateType', 'newKind', newPage);
   // };
 
-  useEffect(() => {
-    if (data !== undefined) {
-      setMyPoorLevel(data);
-    }
-  }, [data, setMyPoorLevel]);
+  const [scrollPosition, setScrollPosition] = useRecoilState(
+    containerPositionState
+  );
+
+  if (scrollPosition > 1500) {
+    console.log('게이지 영역 도달!');
+  }
 
   if (isLoading) {
     return <Loading />;
@@ -170,7 +168,7 @@ function PoorRoom() {
             {data?.badgeList
               .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
               .map((item) => (
-                <div key={item.badgeNum} className="item">
+                <div key={item.badgeTitle} className="item">
                   <img src={item.badgeImage} alt={item.badgeTitle} />
                   <p>{item.badgeTitle}</p>
                 </div>
@@ -235,7 +233,6 @@ function PoorRoom() {
           </div>
         </section>
       </article>
-      <Controller />
     </main>
   );
 }

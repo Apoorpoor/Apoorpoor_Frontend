@@ -2,6 +2,8 @@ import React from 'react';
 import { ResponsiveRadar } from '@nivo/radar';
 import { useQuery } from 'react-query';
 import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
+import '../../styles/pages/_Error.scss';
+import Error from '../../static/image/status/error.png';
 
 function MyConsumePropensitychart() {
   const theme = {
@@ -41,12 +43,6 @@ function MyConsumePropensitychart() {
   }
   if (error) {
     return <div>Error</div>;
-  }
-
-  console.log(data);
-
-  if (data === undefined) {
-    return <div>데이터가 충분히 모이지 않았습니다 ㅜㅠ</div>;
   }
 
   const newIndex = (expenditureType: string) => {
@@ -114,12 +110,24 @@ function MyConsumePropensitychart() {
         return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
     }
   };
-
+  if (data === undefined || data.length < 6) {
+    return (
+      <div className="dataNone">
+        <img src={Error} alt="에러이미지" />
+        <p>
+          데이터가 충분히 모이지 않았습니다. <br />
+          조금만 기다려주세요
+        </p>
+      </div>
+    );
+  }
   return (
     <>
       <ul className="consumeStyle">
         {data.map((d) => (
-          <li key={d}>#{consumeKeyword(String(d.expenditureType))}</li>
+          <li key={d.expenditureType}>
+            #{consumeKeyword(String(d.expenditureType))}
+          </li>
         ))}
       </ul>
       <ResponsiveRadar
