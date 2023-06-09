@@ -45,7 +45,7 @@ const Redirection: React.FC = () => {
 
     const onSilentRefresh = () => {
       instance
-        .get(`oauth/kakao?code=${urlCode}`)
+        .get(`/oauth/kakao?code=${urlCode}`)
         .then(onLoginSuccess)
         .catch((error) => {
           // ... 로그인 실패 처리
