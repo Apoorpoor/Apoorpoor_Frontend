@@ -5,6 +5,7 @@ import { Layout } from './components';
 import {
   Account,
   AddAccount,
+  EditAccount,
   AddAccountDone,
   IntroTalk,
   Login,
@@ -40,6 +41,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/account/:id" element={<Account />} />
         <Route path="/addAccount/:id" element={<AddAccount />} />
+        <Route path="/editAccount/:id" element={<EditAccount />} />
         <Route path="/addAccountDone/:id" element={<AddAccountDone />} />
         <Route path="/poorRoom" element={<PoorRoom />} />
         <Route path="/poorItemSetting" element={<PoorItemSetting />} />

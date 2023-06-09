@@ -136,6 +136,31 @@ export const delAccount = async (id: number) => {
   }
 };
 
+// (상세 -> 일자별) 거래내역 수정
+export const editAccount = async (
+  id: string,
+  requestData: {
+    accountId: string;
+    title: string;
+    accountType: string;
+    incomeType: string | null;
+    expenditureType: string | null;
+    paymentMethod: string;
+    income: string | null;
+    expenditure: string | null;
+    date: string;
+  }
+) => {
+  try {
+    const response = await instance.patch(`/ledgerhistory/${id}`, requestData);
+    console.log('거래내역 수정 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('거래내역 수정 실패:', error);
+    throw error;
+  }
+};
+
 export default {
   getAccountList,
   addAccountList,
@@ -147,4 +172,5 @@ export default {
   getAccountsDate,
   addAccount,
   delAccount,
+  editAccount,
 };

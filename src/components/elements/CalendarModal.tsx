@@ -219,7 +219,15 @@ function CalendarModal({
                       >
                         삭제
                       </button>
-                      <button type="button" className="delBtn">
+                      <button
+                        type="button"
+                        className="delBtn"
+                        onClick={() =>
+                          navigate(`/editAccount/${item.id}`, {
+                            state: { data },
+                          })
+                        }
+                      >
                         수정
                       </button>
                     </div>

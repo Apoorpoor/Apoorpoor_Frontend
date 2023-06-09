@@ -1,5 +1,6 @@
 import Account from './accounts/Account';
 import AddAccount from './accounts/AddAccount';
+import EditAccount from './accounts/EditAccount';
 import AddAccountDone from './accounts/AddAccountDone';
 import Main from './main/Main';
 import PoorRoom from './poorRoom/PoorRoom';
@@ -20,6 +21,7 @@ import UsersProfilePage from './poorTalk/UsersProfilePage';
 export {
   Account,
   AddAccount,
+  EditAccount,
   AddAccountDone,
   Main,
   PoorRoom,

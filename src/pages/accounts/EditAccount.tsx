@@ -2,22 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
 import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 
-function AddAccount(): JSX.Element {
+// 불러온 data의 타입
+interface LedgerItem {
+  id: number;
+  title: string;
+  accountType: string;
+  incomeType: string | null;
+  expenditureType: string | null;
+  paymentMethod: string | null;
+  income: number | null;
+  expenditure: number | null;
+  date: string;
+}
+
+function EditAccount(): JSX.Element {
   const navigate = useNavigate();
 
   // 현재 가계부의 id 조회
-  // const { id } = useParams<{ id: string }>();
-  const { id } = useParams<{ id: string | undefined }>();
+  const { id = '' } = useParams<{ id: string | undefined }>();
+
+  // 이전 컴포넌트에서 불러온 수정 전 data
+  const location = useLocation();
+  const data: LedgerItem[] = location.state?.data;
+  const editData = data.filter((item: LedgerItem) => item.id === Number(id));
+  console.log('전달받은 data::', editData);
+
+  // 금액 수정 전 input
+  const returnPrice = (): number => {
+    if (editData[0]?.accountType === 'EXPENDITURE') {
+      return editData[0]?.expenditure ?? 0;
+    }
+    return editData[0]?.income ?? 0;
+  };
 
   // 금액 입력
-  const [accountPriceInput, setAccountPriceInput] = useState('');
+  const [accountPriceInput, setAccountPriceInput] = useState(
+    returnPrice().toString() || ''
+  );
 
   // 천단위 콤마
   const comma = (price: string) => {
@@ -52,7 +80,7 @@ function AddAccount(): JSX.Element {
   }, [accountPriceInput]);
 
   // 내용 입력
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(editData[0]?.title);
 
   // 내용 onChange
   const handleTitleInputChange = (
@@ -67,7 +95,7 @@ function AddAccount(): JSX.Element {
   };
 
   // 수입 지출 분류 선택
-  const [accountType, setAccountType] = useState('EXPENDITURE');
+  const [accountType, setAccountType] = useState(editData[0]?.accountType);
 
   const handleAccountType = (radioId: string): void => {
     setAccountType(radioId);
@@ -84,7 +112,13 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [incomeType, setIncomeType] = useState<string | null>(null);
+  const editInOptions = inOptions.filter(
+    (options) => options.value === editData[0]?.incomeType
+  );
+
+  const [incomeType, setIncomeType] = useState<string | null>(
+    editInOptions[0]?.value || ''
+  );
 
   const inSelectCustom = {
     control: (provided: any, state: any) => ({
@@ -143,7 +177,13 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [expenditureType, setExpenditureType] = useState<string | null>(null);
+  const editExOptions = exOptions.filter(
+    (options) => options.value === editData[0]?.expenditureType
+  );
+
+  const [expenditureType, setExpenditureType] = useState<string | null>(
+    editExOptions[0]?.value || ''
+  );
 
   const exSelectCustom = {
     control: (provided: any, state: any) => ({
@@ -195,7 +235,13 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const editPaymentMethod = payment.filter(
+    (options) => options.value === editData[0]?.paymentMethod
+  );
+
+  const [paymentMethod, setPaymentMethod] = useState<string>(
+    editPaymentMethod[0]?.value || ''
+  );
 
   const paySelectCustom = {
     control: (provided: any, state: any) => ({
@@ -240,26 +286,31 @@ function AddAccount(): JSX.Element {
   // AddAccountCalendar.tsx에서 받아온 날짜
   const [date, setOnDateChange] = useState('');
 
-  const [expenditure, setExpenditure] = useState<string | null>(null);
-  const [income, setIncome] = useState<string | null>(null);
+  const [expenditure, setExpenditure] = useState<string | null>(
+    accountPriceInput || null
+  );
+  const [income, setIncome] = useState<string | null>(
+    accountPriceInput || null
+  );
+  console.log(expenditure, income);
 
   // 지출, 수입 둘 중 하나가 null이면 inputValue를 해당 카테고리에 할당
   useEffect(() => {
     if (expenditureType === null) {
       setExpenditure(null);
       if (incomeType !== null && accountPriceInput !== '') {
-        setIncome(accountPriceInput);
+        Number(setIncome(accountPriceInput));
       }
     } else if (incomeType === null) {
       if (expenditureType !== null && accountPriceInput !== '') {
-        setExpenditure(accountPriceInput);
+        Number(setExpenditure(accountPriceInput));
       }
     }
   }, [expenditureType, incomeType, accountPriceInput]);
 
-  // 거래내역 추가
-  const addAccountMutation = useMutation(
-    (requestData: {
+  // 거래내역 수정
+  const editAccountMutation = useMutation(
+    async (requestData: {
       accountId: string;
       title: string;
       accountType: string;
@@ -269,18 +320,18 @@ function AddAccount(): JSX.Element {
       income: string | null;
       expenditure: string | null;
       date: string;
-    }) => accounts.addAccount(requestData),
+    }) => accounts.editAccount(id, requestData),
     {
-      onSuccess: (response) => {
-        console.log('거래내역 추가 성공:', response);
+      onSuccess: () => {
+        console.log('거래내역 수정 성공');
       },
       onError: (error) => {
-        console.log('거래내역 추가 실패:', error);
+        console.log('거래내역 수정 실패:', error);
       },
     }
   );
 
-  const handleRegister = async () => {
+  const handleEdit = async () => {
     try {
       const requestData = {
         accountId: id || '',
@@ -294,13 +345,11 @@ function AddAccount(): JSX.Element {
         date: date || '',
       };
 
-      await addAccountMutation.mutateAsync(requestData);
-      console.log('거래내역 추가 요청 완료');
-      setAccountPriceInput('');
-      setTitle('');
-      navigate(`/addAccountDone/${id}`);
+      await editAccountMutation.mutateAsync(requestData);
+      console.log('거래내역 수정 요청 완료');
+      navigate(`/editAccountDone/${id}`);
     } catch (error) {
-      console.log('거래내역 추가 실패:', error);
+      console.log('거래내역 수정 실패:', error);
     }
   };
 
@@ -396,6 +445,7 @@ function AddAccount(): JSX.Element {
             options={payment}
             onChange={(e: any) => setPaymentMethod(e.value)}
             styles={paySelectCustom}
+            defaultValue={editPaymentMethod}
           />
         </div>
 
@@ -407,6 +457,7 @@ function AddAccount(): JSX.Element {
               options={inOptions}
               onChange={(e: any) => setIncomeType(e.value)}
               styles={inSelectCustom}
+              defaultValue={editInOptions}
             />
           ) : (
             <Select
@@ -414,13 +465,14 @@ function AddAccount(): JSX.Element {
               options={exOptions}
               onChange={(e: any) => setExpenditureType(e.value)}
               styles={exSelectCustom}
+              defaultValue={editExOptions}
             />
           )}
         </div>
         <button
           className="addAccountDoneBtn"
           type="button"
-          onClick={handleRegister}
+          onClick={handleEdit}
         >
           등록하기
         </button>
@@ -429,4 +481,4 @@ function AddAccount(): JSX.Element {
   );
 }
 
-export default AddAccount;
+export default EditAccount;

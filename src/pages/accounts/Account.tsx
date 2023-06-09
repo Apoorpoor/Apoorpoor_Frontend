@@ -10,12 +10,14 @@ import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
 import { UseQueryResult, useQuery } from 'react-query';
+import { format, subMonths, subWeeks } from 'date-fns';
 import accounts from '../../api/accounts';
 import { Calendar, Chart, Controller } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
 import NumberAnimation from '../../components/elements/NumberAnimation';
+import AccountRangeCal from '../../components/elements/AccountRangeCal';
 
 // 거래내역 조회
 interface LedgerHistoryResponseDto {
@@ -186,8 +188,7 @@ function Account(): JSX.Element {
     { name: '1주일', selected: false },
     { name: '1개월', selected: false },
     { name: '3개월', selected: false },
-    { name: '6개월', selected: false },
-    { name: '1년', selected: false },
+    { name: '기간 선택', selected: false },
   ]);
 
   const categoryOnclick = (idx: number): void => {
@@ -335,6 +336,19 @@ function Account(): JSX.Element {
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
   };
 
+  // 기간 표시
+  const currentDate = new Date();
+  const formattedCurrentDate = format(currentDate, 'MM-dd');
+  // 1주일
+  const oneWeekAgo = subWeeks(new Date(), 1);
+  const oneWeek = format(oneWeekAgo, 'yyyy-MM-dd');
+  // 1개월
+  const oneMonthAgo = subMonths(new Date(), 1);
+  const oneMonth = format(oneMonthAgo, 'yyyy-MM-dd');
+  // 3개월
+  const threeMonthAgo = subMonths(new Date(), 3);
+  const threeMonth = format(threeMonthAgo, 'yyyy-MM-dd');
+
   if (isLoading || getTotalMonthDateIsLoading) {
     return <div>Loading...</div>;
   }
@@ -451,7 +465,7 @@ function Account(): JSX.Element {
       <div className="line"> </div>
 
       <div className="_AccountBackground">
-        <div className="accountHeader">
+        <div className="accountRangeBtn">
           {term.map((el, i) => (
             <div
               key={el.name}
@@ -467,6 +481,22 @@ function Account(): JSX.Element {
             </div>
           ))}
         </div>
+        {term[0].selected && (
+          <p className="accountRangeText">
+            {oneWeek} ~ {formattedCurrentDate}
+          </p>
+        )}
+        {term[1].selected && (
+          <p className="accountRangeText">
+            {oneMonth} ~ {formattedCurrentDate}
+          </p>
+        )}
+        {term[2].selected && (
+          <p className="accountRangeText">
+            {threeMonth} ~ {formattedCurrentDate}
+          </p>
+        )}
+        {term[3].selected && <AccountRangeCal />}
         <ul className="InExFilter">
           <div className="accountFilterSelect">
             {selectedInExFilter === '수입' ? (
