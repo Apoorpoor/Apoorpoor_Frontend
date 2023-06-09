@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import containerPositionState from '../../shared/ScrollContainer';
 import '../../styles/components/_ProgressBar.scss';
 
 // 게이지 기본 속성값
@@ -11,7 +15,6 @@ interface DataProps {
 }
 
 function ProgressBar({ data }: { data: DataProps }) {
-  console.log('포인트게이지props', data);
   // 레벨 별 필요 포인트
   const requiredPoint: { [key: number]: number } = {
     1: 99,
@@ -26,9 +29,17 @@ function ProgressBar({ data }: { data: DataProps }) {
     10: 5500,
   };
 
+  const scrollPosition = useRecoilValue(containerPositionState);
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    if (scrollPosition > 1400) {
+      setRender(true);
+    }
+  }, [scrollPosition]);
+
   // 현재 레벨 진행 상태
   const levelGage = (data.point / requiredPoint[data.level]) * 100;
-  console.log('레벨 게이지', levelGage);
 
   // circle svg 저장용
   const barRef = useRef<SVGCircleElement | null>(null);
@@ -52,16 +63,15 @@ function ProgressBar({ data }: { data: DataProps }) {
   };
 
   useEffect(() => {
-    let startValue = 0;
-
     const interval = setInterval(() => {
+      let startValue = 0;
       setValue(startValue);
       startValue += 1;
 
       if (startValue > levelGage) {
         clearInterval(interval);
       }
-    }, 10);
+    }, 20);
 
     return () => {
       clearInterval(interval);
@@ -69,8 +79,11 @@ function ProgressBar({ data }: { data: DataProps }) {
   }, [levelGage]);
 
   useEffect(() => {
-    progress(value);
-  }, [value]);
+    if (render) {
+      console.log('렌더링 시작!');
+      progress(levelGage);
+    }
+  }, [scrollPosition, render, levelGage]);
 
   return (
     <div id="LevelGage">

@@ -32,7 +32,11 @@ import containerPositionState from '../../shared/ScrollContainer';
 function PoorRoom() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [scroll, setScroll] = useState(false);
+  const [scrollPosition, setScrollPosition] = useRecoilState(
+    containerPositionState
+  );
+
+  console.log("내가 지금 어디있지?", scrollPosition)
 
   // 마이푸어룸 데이터 불러오기
   type Badge = {
@@ -108,10 +112,6 @@ function PoorRoom() {
   // const pointInquirybyPeriod = ({}) => {
   //   getPointInquiry('newDateType', 'newKind', newPage);
   // };
-
-  const [scrollPosition, setScrollPosition] = useRecoilState(
-    containerPositionState
-  );
 
   if (scrollPosition > 1500) {
     console.log('게이지 영역 도달!');
