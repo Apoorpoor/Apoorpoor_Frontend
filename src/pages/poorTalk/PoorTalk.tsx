@@ -1,9 +1,9 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState, ChangeEvent } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { useQuery } from "react-query";
-import { useNavigate } from "react-router";
 import { FaCamera, FaArrowCircleUp } from "react-icons/fa";
 import { getUser } from "../../api/members";
 import '../../styles/pages/_PoorTalk.scss';
@@ -33,13 +33,13 @@ function PoorTalk(): JSX.Element {
     // 유저 정보 받아오기
     const { isLoading, error, data } = useQuery("getUser", getUser);
     // 소켓
-    const socket = new SockJS(`http://3.34.85.5:8080/ws-edit`);
+    const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`);
     // 클라이언트
     const stompClientRef = useRef<Client | null>(null);
     // 최신글이 올라오면 맨 밑으로 포커싱
     const messagesEndRef = useRef<HTMLDivElement>(null);
     // 네비게이터
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     // 상대 유저들 모달창
     const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -52,9 +52,8 @@ function PoorTalk(): JSX.Element {
         hours: today.getHours().toString().padStart(2, "0"), // 현재 시간
         minutes: today.getMinutes().toString().padStart(2, "0"), // 현재 분
         seconds: today.getSeconds().toString().padStart(2, "0"), // 현재 초
-        milliseconds: today.getMilliseconds().toString().padStart(2, "0"), // 현재 밀리초
     };
-    const timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours} : ${time.minutes} ${time.seconds}초 ${time.milliseconds}`;
+    const timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours} : ${time.minutes} ${time.seconds}초 `
 
     // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
     useEffect(() => {
@@ -209,7 +208,6 @@ function PoorTalk(): JSX.Element {
         return <div>Loading...</div>;
     }
     if (error) {
-        navigate("/login")
         return <div>Error</div>;
     }
     console.log("chatMessages = ", chatMessages)
@@ -220,9 +218,9 @@ function PoorTalk(): JSX.Element {
             <Header>푸어talk</Header>
             {modalOpen && <UsersProfilePage setModalOpen={setModalOpen} onMessageUserId={onMessageUserId} />}
             {chatMessages && chatMessages.length > 0 && (
-                <div className='Messagesbox' ref={messagesEndRef}>
-                    {chatMessages?.map((message) => (
-                        <div className="chatBox" key={message.date}>
+                <div className='Messagesbox'>
+                    {chatMessages?.map((message, index) => (
+                        <div className="chatBox" key={index}>
                             {message.type === "ENTER" && message.beggar_id !== null && (
                                 <div className="introMessage" >{message.message}</div>
                             )}
@@ -244,7 +242,7 @@ function PoorTalk(): JSX.Element {
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="nowTime1">{message.date.slice(13, -8)}</div>
+                                            <div className="nowTime1">{message.date.slice(13, -5)}</div>
                                         </>
                                     ) : (
                                         // 다른 사용자가 보낸 메시지인 경우
@@ -252,6 +250,7 @@ function PoorTalk(): JSX.Element {
                                             <button type="button" className="yourChatProfile"
                                                 onClick={() => usersProfileHandler(message.userId)}
                                             ><img src={basicPoor} alt='거지 이미지' /></button>
+                                            <div className="yourChatNickName">{message.sender}</div>
                                             <div className="yourChat">
                                                 {message.image ? (
                                                     <div>
@@ -261,10 +260,11 @@ function PoorTalk(): JSX.Element {
                                                     <div>{message.message}</div>
                                                 )}
                                             </div>
-                                            <div className="nowTime2">{message.date.slice(13, -11)}</div>
+                                            <div className="nowTime2">{message.date.slice(13, -5)}</div>
                                         </>
                                     )}
-                                    {/* <div ref={messagesEndRef} /> */}
+                                    {/* 새로 채팅이 생기면 맨 아래로 포커싱 */}
+                                    <div ref={messagesEndRef} />
                                 </>
                             )}
                         </div>
