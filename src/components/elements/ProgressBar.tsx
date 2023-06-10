@@ -1,15 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import myPoorState from '../../shared/MyPoor';
+import containerPositionState from '../../shared/ScrollContainer';
 import '../../styles/components/_ProgressBar.scss';
 
 // 게이지 기본 속성값
 const RADIUS = 140; // 반지름
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+interface DataProps {
+  exp: number;
+  point: number;
+  level: number;
+}
 
-function ProgressBar() {
-  const myPoorInfo = useRecoilValue(myPoorState);
-
+function ProgressBar({ data }: { data: DataProps }) {
   // 레벨 별 필요 포인트
   const requiredPoint: { [key: number]: number } = {
     1: 99,
@@ -24,9 +29,17 @@ function ProgressBar() {
     10: 5500,
   };
 
+  const scrollPosition = useRecoilValue(containerPositionState);
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    if (scrollPosition > 1400) {
+      setRender(true);
+    }
+  }, [scrollPosition]);
+
   // 현재 레벨 진행 상태
-  const levelGage = (myPoorInfo.point / requiredPoint[myPoorInfo.level]) * 100;
-  console.log(levelGage);
+  const levelGage = (data.point / requiredPoint[data.level]) * 100;
 
   // circle svg 저장용
   const barRef = useRef<SVGCircleElement | null>(null);
@@ -50,8 +63,27 @@ function ProgressBar() {
   };
 
   useEffect(() => {
-    progress(value);
-  }, [value]);
+    const interval = setInterval(() => {
+      let startValue = 0;
+      setValue(startValue);
+      startValue += 1;
+
+      if (startValue > levelGage) {
+        clearInterval(interval);
+      }
+    }, 20);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [levelGage]);
+
+  useEffect(() => {
+    if (render) {
+      console.log('렌더링 시작!');
+      progress(levelGage);
+    }
+  }, [scrollPosition, render, levelGage]);
 
   return (
     <div id="LevelGage">
@@ -81,12 +113,12 @@ function ProgressBar() {
           strokeLinecap="round"
         />
       </svg>
-      <p id="AccumulatePoint">누적 {myPoorInfo.exp} P</p>
+      <p id="AccumulatePoint">누적 {data.exp} P</p>
       <p id="Point">
-        <span>{myPoorInfo.point}</span> P
+        <span>{data.point}</span> P
       </p>
-      <p className="Level currentLevel">Lv {myPoorInfo.level}</p>
-      <p className="Level nextLevel">Lv {myPoorInfo.level + 1}</p>
+      <p className="Level currentLevel">Lv {data.level}</p>
+      <p className="Level nextLevel">Lv {data.level + 1}</p>
     </div>
   );
 }

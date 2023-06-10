@@ -1,15 +1,23 @@
-.Wrappers {
+#IntroTalkLayout {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  & > section {
     width: 100%;
-    height: 100vh;
-    background-color: white;
-    padding: 15px;
+    padding: 0 15px;
     box-sizing: border-box;
-}
-.IntroTalkLayout {
-    box-sizing: border-box;
-    padding: 15px;
   }
-.PoorImage {
+  & section:first-child {
+    padding-top: 6vh;
+  }
+  & section:last-child {
+    padding-bottom: 120px;
+  }
+  .PoorImage {
     width: 250px;
     height: 250px;
     background-color: #f3f3f3;
@@ -17,69 +25,73 @@
     margin: 30px auto 30px auto;
     position: relative;
     overflow: hidden;
-    &>img{
-        position: absolute;
-        top: 40px;
-        width: 140px;
-        height: 100%;
-        margin-left: 55px;
-        // object-fit: cover;
+    & > img {
+      position: absolute;
+      top: 40px;
+      width: 140px;
+      height: 100%;
+      margin-left: 55px;
+      // object-fit: cover;
     }
-}
-.RuleBox {
+  }
+  .RuleBox {
     width: 100%;
     height: 170px;
-    background-color: #f3f3f3;
-    border:2px solid #c0c2c4;
+    background-color: #fcfcfc;
+    border: 1px solid #c0c2c4;
     border-radius: 15px;
     justify-content: center;
-}
-.Rule {
-    
+  }
+  .Rule {
     width: 100%;
     // height: 100px;
     // background-color: red;
     border-radius: 12px;
     text-align: center;
     padding-top: 40px;
-}
-.RuleText{
-    color:gray;
-}
-.TextAgree {
+  }
+  .RuleText {
+    color: gray;
+    line-height: 22px;
+  }
+  .TextAgree {
     margin-top: 60px;
     text-align: center;
-    color:orangered
-}
-.CheckBox1{
+    color: orangered;
+  }
+  .CheckBox1 {
+    width: 100%;
     margin-top: 60px;
     text-align: center;
-    color:#c0c2c4;
-    font-size: 20px;
+    color: #c0c2c4;
+    font-size: 16px;
     cursor: pointer;
-}
-.CheckBoxPoint1{
-    margin-left: 15px;
+  }
+  .CheckBoxPoint1 {
+    margin-left: 7px;
     text-align: center;
-    color:#c0c2c4;
+    color: #c0c2c4;
     font-size: 30px;
     cursor: pointer;
-}
-.CheckBox2{
+    transform: translateY(9px);
+  }
+  .CheckBox2 {
+    width: 100%;
     margin-top: 60px;
     text-align: center;
-    color:black;
-    font-size: 20px;
+    color: black;
+    font-size: 16px;
     cursor: pointer;
-}
-.CheckBoxPoint2{
-    margin-left: 15px;
+  }
+  .CheckBoxPoint2 {
+    margin-left: 7px;
     text-align: center;
-    color:rgb(250, 184, 72);
+    color: rgb(250, 184, 72);
     font-size: 30px;
     cursor: pointer;
-}
-.StartChat1{
+    transform: translateY(9px);
+  }
+  .StartChat1 {
     color: white;
     background-color: #4194f1;
     border-radius: 12px;
@@ -88,8 +100,8 @@
     margin-top: 20px;
     padding: 10px;
     filter: opacity(50%);
-}
-.StartChat2{
+  }
+  .StartChat2 {
     color: white;
     background-color: #4194f1;
     border-radius: 12px;
@@ -97,4 +109,5 @@
     font-size: 25px;
     margin-top: 20px;
     padding: 10px;
+  }
 }

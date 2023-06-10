@@ -1,19 +1,22 @@
-#header{
-    position: relative;
-    height: 80px;
-    &>button{
-        position:absolute;
-        top:50%;
-        left:15px;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 24px;
-    }
-    &>h1{
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%, -50%);
-        font-size: 20px;
-    }
+#header {
+  background-color: white;
+  position: sticky;
+  height: 80px;
+  top: 0;
+  z-index: 5;
+  & > button {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 24px;
+  }
+  & > h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+  }
 }

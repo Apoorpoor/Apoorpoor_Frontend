@@ -24,6 +24,10 @@ function PoorCharacter() {
         alt="나의 푸어 캐릭터"
         className="avatar"
       />
+      <img src={myPoorInfo.topImage} alt="" className="item" />
+      <img src={myPoorInfo.bottomImage} alt="" className="item" />
+      <img src={myPoorInfo.accImage} alt="" className="item" />
+      <img src={myPoorInfo.customImage} alt="" className="item" />
     </div>
   );
 }
