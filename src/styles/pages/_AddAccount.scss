@@ -128,6 +128,30 @@
   cursor: pointer;
 }
 
+.rangeDatePicker {
+  display: flex;
+  align-items: center;
+  height: 48px;
+
+  & h2 {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+.rangeDatePickerInput {
+  width: 100px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid $gray-250;
+  color: $gray-450;
+  box-sizing: border-box;
+  padding: 16px;
+  margin-top: 20px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 .datePickerHeaderBox {
   display: flex;
   justify-content: space-between;
