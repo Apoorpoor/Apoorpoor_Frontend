@@ -1,13 +1,4 @@
-/* eslint-disable func-names */
-/* eslint-disable consistent-return */
-/* eslint-disable no-alert */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-console */
-/* eslint-disable import/order */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React from 'react';
 import { FaChevronLeft } from "react-icons/fa";
 import '../../styles/pages/_Finished.scss';
 import { useNavigate } from 'react-router';
@@ -31,7 +22,7 @@ function Finished() {
                 <div className='finishedInfo'>이용할 수 있어요!</div>
             </div>
             <article>
-                <div >
+                <div className='finishedImages'>
                     <img className='finishedImage' src={good2} alt='달력' />
                     <img className='finishedImage1' src={base} alt='뒷배경' />
                     <img className='finishedImage' src={base2} alt='뒷배경2' />

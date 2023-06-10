@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/function-component-definition */
 
-import { useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import instance from '../../api/instance';
 
 const Redirection: React.FC = () => {
-  const JWTEXPIRYTIME = 2 * 3600 * 1000; // 만료 시간 (24시간 밀리 초로 표현)
+  const JWTEXPIRYTIME = 2 * 3600 * 1000; // 만료 시간 (2시간 밀리 초로 표현)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +32,13 @@ const Redirection: React.FC = () => {
 
         // 닉네임이 있는지 확인 체크 있으면 메인페이지로
         const nickname = response.headers.nickname_flag;
-        nickname === 'true' && nickname ? navigate(`/`) : navigate(`/nickname`);
+
+        if (nickname === 'true' && nickname) {
+          navigate(`/`);
+        } else {
+          navigate(`/nickname`);
+        }
+
       } catch (error) {
         // 에러 처리
         console.log(error);

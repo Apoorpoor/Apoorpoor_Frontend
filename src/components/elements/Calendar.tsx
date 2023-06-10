@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import moment, { Moment } from 'moment';
+import { QueryObserverResult } from 'react-query';
 import '../../styles/components/_Calender.scss';
 import CalendarModal from './CalendarModal';
 
@@ -7,12 +8,16 @@ interface CalendarProps {
   today: Moment;
   incomeType: (type: string) => string;
   expenditureType: (type: string) => string;
+  getAccountRefetch: QueryObserverResult['refetch'];
+  getTotalMonthDateRefetch: QueryObserverResult['refetch'];
 }
 
 function Calendar({
   today,
   incomeType,
   expenditureType,
+  getAccountRefetch,
+  getTotalMonthDateRefetch,
 }: CalendarProps): JSX.Element {
   // 날짜 클릭 시 상세 모달
   const [calendarModal, setCalendarModal] = useState<boolean>(false);
@@ -102,6 +107,8 @@ function Calendar({
           selectedDate={selectedDate}
           incomeType={incomeType}
           expenditureType={expenditureType}
+          getAccountRefetch={getAccountRefetch}
+          getTotalMonthDateRefetch={getTotalMonthDateRefetch}
         />
       )}
       <div className="days">
