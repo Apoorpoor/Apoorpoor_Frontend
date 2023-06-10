@@ -37,7 +37,7 @@ function PoorRoom() {
     containerPositionState
   );
 
-  console.log("내가 지금 어디있지?", scrollPosition)
+  console.log('내가 지금 어디있지?', scrollPosition);
 
   // 마이푸어룸 데이터 불러오기
   type Badge = {
@@ -86,7 +86,6 @@ function PoorRoom() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorInfo]);
-
 
   // 포인트 내역 조회
   const {
@@ -139,7 +138,7 @@ function PoorRoom() {
       <article>
         <section id="myPoorInfo">
           <div className="poorProfile">
-            <PoorCharacter />
+            <PoorCharacter avatarType='poorRoom' />
           </div>
           <LevelMedal level={data?.level as number} />
           <h2 className="nickname">{data?.nickname}</h2>
