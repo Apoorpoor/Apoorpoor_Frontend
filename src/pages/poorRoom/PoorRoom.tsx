@@ -32,6 +32,7 @@ import containerPositionState from '../../shared/ScrollContainer';
 function PoorRoom() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
   const [scrollPosition, setScrollPosition] = useRecoilState(
     containerPositionState
   );
@@ -78,6 +79,14 @@ function PoorRoom() {
     'getMyPoorRoom',
     beggars.getMyPoorRoom
   );
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setMyPoorInfo(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, setMyPoorInfo]);
+
 
   // 포인트 내역 조회
   const {
