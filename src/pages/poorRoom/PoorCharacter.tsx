@@ -3,7 +3,12 @@ import { useRecoilValue } from 'recoil';
 import myPoorState from '../../shared/MyPoor';
 import '../../styles/components/_PoorCharacter.scss';
 
-function PoorCharacter() {
+interface PoorCharacterProps {
+  avatarType: string;
+}
+
+function PoorCharacter(props: PoorCharacterProps) {
+  const { avatarType } = props;
   const myPoorInfo = useRecoilValue(myPoorState);
 
   const poorCharacter: { [key: number]: number } = {
@@ -16,7 +21,7 @@ function PoorCharacter() {
   };
 
   return (
-    <div id="myPoorCharacter">
+    <div id="myPoorCharacter" className={avatarType}>
       <img
         src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
           poorCharacter[myPoorInfo.level]
