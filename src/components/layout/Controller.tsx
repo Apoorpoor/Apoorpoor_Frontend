@@ -15,6 +15,7 @@ function Controller() {
   const pageIndex: PageIndex = {
     '/poorRoom': 0,
     '/': 1,
+    '/account': 1,
     '/introTalk': 2,
   };
 
@@ -25,8 +26,6 @@ function Controller() {
   useEffect(() => {
     setMarkerPosition(pageIndex[page] * 100 + 5);
   }, [page]);
-  
-  
 
   const controllerHandler = (index: number) => {
     const ButtonWidth = 100;
@@ -72,7 +71,7 @@ function Controller() {
         </button>
         <button
           type="button"
-          className={isSelected('/')}
+          className={`${isSelected('/')} ${isSelected('/account')}`}
           onClick={() => controllerHandler(1)}
         >
           자산
