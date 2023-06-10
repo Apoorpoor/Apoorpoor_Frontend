@@ -66,7 +66,7 @@ function Age() {
         <h1>성별은 어떻게 되시나요?</h1>
       </div>
       <article>
-        <div>
+        <div className='GenderBox'>
           {malecheck ? (
             <button
               type="button"
