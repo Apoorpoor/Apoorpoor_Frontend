@@ -20,8 +20,10 @@
     width: 100%;
 
     & > section {
-      position: absolute;
       display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
     & > section.active {
       display: block;
@@ -33,7 +35,7 @@
       flex-wrap: wrap;
       gap: 16px;
       margin-top: 20px;
-      
+
       & li {
         width: 96px;
         height: 180px;
