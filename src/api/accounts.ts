@@ -109,14 +109,14 @@ export const addAccount = async (requestData: {
   accountType: string;
   incomeType: string | null;
   expenditureType: string | null;
-  paymentMethod: string;
+  paymentMethod: string | null;
   income: string | null;
   expenditure: string | null;
   date: string;
 }) => {
   try {
     const response = await instance.post('/ledgerhistory', requestData);
-    console.log('거래내역 추가 성공:', response.data);
+    console.log('거래내역 추가 성공:', response.data.message);
     return response.data;
   } catch (error) {
     console.log('거래내역 추가 실패:', error);
@@ -145,14 +145,14 @@ export const editAccount = async (
     accountType: string;
     incomeType: string | null;
     expenditureType: string | null;
-    paymentMethod: string;
+    paymentMethod: string | null;
     income: string | null;
     expenditure: string | null;
     date: string;
   }
 ) => {
   try {
-    const response = await instance.patch(`/ledgerhistory/${id}`, requestData);
+    const response = await instance.put(`/ledgerhistory/${id}`, requestData);
     console.log('거래내역 수정 성공:', response.data);
     return response.data;
   } catch (error) {
