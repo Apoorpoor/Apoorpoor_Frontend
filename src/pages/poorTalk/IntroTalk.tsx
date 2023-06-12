@@ -2,7 +2,7 @@ import React from 'react';
 import '../../styles/pages/_IntroTalk.scss';
 import { FaExclamationCircle, FaCheckSquare } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import basicPoor from '../../static/image/gender/basicPoor.png';
+import PoorCharacter from '../poorRoom/PoorCharacter';
 
 function IntroTalk() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function IntroTalk() {
     <main id="IntroTalkLayout">
       <section>
         <div className="PoorImage">
-          <img src={basicPoor} alt="거지 이미지" />
+          <PoorCharacter avatarType='MyPoorImage' />
         </div>
         <div className="RuleBox">
           <div className="Rule">

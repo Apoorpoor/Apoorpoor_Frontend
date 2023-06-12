@@ -88,6 +88,38 @@ const getMonthPieChart = async (id: string, currentMonth: string) => {
   }
 };
 
+// (상세) 지난달, 작년 동월, 작년 동분기 비교 막대그래프
+const getDifference = async (
+  id: string,
+  currentMonth: string,
+  dateType: string
+) => {
+  try {
+    const response = await instance.get(
+      `/accounts/${id}/difference?date=${currentMonth}${dateType}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// (상세) 월별, 기간별, 카테고리별 거래내역 조회
+const getAccountType = async (id: string, dateType: string, params: string) => {
+  try {
+    const response = await instance.get(
+      `/accounts/${id}/status?${dateType}${params}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // (상세 -> 일자별) 거래내역 조회
 const getAccountsDate = async (id: string, selectedDate: string) => {
   try {
@@ -109,7 +141,7 @@ export const addAccount = async (requestData: {
   accountType: string;
   incomeType: string | null;
   expenditureType: string | null;
-  paymentMethod: string;
+  paymentMethod: string | null;
   income: string | null;
   expenditure: string | null;
   date: string;
@@ -145,14 +177,14 @@ export const editAccount = async (
     accountType: string;
     incomeType: string | null;
     expenditureType: string | null;
-    paymentMethod: string;
+    paymentMethod: string | null;
     income: string | null;
     expenditure: string | null;
     date: string;
   }
 ) => {
   try {
-    const response = await instance.patch(`/ledgerhistory/${id}`, requestData);
+    const response = await instance.put(`/ledgerhistory/${id}`, requestData);
     console.log('거래내역 수정 성공:', response.data);
     return response.data;
   } catch (error) {
@@ -169,6 +201,8 @@ export default {
   editAccountName,
   getMonthPieChart,
   getTotalMonthDate,
+  getDifference,
+  getAccountType,
   getAccountsDate,
   addAccount,
   delAccount,
