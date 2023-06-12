@@ -195,7 +195,15 @@ function AddAccount(): JSX.Element {
     { value: 'OTHER', label: '기타' },
   ];
 
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+
+  // 지출이면 수입 결제수단 null로 전송
+  useEffect(() => {
+    if (accountType === 'INCOME') {
+      setPaymentMethod(null);
+    }
+    return setPaymentMethod(paymentMethod);
+  }, [accountType, paymentMethod]);
 
   const paySelectCustom = {
     control: (provided: any, state: any) => ({
@@ -265,7 +273,7 @@ function AddAccount(): JSX.Element {
       accountType: string;
       incomeType: string | null;
       expenditureType: string | null;
-      paymentMethod: string;
+      paymentMethod: string | null;
       income: string | null;
       expenditure: string | null;
       date: string;
@@ -288,7 +296,7 @@ function AddAccount(): JSX.Element {
         accountType: accountType || '',
         incomeType: incomeType || null,
         expenditureType: expenditureType || null,
-        paymentMethod: paymentMethod || '',
+        paymentMethod: paymentMethod || null,
         income: incomeType === '' ? null : income,
         expenditure: expenditureType === '' ? null : expenditure,
         date: date || '',
@@ -389,15 +397,19 @@ function AddAccount(): JSX.Element {
           <AddAccountCalendar setOnDateChange={setOnDateChange} />
         </div>
 
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">결제수단</p>
-          <Select
-            placeholder="카테고리 선택"
-            options={payment}
-            onChange={(e: any) => setPaymentMethod(e.value)}
-            styles={paySelectCustom}
-          />
-        </div>
+        {accountType === 'INCOME' ? (
+          ''
+        ) : (
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">결제수단</p>
+            <Select
+              placeholder="카테고리 선택"
+              options={payment}
+              onChange={(e: any) => setPaymentMethod(e.value)}
+              styles={paySelectCustom}
+            />
+          </div>
+        )}
 
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">카테고리</p>

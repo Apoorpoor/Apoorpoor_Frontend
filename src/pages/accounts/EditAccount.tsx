@@ -39,12 +39,15 @@ function EditAccount(): JSX.Element {
     if (editData[0]?.accountType === 'EXPENDITURE') {
       return editData[0]?.expenditure ?? 0;
     }
-    return editData[0]?.income ?? 0;
+    if (editData[0]?.accountType === 'INCOME') {
+      return editData[0]?.income ?? 0;
+    }
+    return 0;
   };
 
   // 금액 입력
   const [accountPriceInput, setAccountPriceInput] = useState(
-    returnPrice().toString() || ''
+    () => returnPrice().toString() || ''
   );
 
   // 천단위 콤마
@@ -59,7 +62,7 @@ function EditAccount(): JSX.Element {
   // 금액 onChange -> 숫자만 입력 가능
   const accountPriceOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
-    const str = value.replaceAll(',', '');
+    const str = value.replace(/,/g, ''); // 천 단위 콤마 제거
     setAccountPriceInput(str);
   };
 
@@ -239,9 +242,17 @@ function EditAccount(): JSX.Element {
     (options) => options.value === editData[0]?.paymentMethod
   );
 
-  const [paymentMethod, setPaymentMethod] = useState<string>(
-    editPaymentMethod[0]?.value || ''
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(
+    editPaymentMethod[0]?.value || null
   );
+
+  // 지출이면 수입 결제수단 null로 전송
+  useEffect(() => {
+    if (accountType === 'INCOME') {
+      setPaymentMethod(null);
+    }
+    return setPaymentMethod(paymentMethod);
+  }, [accountType, paymentMethod]);
 
   const paySelectCustom = {
     control: (provided: any, state: any) => ({
@@ -316,7 +327,7 @@ function EditAccount(): JSX.Element {
       accountType: string;
       incomeType: string | null;
       expenditureType: string | null;
-      paymentMethod: string;
+      paymentMethod: string | null;
       income: string | null;
       expenditure: string | null;
       date: string;
@@ -339,9 +350,9 @@ function EditAccount(): JSX.Element {
         accountType: accountType || '',
         incomeType: incomeType || null,
         expenditureType: expenditureType || null,
-        paymentMethod: paymentMethod || '',
-        income: incomeType === '' ? null : income,
-        expenditure: expenditureType === '' ? null : expenditure,
+        paymentMethod: paymentMethod || null,
+        income: incomeType === '' ? null : accountPriceInput,
+        expenditure: expenditureType === '' ? null : accountPriceInput,
         date: date || '',
       };
 
@@ -364,7 +375,7 @@ function EditAccount(): JSX.Element {
           <BsChevronLeft />
         </button>
         <div className="headerTitle">
-          <h2 className="headerTitleH2">소비 / 수입 등록</h2>
+          <h2 className="headerTitleH2">소비 / 수입 수정</h2>
         </div>
       </div>
 
@@ -438,16 +449,20 @@ function EditAccount(): JSX.Element {
           <AddAccountCalendar setOnDateChange={setOnDateChange} />
         </div>
 
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">결제수단</p>
-          <Select
-            placeholder="카테고리 선택"
-            options={payment}
-            onChange={(e: any) => setPaymentMethod(e.value)}
-            styles={paySelectCustom}
-            defaultValue={editPaymentMethod}
-          />
-        </div>
+        {accountType === 'INCOME' ? (
+          ''
+        ) : (
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">결제수단</p>
+            <Select
+              placeholder="카테고리 선택"
+              options={payment}
+              onChange={(e: any) => setPaymentMethod(e.value)}
+              styles={paySelectCustom}
+              defaultValue={editPaymentMethod}
+            />
+          </div>
+        )}
 
         <div className="addAccountContents">
           <p className="addAccountContentsTitle">카테고리</p>
