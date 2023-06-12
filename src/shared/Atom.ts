@@ -5,13 +5,20 @@ export const inputState: RecoilState<string> = atom<string>({
   default: '',
 });
 
+// 거래내역 등록 후 랜덤 메세지 위한 카테고리
+export const categoryState: RecoilState<string> = atom<string>({
+  key: 'categoryState',
+  default: '',
+});
+
+// 거래내역 등록 후 랜덤 메세지
 export const messageState: RecoilState<string> = atom<string>({
   key: 'messageState',
   default: '',
 });
 
-export const categoryState: RecoilState<string> = atom<string>({
-  key: 'categoryState',
+export const accountIdState: RecoilState<string> = atom<string>({
+  key: 'accountIdState',
   default: '',
 });
 

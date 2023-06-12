@@ -1,3 +1,5 @@
+@import '../Palette';
+
 .calBackground {
   box-sizing: border-box;
   padding: 15px;
@@ -10,6 +12,7 @@
   display: flex;
   justify-content: space-around;
   font-weight: 700;
+  font-size: 14px;
 }
 
 .sun {
@@ -20,15 +23,7 @@
   color: #4194f1;
 }
 
-// .dates {
-//   background-color: skyblue;
-//   // margin-top: 20px;
-//   display: flex;
-//   justify-content: space-around;
-// }
-
 .dates {
-  // background-color: skyblue;
   margin-top: 20px;
   display: flex;
   width: 100%;
@@ -38,6 +33,7 @@
 .date {
   display: flex;
   flex-direction: column;
+  font-size: 14px;
 }
 
 .tr {
@@ -46,27 +42,59 @@
 }
 
 .td {
+  box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
   // border: 1px solid gray;
-  width: 55px;
-  height: 55px;
-  color: #949494;
-  font-weight: 700;
-  // background-color: yellow;
+  width: 56.5px;
+  height: 56.5px;
+  border-radius: 0px;
+  padding-bottom: 10px;
 }
 
-.todaySt {
+.today {
+  font-size: 14px;
+  position: relative;
+}
+.today::after {
+  content: attr(data-text);
   width: 30px;
   height: 30px;
+  background-color: $gray-150;
   border-radius: 999px;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  line-height: 30px;
 }
 
-.td span {
+.date {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  color: #949494;
+  font-weight: 700;
+  // background-color: aquamarine;
+}
+
+.accountPriceHeight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .accountPrice {
+    font-size: 10px;
+    font-weight: 400;
+    z-index: 5;
+  }
+
+  .income {
+    color: $primary;
+  }
+  .expenditure {
+    color: $systemError;
+  }
 }

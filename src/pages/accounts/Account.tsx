@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
 import {
@@ -11,6 +11,7 @@ import moment, { Moment } from 'moment';
 import Select from 'react-select';
 import { UseQueryResult, useQuery } from 'react-query';
 import { format, subMonths, subWeeks } from 'date-fns';
+import { useSetRecoilState } from 'recoil';
 import accounts from '../../api/accounts';
 import { Calendar, Chart, Controller } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
@@ -18,6 +19,7 @@ import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
 import NumberAnimation from '../../components/elements/NumberAnimation';
 import AccountRangeCal from '../../components/elements/AccountRangeCal';
+import { accountIdState } from '../../shared/Atom';
 
 // 거래내역 조회
 interface LedgerHistoryResponseDto {
@@ -42,7 +44,6 @@ interface MyAccounts {
 
 // 월별, 일별 수입/지출 총 금액 조회
 interface TotalStatus {
-  day: string;
   expenditure_sum: number | null;
   income_sum: number | null;
 }
@@ -52,6 +53,14 @@ function Account(): JSX.Element {
 
   // 현재 가계부의 id 조회
   const { id } = useParams<{ id?: string }>();
+
+  // 현재 가게부의 id 전역 상태 관리
+  const setAccountId = useSetRecoilState(accountIdState);
+  useEffect(() => {
+    if (id) {
+      setAccountId(id);
+    }
+  }, [id, setAccountId]);
 
   // 캘린더 날짜 받는 라이브러리
   const [getMoment, setMoment] = useState(moment());
@@ -456,7 +465,6 @@ function Account(): JSX.Element {
         incomeType={incomeType}
         expenditureType={expenditureType}
         getAccountRefetch={getAccountRefetch}
-        getTotalMonthDateRefetch={getTotalMonthDateRefetch}
       />
       <div className="line"> </div>
       <Chart id={id} currentMonth={currentMonth} />
