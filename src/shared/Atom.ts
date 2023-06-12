@@ -22,4 +22,14 @@ export const accountIdState: RecoilState<string> = atom<string>({
   default: '',
 });
 
+export const startDateState = atom<Date | null>({
+  key: 'startDateState',
+  default: null,
+});
+
+export const endDateState = atom<Date | null>({
+  key: 'endDateState',
+  default: null,
+});
+
 export default inputState;

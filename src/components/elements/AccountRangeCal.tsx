@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { BsChevronLeft, BsChevronRight, BsXLg } from 'react-icons/bs';
 import { ko } from 'date-fns/esm/locale';
@@ -6,6 +6,8 @@ import '../../styles/pages/_AddAccount.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../styles/components/react-datePicker_range.css';
 import { getYear, getMonth } from 'date-fns';
+import { useRecoilState } from 'recoil';
+import { startDateState, endDateState } from '../../shared/Atom';
 
 function AccountRangeCal() {
   const months = [
@@ -23,8 +25,8 @@ function AccountRangeCal() {
     '12월',
   ];
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useRecoilState(startDateState);
+  const [endDate, setEndDate] = useRecoilState(endDateState);
 
   // 캘린더 열고 닫는 상태 관리
   const calendar1 = useRef<DatePicker | null>(null);
