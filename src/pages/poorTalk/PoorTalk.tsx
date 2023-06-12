@@ -19,7 +19,7 @@ function PoorTalk(): JSX.Element {
     // 보여지는 메세지들, 닉네임 정보
     const [chatMessages, setChatMessages] = useState<IMessage[]>([]);
     // 보내는 메세지
-    const [sendMessage, setSandMessage] = useState<string>("");
+    const [sendMessage, setSendMessage] = useState<string>("");
     // 보내는 이미지
     const [image, setImage] = useState<string | Blob>("");
     // 섬네일 이미지
@@ -107,7 +107,7 @@ function PoorTalk(): JSX.Element {
                     });
                 },
             });
-            // Ref 초기값으로 클라이언트 저장 후 실행..?
+            // 객체를 할당하여 참조를 유지합니다. 이는 컴포넌트가 언마운트될 때 client 객체를 사용하여 연결을 끊을 수 있도록 합니다.
             stompClientRef.current = client;
             client.activate();
         }
@@ -141,7 +141,7 @@ function PoorTalk(): JSX.Element {
                 body: JSON.stringify(sendList),
             });
         }
-        setSandMessage("");
+        setSendMessage("");
 
     };
     // 들어갈 이미지 핸들러 
@@ -192,13 +192,13 @@ function PoorTalk(): JSX.Element {
                 });
             }
             setImage("");
-            setSandMessage("");
+            setSendMessage("");
             setThumbnailImage("")
         } catch (err) {
             console.log(`이미지 보내는 중에 오류 발생: ${err}`);
         }
     };
-
+    // 모달창으로 유저ID 프롭스로 보내주고 오픈하는 함수 
     const usersProfileHandler = (userId: number) => {
         setOnMessageUserId(userId)
         setModalOpen(true);
@@ -278,7 +278,7 @@ function PoorTalk(): JSX.Element {
                         type="text"
                         placeholder="message"
                         value={sendMessage}
-                        onChange={(e) => setSandMessage(e.target.value)} />
+                        onChange={(e) => setSendMessage(e.target.value)} />
                     : <img
                         className='SanthumbnailImage'
                         src={thumbnailImage}
