@@ -13,14 +13,14 @@
   justify-content: space-around;
   font-weight: 700;
   font-size: 14px;
-}
 
-.sun {
-  color: #ff3257;
-}
+  & .sun {
+    color: #ff3257;
+  }
 
-.sat {
-  color: #4194f1;
+  & .sat {
+    color: #4194f1;
+  }
 }
 
 .dates {
@@ -28,15 +28,20 @@
   display: flex;
   width: 100%;
   height: 250px;
-}
+  justify-content: space-between;
 
-.date {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
+  & .date {
+    margin-top: 17px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    justify-content: space-around;
+  }
 }
 
 .tr {
+  width: 100%;
   display: flex;
   flex-direction: row;
 }
@@ -47,54 +52,65 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  // border: 1px solid gray;
-  width: 56.5px;
+  width: 100%;
   height: 56.5px;
   border-radius: 0px;
   padding-bottom: 10px;
+
+  & .today {
+    font-size: 14px;
+    position: relative;
+  }
+  & .today::after {
+    content: attr(data-text);
+    width: 30px;
+    height: 30px;
+    background-color: $gray-150;
+    border-radius: 999px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    line-height: 30px;
+  }
+
+  & .eachDate {
+    font-size: 14px;
+    color: $gray-450;
+  }
+
+  & .accountPriceHeight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & .accountPrice {
+      font-size: 10px;
+      font-weight: 400;
+      z-index: 5;
+    }
+
+    & .income {
+      color: $primary;
+    }
+    & .expenditure {
+      color: $systemError;
+    }
+  }
 }
 
-.today {
-  font-size: 14px;
-  position: relative;
-}
-.today::after {
-  content: attr(data-text);
-  width: 30px;
-  height: 30px;
-  background-color: $gray-150;
-  border-radius: 999px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  line-height: 30px;
-}
-
-.date {
+.notThisMonthBox {
+  box-sizing: border-box;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  color: #949494;
-  font-weight: 700;
-  // background-color: aquamarine;
-}
-
-.accountPriceHeight {
-  display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  .accountPrice {
-    font-size: 10px;
-    font-weight: 400;
-    z-index: 5;
-  }
-
-  .income {
-    color: $primary;
-  }
-  .expenditure {
-    color: $systemError;
+  flex-direction: column;
+  width: 100%;
+  height: 56.5px;
+  border-radius: 0px;
+  padding-bottom: 10px;
+  cursor: default;
+  & span {
+    color: white;
   }
 }

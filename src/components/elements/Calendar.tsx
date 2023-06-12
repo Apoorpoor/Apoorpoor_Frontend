@@ -118,13 +118,13 @@ function Calendar({
 
           if (days.format('MM') !== today.format('MM')) {
             return (
-              <td
-                className="td"
+              <button
+                type="button"
+                className="notThisMonthBox"
                 key={days.format('YYYY-MM-DD')}
-                style={{ color: '#f5f5f5' }}
               >
                 <span>{days.format('D')}</span>
-              </td>
+              </button>
             );
           }
 
@@ -135,7 +135,7 @@ function Calendar({
               key={days.format('YYYY-MM-DD')}
               onClick={() => calendarModalOpen(days.format('YYYY-MM-DD'))}
             >
-              <span className="date">{days.format('D')}</span>
+              <span className="eachDate">{days.format('D')}</span>
               <div className="accountPriceHeight">
                 {matchingData?.expenditure_sum ? (
                   <span className="accountPrice expenditure">
