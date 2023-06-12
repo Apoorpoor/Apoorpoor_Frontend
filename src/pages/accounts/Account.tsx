@@ -169,26 +169,26 @@ function Account(): JSX.Element {
   ]);
 
   // 기간선택 버튼별 쿼리스트링
-  let dateType = '';
+  // let dateType = '';
 
-  if (!term.some((item) => item.selected)) {
-    dateType = '';
-  } else {
-    switch (true) {
-      case term[0].selected:
-        dateType = '&dateType=week';
-        break;
-      case term[1].selected:
-        dateType = '&dateType=month';
-        break;
-      case term[2].selected:
-        dateType = '&dateType=3month';
-        break;
-      default:
-        dateType = '';
-        break;
-    }
-  }
+  // if (!term.some((item) => item.selected)) {
+  //   dateType = '';
+  // } else {
+  //   switch (true) {
+  //     case term[0].selected:
+  //       dateType = '&dateType=week';
+  //       break;
+  //     case term[1].selected:
+  //       dateType = '&dateType=month';
+  //       break;
+  //     case term[2].selected:
+  //       dateType = '&dateType=3month';
+  //       break;
+  //     default:
+  //       dateType = '';
+  //       break;
+  //   }
+  // }
 
   const categoryOnclick = (idx: number): void => {
     const updatedTerm = term.map((el, index) => {
@@ -206,24 +206,10 @@ function Account(): JSX.Element {
   // 하단 사용내역 카테고리 셀렉트 박스
   const [selectedInExFilter, setSelectedInExFilter] = useState('전체');
 
-  // 전체/수입/지출별 쿼리스트링
-  let accountType = '';
-
-  switch (selectedInExFilter) {
-    case '수입':
-      accountType = '&accountType=INCOME';
-      break;
-    case '지출':
-      accountType = '&accountType=EXPENDITURE';
-      break;
-    default:
-      accountType = '';
-      break;
-  }
-
   const handleInExFilter = (filter: string) => {
     setSelectedInExFilter(filter);
   };
+
   // 수입 셀렉트 박스
   const inOptions: { value: string; label: string }[] = [
     { value: 'EMPLOYMENT_INCOME', label: '근로소득' },
@@ -237,38 +223,6 @@ function Account(): JSX.Element {
 
   const [selectInValue, setSelectInValue] = useState('');
   console.log('선택:', selectInValue);
-
-  // 수입별 쿼리스트링
-  let incomeQuery = '';
-
-  if (accountType === '&accountType=INCOME') {
-    switch (selectInValue) {
-      case 'EMPLOYMENT_INCOME':
-        incomeQuery = '&incomeType=EMPLOYMENT_INCOME';
-        break;
-      case 'BUSINESS':
-        incomeQuery = '&incomeType=BUSINESS';
-        break;
-      case 'STOCKS':
-        incomeQuery = '&incomeType=STOCKS';
-        break;
-      case 'INVESTMENT':
-        incomeQuery = '&incomeType=INVESTMENT';
-        break;
-      case 'ALLOWANCE':
-        incomeQuery = '&incomeType=ALLOWANCE';
-        break;
-      case 'FIXED_DEPOSIT_MATURITY':
-        incomeQuery = '&incomeType=FIXED_DEPOSIT_MATURITY';
-        break;
-      case 'OTHER':
-        incomeQuery = '&incomeType=OTHER';
-        break;
-      default:
-        incomeQuery = '';
-        break;
-    }
-  }
 
   const inSelectCustom = {
     control: (provided: any) => ({
@@ -327,56 +281,6 @@ function Account(): JSX.Element {
 
   const [selectExValue, setSelectExValue] = useState('');
   console.log('선택:', selectExValue);
-
-  // 지출별 쿼리스트링
-  let expenditureQuery = '';
-
-  if (accountType === '&accountType=EXPENDITURE') {
-    switch (selectExValue) {
-      case 'UTILITY_BILL':
-        expenditureQuery = '&expenditureType=UTILITY_BILL';
-        break;
-      case 'CONDOLENCE_EXPENSE':
-        expenditureQuery = '&expenditureType=CONDOLENCE_EXPENSE';
-        break;
-      case 'TRANSPORTATION':
-        expenditureQuery = '&expenditureType=TRANSPORTATION';
-        break;
-      case 'COMMUNICATION_EXPENSES':
-        expenditureQuery = '&expenditureType=COMMUNICATION_EXPENSES';
-        break;
-      case 'INSURANCE':
-        expenditureQuery = '&expenditureType=INSURANCE';
-        break;
-      case 'EDUCATION':
-        expenditureQuery = '&expenditureType=EDUCATION';
-        break;
-      case 'SAVINGS':
-        expenditureQuery = '&expenditureType=SAVINGS';
-        break;
-      case 'CULTURE':
-        expenditureQuery = '&expenditureType=CULTURE';
-        break;
-      case 'HEALTH':
-        expenditureQuery = '&expenditureType=HEALTH';
-        break;
-      case 'FOOD_EXPENSES':
-        expenditureQuery = '&expenditureType=FOOD_EXPENSES';
-        break;
-      case 'SHOPPING':
-        expenditureQuery = '&expenditureType=SHOPPING';
-        break;
-      case 'LEISURE_ACTIVITIES':
-        expenditureQuery = '&expenditureType=LEISURE_ACTIVITIES';
-        break;
-      case 'OTHER':
-        expenditureQuery = '&expenditureType=OTHER';
-        break;
-      default:
-        expenditureQuery = '';
-        break;
-    }
-  }
 
   const exSelectCustom = {
     control: (provided: any) => ({
@@ -457,6 +361,113 @@ function Account(): JSX.Element {
       ? `&startDate=${formattedStartDate}&endDate=${formattedEndDate}`
       : '';
 
+  // 기간조회 쿼리스트링
+  const currentString = `date=${currentMonth}`;
+
+  const getCurrentDateType = () => {
+    const allFalse = term.every((item) => !item.selected);
+
+    if (allFalse) {
+      return currentString;
+    }
+
+    const selectedTerm = term.find((item) => item.selected);
+
+    switch (selectedTerm?.name) {
+      case '1주일':
+        return '&dateType=week';
+      case '1개월':
+        return '&dateType=month';
+      case '3개월':
+        return '&dateType=3month';
+      case '기간 선택':
+        return dateRange;
+      default:
+        return '';
+    }
+  };
+
+  const dateType = getCurrentDateType();
+
+  // 카테고리별 쿼리스트링
+  let params = '';
+
+  if (selectedInExFilter === '수입') {
+    params += '&accountType=INCOME';
+
+    switch (selectInValue) {
+      case 'EMPLOYMENT_INCOME':
+        params += '&incomeType=EMPLOYMENT_INCOME';
+        break;
+      case 'BUSINESS':
+        params += '&incomeType=BUSINESS';
+        break;
+      case 'STOCKS':
+        params += '&incomeType=STOCKS';
+        break;
+      case 'INVESTMENT':
+        params += '&incomeType=INVESTMENT';
+        break;
+      case 'ALLOWANCE':
+        params += '&incomeType=ALLOWANCE';
+        break;
+      case 'FIXED_DEPOSIT_MATURITY':
+        params += '&incomeType=FIXED_DEPOSIT_MATURITY';
+        break;
+      case 'OTHER':
+        params += '&incomeType=OTHER';
+        break;
+      default:
+        break;
+    }
+  } else if (selectedInExFilter === '지출') {
+    params += '&accountType=EXPENDITURE';
+
+    switch (selectExValue) {
+      case 'UTILITY_BILL':
+        params += '&expenditureType=UTILITY_BILL';
+        break;
+      case 'CONDOLENCE_EXPENSE':
+        params += '&expenditureType=CONDOLENCE_EXPENSE';
+        break;
+      case 'TRANSPORTATION':
+        params += '&expenditureType=TRANSPORTATION';
+        break;
+      case 'COMMUNICATION_EXPENSES':
+        params += '&expenditureType=COMMUNICATION_EXPENSES';
+        break;
+      case 'INSURANCE':
+        params += '&expenditureType=INSURANCE';
+        break;
+      case 'EDUCATION':
+        params += '&expenditureType=EDUCATION';
+        break;
+      case 'SAVINGS':
+        params += '&expenditureType=SAVINGS';
+        break;
+      case 'CULTURE':
+        params += '&expenditureType=CULTURE';
+        break;
+      case 'HEALTH':
+        params += '&expenditureType=HEALTH';
+        break;
+      case 'FOOD_EXPENSES':
+        params += '&expenditureType=FOOD_EXPENSES';
+        break;
+      case 'SHOPPING':
+        params += '&expenditureType=SHOPPING';
+        break;
+      case 'LEISURE_ACTIVITIES':
+        params += '&expenditureType=LEISURE_ACTIVITIES';
+        break;
+      case 'OTHER':
+        params += '&expenditureType=OTHER';
+        break;
+      default:
+        break;
+    }
+  }
+
   // 필터링별 데이터 조회
   const {
     isLoading: getAccountTypeLoading,
@@ -464,26 +475,8 @@ function Account(): JSX.Element {
     data: getAccountType,
     refetch: getAccountTypeRefetch,
   }: UseQueryResult<LedgerHistoryResponseDto> = useQuery(
-    [
-      'getAccountType',
-      id,
-      currentMonth,
-      dateType,
-      accountType,
-      incomeQuery,
-      expenditureQuery,
-      dateRange,
-    ],
-    () =>
-      accounts.getAccountType(
-        id as string,
-        currentMonth,
-        dateType,
-        accountType,
-        incomeQuery,
-        expenditureQuery,
-        dateRange
-      )
+    ['getAccountType', id, dateType, params],
+    () => accounts.getAccountType(id as string, dateType, params)
   );
   console.log('data 호출:', getAccountType);
 
@@ -701,7 +694,12 @@ function Account(): JSX.Element {
               <Select
                 placeholder="수입 카테고리"
                 options={inOptions}
-                onChange={(e: any) => setSelectInValue(e.value)}
+                onChange={(e: any) => {
+                  if (e && e.value) {
+                    setSelectInValue(e.value);
+                  }
+                  setSelectExValue('');
+                }}
                 styles={inSelectCustom}
               />
             ) : null}
@@ -709,7 +707,12 @@ function Account(): JSX.Element {
               <Select
                 placeholder="지출 카테고리"
                 options={exOptions}
-                onChange={(e: any) => setSelectExValue(e.value)}
+                onChange={(e: any) => {
+                  if (e && e.value) {
+                    setSelectExValue(e.value);
+                  }
+                  setSelectInValue('');
+                }}
                 styles={exSelectCustom}
               />
             ) : null}
@@ -720,7 +723,11 @@ function Account(): JSX.Element {
             className={`detailOfInExFilterItem ${
               selectedInExFilter === '전체' ? 'checked' : ''
             }`}
-            onClick={() => handleInExFilter('전체')}
+            onClick={() => {
+              handleInExFilter('전체');
+              setSelectInValue('');
+              setSelectExValue('');
+            }}
           >
             전체
           </button>
@@ -729,7 +736,10 @@ function Account(): JSX.Element {
             className={`detailOfInExFilterItem ${
               selectedInExFilter === '수입' ? 'checked' : ''
             }`}
-            onClick={() => handleInExFilter('수입')}
+            onClick={() => {
+              handleInExFilter('수입');
+              setSelectExValue('');
+            }}
           >
             수입
           </button>
@@ -738,12 +748,77 @@ function Account(): JSX.Element {
             className={`detailOfInExFilterItem ${
               selectedInExFilter === '지출' ? 'checked' : ''
             }`}
-            onClick={() => handleInExFilter('지출')}
+            onClick={() => {
+              handleInExFilter('지출');
+              setSelectInValue('');
+            }}
           >
             지출
           </button>
         </ul>
         {Object.entries(groupedData).map(([date, items]) => {
+          const month = moment(date).format('yyyy-M');
+          const shouldShowAllMonths = dateType !== 'currentString';
+
+          if (shouldShowAllMonths || month === today.format('yyyy-M')) {
+            return (
+              <div className="accountBody" key={date}>
+                <p className="accountDate">{dateWithDay(date)}</p>
+                <div className="accountBodyLine" />
+
+                {items.map((item) => {
+                  // 수입, 지출, 저축에 따른 금액 className
+                  let className = '';
+                  if (item.accountType === 'INCOME') {
+                    className = 'accountLabelIn';
+                  } else if (
+                    item.accountType === 'EXPENDITURE' &&
+                    item.expenditureType === 'SAVINGS'
+                  ) {
+                    className = 'accountLabelSave';
+                  } else {
+                    className = 'accountLabelEx';
+                  }
+
+                  // 수입, 지출 각 카테고리 반환
+                  let result;
+
+                  if (item.accountType === 'EXPENDITURE') {
+                    if (item.expenditureType !== null) {
+                      result = expenditureType(item.expenditureType);
+                    } else {
+                      result = '';
+                    }
+                  } else {
+                    result = incomeType(item.incomeType);
+                  }
+
+                  return (
+                    <div className="accountBodyContents" key={item.id}>
+                      <div className="accountLabel">
+                        <p>{item.title}</p>
+                        <p className={className}>
+                          {item.income ? '+' : '-'}
+                          {priceComma(
+                            item.income ? item.income : item.expenditure
+                          )}
+                          원
+                        </p>
+                      </div>
+                      <p className="accountCategory">
+                        {item.accountType === 'EXPENDITURE' ? '지출' : '수입'}{' '}
+                        {'>'} {result}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          }
+
+          return null;
+        })}
+        {/* {Object.entries(groupedData).map(([date, items]) => {
           // 현재 보여지는 월에 대해서만 상세내역 반환
           const month = moment(date).format('yyyy-M');
           if (month === today.format('yyyy-M')) {
@@ -802,7 +877,7 @@ function Account(): JSX.Element {
             );
           }
           return null;
-        })}
+        })} */}
       </div>
     </>
   );

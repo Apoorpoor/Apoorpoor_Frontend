@@ -107,18 +107,10 @@ const getDifference = async (
 };
 
 // (상세) 월별, 기간별, 카테고리별 거래내역 조회
-const getAccountType = async (
-  id: string,
-  currentMonth: string,
-  dateType: string,
-  accountType: string,
-  incomeQuery: string,
-  expenditureQuery: string,
-  dateRange: string
-) => {
+const getAccountType = async (id: string, dateType: string, params: string) => {
   try {
     const response = await instance.get(
-      `/accounts/${id}/status?date=${currentMonth}${dateType}${accountType}${incomeQuery}${expenditureQuery}${dateRange}`
+      `/accounts/${id}/status?${dateType}${params}`
     );
     console.log(response);
     return response.data;
