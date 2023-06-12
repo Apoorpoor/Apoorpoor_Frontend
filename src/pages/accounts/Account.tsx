@@ -469,7 +469,7 @@ function Account(): JSX.Element {
       <div className="line"> </div>
       <Chart id={id} currentMonth={currentMonth} />
       <div className="line"> </div>
-      <ChartLastMonth />
+      <ChartLastMonth currentMonth={currentMonth} />
       <div className="line"> </div>
 
       <div className="_AccountBackground">

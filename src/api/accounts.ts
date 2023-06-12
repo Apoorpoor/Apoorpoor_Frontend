@@ -88,6 +88,24 @@ const getMonthPieChart = async (id: string, currentMonth: string) => {
   }
 };
 
+// (상세) 지난달, 작년 동월, 작년 동분기 비교 막대그래프
+const getDifference = async (
+  id: string,
+  currentMonth: string,
+  dateType: string
+) => {
+  try {
+    const response = await instance.get(
+      `/accounts/${id}/difference?date=${currentMonth}${dateType}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // (상세 -> 일자별) 거래내역 조회
 const getAccountsDate = async (id: string, selectedDate: string) => {
   try {
@@ -169,6 +187,7 @@ export default {
   editAccountName,
   getMonthPieChart,
   getTotalMonthDate,
+  getDifference,
   getAccountsDate,
   addAccount,
   delAccount,
