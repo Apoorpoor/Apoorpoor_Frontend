@@ -5,9 +5,11 @@ import '../../styles/pages/_AddAccount.scss';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
+import { useRecoilValue } from 'recoil';
 import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
+import { accountIdState } from '../../shared/Atom';
 
 // 불러온 data의 타입
 interface LedgerItem {
@@ -27,6 +29,8 @@ function EditAccount(): JSX.Element {
 
   // 현재 가계부의 id 조회
   const { id = '' } = useParams<{ id: string | undefined }>();
+
+  const accountId = useRecoilValue(accountIdState);
 
   // 이전 컴포넌트에서 불러온 수정 전 data
   const location = useLocation();
@@ -345,7 +349,7 @@ function EditAccount(): JSX.Element {
   const handleEdit = async () => {
     try {
       const requestData = {
-        accountId: id || '',
+        accountId: accountId || '', // 가계부 id 리코일 받기
         title: title || '',
         accountType: accountType || '',
         incomeType: incomeType || null,

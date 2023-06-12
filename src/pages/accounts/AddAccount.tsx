@@ -3,8 +3,10 @@ import { RiErrorWarningFill } from 'react-icons/ri';
 import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
+import { useSetRecoilState } from 'recoil';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
+import { messageState, categoryState } from '../../shared/Atom';
 import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
@@ -265,6 +267,11 @@ function AddAccount(): JSX.Element {
     }
   }, [expenditureType, incomeType, accountPriceInput]);
 
+  // 거래내역 추가 후, 카테고리별 랜덤
+  const setCategory = useSetRecoilState(categoryState);
+  // 거래내역 추가 후, 랜덤 메시지 완료 페이지로 전달
+  const setMessage = useSetRecoilState(messageState);
+
   // 거래내역 추가
   const addAccountMutation = useMutation(
     (requestData: {
@@ -281,6 +288,17 @@ function AddAccount(): JSX.Element {
     {
       onSuccess: (response) => {
         console.log('거래내역 추가 성공:', response);
+        if (accountType === 'INCOME') {
+          setCategory('INCOME');
+        }
+        if (accountType === 'EXPENDITURE') {
+          if (expenditureType === 'SAVINGS') {
+            setCategory('SAVINGS');
+          } else {
+            setCategory('ELSE');
+          }
+        }
+        setMessage(response.meassage);
       },
       onError: (error) => {
         console.log('거래내역 추가 실패:', error);

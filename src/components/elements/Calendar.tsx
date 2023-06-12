@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
 import moment, { Moment } from 'moment';
-import { QueryObserverResult } from 'react-query';
+import { QueryObserverResult, UseQueryResult, useQuery } from 'react-query';
 import '../../styles/components/_Calender.scss';
+import { useParams } from 'react-router';
 import CalendarModal from './CalendarModal';
+import accounts from '../../api/accounts';
 
 interface CalendarProps {
   today: Moment;
   incomeType: (type: string) => string;
   expenditureType: (type: string) => string;
   getAccountRefetch: QueryObserverResult['refetch'];
-  getTotalMonthDateRefetch: QueryObserverResult['refetch'];
+}
+
+// 월별, 일별 수입/지출 총 금액 조회
+interface TotalStatus {
+  day: string;
+  expenditure_sum: number;
+  income_sum: number;
+}
+
+interface AccountTotalResponseDto {
+  accountTotalResponseDtoList: TotalStatus[];
+  expenditure_sum: number;
+  income_sum: number;
 }
 
 function Calendar({
@@ -17,8 +31,25 @@ function Calendar({
   incomeType,
   expenditureType,
   getAccountRefetch,
-  getTotalMonthDateRefetch,
 }: CalendarProps): JSX.Element {
+  // 현재 가계부의 id 조회
+  const { id } = useParams<{ id?: string }>();
+
+  // 현재 조회하고 있는 달
+  const currentMonth = today.format('YYYY-MM');
+
+  // 월별, 일별 수입/지출 총 금액 조회
+  const {
+    data: getTotalMonthDate,
+    refetch: getTotalMonthDateRefetch,
+  }: UseQueryResult<AccountTotalResponseDto> = useQuery(
+    ['getTotalMonthDate', id, currentMonth],
+    () => accounts.getTotalMonthDate(id as string, currentMonth)
+  );
+
+  const monthTotal = getTotalMonthDate?.accountTotalResponseDtoList;
+  console.log('총 금액 호출:', monthTotal);
+
   // 날짜 클릭 시 상세 모달
   const [calendarModal, setCalendarModal] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -49,6 +80,10 @@ function Calendar({
             .startOf('week')
             .add(index, 'day');
 
+          const matchingData = monthTotal?.find(
+            (item) => item.day === days.format('YYYY-MM-DD')
+          );
+
           if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
             return (
               <button
@@ -58,8 +93,24 @@ function Calendar({
                 style={{ color: 'black' }}
                 onClick={() => calendarModalOpen(days.format('YYYY-MM-DD'))}
               >
-                <div className="todaySt">
-                  <span>{days.format('D')}</span>
+                <span className="today" data-text={days.format('D')}>
+                  {days.format('D')}
+                </span>
+                <div className="accountPriceHeight">
+                  {matchingData?.expenditure_sum ? (
+                    <span className="accountPrice expenditure">
+                      -{matchingData.expenditure_sum.toLocaleString()}
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                  {matchingData?.income_sum ? (
+                    <span className="accountPrice income">
+                      +{matchingData.income_sum.toLocaleString()}
+                    </span>
+                  ) : (
+                    ''
+                  )}
                 </div>
               </button>
             );
@@ -67,13 +118,13 @@ function Calendar({
 
           if (days.format('MM') !== today.format('MM')) {
             return (
-              <td
-                className="td"
+              <button
+                type="button"
+                className="notThisMonthBox"
                 key={days.format('YYYY-MM-DD')}
-                style={{ color: '#f5f5f5' }}
               >
                 <span>{days.format('D')}</span>
-              </td>
+              </button>
             );
           }
 
@@ -84,7 +135,23 @@ function Calendar({
               key={days.format('YYYY-MM-DD')}
               onClick={() => calendarModalOpen(days.format('YYYY-MM-DD'))}
             >
-              <span>{days.format('D')}</span>
+              <span className="eachDate">{days.format('D')}</span>
+              <div className="accountPriceHeight">
+                {matchingData?.expenditure_sum ? (
+                  <span className="accountPrice expenditure">
+                    -{matchingData.expenditure_sum.toLocaleString()}
+                  </span>
+                ) : (
+                  ''
+                )}
+                {matchingData?.income_sum ? (
+                  <span className="accountPrice income">
+                    +{matchingData.income_sum.toLocaleString()}
+                  </span>
+                ) : (
+                  ''
+                )}
+              </div>
             </button>
           );
         });
