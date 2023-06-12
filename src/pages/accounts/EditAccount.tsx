@@ -345,7 +345,7 @@ function EditAccount(): JSX.Element {
   const handleEdit = async () => {
     try {
       const requestData = {
-        accountId: id || '',
+        accountId: id || '', // 가계부 id 리코일 받기
         title: title || '',
         accountType: accountType || '',
         incomeType: incomeType || null,

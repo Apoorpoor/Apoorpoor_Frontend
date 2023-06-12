@@ -116,7 +116,7 @@ export const addAccount = async (requestData: {
 }) => {
   try {
     const response = await instance.post('/ledgerhistory', requestData);
-    console.log('거래내역 추가 성공:', response.data.message);
+    console.log('거래내역 추가 성공:', response.data);
     return response.data;
   } catch (error) {
     console.log('거래내역 추가 실패:', error);

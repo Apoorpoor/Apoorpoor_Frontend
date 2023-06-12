@@ -1,10 +1,25 @@
 import React from 'react';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
+import { useRecoilValue } from 'recoil';
+import { messageState, categoryState } from '../../shared/Atom';
 import doneImg from '../../static/image/addAccountDone/Group 4257.png';
 
 function AddAccountDone() {
   const navigate = useNavigate();
+
+  const category = useRecoilValue(categoryState);
+  const message = useRecoilValue(messageState);
+
+  const categoryMsg = (cate: string): string => {
+    if (cate === 'INCOME') {
+      return '냠냠 돈 들어왔어요!';
+    }
+    if (cate === 'SAVINGS') {
+      return '오늘도 저축 성공!';
+    }
+    return '돈 나가는 소리 또로록...';
+  };
 
   const { id } = useParams<{ id: string | undefined }>();
 
@@ -12,8 +27,8 @@ function AddAccountDone() {
     <div className="doneBg">
       <div className="doneTitle">
         <div className="donePoint">10포인트 적립</div>
-        <h1>오늘도 저축 성공!</h1>
-        <p>아싸 치킨값 굳었다</p>
+        <h1>{categoryMsg(category)}</h1>
+        <p>{message}</p>
         <img className="doneImg" src={doneImg} alt="doneImg" />
       </div>
 
