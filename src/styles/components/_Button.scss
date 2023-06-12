@@ -36,11 +36,29 @@ button {
     font-weight: 500;
     font-size: 14px;
   }
+  &.iconButton{
+    width: 40px;
+    height: initial;
+  }
   &.nav {
     color: $gray-350;
     font-weight: 500;
     border-radius: 0;
     height: inherit;
+  }
+  &.filterButton {
+    height: initial;
+    background-color: #fff;
+    border: 1px solid $gray-250;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  &.filterButton.checked {
+    background-color: $secondary;
+    border: none;
+    color: #fff;
   }
   &.itemButton {
     width: 96px;

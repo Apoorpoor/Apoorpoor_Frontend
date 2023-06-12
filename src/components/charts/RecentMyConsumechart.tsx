@@ -36,7 +36,7 @@ function RecentMyConsumechart() {
     getRecentMyConsume
   );
 
-  console.log('6개월 소비근황', data);
+  // console.log('6개월 소비근황', data);
 
   if (isLoading) {
     return <div>Loading...</div>;
