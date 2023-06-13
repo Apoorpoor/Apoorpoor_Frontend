@@ -20,8 +20,8 @@ import {
   PoorItemSetting,
   BadgeList,
   AlarmStation,
+  Social,
 } from './pages/index';
-import EditAccountDone from './pages/accounts/EditAccountDone';
 
 function App() {
   const navigate = useNavigate();
@@ -45,7 +45,6 @@ function App() {
         <Route path="/addAccount/:id" element={<AddAccount />} />
         <Route path="/editAccount/:id" element={<EditAccount />} />
         <Route path="/addAccountDone/:id" element={<AddAccountDone />} />
-        <Route path="/editAccountDone/:id" element={<EditAccountDone />} />
         <Route path="/poorRoom" element={<PoorRoom />} />
         <Route path="/poorItemSetting" element={<PoorItemSetting />} />
         <Route path="/introTalk" element={<IntroTalk />} />
@@ -56,6 +55,7 @@ function App() {
         <Route path="/finished" element={<Finished />} />
         <Route path="/badgeList" element={<BadgeList />} />
         <Route path="/alarmStation" element={<AlarmStation />} />
+        <Route path="/social" element={<Social />} />
       </Routes>
     </Layout>
   );

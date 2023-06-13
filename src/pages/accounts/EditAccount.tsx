@@ -10,6 +10,7 @@ import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 import { accountIdState } from '../../shared/Atom';
+import EditAccountDone from './EditAccountDone';
 
 // 불러온 data의 타입
 interface LedgerItem {
@@ -323,6 +324,9 @@ function EditAccount(): JSX.Element {
     }
   }, [expenditureType, incomeType, accountPriceInput]);
 
+  // 거래내역 수정 완료 모달창 상태
+  const [editDoneModal, setEditDoneModal] = useState(false);
+
   // 거래내역 수정
   const editAccountMutation = useMutation(
     async (requestData: {
@@ -362,141 +366,144 @@ function EditAccount(): JSX.Element {
 
       await editAccountMutation.mutateAsync(requestData);
       console.log('거래내역 수정 요청 완료');
-      navigate(`/editAccountDone/${id}`);
+      setEditDoneModal(true);
     } catch (error) {
       console.log('거래내역 수정 실패:', error);
     }
   };
 
   return (
-    <div className="addAccountBg">
-      <div className="header">
-        <button
-          type="button"
-          className="headerPreBtn"
-          onClick={() => navigate(-1)}
-        >
-          <BsChevronLeft />
-        </button>
-        <div className="headerTitle">
-          <h2 className="headerTitleH2">소비 / 수입 수정</h2>
-        </div>
-      </div>
-
-      <div className="addAccountBody">
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">금액</p>
-          <Input
-            value={comma(accountPriceInput)}
-            id="accountPriceInput"
-            placeholder="얼마를 입력할까요?"
-            className={showWarning ? 'accountPriceValid' : 'accountPrice'}
-            onChange={accountPriceOnchange}
-            onClear={handleAccountPriceInputClear}
-          />
-          <label
-            htmlFor="nicknameInput"
-            className={`cursor ${showWarning ? 'warning' : 'active'}`}
+    <>
+      {editDoneModal && <EditAccountDone />}
+      <div className="addAccountBg">
+        <div className="header">
+          <button
+            type="button"
+            className="headerPreBtn"
+            onClick={() => navigate(-1)}
           >
-            {' '}
-          </label>
-          {showWarning ? (
-            <div className="warningBox">
-              <RiErrorWarningFill className="warningIcon" />
-              <p className="warningMsg">100원 이상 등록해주세요</p>
-            </div>
-          ) : null}
-        </div>
-
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">내용</p>
-          <Input
-            value={title}
-            id="titleInput"
-            placeholder="내용을 입력해주세요"
-            className={showWarning ? 'accountPriceValid' : 'accountPrice'}
-            onChange={handleTitleInputChange}
-            onClear={handleTitleInputClear}
-          />
-          <label
-            htmlFor="nicknameInput"
-            className={`cursor ${showWarning ? 'warning' : 'active'}`}
-          >
-            {' '}
-          </label>
-        </div>
-
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">분류</p>
-          <div className="addAccountRadioBoxes">
-            <input
-              type="radio"
-              id="EXPENDITURE"
-              checked={accountType === 'EXPENDITURE'}
-              onClick={() => handleAccountType('EXPENDITURE')}
-              className="addAccountRadioBtn"
-            />
-            <label htmlFor="EXPENDITURE">지출</label>
-
-            <input
-              type="radio"
-              id="INCOME"
-              checked={accountType === 'INCOME'}
-              onClick={() => handleAccountType('INCOME')}
-            />
-            <label htmlFor="INCOME">수입</label>
+            <BsChevronLeft />
+          </button>
+          <div className="headerTitle">
+            <h2 className="headerTitleH2">소비 / 수입 수정</h2>
           </div>
         </div>
 
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">날짜</p>
-          <AddAccountCalendar setOnDateChange={setOnDateChange} />
-        </div>
-
-        {accountType === 'INCOME' ? (
-          ''
-        ) : (
+        <div className="addAccountBody">
           <div className="addAccountContents">
-            <p className="addAccountContentsTitle">결제수단</p>
-            <Select
-              placeholder="카테고리 선택"
-              options={payment}
-              onChange={(e: any) => setPaymentMethod(e.value)}
-              styles={paySelectCustom}
-              defaultValue={editPaymentMethod}
+            <p className="addAccountContentsTitle">금액</p>
+            <Input
+              value={comma(accountPriceInput)}
+              id="accountPriceInput"
+              placeholder="얼마를 입력할까요?"
+              className={showWarning ? 'accountPriceValid' : 'accountPrice'}
+              onChange={accountPriceOnchange}
+              onClear={handleAccountPriceInputClear}
             />
+            <label
+              htmlFor="nicknameInput"
+              className={`cursor ${showWarning ? 'warning' : 'active'}`}
+            >
+              {' '}
+            </label>
+            {showWarning ? (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">100원 이상 등록해주세요</p>
+              </div>
+            ) : null}
           </div>
-        )}
 
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">카테고리</p>
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">내용</p>
+            <Input
+              value={title}
+              id="titleInput"
+              placeholder="내용을 입력해주세요"
+              className={showWarning ? 'accountPriceValid' : 'accountPrice'}
+              onChange={handleTitleInputChange}
+              onClear={handleTitleInputClear}
+            />
+            <label
+              htmlFor="nicknameInput"
+              className={`cursor ${showWarning ? 'warning' : 'active'}`}
+            >
+              {' '}
+            </label>
+          </div>
+
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">분류</p>
+            <div className="addAccountRadioBoxes">
+              <input
+                type="radio"
+                id="EXPENDITURE"
+                checked={accountType === 'EXPENDITURE'}
+                onClick={() => handleAccountType('EXPENDITURE')}
+                className="addAccountRadioBtn"
+              />
+              <label htmlFor="EXPENDITURE">지출</label>
+
+              <input
+                type="radio"
+                id="INCOME"
+                checked={accountType === 'INCOME'}
+                onClick={() => handleAccountType('INCOME')}
+              />
+              <label htmlFor="INCOME">수입</label>
+            </div>
+          </div>
+
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">날짜</p>
+            <AddAccountCalendar setOnDateChange={setOnDateChange} />
+          </div>
+
           {accountType === 'INCOME' ? (
-            <Select
-              placeholder="카테고리 선택"
-              options={inOptions}
-              onChange={(e: any) => setIncomeType(e.value)}
-              styles={inSelectCustom}
-              defaultValue={editInOptions}
-            />
+            ''
           ) : (
-            <Select
-              placeholder="카테고리 선택"
-              options={exOptions}
-              onChange={(e: any) => setExpenditureType(e.value)}
-              styles={exSelectCustom}
-              defaultValue={editExOptions}
-            />
+            <div className="addAccountContents">
+              <p className="addAccountContentsTitle">결제수단</p>
+              <Select
+                placeholder="카테고리 선택"
+                options={payment}
+                onChange={(e: any) => setPaymentMethod(e.value)}
+                styles={paySelectCustom}
+                defaultValue={editPaymentMethod}
+              />
+            </div>
           )}
+
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">카테고리</p>
+            {accountType === 'INCOME' ? (
+              <Select
+                placeholder="카테고리 선택"
+                options={inOptions}
+                onChange={(e: any) => setIncomeType(e.value)}
+                styles={inSelectCustom}
+                defaultValue={editInOptions}
+              />
+            ) : (
+              <Select
+                placeholder="카테고리 선택"
+                options={exOptions}
+                onChange={(e: any) => setExpenditureType(e.value)}
+                styles={exSelectCustom}
+                defaultValue={editExOptions}
+              />
+            )}
+          </div>
+          <button
+            className="addAccountDoneBtn"
+            type="button"
+            onClick={handleEdit}
+          >
+            등록하기
+          </button>
         </div>
-        <button
-          className="addAccountDoneBtn"
-          type="button"
-          onClick={handleEdit}
-        >
-          등록하기
-        </button>
       </div>
-    </div>
+    </>
   );
 }
 

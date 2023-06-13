@@ -1,9 +1,10 @@
 import React from 'react';
-import '../../styles/pages/_AddAccount.scss';
+import '../../styles/pages/_EditAccountDone.scss';
 import { useNavigate } from 'react-router';
 import { useRecoilValue } from 'recoil';
 import { accountIdState } from '../../shared/Atom';
-import doneImg from '../../static/image/addAccountDone/Group 4257.png';
+import Portal from '../../shared/Portal';
+import editDone from '../../static/image/addAccountDone/editDone.png';
 
 function EditAccountDone() {
   const navigate = useNavigate();
@@ -12,29 +13,21 @@ function EditAccountDone() {
   const accountId = useRecoilValue(accountIdState);
 
   return (
-    <div className="doneBg">
-      <div className="doneTitle">
-        <h1>수정이 완료 되었어요!</h1>
-        <img className="doneImg" src={doneImg} alt="doneImg" />
-      </div>
+    <Portal>
+      <div className="editAccountBg">
+        <div className="ModalBox">
+          <p>수정이 완료 됐어요!</p>
+          <img src={editDone} alt="editDone" />
 
-      <div className="doneFooter">
-        <button
-          onClick={() => navigate(`/account/${accountId}`)}
-          className="doneBtn"
-          type="button"
-        >
-          <p>완료</p>
-        </button>
-        <button
-          onClick={() => navigate('/poorRoom')}
-          className="goPoorRoomBtn"
-          type="button"
-        >
-          푸어 키우러 가기
-        </button>
+          <button
+            onClick={() => navigate(`/account/${accountId}`)}
+            type="button"
+          >
+            지출내역 보러가기
+          </button>
+        </div>
       </div>
-    </div>
+    </Portal>
   );
 }
 
