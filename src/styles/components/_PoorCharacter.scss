@@ -36,3 +36,16 @@
     z-index: 2;
   }
 }
+
+.MyPoorTalkImage {
+  & > .avatar {
+    width: 17px;
+    margin-top: 4.73px;
+    z-index: 1;
+  }
+  & > .item {
+    width: 30px;
+    margin-top: 4.73px;
+    z-index: 2;
+  }
+}

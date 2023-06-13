@@ -23,9 +23,8 @@ function PoorCharacter(props: PoorCharacterProps) {
   return (
     <div id="myPoorCharacter" className={avatarType}>
       <img
-        src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
-          poorCharacter[myPoorInfo.level]
-        }.svg`}
+        src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[myPoorInfo.level]
+          }.svg`}
         alt="나의 푸어 캐릭터"
         className="avatar"
       />

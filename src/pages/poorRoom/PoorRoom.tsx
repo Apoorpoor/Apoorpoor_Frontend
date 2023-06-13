@@ -11,6 +11,7 @@ import {
   UseQueryResult,
 } from 'react-query';
 import { BsFillCaretRightFill } from 'react-icons/bs';
+import Cookies from 'js-cookie';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
@@ -160,6 +161,24 @@ function PoorRoom() {
       buttonIndex: initialButtonIndex,
     });
   }, []);
+  const logout = () => {
+    // userId 삭제
+    localStorage.removeItem('userId');
+    // AToken 삭제
+    localStorage.removeItem('AToken');
+    // RToken 삭제
+    Cookies.remove('RToken');
+    navigate('/login')
+  }
+
+  // 포인트 내역 기간별 조회하기
+  // const pointInquirybyPeriod = ({}) => {
+  //   getPointInquiry('newDateType', 'newKind', newPage);
+  // };
+
+  if (scrollPosition > 1500) {
+    console.log('게이지 영역 도달!');
+  }
 
   if (isLoading) {
     return <Loading />;
@@ -188,7 +207,7 @@ function PoorRoom() {
             </Button>
             <Button
               className="textType"
-              onClick={() => navigate('/poorItemSetting')}
+              onClick={logout}
             >
               로그아웃
             </Button>
@@ -254,9 +273,8 @@ function PoorRoom() {
           )}
           <div className="periodInquiry">
             <Button
-              className={`filterButton ${
-                selectedButtonIndex === 0 ? 'checked' : ''
-              }`}
+              className={`filterButton ${selectedButtonIndex === 0 ? 'checked' : ''
+                }`}
               onClick={() =>
                 getPointInquiry({
                   newDateType: 'week',
@@ -269,9 +287,8 @@ function PoorRoom() {
               1주일
             </Button>
             <Button
-              className={`filterButton ${
-                selectedButtonIndex === 1 ? 'checked' : ''
-              }`}
+              className={`filterButton ${selectedButtonIndex === 1 ? 'checked' : ''
+                }`}
               onClick={() =>
                 getPointInquiry({
                   newDateType: 'month',
@@ -284,9 +301,8 @@ function PoorRoom() {
               1개월
             </Button>
             <Button
-              className={`filterButton ${
-                selectedButtonIndex === 2 ? 'checked' : ''
-              }`}
+              className={`filterButton ${selectedButtonIndex === 2 ? 'checked' : ''
+                }`}
               onClick={() =>
                 getPointInquiry({
                   newDateType: '3month',
@@ -299,9 +315,8 @@ function PoorRoom() {
               3개월
             </Button>
             <Button
-              className={`filterButton ${
-                selectedButtonIndex === 3 ? 'checked' : ''
-              }`}
+              className={`filterButton ${selectedButtonIndex === 3 ? 'checked' : ''
+                }`}
               onClick={() =>
                 getPointInquiry({
                   newDateType: '6month',
@@ -314,9 +329,8 @@ function PoorRoom() {
               6개월
             </Button>
             <Button
-              className={`filterButton ${
-                selectedButtonIndex === 4 ? 'checked' : ''
-              }`}
+              className={`filterButton ${selectedButtonIndex === 4 ? 'checked' : ''
+                }`}
               onClick={() =>
                 getPointInquiry({
                   newDateType: 'year',
@@ -348,9 +362,8 @@ function PoorRoom() {
                     {list.pointDescription} <span>{list.createdAt}</span>
                   </p>
                   <p
-                    className={`value ${
-                      list.usedPoints === null ? 'save' : 'use'
-                    }`}
+                    className={`value ${list.usedPoints === null ? 'save' : 'use'
+                      }`}
                   >
                     {list.usedPoints === null ? '+' : '-'}
                     {list.usedPoints === null
