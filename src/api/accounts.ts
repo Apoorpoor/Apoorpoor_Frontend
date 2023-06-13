@@ -66,7 +66,7 @@ const getTotalMonthDate = async (id: string, currentMonth: string) => {
     const response = await instance.get(
       `/accounts/${id}/totalStatus?date=${currentMonth}`
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -80,7 +80,7 @@ const getMonthPieChart = async (id: string, currentMonth: string) => {
     const response = await instance.get(
       `/accounts/${id}/statistics?date=${currentMonth}`
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -98,7 +98,7 @@ const getDifference = async (
     const response = await instance.get(
       `/accounts/${id}/difference?date=${currentMonth}${dateType}`
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -112,7 +112,7 @@ const getAccountType = async (id: string, dateType: string, params: string) => {
     const response = await instance.get(
       `/accounts/${id}/status?${dateType}${params}`
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -126,7 +126,7 @@ const getAccountsDate = async (id: string, selectedDate: string) => {
     const response = await instance.get(
       `/accounts/${id}/status?date=${selectedDate}`
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -148,7 +148,7 @@ export const addAccount = async (requestData: {
 }) => {
   try {
     const response = await instance.post('/ledgerhistory', requestData);
-    console.log('거래내역 추가 성공:', response.data);
+    // console.log('거래내역 추가 성공:', response.data);
     return response.data;
   } catch (error) {
     console.log('거래내역 추가 실패:', error);
@@ -160,7 +160,7 @@ export const addAccount = async (requestData: {
 export const delAccount = async (id: number) => {
   try {
     const response = await instance.delete(`/ledgerhistory/${id}`);
-    console.log('거래내역 삭제 성공:', response.data);
+    // console.log('거래내역 삭제 성공:', response.data);
     return response.data;
   } catch (error) {
     console.log('거래내역 삭제 실패:', error);
@@ -185,7 +185,7 @@ export const editAccount = async (
 ) => {
   try {
     const response = await instance.put(`/ledgerhistory/${id}`, requestData);
-    console.log('거래내역 수정 성공:', response.data);
+    // console.log('거래내역 수정 성공:', response.data);
     return response.data;
   } catch (error) {
     console.log('거래내역 수정 실패:', error);

@@ -23,6 +23,7 @@ import {
   MyConsumePropensitychart,
   ProgressBar,
   SlickSlider,
+  Tooltip,
 } from '../../components';
 import myPoorState from '../../shared/MyPoor';
 import PoorCharacter from './PoorCharacter';
@@ -63,6 +64,7 @@ function PoorRoom() {
     gender: string;
     topImage: string;
     bottomImage: string;
+    shoesImage: string;
     accImage: string;
     customImage: string;
     badgeList: Badge[];
@@ -116,7 +118,7 @@ function PoorRoom() {
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
     onSuccess: (response) => {
-      setPointInquiryList(response);
+      setPointInquiryList((prevList) => [...prevList, ...response]);
       queryClient.invalidateQueries('getMyPointInquiry');
     },
   });
@@ -134,6 +136,10 @@ function PoorRoom() {
     newPage,
     buttonIndex,
   }: PointInquiry) => {
+    // 필터링 기간을 다르게 설정했을 경우
+    if (newDateType !== dateType) {
+      setPointInquiryList([]);
+    }
     setDateType(newDateType);
     setKind(newKind);
     setPage(newPage);
@@ -228,7 +234,18 @@ function PoorRoom() {
         </section>
         <section id="myPointBreakdown">
           <h1>
-            {data?.nickname}님의 푸어포인트 <span className="tooltip">!</span>
+            {data?.nickname}님의 푸어포인트
+            <Tooltip>
+              <h2>푸어포인트로 거지를 꾸밀 수 있어요.</h2>
+              <ul>
+                <li>
+                  가계부 작성<span>10P</span>
+                </li>
+                <li>
+                  소비뱃지 획득<span>20P</span>
+                </li>
+              </ul>
+            </Tooltip>
           </h1>
           {data && (
             <ProgressBar
@@ -313,11 +330,17 @@ function PoorRoom() {
             </Button>
           </div>
           <div className="detailOfPoint">
-            <ul className="detailOfPointFilter">
-              <li className="checked">전체</li>
-              <li>적립</li>
-              <li>사용</li>
-            </ul>
+            <nav className="detailOfPointFilter">
+              <button type="button" className="checked smallNav">
+                전체
+              </button>
+              <button type="button" className="smallNav">
+                적립
+              </button>
+              <button type="button" className="smallNav">
+                사용
+              </button>
+            </nav>
             <ul className="detailOfPointList">
               {pointInquiryList?.map((list) => (
                 <li key={list.point_id}>

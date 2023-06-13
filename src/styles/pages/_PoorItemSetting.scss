@@ -28,6 +28,35 @@
     & > section.active {
       display: block;
     }
+    & > section.bottom {
+      & ul li .itemBox .itemImg {
+        background-position: center -55px;
+      }
+    }
+    & > section.shoes {
+      & ul li .itemBox .itemImg {
+        background-size: 155%;
+        background-position: center -100px !important;
+      }
+    }
+    & > section.custom {
+      & ul li {
+        width: 152px;
+        height: 340px;
+      }
+      & ul li .itemBox {
+        height: 292px;
+      }
+      & ul li .itemBox .itemImg {
+        background-size: 100%;
+        width: 100px;
+        background-position: center 21px;
+        height: 220px;
+      }
+      & ul li .itemBox p {
+        transform: translateY(-10px);
+      }
+    }
     & > section ul {
       width: calc(100% - (100% - 320px));
       padding: 0 calc((100% - 320px) / 2);

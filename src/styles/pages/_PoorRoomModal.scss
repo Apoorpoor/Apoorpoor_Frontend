@@ -47,3 +47,98 @@ div.modalbg.active {
 .modal.active {
   bottom: 0;
 }
+
+// 뱃지 리스트 모달
+.modal {
+  & .badge {
+    position: relative;
+    width: 96px;
+    height: 132px;
+    background-color: $gray-150;
+    border-radius: 12px;
+    & > div img {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+    }
+    & > p {
+      position: absolute;
+      left: 50%;
+      top: 90px;
+      transform: translateX(-50%);
+      width: 53px;
+      word-break: keep-all;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+  & > p {
+    background-color: $gray-150;
+    width: 320px;
+    height: 155px;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    text-align: center;
+    word-break: keep-all;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 2;
+
+    & span {
+      display: block;
+      color: $systemError;
+    }
+  }
+}
+
+// 푸어아이템 모달
+.modal {
+  & .item {
+    position: relative;
+    width: 140px;
+    height: 180px;
+    background-color: $gray-150;
+    border-radius: 12px;
+    & > div img {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 160px;
+    }
+    & > p {
+      position: absolute;
+      left: 50%;
+      bottom: 15px;
+      transform: translateX(-50%);
+      word-break: keep-all;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+  }
+  & .item.bottom > div img {
+    top: -40px;
+  }
+  & .item.shoes > div img {
+    top: -80px !important;
+  }
+  & > p {
+    background-color: $gray-150;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    text-align: center;
+    word-break: keep-all;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 2;
+    width: initial;
+    height: initial;
+  }
+}

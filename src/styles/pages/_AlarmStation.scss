@@ -1,0 +1,32 @@
+@import '../_Palette.scss';
+
+#alarmStation {
+  width: 100%;
+
+  & ul {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    & > li {
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      border-radius: 20px;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+      cursor: pointer;
+      & p {
+        line-height: 1.5;
+      }
+      & p:first-child {
+        // color: $primary;
+        margin-bottom: 8px;
+        & span {
+          float: right;
+          color: $gray-450;
+        }
+      }
+    }
+  }
+}

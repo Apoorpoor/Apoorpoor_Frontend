@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { ReactNode, useState } from 'react';
+import '../../styles/components/_Tooltip.scss';
 
-type TooltipContent = {
-    title: string,
-    description: string,
-    children: React.ReactNode
+interface TooltipProps {
+  children: ReactNode;
 }
 
-function Tooltip({ title, description, children} :TooltipContent) {
+function Tooltip({ children }: TooltipProps) {
+  const [isTooltipShow, setIsTooltipShow] = useState(false);
+
+  const showTooltip = () => {
+    setIsTooltipShow(!isTooltipShow);
+  };
   return (
-    <div>
-        <h3>{title}</h3>
-        <p>{description}</p>
-        {children}
+    <div className="tooltip">
+      <button type="button" onClick={() => showTooltip()}>i</button>
+      <div className={`tooltipContents ${isTooltipShow === true? 'show': ''}`}>{children}</div>
     </div>
-  )
+  );
 }
 
-export default Tooltip
+export default Tooltip;

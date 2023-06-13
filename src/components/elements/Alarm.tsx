@@ -1,70 +1,76 @@
-/* eslint-disable no-alert */
-import React, { useEffect } from 'react';
-import { BiBell } from 'react-icons/bi';
-import { useRecoilState } from 'recoil';
-import alarmMessageState from '../../shared/Alarm';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import Button from './Button';
+import alarmIcon from '../../static/image/ui/alarm.png';
+
+interface ArrayType {
+  id: number | null;
+  msg: string | null;
+  timestamp: Date | null;
+}
 
 function Alarm() {
-  const [alarmState, setAlarmState] = useRecoilState(alarmMessageState);
+  const [isConnected, setIsConnected] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
+  const [savedNotification, setSavedNotification] = useState<ArrayType[]>([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  if (isConnected) {
     const subscribeURL = `${process.env.REACT_APP_SERVER_URL}/sub`;
     const accessToken = localStorage.getItem('AToken');
 
-    const eventSource = new EventSource(`${subscribeURL}?token=${accessToken}`);
+    const eventSource = new EventSource(
+      `${subscribeURL}?token=${accessToken}`,
+      {
+        withCredentials: true,
+      }
+    );
 
-    // eventSource.onopen = () => {
-    //   console.log('Connection opened');
-    // };
-
-    eventSource.addEventListener('getBadge', (event) => {
+    const handleGetBadge = (event: MessageEvent) => {
       const message = event.data;
       const eventData = JSON.parse(message);
 
-      alert(message);
-      setAlarmState(eventData);
-    });
+      const notifications = [...savedNotification, eventData];
+      setSavedNotification(notifications);
 
-    // eventSource.onmessage = (event) => {
-    //   const message = event.data;
-    //   setAlarmState(message);
-    //   console.log('Received message:', message);
-    // };
+      // sessionStorage에 저장
+      sessionStorage.setItem('notification', JSON.stringify(notifications));
+    };
 
-    // eventSource.onmessage = async (e) => {
-    //   const res = await e.data;
-    //   const parsedData = JSON.parse(res);
+    eventSource.addEventListener('getBadge', handleGetBadge);
 
-    //   // 받아오는 data로 할 일
-    //   setAlarmState(parsedData);
-    // };
+    // SSE 서버 연결
+    eventSource.onopen = () => {
+      console.log('Connection opened');
+    };
 
+    // SSE 서버 에러 발생
     eventSource.onerror = (event) => {
       console.log('Error occurred:', event);
-    };
-
-    return () => {
+      eventSource.removeEventListener('getBadge', handleGetBadge);
       eventSource.close();
     };
-  }, [setAlarmState]);
 
-  const openAlarm = () => {
-    console.log('알람을 보여줘', alarmState);
+    setIsConnected(false);
+  }
+
+  const alarmCheckedHandler = () => {
+    navigate('/AlarmStation');
+    setIsChecked(true);
   };
-
-  console.log('알림 리코일 저장', alarmState);
 
   return (
     <div>
-      <Button className="iconButton" onClick={openAlarm}>
-        <BiBell />
+      <Button
+        className={`iconButton ${isChecked === false ? 'checkMe' : ''}`}
+        onClick={() => alarmCheckedHandler()}
+      >
+        <img
+          src={alarmIcon}
+          alt="alarm"
+          style={{ width: '44px', height: '44px' }}
+        />
       </Button>
-      <div className="alarmList">
-        <ul>
-          <li>{alarmState}</li>
-        </ul>
-      </div>
     </div>
   );
 }

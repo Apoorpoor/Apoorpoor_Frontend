@@ -48,7 +48,7 @@ function Calendar({
   );
 
   const monthTotal = getTotalMonthDate?.accountTotalResponseDtoList;
-  console.log('총 금액 호출:', monthTotal);
+  // console.log('총 금액 호출:', monthTotal);
 
   // 날짜 클릭 시 상세 모달
   const [calendarModal, setCalendarModal] = useState<boolean>(false);

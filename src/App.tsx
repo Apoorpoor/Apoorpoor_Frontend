@@ -19,6 +19,7 @@ import {
   Finished,
   PoorItemSetting,
   BadgeList,
+  AlarmStation,
   Social,
 } from './pages/index';
 
@@ -53,6 +54,7 @@ function App() {
         <Route path="/gender" element={<Gender />} />
         <Route path="/finished" element={<Finished />} />
         <Route path="/badgeList" element={<BadgeList />} />
+        <Route path="/alarmStation" element={<AlarmStation />} />
         <Route path="/social" element={<Social />} />
       </Routes>
     </Layout>

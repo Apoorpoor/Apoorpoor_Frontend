@@ -31,6 +31,7 @@ function PoorCharacter(props: PoorCharacterProps) {
       />
       <img src={myPoorInfo.topImage} alt="" className="item" />
       <img src={myPoorInfo.bottomImage} alt="" className="item" />
+      <img src={myPoorInfo.shoesImage} alt="" className="item" />
       <img src={myPoorInfo.accImage} alt="" className="item" />
       <img src={myPoorInfo.customImage} alt="" className="item" />
     </div>

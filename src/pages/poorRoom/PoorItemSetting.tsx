@@ -11,12 +11,23 @@ import { useRecoilValue } from 'recoil';
 import beggars from '../../api/beggars';
 import { Button, Header } from '../../components';
 import myPoorState from '../../shared/MyPoor';
+import Portal from '../../shared/Portal';
 import '../../styles/pages/_PoorItemSetting.scss';
 import Error from '../status/Error';
 import Loading from '../status/Loading';
 
 function PoorItemSetting() {
   const queryClient = useQueryClient();
+  const myPoorInfo = useRecoilValue(myPoorState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [purchaseItem, setPurchaseItem] = useState({
+    itemName: '',
+    itemImage: '',
+    itemType: '',
+  });
+  // disabled item 초기값
+  const disabled = true;
+
   interface MyPoorData {
     beggarId: string;
     userId: string;
@@ -88,10 +99,12 @@ function PoorItemSetting() {
     itemState,
     itemType,
     itemImage,
+    itemName,
   }: {
     itemState: string | null;
     itemType: string | null;
     itemImage: string;
+    itemName: string;
   }) => {
     const regex = /\/([^/]+)\.svg$/;
     const match = itemImage.match(regex);
@@ -100,6 +113,13 @@ function PoorItemSetting() {
     // state가 null일 경우엔 구매요청보내기
     if (itemState === null) {
       buyPoorItemMutation.mutate({ itemListEnum: extractedValue });
+      // 구매하고 모달 띄우기
+      setIsModalOpen(true);
+      setPurchaseItem({
+        itemName,
+        itemImage,
+        itemType: itemType !== null ? itemType : 'top',
+      });
       // state가 DONE일 경우엔 옷 입기
     } else if (itemState === 'DONE') {
       poorItemMutation.mutate({
@@ -114,8 +134,6 @@ function PoorItemSetting() {
       });
     }
   };
-
-  const disabled = true;
 
   if (myPoorInfoData === undefined) {
     return <Error />;
@@ -150,8 +168,8 @@ function PoorItemSetting() {
           악세사리
         </Button>
         <Button
-          className={`nav ${selectedItem === 'custum' ? 'active' : ''}`}
-          onClick={() => tabMenuHandler('custum')}
+          className={`nav ${selectedItem === 'custom' ? 'active' : ''}`}
+          onClick={() => tabMenuHandler('custom')}
         >
           코스튬
         </Button>
@@ -199,6 +217,7 @@ function PoorItemSetting() {
                         itemState: item.itemState,
                         itemType: item.itemType,
                         itemImage: item.itemImage,
+                        itemName: item.itemName,
                       })
                     }
                   >
@@ -212,7 +231,9 @@ function PoorItemSetting() {
               ))}
           </ul>
         </section>
-        <section className={selectedItem === 'bottom' ? 'active' : ''}>
+        <section
+          className={`bottom ${selectedItem === 'bottom' ? 'active' : ''}`}
+        >
           <ul>
             {data
               ?.filter((item: MyData) => item.itemType === 'bottom')
@@ -254,6 +275,7 @@ function PoorItemSetting() {
                         itemState: item.itemState,
                         itemType: item.itemType,
                         itemImage: item.itemImage,
+                        itemName: item.itemName,
                       })
                     }
                   >
@@ -267,7 +289,9 @@ function PoorItemSetting() {
               ))}
           </ul>
         </section>
-        <section className={selectedItem === 'shoes' ? 'active' : ''}>
+        <section
+          className={`shoes ${selectedItem === 'shoes' ? 'active' : ''}`}
+        >
           <ul>
             {data
               ?.filter((item: MyData) => item.itemType === 'shoes')
@@ -309,6 +333,7 @@ function PoorItemSetting() {
                         itemState: item.itemState,
                         itemType: item.itemType,
                         itemImage: item.itemImage,
+                        itemName: item.itemName,
                       })
                     }
                   >
@@ -322,7 +347,7 @@ function PoorItemSetting() {
               ))}
           </ul>
         </section>
-        <section className={selectedItem === 'acc' ? 'active' : ''}>
+        <section className={`acc ${selectedItem === 'acc' ? 'active' : ''}`}>
           <ul>
             {data
               ?.filter((item: MyData) => item.itemType === 'acc')
@@ -364,6 +389,7 @@ function PoorItemSetting() {
                         itemState: item.itemState,
                         itemType: item.itemType,
                         itemImage: item.itemImage,
+                        itemName: item.itemName,
                       })
                     }
                   >
@@ -377,7 +403,9 @@ function PoorItemSetting() {
               ))}
           </ul>
         </section>
-        <section className={selectedItem === 'custom' ? 'active' : ''}>
+        <section
+          className={`custom ${selectedItem === 'custom' ? 'active' : ''}`}
+        >
           <ul>
             {data
               ?.filter((item: MyData) => item.itemType === 'custom')
@@ -419,6 +447,7 @@ function PoorItemSetting() {
                         itemState: item.itemState,
                         itemType: item.itemType,
                         itemImage: item.itemImage,
+                        itemName: item.itemName,
                       })
                     }
                   >
@@ -433,6 +462,31 @@ function PoorItemSetting() {
           </ul>
         </section>
       </article>
+
+      <Portal>
+        <div
+          className={`modalbg ${isModalOpen ? 'active' : ''}`}
+          onClick={() => setIsModalOpen(!isModalOpen)}
+          onKeyDown={() => setIsModalOpen(!isModalOpen)}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+          role="button"
+          tabIndex={0}
+        >
+          <div className={`modal ${isModalOpen ? 'active' : ''}`}>
+            <h2>아이템 획득!</h2>
+            <div className={`item ${purchaseItem.itemType}`}>
+              <div>
+                <img src={purchaseItem.itemImage} alt={purchaseItem.itemName} />
+              </div>
+              <p>{purchaseItem.itemName}</p>
+            </div>
+            <p>잔여 포인트 : {myPoorInfo.point}p</p>
+            <Button className="common" onClick={() => setIsModalOpen(false)}>
+              확인
+            </Button>
+          </div>
+        </div>
+      </Portal>
     </main>
   );
 }

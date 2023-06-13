@@ -67,6 +67,7 @@ function Controller() {
     page === '/age' ||
     page === '/gender' ||
     page === '/finished' ||
+    page === '/alarmStation' ||
     /^\/addAccount\/\d+$/.test(page)
   ) {
     return null;
