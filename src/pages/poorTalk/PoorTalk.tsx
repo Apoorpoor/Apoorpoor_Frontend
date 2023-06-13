@@ -10,8 +10,6 @@ import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
 import instance from "../../api/instance";
 import UsersProfilePage from "./UsersProfilePage";
-import basicPoor from '../../static/image/gender/basicPoor.png'
-// import imageCompression from 'browser-image-compression';  
 
 function PoorTalk(): JSX.Element {
     // 처음에 받아오는 내 푸어 정보
@@ -24,25 +22,22 @@ function PoorTalk(): JSX.Element {
     const [image, setImage] = useState<string | Blob>("");
     // 섬네일 이미지
     const [thumbnailImage, setThumbnailImage] = useState<string>("");
-    // 메세지에서 추출한 유저 아이디
-    const [onMessageUserId, setOnMessageUserId] = useState<number>(user?.userId);
+    // 메세지에서 추출한 유저 아이디 모달창으로 전달
+    const [inMessageUserId, setinMessageUserId] = useState<number>(user?.userId);
+    // 상대 유저들 모달창
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
     // 토큰
     const token = localStorage.getItem("AToken");
     // 유정 고유 아이디 
     // const userId = localStorage.getItem("userId");
-    // 유저 정보 받아오기
+    // 내 정보 받아오기
     const { isLoading, error, data } = useQuery("getUser", getUser);
-    // 소켓
+    // 소켓 최종
     const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`);
     // 클라이언트
     const stompClientRef = useRef<Client | null>(null);
     // 최신글이 올라오면 맨 밑으로 포커싱
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    // 네비게이터
-    // const navigate = useNavigate();
-    // 상대 유저들 모달창
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
-
     // 날짜 데이터 
     const today = new Date(); // today 객체에 Date()의 결과를 넣어줬다
     const time = {
@@ -53,7 +48,7 @@ function PoorTalk(): JSX.Element {
         minutes: today.getMinutes().toString().padStart(2, "0"), // 현재 분
         seconds: today.getSeconds().toString().padStart(2, "0"), // 현재 초
     };
-    const timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours} : ${time.minutes} ${time.seconds}초 `
+    const timestring = `${time.year}-${time.month}-${time.date} ${time.hours} : ${time.minutes} ${time.seconds}`
 
     // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
     useEffect(() => {
@@ -85,11 +80,12 @@ function PoorTalk(): JSX.Element {
                         destination: "/pub/chat/enter",
                         body: JSON.stringify({
                             beggar_id: data?.beggarId,
+                            date: timestring,
+                            message: `${data.nickname}님 입장하셨습니다.`,
                             sender: data.nickname,
                             type: "ENTER",
-                            message: `${data.nickname}님 입장하셨습니다.`,
-                            date: timestring,
                             userId: data.userId,
+                            level: data.level,
                         }),
                     });
                 },
@@ -99,10 +95,12 @@ function PoorTalk(): JSX.Element {
                         destination: "/pub/chat/leave",
                         body: JSON.stringify({
                             beggar_id: data.beggarId,
+                            date: timestring,
+                            message: `${data.nickname}님 퇴장하셨습니다.`,
                             sender: data.nickname,
                             type: "LEAVE",
-                            message: `${data.nickname}님 퇴장하셨습니다.`,
-                            date: timestring,
+                            userId: data.userId,
+                            level: data.level,
                         }),
                     });
                 },
@@ -124,17 +122,16 @@ function PoorTalk(): JSX.Element {
             console.log("내용을 입력해주세요.");
             return;
         }
-
         const sendList = {
             beggar_id: data.beggarId,
+            date: timestring,
+            message: nowChatMessage.trim(),
             sender: data.nickname,
             type: "TALK",
-            message: nowChatMessage.trim(),
-            date: timestring,
-            username: data.username,
             userId: data.userId,
+            level: data.level,
         };
-
+        // console.log("sendList = ", sendList)
         if (stompClientRef.current) {
             stompClientRef.current.publish({
                 destination: "/pub/chat/send",
@@ -176,13 +173,13 @@ function PoorTalk(): JSX.Element {
             // 서버에 보낼 데이터
             const sendList = {
                 beggar_id: data.beggarId,
+                date: timestring,
+                image: imageData,
+                message: "",
                 sender: data.nickname,
                 type: "TALK",
-                message: "",
-                image: imageData,
-                date: timestring,
-                username: data.username,
                 userId: data.userId,
+                level: data.level,
             };
 
             if (stompClientRef.current) {
@@ -200,9 +197,8 @@ function PoorTalk(): JSX.Element {
     };
     // 모달창으로 유저ID 프롭스로 보내주고 오픈하는 함수 
     const usersProfileHandler = (userId: number) => {
-        setOnMessageUserId(userId)
+        setinMessageUserId(userId)
         setModalOpen(true);
-
     }
     if (isLoading) {
         return <div>Loading...</div>;
@@ -210,13 +206,13 @@ function PoorTalk(): JSX.Element {
     if (error) {
         return <div>Error</div>;
     }
-    console.log("chatMessages = ", chatMessages)
+    // console.log("chatMessages = ", chatMessages)
     // console.log("data = ", data)
     // console.log("userId = ", userId)
     return (
         <div className='currentBackGround'>
             <Header>푸어talk</Header>
-            {modalOpen && <UsersProfilePage setModalOpen={setModalOpen} onMessageUserId={onMessageUserId} />}
+            {modalOpen && <UsersProfilePage setModalOpen={setModalOpen} inMessageUserId={inMessageUserId} />}
             {chatMessages && chatMessages.length > 0 && (
                 <div className='Messagesbox'>
                     {chatMessages?.map((message, index) => (
@@ -238,18 +234,24 @@ function PoorTalk(): JSX.Element {
                                                         <img className="sendMyImageBox" src={message.image} alt="images" />
                                                     </div>
                                                 ) : (
-                                                    <div>{message.message}
-                                                    </div>
+                                                    <div>{message.message}</div>
                                                 )}
                                             </div>
-                                            <div className="nowTime1">{message.date.slice(13, -5)}</div>
+                                            <div className="nowTime1">
+                                                {Number(message.date.split(" ")[1]) > 12
+                                                    ? `오후 ${Number(message.date.split(" ")[1]) - 12} : ${message.date.split(" ")[3]}`
+                                                    : `오전 ${message.date.split(" ")[1]} : ${message.date.split(" ")[3]}`}
+                                            </div>
                                         </>
                                     ) : (
                                         // 다른 사용자가 보낸 메시지인 경우
                                         <>
-                                            <button type="button" className="yourChatProfile"
+                                            <button
+                                                type="button"
+                                                className="yourChatProfile"
                                                 onClick={() => usersProfileHandler(message.userId)}
-                                            ><img src={basicPoor} alt='거지 이미지' /></button>
+                                            >{message.level}
+                                            </button>
                                             <div className="yourChatNickName">{message.sender}</div>
                                             <div className="yourChat">
                                                 {message.image ? (
@@ -260,7 +262,11 @@ function PoorTalk(): JSX.Element {
                                                     <div>{message.message}</div>
                                                 )}
                                             </div>
-                                            <div className="nowTime2">{message.date.slice(13, -5)}</div>
+                                            <div className="nowTime2">
+                                                {Number(message.date.split(" ")[1]) > 12
+                                                    ? `오후 ${Number(message.date.split(" ")[1]) - 12} : ${message.date.split(" ")[3]}`
+                                                    : `오전 ${message.date.split(" ")[1]} : ${message.date.split(" ")[3]}`}
+                                            </div>
                                         </>
                                     )}
                                     {/* 새로 채팅이 생기면 맨 아래로 포커싱 */}
@@ -274,7 +280,7 @@ function PoorTalk(): JSX.Element {
             <div>
                 {thumbnailImage === "" ?
                     <input
-                        className='SandInput'
+                        className='SendInput'
                         type="text"
                         placeholder="message"
                         value={sendMessage}
@@ -286,7 +292,7 @@ function PoorTalk(): JSX.Element {
                     />
                 }
                 <button
-                    className='SandButton'
+                    className='SendButton'
                     type="button"
                     onClick={() => sendMessages(sendMessage)}
                     aria-label="메세지 전송"
@@ -300,14 +306,15 @@ function PoorTalk(): JSX.Element {
                         onChange={sendImageHandler}
                     />{image === "" ?
                         <button
-                            className='SandButton'
+                            className='SendButton'
                             type="button"
+                            onKeyUp={() => sendMessages(sendMessage)}
                             onClick={() => sendMessages(sendMessage)}
                             aria-label="메세지 전송"
                         ><FaArrowCircleUp /></button>
                         :
                         <button
-                            className='SandButton'
+                            className='SendButton'
                             type="button"
                             onClick={sendImage}
                             aria-label="이미지 전송"
@@ -321,35 +328,13 @@ function PoorTalk(): JSX.Element {
 export default PoorTalk;
 
 
-interface IJoinMessage {
-    type: "ENTER"
-    sender: string | number
-    message: string
+interface IMessage {
     beggar_id: number
     date: string
-    username: string
-    userId: number
     image?: string
-}
-interface ITalkMessage {
-    type: "TALK"
-    sender: string | number
     message: string
-    beggar_id: number
-    date: string
-    username: string
-    userId: number
-    image?: string
-}
-
-interface ILEAVEMessage {
-    type: "LEAVE"
     sender: string | number
-    message: string
-    beggar_id: number
-    date: string
-    username: string
+    type: "ENTER" | "TALK" | "LEAVE"
     userId: number
-    image?: string
+    level: number
 }
-type IMessage = IJoinMessage | ITalkMessage | ILEAVEMessage;

@@ -10,6 +10,7 @@ import {
   UseQueryResult,
 } from 'react-query';
 import { BsFillCaretRightFill } from 'react-icons/bs';
+import Cookies from 'js-cookie';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
@@ -116,6 +117,16 @@ function PoorRoom() {
     });
   };
 
+  const logout = () => {
+    // userId 삭제
+    localStorage.removeItem('userId');
+    // AToken 삭제
+    localStorage.removeItem('AToken');
+    // RToken 삭제
+    Cookies.remove('RToken');
+    navigate('/login')
+  }
+
   // 포인트 내역 기간별 조회하기
   // const pointInquirybyPeriod = ({}) => {
   //   getPointInquiry('newDateType', 'newKind', newPage);
@@ -152,7 +163,7 @@ function PoorRoom() {
             </Button>
             <Button
               className="textType"
-              onClick={() => navigate('/poorItemSetting')}
+              onClick={logout}
             >
               로그아웃
             </Button>
@@ -225,9 +236,8 @@ function PoorRoom() {
                     {list.pointDescription} <span>05.22 &#62;</span>
                   </p>
                   <p
-                    className={`value ${
-                      list.usedPoints === null ? 'save' : 'use'
-                    }`}
+                    className={`value ${list.usedPoints === null ? 'save' : 'use'
+                      }`}
                   >
                     {list.usedPoints === null ? '+' : '-'}
                     {list.usedPoints === null
