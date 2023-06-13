@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
-import { BsChevronLeft } from 'react-icons/bs';
+// import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
 import { useSetRecoilState } from 'recoil';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
+import { Header, Input } from '../../components';
 import { messageState, categoryState } from '../../shared/Atom';
-import { Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 
@@ -332,18 +332,7 @@ function AddAccount(): JSX.Element {
 
   return (
     <div className="addAccountBg">
-      <div className="header">
-        <button
-          type="button"
-          className="headerPreBtn"
-          onClick={() => navigate(-1)}
-        >
-          <BsChevronLeft />
-        </button>
-        <div className="headerTitle">
-          <h2 className="headerTitleH2">소비 / 수입 등록</h2>
-        </div>
-      </div>
+      <Header>소비 / 수입 등록</Header>
 
       <div className="addAccountBody">
         <div className="addAccountContents">

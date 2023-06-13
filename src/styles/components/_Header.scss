@@ -4,19 +4,30 @@
   height: 80px;
   top: 0;
   z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   & > button {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    width: 20px;
+    // position: absolute;
+    // top: 50%;
+    // left: 15px;
+    // transform: translateY(-50%);
+    width: 40px;
     height: 24px;
   }
   & > h1 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
     font-size: 20px;
+    min-width: calc(100% - 80px);
+    text-align: center;
+  }
+  & > div {
+    width: 40px;
+    font-size: 23px;
+    transform: translateY(5px);
   }
 }

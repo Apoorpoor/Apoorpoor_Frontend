@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
-import {
-  AiOutlineLeft,
-  AiFillCaretLeft,
-  AiFillCaretRight,
-} from 'react-icons/ai';
+import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
@@ -13,7 +9,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { format, subMonths, subWeeks } from 'date-fns';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import accounts from '../../api/accounts';
-import { Calendar, Chart, Controller } from '../../components';
+import { Calendar, Chart, Controller, Header } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
@@ -53,7 +49,7 @@ interface TotalStatus {
 }
 
 function Account(): JSX.Element {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // 현재 가계부의 id 조회
   const { id } = useParams<{ id?: string }>();
@@ -562,15 +558,7 @@ function Account(): JSX.Element {
       {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
 
       <div className="_AccountBackground">
-        <div className="header">
-          <button
-            type="button"
-            className="preBtn"
-            onClick={() => navigate('/')}
-          >
-            <AiOutlineLeft />
-          </button>
-
+        <Header>
           <div className="month">
             <button
               className="sideBtn"
@@ -600,7 +588,7 @@ function Account(): JSX.Element {
               <AiFillCaretRight />
             </button>
           </div>
-        </div>
+        </Header>
 
         <button type="button" className="_AccountName" onClick={nameModalOpen}>
           <span>{getAccount?.title}</span>
