@@ -87,3 +87,16 @@
   justify-content: space-between;
   font-size: 12px;
 }
+
+.socialBarChart {
+  border-radius: 12px 12px 0px 0px;
+}
+
+.barLine {
+  position: absolute;
+  // top: 30;
+  // left: 0;
+  // right: 0;
+  border-bottom: 1px solid white;
+  width: 90%;
+}
