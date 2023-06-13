@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
@@ -23,6 +24,7 @@ import {
   MyConsumePropensitychart,
   ProgressBar,
   SlickSlider,
+  Tooltip,
 } from '../../components';
 import myPoorState from '../../shared/MyPoor';
 import PoorCharacter from './PoorCharacter';
@@ -31,6 +33,7 @@ import Error from '../status/Error';
 import containerPositionState from '../../shared/ScrollContainer';
 
 function PoorRoom() {
+  // PoorRoom Hooks & State
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
@@ -38,9 +41,9 @@ function PoorRoom() {
     containerPositionState
   );
 
-  console.log('내가 지금 어디있지?', scrollPosition);
-
-  // 마이푸어룸 데이터 불러오기
+  // =================================================================
+  // *** PoorRoom Data Query *****************************************
+  // =================================================================
   type Badge = {
     badgeImage: string;
     badgeNum: number;
@@ -62,6 +65,7 @@ function PoorRoom() {
     gender: string;
     topImage: string;
     bottomImage: string;
+    shoesImage: string;
     accImage: string;
     customImage: string;
     badgeList: Badge[];
@@ -88,35 +92,75 @@ function PoorRoom() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorInfo]);
 
-  // 포인트 내역 조회
+  // =================================================================
+  // *** PoorRoom Point Inquiry Query ********************************
+  // =================================================================
+  // 초기값 설정
+  const initialDateType = 'week';
+  const initialKind = null;
+  const initialPage = 0;
+  const initialButtonIndex = 0;
+
+  const [dateType, setDateType] = useState(initialDateType);
+  const [kind, setKind] = useState<string | null>(initialKind);
+  const [page, setPage] = useState(initialPage);
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
+  const [pointInquiryList, setPointInquiryList] = useState<MyPointData[]>([]);
+
   const {
     isLoading: PointLoading,
     error: PointError,
     data: PointData,
   } = useQuery<MyPointData[]>(
-    ['getMyPointInquiry', { dateType: 'week', kind: null, page: 0 }],
-    () => beggars.getMyPointInquiry({ dateType: 'week', kind: null, page: 0 })
+    ['getMyPointInquiry', { dateType, kind, page }],
+    () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
 
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
     onSuccess: (response) => {
+      setPointInquiryList((prevList) => [...prevList, ...response]);
       queryClient.invalidateQueries('getMyPointInquiry');
     },
   });
 
-  const getPointInquiry = (
-    newDateType: string,
-    newKind: string | null,
-    newPage: number
-  ) => {
+  type PointInquiry = {
+    newDateType: string;
+    newKind: string | null;
+    newPage: number;
+    buttonIndex: number;
+  };
+
+  const getPointInquiry = ({
+    newDateType,
+    newKind,
+    newPage,
+    buttonIndex,
+  }: PointInquiry) => {
+    // 필터링 기간을 다르게 설정했을 경우
+    if (newDateType !== dateType) {
+      setPointInquiryList([]);
+    }
+    setDateType(newDateType);
+    setKind(newKind);
+    setPage(newPage);
     pointInquiryMutation.mutate({
       dateType: newDateType,
       kind: newKind,
       page: newPage,
     });
+    setSelectedButtonIndex(buttonIndex);
   };
 
+  // 초기값 설정 및 첫번째 조회 실행
+  useEffect(() => {
+    getPointInquiry({
+      newDateType: initialDateType,
+      newKind: initialKind,
+      newPage: initialPage,
+      buttonIndex: initialButtonIndex,
+    });
+  }, []);
   const logout = () => {
     // userId 삭제
     localStorage.removeItem('userId');
@@ -149,7 +193,7 @@ function PoorRoom() {
       <article>
         <section id="myPoorInfo">
           <div className="poorProfile">
-            <PoorCharacter avatarType='poorRoom' />
+            <PoorCharacter avatarType="poorRoom" />
           </div>
           <LevelMedal level={data?.level as number} />
           <h2 className="nickname">{data?.nickname}</h2>
@@ -209,31 +253,113 @@ function PoorRoom() {
         </section>
         <section id="myPointBreakdown">
           <h1>
-            만수르님의 푸어포인트 <span className="tooltip">!</span>
+            {data?.nickname}님의 푸어포인트
+            <Tooltip>
+              <h2>푸어포인트로 거지를 꾸밀 수 있어요.</h2>
+              <ul>
+                <li>
+                  가계부 작성<span>10P</span>
+                </li>
+                <li>
+                  소비뱃지 획득<span>20P</span>
+                </li>
+              </ul>
+            </Tooltip>
           </h1>
           {data && (
             <ProgressBar
               data={{ exp: data.exp, point: data.point, level: data.level }}
             />
           )}
-          <ul className="periodInquiry">
-            <li className="checked">1주일</li>
-            <li>1개월</li>
-            <li>3개월</li>
-            <li>6개월</li>
-            <li>1년</li>
-          </ul>
+          <div className="periodInquiry">
+            <Button
+              className={`filterButton ${selectedButtonIndex === 0 ? 'checked' : ''
+                }`}
+              onClick={() =>
+                getPointInquiry({
+                  newDateType: 'week',
+                  newKind: 'total',
+                  newPage: 0,
+                  buttonIndex: 0,
+                })
+              }
+            >
+              1주일
+            </Button>
+            <Button
+              className={`filterButton ${selectedButtonIndex === 1 ? 'checked' : ''
+                }`}
+              onClick={() =>
+                getPointInquiry({
+                  newDateType: 'month',
+                  newKind: 'total',
+                  newPage: 0,
+                  buttonIndex: 1,
+                })
+              }
+            >
+              1개월
+            </Button>
+            <Button
+              className={`filterButton ${selectedButtonIndex === 2 ? 'checked' : ''
+                }`}
+              onClick={() =>
+                getPointInquiry({
+                  newDateType: '3month',
+                  newKind: 'total',
+                  newPage: 0,
+                  buttonIndex: 2,
+                })
+              }
+            >
+              3개월
+            </Button>
+            <Button
+              className={`filterButton ${selectedButtonIndex === 3 ? 'checked' : ''
+                }`}
+              onClick={() =>
+                getPointInquiry({
+                  newDateType: '6month',
+                  newKind: 'total',
+                  newPage: 0,
+                  buttonIndex: 3,
+                })
+              }
+            >
+              6개월
+            </Button>
+            <Button
+              className={`filterButton ${selectedButtonIndex === 4 ? 'checked' : ''
+                }`}
+              onClick={() =>
+                getPointInquiry({
+                  newDateType: 'year',
+                  newKind: 'total',
+                  newPage: 0,
+                  buttonIndex: 4,
+                })
+              }
+            >
+              1년
+            </Button>
+          </div>
           <div className="detailOfPoint">
-            <ul className="detailOfPointFilter">
-              <li className="checked">전체</li>
-              <li>적립</li>
-              <li>사용</li>
-            </ul>
+            <nav className="detailOfPointFilter">
+              <button type="button" className="checked smallNav">
+                전체
+              </button>
+              <button type="button" className="smallNav">
+                적립
+              </button>
+              <button type="button" className="smallNav">
+                사용
+              </button>
+            </nav>
             <ul className="detailOfPointList">
-              {PointData?.map((list) => (
+              {pointInquiryList?.map((list) => (
                 <li key={list.point_id}>
                   <p className="title">
-                    {list.pointDescription} <span>05.22 &#62;</span>
+                    {list.pointDescription} <span>{list.createdAt}</span>
                   </p>
                   <p
                     className={`value ${list.usedPoints === null ? 'save' : 'use'
@@ -248,6 +374,19 @@ function PoorRoom() {
                 </li>
               ))}
             </ul>
+            <Button
+              className="whiteCommon"
+              onClick={() =>
+                getPointInquiry({
+                  newDateType: dateType,
+                  newKind: kind,
+                  newPage: page + 1,
+                  buttonIndex: selectedButtonIndex,
+                })
+              }
+            >
+              더 보기
+            </Button>
           </div>
         </section>
       </article>

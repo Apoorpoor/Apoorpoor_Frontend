@@ -47,14 +47,28 @@ function Controller() {
     }
   };
 
-  const isSelected = (targetPage: string) =>
-    page === targetPage ? 'select' : 'noSelect';
+  const isSelected = (targetPages: string[]) => {
+    const regex = /^\/account\/\d+$/; // '/account'로 시작하고 뒤에 숫자가 오는지 확인
+    const regex2 = /^\/addAccount\/\d+$/; // '/addAccount'로 시작하고 뒤에 숫자가 오는지 확인
+
+    return targetPages.includes(page) ||
+      (regex.test(page) && targetPages.includes('/account')) ||
+      (regex2.test(page) && targetPages.includes('/addAccount'))
+      ? 'select'
+      : 'noSelect';
+  };
 
   // 컨트롤러 없어야 하는 페이지 필요하시다면 추가 해주세요!
   if (
     page === '/poorTalk' ||
     page === '/poorItemSetting' ||
-    page === '/badgeList'
+    page === '/badgeList' ||
+    page === '/login' ||
+    page === '/age' ||
+    page === '/gender' ||
+    page === '/finished' ||
+    page === '/alarmStation' ||
+    /^\/addAccount\/\d+$/.test(page)
   ) {
     return null;
   }
@@ -64,21 +78,21 @@ function Controller() {
       <div className="controllerRale">
         <button
           type="button"
-          className={isSelected('/poorRoom')}
+          className={isSelected(['/poorRoom'])}
           onClick={() => controllerHandler(0)}
         >
           푸어룸
         </button>
         <button
           type="button"
-          className={`${isSelected('/')} ${isSelected('/account')}`}
+          className={isSelected(['/', '/account'])}
           onClick={() => controllerHandler(1)}
         >
           자산
         </button>
         <button
           type="button"
-          className={isSelected('/introTalk')}
+          className={isSelected(['/introTalk'])}
           onClick={() => controllerHandler(2)}
         >
           푸어톡

@@ -12,6 +12,7 @@ interface MyData {
   gender: string;
   topImage: string;
   bottomImage: string;
+  shoesImage: string;
   accImage: string;
   customImage: string;
 }
@@ -29,6 +30,7 @@ const myPoorState: RecoilState<MyData> = atom<MyData>({
     gender: '',
     topImage: '',
     bottomImage: '',
+    shoesImage: '',
     accImage: '',
     customImage: '',
   },

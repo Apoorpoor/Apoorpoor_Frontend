@@ -36,14 +36,58 @@ button {
     font-weight: 500;
     font-size: 14px;
   }
+  &.iconButton {
+    position: relative;
+    width: 40px;
+    height: initial;
+  }
+  &.iconButton.checkMe::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 12px;
+    right: 9px;
+    width: 7px;
+    height: 7px;
+    border-radius: 5px;
+    background-color: $systemError;
+  }
   &.nav {
     color: $gray-350;
     font-weight: 500;
     border-radius: 0;
     height: inherit;
   }
+  &.smallNav {
+    width: 44px;
+    text-align: center;
+    font-size: 16px;
+    padding: 13.5px 10px;
+    color: $gray-450;
+    border-radius: 0;
+    height: inherit;
+  }
+  &.smallNav.checked {
+    border-bottom: 2px solid #333;
+    font-weight: 700;
+    color: #333;
+  }
+  &.filterButton {
+    height: initial;
+    background-color: #fff;
+    border: 1px solid $gray-250;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  &.filterButton.checked {
+    background-color: $secondary;
+    border: none;
+    color: #fff;
+  }
   &.itemButton {
-    width: 96px;
+    width: 100%;
     height: 32px;
     border-radius: 20px;
     color: #fff;

@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
-import {
-  AiOutlineLeft,
-  AiFillCaretLeft,
-  AiFillCaretRight,
-} from 'react-icons/ai';
+import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
 import { UseQueryResult, useQuery } from 'react-query';
 import { format, subMonths, subWeeks } from 'date-fns';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import accounts from '../../api/accounts';
-import { Calendar, Chart, Controller } from '../../components';
+import { Calendar, Chart, Controller, Header } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
 import NumberAnimation from '../../components/elements/NumberAnimation';
 import AccountRangeCal from '../../components/elements/AccountRangeCal';
+import {
+  accountIdState,
+  startDateState,
+  endDateState,
+} from '../../shared/Atom';
 
 // 거래내역 조회
 interface LedgerHistoryResponseDto {
@@ -42,16 +44,23 @@ interface MyAccounts {
 
 // 월별, 일별 수입/지출 총 금액 조회
 interface TotalStatus {
-  day: string;
   expenditure_sum: number | null;
   income_sum: number | null;
 }
 
 function Account(): JSX.Element {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // 현재 가계부의 id 조회
   const { id } = useParams<{ id?: string }>();
+
+  // 현재 가게부의 id 전역 상태 관리
+  const setAccountId = useSetRecoilState(accountIdState);
+  useEffect(() => {
+    if (id) {
+      setAccountId(id);
+    }
+  }, [id, setAccountId]);
 
   // 캘린더 날짜 받는 라이브러리
   const [getMoment, setMoment] = useState(moment());
@@ -69,22 +78,7 @@ function Account(): JSX.Element {
   }: UseQueryResult<MyAccounts> = useQuery(['getAccount', id], () =>
     accounts.getAccount(id as string)
   );
-  console.log('data 호출:', getAccount);
-
-  // 상세내역 월별 그룹화
-  const allData = getAccount?.ledgerHistoryResponseDtoList;
-  console.log('data 상세내역:', allData);
-
-  const groupData: { [date: string]: LedgerHistoryResponseDto[] } = {};
-
-  allData?.forEach((item) => {
-    const { date } = item;
-
-    if (!groupData[date]) {
-      groupData[date] = [];
-    }
-    groupData[date].push(item);
-  });
+  // console.log('data 호출:', getAccount);
 
   // 월별, 일별 수입/지출 총 금액 조회
   const {
@@ -96,7 +90,7 @@ function Account(): JSX.Element {
     ['getTotalMonthDate', id, currentMonth],
     () => accounts.getTotalMonthDate(id as string, currentMonth)
   );
-  console.log('총 금액 호출:', getTotalMonthDate);
+  // console.log('총 금액 호출:', getTotalMonthDate);
 
   // 백에서 받는 수입, 지출, 저축 카테고리 출력
   // 카테고리가 수입일 경우
@@ -157,27 +151,6 @@ function Account(): JSX.Element {
     }
   };
 
-  // 가계부 이름 수정 모달창
-  const [nameModal, setNameModal] = useState<boolean>(false);
-
-  const nameModalOpen = (): void => {
-    setNameModal(true);
-  };
-
-  // 모달창 닫으면서 refetch로 데이터 재렌더링
-  const nameModalClose = (): void => {
-    setNameModal(false);
-    getAccountRefetch();
-  };
-
-  // 월별 조회 모달창
-  const [monthModal, setMonthModal] = useState<boolean>(false);
-
-  const monthModalOpen = (): void => {
-    setMonthModal(true);
-    getTotalMonthDateRefetch();
-  };
-
   // 하단 사용내역 카테고리 필터링 버튼
   type Term = {
     name: string;
@@ -190,6 +163,28 @@ function Account(): JSX.Element {
     { name: '3개월', selected: false },
     { name: '기간 선택', selected: false },
   ]);
+
+  // 기간선택 버튼별 쿼리스트링
+  // let dateType = '';
+
+  // if (!term.some((item) => item.selected)) {
+  //   dateType = '';
+  // } else {
+  //   switch (true) {
+  //     case term[0].selected:
+  //       dateType = '&dateType=week';
+  //       break;
+  //     case term[1].selected:
+  //       dateType = '&dateType=month';
+  //       break;
+  //     case term[2].selected:
+  //       dateType = '&dateType=3month';
+  //       break;
+  //     default:
+  //       dateType = '';
+  //       break;
+  //   }
+  // }
 
   const categoryOnclick = (idx: number): void => {
     const updatedTerm = term.map((el, index) => {
@@ -210,6 +205,7 @@ function Account(): JSX.Element {
   const handleInExFilter = (filter: string) => {
     setSelectedInExFilter(filter);
   };
+
   // 수입 셀렉트 박스
   const inOptions: { value: string; label: string }[] = [
     { value: 'EMPLOYMENT_INCOME', label: '근로소득' },
@@ -222,7 +218,7 @@ function Account(): JSX.Element {
   ];
 
   const [selectInValue, setSelectInValue] = useState('');
-  console.log('선택:', selectInValue);
+  // console.log('선택:', selectInValue);
 
   const inSelectCustom = {
     control: (provided: any) => ({
@@ -280,7 +276,7 @@ function Account(): JSX.Element {
   ];
 
   const [selectExValue, setSelectExValue] = useState('');
-  console.log('선택:', selectExValue);
+  // console.log('선택:', selectExValue);
 
   const exSelectCustom = {
     control: (provided: any) => ({
@@ -349,10 +345,200 @@ function Account(): JSX.Element {
   const threeMonthAgo = subMonths(new Date(), 3);
   const threeMonth = format(threeMonthAgo, 'yyyy-MM-dd');
 
-  if (isLoading || getTotalMonthDateIsLoading) {
+  // 기간조회 시작/끝 날짜
+  const startDate = useRecoilValue(startDateState);
+  const formattedStartDate = startDate ? format(startDate, 'yyyy-MM-dd') : '';
+  const endDate = useRecoilValue(endDateState);
+  const formattedEndDate = endDate ? format(endDate, 'yyyy-MM-dd') : '';
+  const dateRange =
+    term.find((item) => item.selected && item.name === '기간 선택') &&
+    startDate &&
+    endDate
+      ? `&startDate=${formattedStartDate}&endDate=${formattedEndDate}`
+      : '';
+
+  // 기간조회 쿼리스트링
+  const currentString = `date=${currentMonth}`;
+
+  const getCurrentDateType = () => {
+    const allFalse = term.every((item) => !item.selected);
+
+    if (allFalse) {
+      return currentString;
+    }
+
+    const selectedTerm = term.find((item) => item.selected);
+
+    switch (selectedTerm?.name) {
+      case '1주일':
+        return '&dateType=week';
+      case '1개월':
+        return '&dateType=month';
+      case '3개월':
+        return '&dateType=3month';
+      case '기간 선택':
+        return dateRange;
+      default:
+        return '';
+    }
+  };
+
+  const dateType = getCurrentDateType();
+
+  // 카테고리별 쿼리스트링
+  let params = '';
+
+  if (selectedInExFilter === '수입') {
+    params += '&accountType=INCOME';
+
+    switch (selectInValue) {
+      case 'EMPLOYMENT_INCOME':
+        params += '&incomeType=EMPLOYMENT_INCOME';
+        break;
+      case 'BUSINESS':
+        params += '&incomeType=BUSINESS';
+        break;
+      case 'STOCKS':
+        params += '&incomeType=STOCKS';
+        break;
+      case 'INVESTMENT':
+        params += '&incomeType=INVESTMENT';
+        break;
+      case 'ALLOWANCE':
+        params += '&incomeType=ALLOWANCE';
+        break;
+      case 'FIXED_DEPOSIT_MATURITY':
+        params += '&incomeType=FIXED_DEPOSIT_MATURITY';
+        break;
+      case 'OTHER':
+        params += '&incomeType=OTHER';
+        break;
+      default:
+        break;
+    }
+  } else if (selectedInExFilter === '지출') {
+    params += '&accountType=EXPENDITURE';
+
+    switch (selectExValue) {
+      case 'UTILITY_BILL':
+        params += '&expenditureType=UTILITY_BILL';
+        break;
+      case 'CONDOLENCE_EXPENSE':
+        params += '&expenditureType=CONDOLENCE_EXPENSE';
+        break;
+      case 'TRANSPORTATION':
+        params += '&expenditureType=TRANSPORTATION';
+        break;
+      case 'COMMUNICATION_EXPENSES':
+        params += '&expenditureType=COMMUNICATION_EXPENSES';
+        break;
+      case 'INSURANCE':
+        params += '&expenditureType=INSURANCE';
+        break;
+      case 'EDUCATION':
+        params += '&expenditureType=EDUCATION';
+        break;
+      case 'SAVINGS':
+        params += '&expenditureType=SAVINGS';
+        break;
+      case 'CULTURE':
+        params += '&expenditureType=CULTURE';
+        break;
+      case 'HEALTH':
+        params += '&expenditureType=HEALTH';
+        break;
+      case 'FOOD_EXPENSES':
+        params += '&expenditureType=FOOD_EXPENSES';
+        break;
+      case 'SHOPPING':
+        params += '&expenditureType=SHOPPING';
+        break;
+      case 'LEISURE_ACTIVITIES':
+        params += '&expenditureType=LEISURE_ACTIVITIES';
+        break;
+      case 'OTHER':
+        params += '&expenditureType=OTHER';
+        break;
+      default:
+        break;
+    }
+  }
+
+  // 필터링별 데이터 조회
+  const {
+    isLoading: getAccountTypeLoading,
+    error: getAccountTypeError,
+    data: getAccountType,
+    refetch: getAccountTypeRefetch,
+  }: UseQueryResult<LedgerHistoryResponseDto> = useQuery(
+    ['getAccountType', id, dateType, params],
+    () => accounts.getAccountType(id as string, dateType, params)
+  );
+  // console.log('data 호출:', getAccountType);
+
+  // 일별로 데이터를 그룹화하는 함수
+  const groupDataByDate = (
+    data: LedgerHistoryResponseDto[]
+  ): Record<string, LedgerHistoryResponseDto[]> => {
+    const sortedData = [...data].sort((a, b) => {
+      // 날짜를 비교하여 오름차순으로 정렬
+      if (a.date < b.date) {
+        return -1;
+      }
+      if (a.date > b.date) {
+        return 1;
+      }
+      return 0;
+    });
+
+    const groupedData: Record<string, LedgerHistoryResponseDto[]> = {};
+
+    sortedData.forEach((item) => {
+      const date = item.date.slice(0, 10); // 'YYYY-MM-DD' 형식의 날짜 추출
+
+      if (groupedData[date]) {
+        groupedData[date].push(item);
+      } else {
+        groupedData[date] = [item];
+      }
+    });
+
+    return groupedData;
+  };
+
+  // 데이터를 날짜별로 정렬하고 그룹화
+  const groupedData = Array.isArray(getAccountType)
+    ? groupDataByDate(getAccountType)
+    : {};
+  // console.log('groupedData:', groupedData);
+
+  // 가계부 이름 수정 모달창
+  const [nameModal, setNameModal] = useState<boolean>(false);
+
+  const nameModalOpen = (): void => {
+    setNameModal(true);
+  };
+
+  // 모달창 닫으면서 refetch로 데이터 재렌더링
+  const nameModalClose = (): void => {
+    setNameModal(false);
+    getAccountRefetch();
+    getAccountTypeRefetch();
+  };
+
+  // 월별 조회 모달창
+  const [monthModal, setMonthModal] = useState<boolean>(false);
+
+  const monthModalOpen = (): void => {
+    setMonthModal(true);
+    getTotalMonthDateRefetch();
+    getAccountTypeRefetch();
+  };
+
+  if (isLoading || getTotalMonthDateIsLoading || getAccountTypeLoading) {
     return <div>Loading...</div>;
   }
-  if (error || getTotalMonthDateError) {
+  if (error || getTotalMonthDateError || getAccountTypeError) {
     return <div>Error</div>;
   }
 
@@ -372,15 +558,7 @@ function Account(): JSX.Element {
       {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
 
       <div className="_AccountBackground">
-        <div className="header">
-          <button
-            type="button"
-            className="preBtn"
-            onClick={() => navigate('/')}
-          >
-            <AiOutlineLeft />
-          </button>
-
+        <Header>
           <div className="month">
             <button
               className="sideBtn"
@@ -388,6 +566,7 @@ function Account(): JSX.Element {
               onClick={() => {
                 setMoment(getMoment.clone().subtract(1, 'month'));
                 getTotalMonthDateRefetch();
+                getAccountTypeRefetch();
               }}
             >
               <AiFillCaretLeft />
@@ -403,12 +582,13 @@ function Account(): JSX.Element {
               onClick={() => {
                 setMoment(getMoment.clone().add(1, 'month'));
                 getTotalMonthDateRefetch();
+                getAccountTypeRefetch();
               }}
             >
               <AiFillCaretRight />
             </button>
           </div>
-        </div>
+        </Header>
 
         <button type="button" className="_AccountName" onClick={nameModalOpen}>
           <span>{getAccount?.title}</span>
@@ -456,12 +636,11 @@ function Account(): JSX.Element {
         incomeType={incomeType}
         expenditureType={expenditureType}
         getAccountRefetch={getAccountRefetch}
-        getTotalMonthDateRefetch={getTotalMonthDateRefetch}
       />
       <div className="line"> </div>
       <Chart id={id} currentMonth={currentMonth} />
       <div className="line"> </div>
-      <ChartLastMonth />
+      <ChartLastMonth currentMonth={currentMonth} />
       <div className="line"> </div>
 
       <div className="_AccountBackground">
@@ -503,7 +682,12 @@ function Account(): JSX.Element {
               <Select
                 placeholder="수입 카테고리"
                 options={inOptions}
-                onChange={(e: any) => setSelectInValue(e.value)}
+                onChange={(e: any) => {
+                  if (e && e.value) {
+                    setSelectInValue(e.value);
+                  }
+                  setSelectExValue('');
+                }}
                 styles={inSelectCustom}
               />
             ) : null}
@@ -511,7 +695,12 @@ function Account(): JSX.Element {
               <Select
                 placeholder="지출 카테고리"
                 options={exOptions}
-                onChange={(e: any) => setSelectExValue(e.value)}
+                onChange={(e: any) => {
+                  if (e && e.value) {
+                    setSelectExValue(e.value);
+                  }
+                  setSelectInValue('');
+                }}
                 styles={exSelectCustom}
               />
             ) : null}
@@ -522,7 +711,11 @@ function Account(): JSX.Element {
             className={`detailOfInExFilterItem ${
               selectedInExFilter === '전체' ? 'checked' : ''
             }`}
-            onClick={() => handleInExFilter('전체')}
+            onClick={() => {
+              handleInExFilter('전체');
+              setSelectInValue('');
+              setSelectExValue('');
+            }}
           >
             전체
           </button>
@@ -531,7 +724,10 @@ function Account(): JSX.Element {
             className={`detailOfInExFilterItem ${
               selectedInExFilter === '수입' ? 'checked' : ''
             }`}
-            onClick={() => handleInExFilter('수입')}
+            onClick={() => {
+              handleInExFilter('수입');
+              setSelectExValue('');
+            }}
           >
             수입
           </button>
@@ -540,15 +736,80 @@ function Account(): JSX.Element {
             className={`detailOfInExFilterItem ${
               selectedInExFilter === '지출' ? 'checked' : ''
             }`}
-            onClick={() => handleInExFilter('지출')}
+            onClick={() => {
+              handleInExFilter('지출');
+              setSelectInValue('');
+            }}
           >
             지출
           </button>
         </ul>
-        {Object.entries(groupData).map(([date, items]) => {
+        {Object.entries(groupedData).map(([date, items]) => {
+          const month = moment(date).format('yyyy-M');
+          const shouldShowAllMonths = dateType !== 'currentString';
+
+          if (shouldShowAllMonths || month === today.format('yyyy-M')) {
+            return (
+              <div className="accountBody" key={date}>
+                <p className="accountDate">{dateWithDay(date)}</p>
+                <div className="accountBodyLine" />
+
+                {items.map((item) => {
+                  // 수입, 지출, 저축에 따른 금액 className
+                  let className = '';
+                  if (item.accountType === 'INCOME') {
+                    className = 'accountLabelIn';
+                  } else if (
+                    item.accountType === 'EXPENDITURE' &&
+                    item.expenditureType === 'SAVINGS'
+                  ) {
+                    className = 'accountLabelSave';
+                  } else {
+                    className = 'accountLabelEx';
+                  }
+
+                  // 수입, 지출 각 카테고리 반환
+                  let result;
+
+                  if (item.accountType === 'EXPENDITURE') {
+                    if (item.expenditureType !== null) {
+                      result = expenditureType(item.expenditureType);
+                    } else {
+                      result = '';
+                    }
+                  } else {
+                    result = incomeType(item.incomeType);
+                  }
+
+                  return (
+                    <div className="accountBodyContents" key={item.id}>
+                      <div className="accountLabel">
+                        <p>{item.title}</p>
+                        <p className={className}>
+                          {item.income ? '+' : '-'}
+                          {priceComma(
+                            item.income ? item.income : item.expenditure
+                          )}
+                          원
+                        </p>
+                      </div>
+                      <p className="accountCategory">
+                        {item.accountType === 'EXPENDITURE' ? '지출' : '수입'}{' '}
+                        {'>'} {result}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          }
+
+          return null;
+        })}
+        {/* {Object.entries(groupedData).map(([date, items]) => {
           // 현재 보여지는 월에 대해서만 상세내역 반환
-          const month = moment(date).format('M');
-          if (month === today.format('M')) {
+          const month = moment(date).format('yyyy-M');
+          if (month === today.format('yyyy-M')) {
             return (
               <div className="accountBody" key={date}>
                 <p className="accountDate">{dateWithDay(date)}</p>
@@ -604,7 +865,7 @@ function Account(): JSX.Element {
             );
           }
           return null;
-        })}
+        })} */}
       </div>
     </>
   );

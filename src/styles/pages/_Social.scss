@@ -1,0 +1,147 @@
+@import '../Palette';
+
+.socialBg {
+  width: 100%;
+  padding: 0px;
+  padding-top: 78px;
+  background-color: $primaryD-550;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & .title {
+    width: 100%;
+    color: white;
+    text-align: center;
+
+    & .titleFirst {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    & .titleSecond {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+    & .noneDatatitle {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+    }
+  }
+
+  & .noneData {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & img {
+      width: 128px;
+    }
+    & button {
+      margin-top: 45px;
+      margin-bottom: 20px;
+      width: 125px;
+      height: 44px;
+      border-radius: 999px;
+      background-color: $primaryD-350;
+      color: white;
+      font-size: 16px;
+    }
+  }
+
+  & .socialController {
+    margin-top: 28px;
+    margin-bottom: 28px;
+    width: 116px;
+    height: 43px;
+    border-radius: 999px;
+    background-color: #3e4f6a;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+
+    & .contr {
+      width: 52px;
+      height: 35px;
+      border-radius: 999px;
+      background-color: rgba(255, 255, 255, 0.2);
+      text-align: center;
+      line-height: 35px;
+    }
+
+    & .contrNone {
+      width: 52px;
+      height: 35px;
+      border-radius: 999px;
+      background-color: #3e4f6a;
+      text-align: center;
+      line-height: 35px;
+    }
+  }
+
+  & .socialRankingBox {
+    width: 100%;
+    height: 60%;
+    background-color: white;
+    border-radius: 20px 20px 0px 0px;
+    box-sizing: border-box;
+    padding-top: 38px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 100px;
+
+    & .row {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      & .socialRanking {
+        box-sizing: border-box;
+        padding-top: 35px;
+        padding-bottom: 16px;
+        width: 47%;
+        height: 236px;
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        & .imgBox {
+          width: 80px;
+          height: 82px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          & .imgBundle {
+            width: 64px;
+          }
+          & .imgFlex {
+            width: 80px;
+          }
+        }
+
+        & p {
+          font-size: 16px;
+          font-weight: 700;
+        }
+
+        & button {
+          width: 91px;
+          height: 35px;
+          background: $primary;
+          border-radius: 999px;
+          color: white;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

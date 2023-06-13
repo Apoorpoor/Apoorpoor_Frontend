@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
-import { BsChevronLeft } from 'react-icons/bs';
+// import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
+import { useSetRecoilState } from 'recoil';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
-import { Input } from '../../components';
+import { Header, Input } from '../../components';
+import { messageState, categoryState } from '../../shared/Atom';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 
@@ -265,6 +267,11 @@ function AddAccount(): JSX.Element {
     }
   }, [expenditureType, incomeType, accountPriceInput]);
 
+  // 거래내역 추가 후, 카테고리별 랜덤
+  const setCategory = useSetRecoilState(categoryState);
+  // 거래내역 추가 후, 랜덤 메시지 완료 페이지로 전달
+  const setMessage = useSetRecoilState(messageState);
+
   // 거래내역 추가
   const addAccountMutation = useMutation(
     (requestData: {
@@ -281,6 +288,17 @@ function AddAccount(): JSX.Element {
     {
       onSuccess: (response) => {
         console.log('거래내역 추가 성공:', response);
+        if (accountType === 'INCOME') {
+          setCategory('INCOME');
+        }
+        if (accountType === 'EXPENDITURE') {
+          if (expenditureType === 'SAVINGS') {
+            setCategory('SAVINGS');
+          } else {
+            setCategory('ELSE');
+          }
+        }
+        setMessage(response.meassage);
       },
       onError: (error) => {
         console.log('거래내역 추가 실패:', error);
@@ -314,18 +332,7 @@ function AddAccount(): JSX.Element {
 
   return (
     <div className="addAccountBg">
-      <div className="header">
-        <button
-          type="button"
-          className="headerPreBtn"
-          onClick={() => navigate(-1)}
-        >
-          <BsChevronLeft />
-        </button>
-        <div className="headerTitle">
-          <h2 className="headerTitleH2">소비 / 수입 등록</h2>
-        </div>
-      </div>
+      <Header>소비 / 수입 등록</Header>
 
       <div className="addAccountBody">
         <div className="addAccountContents">

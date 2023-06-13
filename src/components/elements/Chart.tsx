@@ -27,7 +27,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
     ['getMonthPieChart', id, currentMonth],
     () => accounts.getMonthPieChart(id as string, currentMonth)
   );
-  console.log('파이 데이터::', data);
+  // console.log('파이 데이터::', data);
 
   // 지출 카테고리별 차트 색상
   const getChartColor = (expenditureType: string): string => {
@@ -135,7 +135,11 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
     <div className="chartBackground">
       <div className="chartHeader">
         <h2>이번달 상세 지출내역</h2>
-        <p>식비에 가장 많이 사용하셨어요.</p>
+        <p>
+          {getMaxCategory()
+            ? `${getMaxCategory()}에 가장 많이 사용하셨어요.`
+            : ''}
+        </p>
       </div>
       <div className="pieChart">
         <ResponsivePie
