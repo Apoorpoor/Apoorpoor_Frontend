@@ -38,7 +38,7 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
   ];
 
   const [selectCpValue, setSelectCpValue] = useState('');
-  console.log('선택:', selectCpValue);
+  // console.log('선택:', selectCpValue);
 
   // 쿼리스트링
   let dateType = '&dateType=month';
@@ -59,7 +59,7 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
     ['getDifference', id, currentMonth, dateType],
     () => accounts.getDifference(id as string, currentMonth, dateType)
   );
-  console.log('막대 데이터::', data);
+  // console.log('막대 데이터::', data);
 
   // 데이터 변환 함수
   const transformData = (chartData: BarChartData[] | undefined): BarDatum[] => {

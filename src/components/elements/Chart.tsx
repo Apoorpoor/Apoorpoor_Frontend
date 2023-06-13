@@ -27,7 +27,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
     ['getMonthPieChart', id, currentMonth],
     () => accounts.getMonthPieChart(id as string, currentMonth)
   );
-  console.log('파이 데이터::', data);
+  // console.log('파이 데이터::', data);
 
   // 지출 카테고리별 차트 색상
   const getChartColor = (expenditureType: string): string => {

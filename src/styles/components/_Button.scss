@@ -36,15 +36,41 @@ button {
     font-weight: 500;
     font-size: 14px;
   }
-  &.iconButton{
+  &.iconButton {
+    position: relative;
     width: 40px;
     height: initial;
+  }
+  &.iconButton.checkMe::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 12px;
+    right: 9px;
+    width: 7px;
+    height: 7px;
+    border-radius: 5px;
+    background-color: $systemError;
   }
   &.nav {
     color: $gray-350;
     font-weight: 500;
     border-radius: 0;
     height: inherit;
+  }
+  &.smallNav {
+    width: 44px;
+    text-align: center;
+    font-size: 16px;
+    padding: 13.5px 10px;
+    color: $gray-450;
+    border-radius: 0;
+    height: inherit;
+  }
+  &.smallNav.checked {
+    border-bottom: 2px solid #333;
+    font-weight: 700;
+    color: #333;
   }
   &.filterButton {
     height: initial;
@@ -61,7 +87,7 @@ button {
     color: #fff;
   }
   &.itemButton {
-    width: 96px;
+    width: 100%;
     height: 32px;
     border-radius: 20px;
     color: #fff;

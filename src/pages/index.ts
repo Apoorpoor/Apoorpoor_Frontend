@@ -17,6 +17,7 @@ import Finished from './user/Finished';
 import BadgeList from './poorRoom/BadgeList';
 import PoorItemSetting from './poorRoom/PoorItemSetting';
 import UsersProfilePage from './poorTalk/UsersProfilePage';
+import AlarmStation from './poorRoom/AlarmStation';
 
 export {
   Account,
@@ -38,4 +39,5 @@ export {
   BadgeList,
   PoorItemSetting,
   UsersProfilePage,
+  AlarmStation,
 };

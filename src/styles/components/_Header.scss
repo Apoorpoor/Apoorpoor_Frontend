@@ -9,10 +9,10 @@
   align-items: center;
 
   & > button {
-    // position: absolute;
-    // top: 50%;
-    // left: 15px;
-    // transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
     width: 40px;
     height: 24px;
   }
@@ -22,12 +22,15 @@
     // left: 50%;
     // transform: translate(-50%, -50%);
     font-size: 20px;
-    min-width: calc(100% - 80px);
+    min-width: 100%;
     text-align: center;
   }
   & > div {
+    position: absolute;
+    top: 55%;
+    right: 15px;
+    transform: translateY(-50%);
     width: 40px;
     font-size: 23px;
-    transform: translateY(5px);
   }
 }

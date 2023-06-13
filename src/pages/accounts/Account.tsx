@@ -78,7 +78,7 @@ function Account(): JSX.Element {
   }: UseQueryResult<MyAccounts> = useQuery(['getAccount', id], () =>
     accounts.getAccount(id as string)
   );
-  console.log('data 호출:', getAccount);
+  // console.log('data 호출:', getAccount);
 
   // 월별, 일별 수입/지출 총 금액 조회
   const {
@@ -90,7 +90,7 @@ function Account(): JSX.Element {
     ['getTotalMonthDate', id, currentMonth],
     () => accounts.getTotalMonthDate(id as string, currentMonth)
   );
-  console.log('총 금액 호출:', getTotalMonthDate);
+  // console.log('총 금액 호출:', getTotalMonthDate);
 
   // 백에서 받는 수입, 지출, 저축 카테고리 출력
   // 카테고리가 수입일 경우
@@ -218,7 +218,7 @@ function Account(): JSX.Element {
   ];
 
   const [selectInValue, setSelectInValue] = useState('');
-  console.log('선택:', selectInValue);
+  // console.log('선택:', selectInValue);
 
   const inSelectCustom = {
     control: (provided: any) => ({
@@ -276,7 +276,7 @@ function Account(): JSX.Element {
   ];
 
   const [selectExValue, setSelectExValue] = useState('');
-  console.log('선택:', selectExValue);
+  // console.log('선택:', selectExValue);
 
   const exSelectCustom = {
     control: (provided: any) => ({
@@ -474,7 +474,7 @@ function Account(): JSX.Element {
     ['getAccountType', id, dateType, params],
     () => accounts.getAccountType(id as string, dateType, params)
   );
-  console.log('data 호출:', getAccountType);
+  // console.log('data 호출:', getAccountType);
 
   // 일별로 데이터를 그룹화하는 함수
   const groupDataByDate = (
@@ -510,7 +510,7 @@ function Account(): JSX.Element {
   const groupedData = Array.isArray(getAccountType)
     ? groupDataByDate(getAccountType)
     : {};
-  console.log('groupedData:', groupedData);
+  // console.log('groupedData:', groupedData);
 
   // 가계부 이름 수정 모달창
   const [nameModal, setNameModal] = useState<boolean>(false);

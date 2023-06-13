@@ -19,6 +19,7 @@ import {
   Finished,
   PoorItemSetting,
   BadgeList,
+  AlarmStation,
 } from './pages/index';
 import EditAccountDone from './pages/accounts/EditAccountDone';
 
@@ -54,6 +55,7 @@ function App() {
         <Route path="/gender" element={<Gender />} />
         <Route path="/finished" element={<Finished />} />
         <Route path="/badgeList" element={<BadgeList />} />
+        <Route path="/alarmStation" element={<AlarmStation />} />
       </Routes>
     </Layout>
   );
