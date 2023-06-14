@@ -5,9 +5,9 @@ import { FaPlus } from 'react-icons/fa';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
-import { Controller } from '../../components';
 import MainDelModal from '../../components/elements/MainDelModal';
 import NumberAnimation from '../../components/elements/NumberAnimation';
+import { Button } from '../../components';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
 
@@ -98,7 +98,6 @@ function Main(): JSX.Element {
 
   return (
     <>
-      <Controller />
       {delModal && <MainDelModal id={delModal} delModalClose={delModalClose} />}
 
       <div className="background">
@@ -154,16 +153,12 @@ function Main(): JSX.Element {
           })}
         </div>
 
-        <button
-          type="button"
-          className="addAccountBtn"
-          onClick={handleAddAccount}
-        >
+        <Button className="addAccountBtn" onClick={handleAddAccount}>
           가계부 추가
           <div className="addAccountPlusBtn">
             <FaPlus />
           </div>
-        </button>
+        </Button>
       </div>
     </>
   );

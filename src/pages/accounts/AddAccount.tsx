@@ -91,7 +91,7 @@ function AddAccount(): JSX.Element {
     control: (provided: any, state: any) => ({
       ...provided,
       'marginTop': '20px',
-      'width': '320px',
+      'width': '100%',
       'height': '48px',
       'borderRadius': '12px',
       'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
@@ -150,7 +150,7 @@ function AddAccount(): JSX.Element {
     control: (provided: any, state: any) => ({
       ...provided,
       'marginTop': '20px',
-      'width': '320px',
+      'width': '100%',
       'height': '48px',
       'borderRadius': '12px',
       'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
@@ -210,7 +210,7 @@ function AddAccount(): JSX.Element {
     control: (provided: any, state: any) => ({
       ...provided,
       'marginTop': '20px',
-      'width': '320px',
+      'width': '100%',
       'height': '48px',
       'borderRadius': '12px',
       'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
@@ -330,120 +330,121 @@ function AddAccount(): JSX.Element {
   };
 
   return (
-    <div className="addAccountBg">
+    <>
       <Header>소비 / 수입 등록</Header>
-
-      <div className="addAccountBody">
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">금액</p>
-          <Input
-            value={comma(accountPriceInput)}
-            id="accountPriceInput"
-            placeholder="얼마를 입력할까요?"
-            className={showWarning ? 'accountPriceValid' : 'accountPrice'}
-            onChange={accountPriceOnchange}
-            onClear={handleAccountPriceInputClear}
-          />
-          <label
-            htmlFor="nicknameInput"
-            className={`cursor ${showWarning ? 'warning' : 'active'}`}
-          >
-            {' '}
-          </label>
-          {showWarning ? (
-            <div className="warningBox">
-              <RiErrorWarningFill className="warningIcon" />
-              <p className="warningMsg">100원 이상 등록해주세요</p>
-            </div>
-          ) : null}
-        </div>
-
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">내용</p>
-          <Input
-            value={title}
-            id="titleInput"
-            placeholder="내용을 입력해주세요"
-            className={showWarning ? 'accountPriceValid' : 'accountPrice'}
-            onChange={handleTitleInputChange}
-            onClear={handleTitleInputClear}
-          />
-          <label
-            htmlFor="nicknameInput"
-            className={`cursor ${showWarning ? 'warning' : 'active'}`}
-          >
-            {' '}
-          </label>
-        </div>
-
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">분류</p>
-          <div className="addAccountRadioBoxes">
-            <input
-              type="radio"
-              id="EXPENDITURE"
-              checked={accountType === 'EXPENDITURE'}
-              onClick={() => handleAccountType('EXPENDITURE')}
-              className="addAccountRadioBtn"
-            />
-            <label htmlFor="EXPENDITURE">지출</label>
-
-            <input
-              type="radio"
-              id="INCOME"
-              checked={accountType === 'INCOME'}
-              onClick={() => handleAccountType('INCOME')}
-            />
-            <label htmlFor="INCOME">수입</label>
-          </div>
-        </div>
-
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">날짜</p>
-          <AddAccountCalendar setOnDateChange={setOnDateChange} />
-        </div>
-
-        {accountType === 'INCOME' ? (
-          ''
-        ) : (
+      <div className="addAccountBg">
+        <div className="addAccountBody">
           <div className="addAccountContents">
-            <p className="addAccountContentsTitle">결제수단</p>
-            <Select
-              placeholder="카테고리 선택"
-              options={payment}
-              onChange={(e: any) => setPaymentMethod(e.value)}
-              styles={paySelectCustom}
+            <p className="addAccountContentsTitle">금액</p>
+            <Input
+              value={comma(accountPriceInput)}
+              id="accountPriceInput"
+              placeholder="얼마를 입력할까요?"
+              className={showWarning ? 'accountPriceValid' : 'accountPrice'}
+              onChange={accountPriceOnchange}
+              onClear={handleAccountPriceInputClear}
             />
+            <label
+              htmlFor="nicknameInput"
+              className={`cursor ${showWarning ? 'warning' : 'active'}`}
+            >
+              {' '}
+            </label>
+            {showWarning ? (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">100원 이상 등록해주세요</p>
+              </div>
+            ) : null}
           </div>
-        )}
 
-        <div className="addAccountContents">
-          <p className="addAccountContentsTitle">카테고리</p>
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">내용</p>
+            <Input
+              value={title}
+              id="titleInput"
+              placeholder="내용을 입력해주세요"
+              className={showWarning ? 'accountPriceValid' : 'accountPrice'}
+              onChange={handleTitleInputChange}
+              onClear={handleTitleInputClear}
+            />
+            <label
+              htmlFor="nicknameInput"
+              className={`cursor ${showWarning ? 'warning' : 'active'}`}
+            >
+              {' '}
+            </label>
+          </div>
+
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">분류</p>
+            <div className="addAccountRadioBoxes">
+              <input
+                type="radio"
+                id="EXPENDITURE"
+                checked={accountType === 'EXPENDITURE'}
+                onClick={() => handleAccountType('EXPENDITURE')}
+                className="addAccountRadioBtn"
+              />
+              <label htmlFor="EXPENDITURE">지출</label>
+
+              <input
+                type="radio"
+                id="INCOME"
+                checked={accountType === 'INCOME'}
+                onClick={() => handleAccountType('INCOME')}
+              />
+              <label htmlFor="INCOME">수입</label>
+            </div>
+          </div>
+
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">날짜</p>
+            <AddAccountCalendar setOnDateChange={setOnDateChange} />
+          </div>
+
           {accountType === 'INCOME' ? (
-            <Select
-              placeholder="카테고리 선택"
-              options={inOptions}
-              onChange={(e: any) => setIncomeType(e.value)}
-              styles={inSelectCustom}
-            />
+            ''
           ) : (
-            <Select
-              placeholder="카테고리 선택"
-              options={exOptions}
-              onChange={(e: any) => setExpenditureType(e.value)}
-              styles={exSelectCustom}
-            />
+            <div className="addAccountContents">
+              <p className="addAccountContentsTitle">결제수단</p>
+              <Select
+                placeholder="카테고리 선택"
+                options={payment}
+                onChange={(e: any) => setPaymentMethod(e.value)}
+                styles={paySelectCustom}
+              />
+            </div>
           )}
+
+          <div className="addAccountContents">
+            <p className="addAccountContentsTitle">카테고리</p>
+            {accountType === 'INCOME' ? (
+              <Select
+                placeholder="카테고리 선택"
+                options={inOptions}
+                onChange={(e: any) => setIncomeType(e.value)}
+                styles={inSelectCustom}
+              />
+            ) : (
+              <Select
+                placeholder="카테고리 선택"
+                options={exOptions}
+                onChange={(e: any) => setExpenditureType(e.value)}
+                styles={exSelectCustom}
+              />
+            )}
+          </div>
+          <button
+            className="addAccountDoneBtn"
+            type="button"
+            onClick={handleRegister}
+          >
+            등록하기
+          </button>
         </div>
-        <button
-          className="addAccountDoneBtn"
-          type="button"
-          onClick={handleRegister}
-        >
-          등록하기
-        </button>
       </div>
-    </div>
+    </>
   );
 }
 

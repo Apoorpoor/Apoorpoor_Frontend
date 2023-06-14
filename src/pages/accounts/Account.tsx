@@ -9,7 +9,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { format, subMonths, subWeeks } from 'date-fns';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import accounts from '../../api/accounts';
-import { Calendar, Chart, Controller, Header } from '../../components';
+import { Calendar, Chart, Header } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
 import AccountName from '../../components/elements/AccountName';
 import AccountMonth from '../../components/elements/AccountMonth';
@@ -524,7 +524,6 @@ function Account(): JSX.Element {
 
   return (
     <>
-      <Controller />
       {nameModal && (
         <AccountName
           nameModalClose={nameModalClose}
@@ -538,40 +537,39 @@ function Account(): JSX.Element {
       {monthModal && (
         <AccountMonth setMoment={setMoment} setMonthModal={setMonthModal} />
       )}
+      <Header>
+        <div className="month">
+          <button
+            className="sideBtn"
+            type="button"
+            onClick={() => {
+              setMoment(getMoment.clone().subtract(1, 'month'));
+              getTotalMonthDateRefetch();
+              getAccountTypeRefetch();
+            }}
+          >
+            <AiFillCaretLeft />
+          </button>
 
+          <button type="button" onClick={monthModalOpen}>
+            <h1>{today.format('M')}월</h1>
+          </button>
+
+          <button
+            type="button"
+            className="sideBtn"
+            onClick={() => {
+              setMoment(getMoment.clone().add(1, 'month'));
+              getTotalMonthDateRefetch();
+              getAccountTypeRefetch();
+            }}
+          >
+            <AiFillCaretRight />
+          </button>
+        </div>
+      </Header>
+      
       <div className="_AccountBackground">
-        <Header>
-          <div className="month">
-            <button
-              className="sideBtn"
-              type="button"
-              onClick={() => {
-                setMoment(getMoment.clone().subtract(1, 'month'));
-                getTotalMonthDateRefetch();
-                getAccountTypeRefetch();
-              }}
-            >
-              <AiFillCaretLeft />
-            </button>
-
-            <button type="button" onClick={monthModalOpen}>
-              <h1>{today.format('M')}월</h1>
-            </button>
-
-            <button
-              type="button"
-              className="sideBtn"
-              onClick={() => {
-                setMoment(getMoment.clone().add(1, 'month'));
-                getTotalMonthDateRefetch();
-                getAccountTypeRefetch();
-              }}
-            >
-              <AiFillCaretRight />
-            </button>
-          </div>
-        </Header>
-
         <button type="button" className="_AccountName" onClick={nameModalOpen}>
           <span>{getAccount?.title}</span>
           <BsFillPenFill />
