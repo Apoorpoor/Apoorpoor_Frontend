@@ -105,24 +105,12 @@
       & > .detailOfPointFilter {
         display: flex;
         justify-content: right;
-
-        & > li {
-          width: 44px;
-          text-align: center;
-          font-size: 16px;
-          padding: 13.5px 10px;
-          color: $gray-450;
-          cursor: pointer;
-        }
-        & > li.checked {
-          border-bottom: 2px solid #333;
-          font-weight: 700;
-          color: #333;
-        }
       }
       & > .detailOfPointList {
         width: 100%;
         border-top: 1px solid $gray-200;
+        opacity: 1;
+        transition: 1s ease-in-out;
 
         & > li {
           padding: 20px 10px;

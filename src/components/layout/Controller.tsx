@@ -68,7 +68,8 @@ function Controller() {
     page === '/gender' ||
     page === '/finished' ||
     page === '/alarmStation' ||
-    /^\/addAccount\/\d+$/.test(page)
+    /^\/addAccount\/\d+$/.test(page) ||
+    /^\/addAccountDone\/\d+$/.test(page)
   ) {
     return null;
   }

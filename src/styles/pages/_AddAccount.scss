@@ -1,34 +1,36 @@
 @import '../Palette';
 
 .addAccountBg {
+  width: 100%;
   padding: 20px;
   margin-bottom: 100px;
+  box-sizing: border-box;
 
-  .header {
-    height: 44px;
-    line-height: 44px;
-    margin-bottom: 60px;
-    .headerPreBtn {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      float: left;
-    }
-    .headerTitle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+  // .header {
+  //   height: 44px;
+  //   line-height: 44px;
+  //   margin-bottom: 60px;
+  //   .headerPreBtn {
+  //     width: 44px;
+  //     height: 44px;
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     float: left;
+  //   }
+  //   .headerTitle {
+  //     display: flex;
+  //     justify-content: center;
+  //     align-items: center;
+  //   }
+  // }
 
   .addAccountBody {
     display: flex;
     flex-direction: column;
     align-items: center;
     .addAccountContents {
-      width: 320px;
+      width: 100%;
       margin-bottom: 40px;
       position: relative;
       .addAccountContentsTitle {
@@ -106,7 +108,7 @@
   }
   .addAccountDoneBtn {
     margin-top: 114px;
-    width: 320px;
+    width: 100%;
     height: 56px;
     border-radius: 12px;
     background-color: $primary;
@@ -116,7 +118,7 @@
 
 // DatePicker input
 .datePickerInput {
-  width: 320px;
+  width: 100%;
   height: 48px;
   border-radius: 12px;
   border: 2px solid $gray-300;
@@ -210,6 +212,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  height: 100vh;
   .doneTitle {
     margin-top: 193px;
     display: flex;
