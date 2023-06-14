@@ -2,7 +2,7 @@ import React from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import { VscCircleFilled } from 'react-icons/vsc';
 import '../../styles/components/_Chart.scss';
-import { UseQueryResult, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import accounts from '../../api/accounts';
 import Loading from '../../pages/status/Loading';
 import pieChart from '../../static/image/account/pieChart.png';
@@ -17,6 +17,14 @@ interface ChartProps {
 // Pie data
 interface Data {
   content: PieChartData[];
+  totalPages: number;
+  pageable: PageNation;
+  last: boolean;
+  number: number;
+}
+
+interface PageNation {
+  pageNumber: number;
 }
 
 interface PieChartData {
@@ -27,10 +35,28 @@ interface PieChartData {
 
 function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   // 파이그래프 데이터
-  const { isLoading, error, data }: UseQueryResult<Data> = useQuery(
-    ['getMonthPieChart', id, currentMonth],
-    () => accounts.getMonthPieChart(id as string, currentMonth)
-  );
+  const { isLoading, error, data, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<Data, Error>(
+      ['getMonthPieChart', id, currentMonth],
+      ({ pageParam = 0 }) =>
+        accounts.getMonthPieChart(id as string, currentMonth, pageParam),
+      {
+        getNextPageParam: (lastPage) => {
+          console.log(lastPage);
+          if (lastPage.number + 1 < lastPage.totalPages) {
+            return lastPage.number + 1;
+          }
+          return undefined;
+        },
+      }
+    );
+
+  console.log('파이데이터::', data);
+
+  // 페이지네이션 버튼
+  const handleLoadMore = () => {
+    fetchNextPage();
+  };
 
   // 지출 카테고리별 차트 색상
   const getChartColor = (expenditureType: string): string => {
@@ -101,12 +127,14 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   };
 
   // data를 차트 포맷에 맞춤
-  const pieData = data?.content.map((item) => ({
-    id: item.expenditureType,
-    label: item.month_sum,
-    value: item.month_sum,
-    color: getChartColor(item.expenditureType),
-  }));
+  const pieData = data?.pages.flatMap((page) =>
+    page.content.map((item) => ({
+      id: item.expenditureType,
+      label: item.month_sum,
+      value: item.month_sum,
+      color: getChartColor(item.expenditureType),
+    }))
+  );
 
   // 지출 금액 순 정렬
   const sortedData = pieData?.sort((a, b) => b.value - a.value);
@@ -235,6 +263,16 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
           );
         })
       )}
+      <div className="pagination">
+        {hasNextPage && (
+          <button
+            type="button"
+            onClick={handleLoadMore} // 데이터 추가를 처리하는 핸들러 호출
+          >
+            데이터 추가
+          </button>
+        )}
+      </div>
     </div>
   );
 }
