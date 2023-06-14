@@ -13,7 +13,7 @@ function Controller() {
   };
 
   const pageIndex: PageIndex = {
-    '/poorRoom': 0,
+    '/social': 0,
     '/': 1,
     '/account': 1,
     '/introTalk': 2,
@@ -34,7 +34,7 @@ function Controller() {
 
     switch (index) {
       case 0:
-        navigate('/poorRoom');
+        navigate('/social');
         break;
       case 1:
         navigate('/');
@@ -68,7 +68,9 @@ function Controller() {
     page === '/gender' ||
     page === '/finished' ||
     page === '/alarmStation' ||
-    /^\/addAccount\/\d+$/.test(page)
+    /^\/addAccount\/\d+$/.test(page) ||
+    /^\/addAccountDone\/\d+$/.test(page)
+    /^\/editAccount\/\d+$/.test(page)
   ) {
     return null;
   }
@@ -78,10 +80,10 @@ function Controller() {
       <div className="controllerRale">
         <button
           type="button"
-          className={isSelected(['/poorRoom'])}
+          className={isSelected(['/social'])}
           onClick={() => controllerHandler(0)}
         >
-          푸어룸
+          소셜
         </button>
         <button
           type="button"

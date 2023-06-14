@@ -1,19 +1,75 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { BsXLg } from 'react-icons/bs';
+import moment from 'moment';
 import Portal from '../../shared/Portal';
+import '../../styles/components/_AccountModal.scss';
 
 interface AccountMonthProps {
   setMonthModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setMoment: React.Dispatch<React.SetStateAction<moment.Moment>>;
 }
 
-function AccountMonth({ setMonthModal }: AccountMonthProps) {
+function AccountMonth({ setMonthModal, setMoment }: AccountMonthProps) {
+  const monthModalRef = useRef<HTMLDivElement>(null);
+
   const monthModalClose = (): void => {
     setMonthModal(false);
   };
 
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === monthModalRef.current) {
+      // 배경을 클릭한 경우에만 모달을 닫기
+      monthModalClose();
+    }
+  };
+
+  const getMonthList = (): JSX.Element[] => {
+    const currentDate = new Date();
+    const startYear = 2022;
+    const startMonth = 1;
+    const endYear = currentDate.getFullYear();
+    const endMonth = currentDate.getMonth() + 1;
+
+    const monthList: JSX.Element[] = [];
+
+    for (let year = startYear; year <= endYear; year += 1) {
+      const start = year === startYear ? startMonth : 1;
+      const end = year === endYear ? endMonth : 12;
+
+      for (let month = start; month <= end; month += 1) {
+        const formattedMonth = `${year}년 ${
+          month < 10 ? `0${month}` : month
+        }월`;
+        const selectedMonth = moment(
+          `${year}-${month < 10 ? `0${month}` : month}`,
+          'YYYY-MM'
+        );
+        monthList.push(
+          <button
+            type="button"
+            className="selectMonth"
+            onClick={() => {
+              setMoment(selectedMonth);
+              monthModalClose();
+            }}
+          >
+            {formattedMonth}
+          </button>
+        );
+      }
+    }
+
+    return monthList;
+  };
+
   return (
     <Portal>
-      <div className="accountModalBg">
+      <div
+        className="accountModalBg"
+        ref={monthModalRef}
+        onClick={handleBackgroundClick}
+        aria-hidden="true"
+      >
         <div className="accountModalBox">
           <div className="titleRow">
             <h2 className="title">월 선택하기</h2>
@@ -26,30 +82,7 @@ function AccountMonth({ setMonthModal }: AccountMonthProps) {
             </button>
           </div>
 
-          <div className="selectMonthList">
-            <p className="selectMonth">2023년 05월</p>
-            <p className="selectMonth">2023년 04월</p>
-            <p className="selectMonth">2023년 03월</p>
-            <p className="selectMonth">2023년 02월</p>
-            <p className="selectMonth">2023년 01월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-            <p className="selectMonth">2022년 12월</p>
-          </div>
+          <div className="selectMonthList">{getMonthList()}</div>
         </div>
       </div>
     </Portal>
