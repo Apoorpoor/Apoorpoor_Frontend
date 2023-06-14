@@ -474,18 +474,11 @@ function Account(): JSX.Element {
       },
     }
   );
-  console.log('data 호출:', getAccountType?.pages);
+  console.log('data 호출:', getAccountType);
 
   const [bottomObserveRef, bottomInView] = useInView({
     threshold: 0,
   });
-
-  // 스크롤 이벤트 핸들러
-  // const handleScroll = useCallback(() => {
-  //   if (bottomInView && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [bottomInView, hasNextPage, fetchNextPage]);
 
   // useEffect를 사용하여 스크롤 이벤트 리스너 등록
   useEffect(() => {
@@ -776,7 +769,7 @@ function Account(): JSX.Element {
             지출
           </button>
         </ul>
-        {getAccountType?.pages.length === 0 ? (
+        {getAccountType?.pages.length === 1 ? (
           <div className="emptyData">
             <p className="title">텅 비었네요</p>
             <p className="content">
