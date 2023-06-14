@@ -19,6 +19,7 @@
   height: 350px;
   position: relative;
   margin-bottom: 62px;
+  text-align: center;
 }
 
 .barChart {
@@ -80,6 +81,10 @@
   font-size: 16px;
 }
 
+.noData {
+  color: #b7b7b7;
+}
+
 .chartBarPrice {
   margin: 0 auto;
   margin-top: 60px;
@@ -100,4 +105,17 @@
   // right: 0;
   border-bottom: 1px solid white;
   width: 90%;
+}
+
+.pagination {
+  text-align: center;
+  & button {
+    width: 208px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid $gray-250;
+    color: $gray-450;
+    font-size: 14px;
+    font-weight: 400;
+  }
 }

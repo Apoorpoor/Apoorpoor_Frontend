@@ -75,10 +75,14 @@ const getTotalMonthDate = async (id: string, currentMonth: string) => {
 };
 
 // (상세) 이번달 상세 지출 내역 파이그래프
-const getMonthPieChart = async (id: string, currentMonth: string) => {
+const getMonthPieChart = async (
+  id: string,
+  currentMonth: string,
+  pageParam: number
+) => {
   try {
     const response = await instance.get(
-      `/accounts/${id}/statistics?date=${currentMonth}`
+      `/accounts/${id}/statistics?date=${currentMonth}&page=${pageParam}&size=4`
     );
     // console.log(response);
     return response.data;
@@ -107,10 +111,15 @@ const getDifference = async (
 };
 
 // (상세) 월별, 기간별, 카테고리별 거래내역 조회
-const getAccountType = async (id: string, dateType: string, params: string) => {
+const getAccountType = async (
+  id: string,
+  dateType: string,
+  params: string,
+  pageParam: number
+) => {
   try {
     const response = await instance.get(
-      `/accounts/${id}/status?${dateType}${params}`
+      `/accounts/${id}/status?${dateType}${params}&page=${pageParam}&size=15`
     );
     // console.log(response);
     return response.data;

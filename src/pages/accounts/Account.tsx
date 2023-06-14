@@ -5,9 +5,10 @@ import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 import { BsFillPenFill } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
-import { UseQueryResult, useQuery } from 'react-query';
+import { UseQueryResult, useQuery, useInfiniteQuery } from 'react-query';
 import { format, subMonths, subWeeks } from 'date-fns';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useInView } from 'react-intersection-observer';
 import accounts from '../../api/accounts';
 import { Calendar, Chart, Header } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
@@ -24,6 +25,13 @@ import Loading from '../status/Loading';
 import Error from '../status/Error';
 
 // 거래내역 조회
+interface Data {
+  content: LedgerHistoryResponseDto[];
+  totalPages: number;
+  last: boolean;
+  number: number;
+}
+
 interface LedgerHistoryResponseDto {
   accountType: string;
   date: string;
@@ -450,11 +458,42 @@ function Account(): JSX.Element {
     error: getAccountTypeError,
     data: getAccountType,
     refetch: getAccountTypeRefetch,
-  }: UseQueryResult<LedgerHistoryResponseDto> = useQuery(
+    fetchNextPage,
+    // hasNextPage,
+  } = useInfiniteQuery<Data>(
     ['getAccountType', id, dateType, params],
-    () => accounts.getAccountType(id as string, dateType, params)
+    ({ pageParam = 0 }) =>
+      accounts.getAccountType(id as string, dateType, params, pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        console.log(lastPage);
+        if (lastPage.number + 1 < lastPage.totalPages) {
+          return lastPage.number + 1;
+        }
+        return undefined;
+      },
+    }
   );
-  // console.log('data 호출:', getAccountType);
+  console.log('data 호출:', getAccountType?.pages);
+
+  const [bottomObserveRef, bottomInView] = useInView({
+    threshold: 0,
+  });
+
+  // 스크롤 이벤트 핸들러
+  // const handleScroll = useCallback(() => {
+  //   if (bottomInView && hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [bottomInView, hasNextPage, fetchNextPage]);
+
+  // useEffect를 사용하여 스크롤 이벤트 리스너 등록
+  useEffect(() => {
+    if (bottomInView) {
+      console.log('무한스크롤!!!', bottomInView);
+      fetchNextPage();
+    }
+  }, [bottomInView, fetchNextPage]);
 
   // 일별로 데이터를 그룹화하는 함수
   const groupDataByDate = (
@@ -487,10 +526,23 @@ function Account(): JSX.Element {
   };
 
   // 데이터를 날짜별로 정렬하고 그룹화
-  const groupedData = Array.isArray(getAccountType)
-    ? groupDataByDate(getAccountType)
+  const mappedData = getAccountType?.pages.flatMap((data) =>
+    data.content.map((item) => ({
+      accountType: item.accountType,
+      date: item.date,
+      expenditure: item.expenditure,
+      expenditureType: item.expenditureType,
+      id: item.id,
+      income: item.income,
+      incomeType: item.incomeType,
+      paymentMethod: item.paymentMethod,
+      title: item.title,
+    }))
+  );
+
+  const groupedData = Array.isArray(mappedData)
+    ? groupDataByDate(mappedData)
     : {};
-  // console.log('groupedData:', groupedData);
 
   // 가계부 이름 수정 모달창
   const [nameModal, setNameModal] = useState<boolean>(false);
@@ -568,7 +620,7 @@ function Account(): JSX.Element {
           </button>
         </div>
       </Header>
-      
+
       <div className="_AccountBackground">
         <button type="button" className="_AccountName" onClick={nameModalOpen}>
           <span>{getAccount?.title}</span>
@@ -724,128 +776,80 @@ function Account(): JSX.Element {
             지출
           </button>
         </ul>
-        {Object.entries(groupedData).map(([date, items]) => {
-          const month = moment(date).format('yyyy-M');
-          const shouldShowAllMonths = dateType !== 'currentString';
+        {getAccountType?.pages.length === 0 ? (
+          <div className="emptyData">
+            <p className="title">텅 비었네요</p>
+            <p className="content">
+              가계부를 작성하고
+              <br />
+              포인트를 받아보세요!
+            </p>
+          </div>
+        ) : (
+          Object.entries(groupedData).map(([date, items]) => {
+            const month = moment(date).format('yyyy-M');
+            const shouldShowAllMonths = dateType !== 'currentString';
 
-          if (shouldShowAllMonths || month === today.format('yyyy-M')) {
-            return (
-              <div className="accountBody" key={date}>
-                <p className="accountDate">{dateWithDay(date)}</p>
-                <div className="accountBodyLine" />
+            if (shouldShowAllMonths || month === today.format('yyyy-M')) {
+              return (
+                <div className="accountBody" key={date}>
+                  <p className="accountDate">{dateWithDay(date)}</p>
+                  <div className="accountBodyLine" />
 
-                {items.map((item) => {
-                  // 수입, 지출, 저축에 따른 금액 className
-                  let className = '';
-                  if (item.accountType === 'INCOME') {
-                    className = 'accountLabelIn';
-                  } else if (
-                    item.accountType === 'EXPENDITURE' &&
-                    item.expenditureType === 'SAVINGS'
-                  ) {
-                    className = 'accountLabelSave';
-                  } else {
-                    className = 'accountLabelEx';
-                  }
-
-                  // 수입, 지출 각 카테고리 반환
-                  let result;
-
-                  if (item.accountType === 'EXPENDITURE') {
-                    if (item.expenditureType !== null) {
-                      result = expenditureType(item.expenditureType);
+                  {items.map((item) => {
+                    // 수입, 지출, 저축에 따른 금액 className
+                    let className = '';
+                    if (item.accountType === 'INCOME') {
+                      className = 'accountLabelIn';
+                    } else if (
+                      item.accountType === 'EXPENDITURE' &&
+                      item.expenditureType === 'SAVINGS'
+                    ) {
+                      className = 'accountLabelSave';
                     } else {
-                      result = '';
+                      className = 'accountLabelEx';
                     }
-                  } else {
-                    result = incomeType(item.incomeType);
-                  }
 
-                  return (
-                    <div className="accountBodyContents" key={item.id}>
-                      <div className="accountLabel">
-                        <p>{item.title}</p>
-                        <p className={className}>
-                          {item.income ? '+' : '-'}
-                          {priceComma(
-                            item.income ? item.income : item.expenditure
-                          )}
-                          원
+                    // 수입, 지출 각 카테고리 반환
+                    let result;
+
+                    if (item.accountType === 'EXPENDITURE') {
+                      if (item.expenditureType !== null) {
+                        result = expenditureType(item.expenditureType);
+                      } else {
+                        result = '';
+                      }
+                    } else {
+                      result = incomeType(item.incomeType);
+                    }
+
+                    return (
+                      <div className="accountBodyContents" key={item.id}>
+                        <div className="accountLabel">
+                          <p>{item.title}</p>
+                          <p className={className}>
+                            {item.income ? '+' : '-'}
+                            {priceComma(
+                              item.income ? item.income : item.expenditure
+                            )}
+                            원
+                          </p>
+                        </div>
+                        <p className="accountCategory">
+                          {item.accountType === 'EXPENDITURE' ? '지출' : '수입'}{' '}
+                          {'>'} {result}
                         </p>
                       </div>
-                      <p className="accountCategory">
-                        {item.accountType === 'EXPENDITURE' ? '지출' : '수입'}{' '}
-                        {'>'} {result}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          }
+                    );
+                  })}
+                </div>
+              );
+            }
 
-          return null;
-        })}
-        {/* {Object.entries(groupedData).map(([date, items]) => {
-          // 현재 보여지는 월에 대해서만 상세내역 반환
-          const month = moment(date).format('yyyy-M');
-          if (month === today.format('yyyy-M')) {
-            return (
-              <div className="accountBody" key={date}>
-                <p className="accountDate">{dateWithDay(date)}</p>
-                <div className="accountBodyLine" />
-
-                {items.map((item) => {
-                  // 수입, 지출, 저축에 따른 금액 className
-                  let className = '';
-                  if (item.accountType === 'INCOME') {
-                    className = 'accountLabelIn';
-                  } else if (
-                    item.accountType === 'EXPENDITURE' &&
-                    item.expenditureType === 'SAVINGS'
-                  ) {
-                    className = 'accountLabelSave';
-                  } else {
-                    className = 'accountLabelEx';
-                  }
-
-                  // 수입, 지출 각 카테고리 반환
-                  let result;
-
-                  if (item.accountType === 'EXPENDITURE') {
-                    if (item.expenditureType !== null) {
-                      result = expenditureType(item.expenditureType);
-                    } else {
-                      result = '';
-                    }
-                  } else {
-                    result = incomeType(item.incomeType);
-                  }
-
-                  return (
-                    <div className="accountBodyContents" key={item.id}>
-                      <div className="accountLabel">
-                        <p>{item.title}</p>
-                        <p className={className}>
-                          {item.income ? '+' : '-'}
-                          {priceComma(
-                            item.income ? item.income : item.expenditure
-                          )}
-                          원
-                        </p>
-                      </div>
-                      <p className="accountCategory">
-                        {item.accountType === 'EXPENDITURE' ? '지출' : '수입'}{' '}
-                        {'>'} {result}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          }
-          return null;
-        })} */}
+            return null;
+          })
+        )}
+        <div ref={bottomObserveRef} />
       </div>
     </>
   );
