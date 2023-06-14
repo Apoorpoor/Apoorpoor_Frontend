@@ -23,8 +23,9 @@
 
 .barChart {
   width: 100%;
-  height: 300px;
-  // margin-bottom: 62px;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
 }
 
 .innerChart {

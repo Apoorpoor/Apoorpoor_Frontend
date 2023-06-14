@@ -533,7 +533,9 @@ function Account(): JSX.Element {
           }
         />
       )}
-      {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
+      {monthModal && (
+        <AccountMonth setMoment={setMoment} setMonthModal={setMonthModal} />
+      )}
 
       <div className="_AccountBackground">
         <Header>

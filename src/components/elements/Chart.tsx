@@ -117,8 +117,8 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   const totalExpense = sortedData?.reduce((acc, curr) => acc + curr.value, 0);
 
   // 제일 큰 카테고리의 비율 계산
-  const maxCategoryPercentage =
-    sortedData && totalExpense ? (sortedData[0].value / totalExpense) * 100 : 0;
+  // const maxCategoryPercentage =
+  //   sortedData && totalExpense ? (sortedData[0].value / totalExpense) * 100 : 0;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -154,10 +154,10 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
           enableArcLabels={false}
         />
       </div>
-      <div className="innerChart">
+      {/* <div className="innerChart">
         <p className="innerChartTitle">{getMaxCategory()}</p>
         <p className="innerChartPer">{Math.floor(maxCategoryPercentage)}%</p>
-      </div>
+      </div> */}
 
       {sortedData &&
         sortedData.map((item) => {

@@ -13,8 +13,10 @@ interface ApiDataItem {
   gender: string;
   percent: number;
   expenditure: number;
-  income: number;
+  expenditure_sum: number;
   expenditure_avg: number;
+  income: number;
+  income_sum: number;
   income_avg: number;
 }
 
@@ -104,6 +106,21 @@ function Social() {
   const gender = data?.gender;
   const label = gender ? getGenderLabel(gender) : '기타';
 
+  // 상위 퍼센트 계산
+  let percentage = '';
+
+  if (accountType === 'EXPENDITURE') {
+    const expenditure = data?.expenditure || 0;
+    const expenditureSum = data?.expenditure_sum || 1;
+    percentage = `${(100 - (expenditure / expenditureSum) * 100).toFixed(0)}%`;
+  } else if (accountType === 'INCOME') {
+    const income = data?.income || 0;
+    const incomeSum = data?.income_sum || 1;
+    percentage = `${(100 - (income / incomeSum) * 100).toFixed(0)}%`;
+  }
+
+  console.log(percentage);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -120,7 +137,7 @@ function Social() {
               {data?.age_abb}대 {label} 중 내{' '}
               {currentSelect?.name === '소비' ? '소비' : '수입'}
             </p>
-            <p className="titleSecond">상위{data?.percent}%</p>
+            <p className="titleSecond">상위{percentage}</p>
           </>
         ) : (
           <p className="noneDatatitle">
