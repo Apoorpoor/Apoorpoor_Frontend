@@ -19,15 +19,11 @@ interface PieChartData {
 }
 
 function Chart({ id, currentMonth }: ChartProps): JSX.Element {
-  // const priceComma = (price: number): string =>
-  //   price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
   // 파이그래프 데이터
   const { isLoading, error, data }: UseQueryResult<PieChartData[]> = useQuery(
     ['getMonthPieChart', id, currentMonth],
     () => accounts.getMonthPieChart(id as string, currentMonth)
   );
-  // console.log('파이 데이터::', data);
 
   // 지출 카테고리별 차트 색상
   const getChartColor = (expenditureType: string): string => {

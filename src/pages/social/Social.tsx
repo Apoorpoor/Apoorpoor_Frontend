@@ -9,6 +9,8 @@ import noneData from '../../static/image/social/noneData.png';
 import social from '../../api/social';
 
 interface ApiDataItem {
+  age_abb: number;
+  gender: string;
   percent: number;
   expenditure: number;
   income: number;
@@ -88,6 +90,20 @@ function Social() {
     }
   }, [data]);
 
+  // 성별 조회
+  const getGenderLabel = (gender: string) => {
+    switch (gender) {
+      case 'female':
+        return '여자';
+      case 'male':
+        return '남자';
+      default:
+        return '기타';
+    }
+  };
+  const gender = data?.gender;
+  const label = gender ? getGenderLabel(gender) : '기타';
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -100,7 +116,10 @@ function Social() {
       <div className="title">
         {rankData && rankData ? (
           <>
-            <p className="titleFirst">20대 남자 중 내 소비</p>
+            <p className="titleFirst">
+              {data?.age_abb}대 {label} 중 내{' '}
+              {currentSelect?.name === '소비' ? '소비' : '수입'}
+            </p>
             <p className="titleSecond">상위{data?.percent}%</p>
           </>
         ) : (
