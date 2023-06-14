@@ -2,12 +2,14 @@
 
 .socialBg {
   width: 100%;
+  height: 100vh;
   padding: 0px;
   padding-top: 78px;
-  background-color: $primaryD-550;
+  background-color: #0e2345;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 
   & .title {
     width: 100%;
@@ -52,8 +54,7 @@
   }
 
   & .socialController {
-    margin-top: 28px;
-    margin-bottom: 28px;
+    margin:28px auto;
     width: 116px;
     height: 43px;
     border-radius: 999px;
@@ -90,7 +91,7 @@
 
   & .socialRankingBox {
     width: 100%;
-    height: 60%;
+    height: calc(100vh - 200px);
     background-color: white;
     border-radius: 20px 20px 0px 0px;
     box-sizing: border-box;
@@ -98,7 +99,6 @@
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 100px;
-
     & .row {
       margin-top: 20px;
       display: flex;

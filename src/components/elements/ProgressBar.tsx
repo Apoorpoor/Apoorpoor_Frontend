@@ -31,59 +31,51 @@ function ProgressBar({ data }: { data: DataProps }) {
 
   const scrollPosition = useRecoilValue(containerPositionState);
   const [render, setRender] = useState(false);
-
-  useEffect(() => {
-    if (scrollPosition > 1400) {
-      setRender(true);
-    }
-  }, [scrollPosition]);
-
   // 현재 레벨 진행 상태
   const levelGage = (data.point / requiredPoint[data.level]) * 100;
 
   // circle svg 저장용
   const barRef = useRef<SVGCircleElement | null>(null);
   // levelGage 값 저장용
-  const [value, setValue] = useState(levelGage);
+  const [value, setValue] = useState(0);
 
-  const progress = (per: number) => {
-    // 누적 포인트
-    const accumulatePoint = per / 100;
-    const gageMax = CIRCUMFERENCE * 0.65;
+  useEffect(() => {
+    if (scrollPosition > 1900) {
+      setRender(true);
+    }
+  }, [scrollPosition]);
 
-    setValue(per);
+  useEffect(() => {
     if (barRef.current) {
       // strokeDashoffset 시작 위치 설정
       // strokeDasharray는 dash의 길이와 간격 설정
       barRef.current.style.strokeDashoffset = '-374';
-      barRef.current.style.strokeDasharray = `${gageMax * accumulatePoint} ${
-        CIRCUMFERENCE - gageMax * accumulatePoint
-      }`;
+      barRef.current.style.strokeDasharray = '0, 879.645943005142';
     }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      let startValue = 0;
-      setValue(startValue);
-      startValue += 1;
-
-      if (startValue > levelGage) {
-        clearInterval(interval);
-      }
-    }, 20);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [levelGage]);
+  }, []);
 
   useEffect(() => {
     if (render) {
-      console.log('렌더링 시작!');
-      progress(levelGage);
+      let startValue = 0;
+      const interval = setInterval(() => {
+        const accumulatePoint = startValue / 100;
+        const gageMax = CIRCUMFERENCE * 0.65;
+
+        setValue(startValue);
+        if (barRef.current) {
+          barRef.current.style.strokeDashoffset = '-374';
+          barRef.current.style.strokeDasharray = `${
+            gageMax * accumulatePoint
+          } ${CIRCUMFERENCE - gageMax * accumulatePoint}`;
+        }
+        startValue += 1;
+
+        if (startValue > levelGage) {
+          clearInterval(interval);
+        }
+      }, 20);
     }
-  }, [scrollPosition, render, levelGage]);
+  }, [render]);
 
   return (
     <div id="LevelGage">
@@ -109,6 +101,8 @@ function ProgressBar({ data }: { data: DataProps }) {
           r={RADIUS}
           stroke="#4194F1"
           strokeWidth="20"
+          strokeDasharray="-374"
+          strokeDashoffset="0, 879.645943005142"
           fill="none"
           strokeLinecap="round"
         />

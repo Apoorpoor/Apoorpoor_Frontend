@@ -61,15 +61,16 @@ function Controller() {
   // 컨트롤러 없어야 하는 페이지 필요하시다면 추가 해주세요!
   if (
     page === '/poorTalk' ||
+    page === '/poorRoom' ||
     page === '/poorItemSetting' ||
     page === '/badgeList' ||
     page === '/login' ||
     page === '/age' ||
     page === '/gender' ||
     page === '/finished' ||
-    page === '/alarmStation' ||
+    page === '/AlarmStation' ||
     /^\/addAccount\/\d+$/.test(page) ||
-    /^\/addAccountDone\/\d+$/.test(page)
+    /^\/addAccountDone\/\d+$/.test(page) ||
     /^\/editAccount\/\d+$/.test(page)
   ) {
     return null;

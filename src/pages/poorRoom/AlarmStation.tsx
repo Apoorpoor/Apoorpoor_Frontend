@@ -48,17 +48,28 @@ function AlarmStation() {
     <main id="alarmStation">
       <Header>알림</Header>
       <div className="alarmList">
-        <ul>
-          {parsedNotification?.map((notification) => (
-            <li key={notification.id} onClick={() => navigate('/badgeList')}>
-              <p>
-                소비뱃지
-                <span>{calculateElapsedTime(notification.timestamp)} 전</span>
-              </p>
-              <p>{notification.msg} 지금 확인하러 가볼까요?</p>
-            </li>
-          ))}
-        </ul>
+        {parsedNotification.length === 0 ? (
+          <div className="noAlarm">
+            <h2>텅 비었네요</h2>
+            <p>
+              최근 도착한
+              <br />
+              알림이 없어요
+            </p>
+          </div>
+        ) : (
+          <ul>
+            {parsedNotification?.map((notification) => (
+              <li key={notification.id} onClick={() => navigate('/badgeList')}>
+                <p>
+                  소비뱃지
+                  <span>{calculateElapsedTime(notification.timestamp)} 전</span>
+                </p>
+                <p>{notification.msg} 지금 확인하러 가볼까요?</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </main>
   );
