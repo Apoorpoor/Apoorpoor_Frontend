@@ -89,7 +89,7 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
   const category1 =
     data && data.length > 1 ? getCategoryLabel(data[1]?.month) : '';
   const value1 = data && data.length > 1 ? data[1]?.month_sum : 0;
-  const color1 = '#FFF3C7';
+  const color1 = '#FFD12E';
 
   const category2 =
     data && data.length > 0 ? getCategoryLabel(data[0]?.month) : '';
@@ -324,7 +324,8 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
                   y={y - 10}
                   textAnchor="middle"
                   fill="#000"
-                  fontSize="12"
+                  fontSize="14"
+                  fontWeight={700}
                 >
                   {formatNumber(item.value)}
                 </text>
@@ -332,7 +333,7 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
                   x={x + barWidth / 2}
                   y={y + 20}
                   textAnchor="middle"
-                  fill="#000"
+                  fill="#fff"
                   fontSize="14"
                   fontWeight={700}
                 >

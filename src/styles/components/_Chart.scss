@@ -19,6 +19,7 @@
   height: 350px;
   position: relative;
   margin-bottom: 62px;
+  text-align: center;
 }
 
 .barChart {
@@ -78,6 +79,10 @@
 .chartPrice {
   font-weight: 700;
   font-size: 16px;
+}
+
+.noData {
+  color: #b7b7b7;
 }
 
 .chartBarPrice {

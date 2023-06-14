@@ -4,6 +4,9 @@ import { VscCircleFilled } from 'react-icons/vsc';
 import '../../styles/components/_Chart.scss';
 import { UseQueryResult, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
+import Loading from '../../pages/status/Loading';
+import pieChart from '../../static/image/account/pieChart.png';
+import pieChartDots from '../../static/image/account/pieChartDots.png';
 
 // Account.tsx에서 받아온 props
 interface ChartProps {
@@ -12,6 +15,10 @@ interface ChartProps {
 }
 
 // Pie data
+interface Data {
+  content: PieChartData[];
+}
+
 interface PieChartData {
   month: string;
   expenditureType: string;
@@ -20,7 +27,7 @@ interface PieChartData {
 
 function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   // 파이그래프 데이터
-  const { isLoading, error, data }: UseQueryResult<PieChartData[]> = useQuery(
+  const { isLoading, error, data }: UseQueryResult<Data> = useQuery(
     ['getMonthPieChart', id, currentMonth],
     () => accounts.getMonthPieChart(id as string, currentMonth)
   );
@@ -94,7 +101,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   };
 
   // data를 차트 포맷에 맞춤
-  const pieData = data?.map((item) => ({
+  const pieData = data?.content.map((item) => ({
     id: item.expenditureType,
     label: item.month_sum,
     value: item.month_sum,
@@ -116,15 +123,11 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   // 전체 지출 합계
   const totalExpense = sortedData?.reduce((acc, curr) => acc + curr.value, 0);
 
-  // 제일 큰 카테고리의 비율 계산
-  // const maxCategoryPercentage =
-  //   sortedData && totalExpense ? (sortedData[0].value / totalExpense) * 100 : 0;
-
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <div>잠시 후 다시 시도해주세요!</div>;
   }
 
   return (
@@ -134,32 +137,86 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
         <p>
           {getMaxCategory()
             ? `${getMaxCategory()}에 가장 많이 사용하셨어요.`
-            : ''}
+            : '가계부를 작성하고 상세 지출을 확인해보세요!'}
         </p>
       </div>
       <div className="pieChart">
-        <ResponsivePie
-          colors={sortedData?.map((item) => getChartColor(item.id)) || []}
-          data={sortedData || []}
-          margin={{ top: 60, right: 50, bottom: 0, left: 50 }}
-          innerRadius={0.55}
-          activeOuterRadiusOffset={12}
-          isInteractive={false}
-          borderWidth={1}
-          borderColor={{
-            from: 'color',
-            modifiers: [['darker', 0.2]],
-          }}
-          enableArcLinkLabels={false}
-          enableArcLabels={false}
-        />
+        {!sortedData || sortedData.length === 0 ? (
+          <img
+            src={pieChart}
+            alt="pieChart"
+            style={{ width: '242px', marginTop: '60px' }}
+          />
+        ) : (
+          <ResponsivePie
+            colors={sortedData.map((item) => getChartColor(item.id))}
+            data={sortedData}
+            margin={{ top: 60, right: 50, bottom: 0, left: 50 }}
+            innerRadius={0.55}
+            activeOuterRadiusOffset={12}
+            isInteractive={false}
+            borderWidth={1}
+            borderColor={{
+              from: 'color',
+              modifiers: [['darker', 0.2]],
+            }}
+            enableArcLinkLabels={false}
+            enableArcLabels={false}
+          />
+        )}
       </div>
-      {/* <div className="innerChart">
-        <p className="innerChartTitle">{getMaxCategory()}</p>
-        <p className="innerChartPer">{Math.floor(maxCategoryPercentage)}%</p>
-      </div> */}
 
-      {sortedData &&
+      {!sortedData || sortedData.length === 0 ? (
+        <>
+          <div className="chartData">
+            <div className="chartDataContents">
+              <VscCircleFilled style={{ color: '#B7B7B7' }} />
+              <p className="chartTitle noData">
+                식비
+                <span className="chartPer noData">0%</span>
+              </p>
+            </div>
+            <p className="chartPrice noData">0원</p>
+          </div>
+          <div className="chartData">
+            <div className="chartDataContents">
+              <VscCircleFilled style={{ color: '#B7B7B7' }} />
+              <p className="chartTitle noData">
+                쇼핑
+                <span className="chartPer noData">0%</span>
+              </p>
+            </div>
+            <p className="chartPrice noData">0원</p>
+          </div>
+          <div className="chartData">
+            <div className="chartDataContents">
+              <VscCircleFilled style={{ color: '#B7B7B7' }} />
+              <p className="chartTitle noData">
+                문화
+                <span className="chartPer noData">0%</span>
+              </p>
+            </div>
+            <p className="chartPrice noData">0원</p>
+          </div>
+          <div className="chartData">
+            <div className="chartDataContents">
+              <VscCircleFilled style={{ color: '#B7B7B7' }} />
+              <p className="chartTitle noData">
+                건강
+                <span className="chartPer noData">0%</span>
+              </p>
+            </div>
+            <p className="chartPrice noData">0원</p>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <img
+              src={pieChartDots}
+              alt="pieChartDots"
+              style={{ width: '8px' }}
+            />
+          </div>
+        </>
+      ) : (
         sortedData.map((item) => {
           const percentage = totalExpense
             ? Math.floor((item.value / totalExpense) * 100)
@@ -176,7 +233,8 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
               <p className="chartPrice">{item.value.toLocaleString()}원</p>
             </div>
           );
-        })}
+        })
+      )}
     </div>
   );
 }

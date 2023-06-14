@@ -78,7 +78,8 @@ const getTotalMonthDate = async (id: string, currentMonth: string) => {
 const getMonthPieChart = async (id: string, currentMonth: string) => {
   try {
     const response = await instance.get(
-      `/accounts/${id}/statistics?date=${currentMonth}`
+      `/accounts/${id}/statistics?date=${currentMonth}&
+      page=0&size=4`
     );
     // console.log(response);
     return response.data;
