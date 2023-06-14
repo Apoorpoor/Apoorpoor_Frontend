@@ -8,6 +8,8 @@ import accounts from '../../api/accounts';
 import { Controller } from '../../components';
 import MainDelModal from '../../components/elements/MainDelModal';
 import NumberAnimation from '../../components/elements/NumberAnimation';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -88,15 +90,11 @@ function Main(): JSX.Element {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
-
-  // 천단위 콤마
-  // const priceComma = (price: number): string =>
-  //   price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
     <>

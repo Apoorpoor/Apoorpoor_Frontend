@@ -7,6 +7,8 @@ import bundle from '../../static/image/social/ranking1.png';
 import flex from '../../static/image/social/ranking2.png';
 import noneData from '../../static/image/social/noneData.png';
 import social from '../../api/social';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 interface ApiDataItem {
   age_abb: number;
@@ -122,10 +124,10 @@ function Social() {
   console.log(percentage);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
 
   return (

@@ -20,6 +20,8 @@ import {
   startDateState,
   endDateState,
 } from '../../shared/Atom';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 // 거래내역 조회
 interface LedgerHistoryResponseDto {
@@ -514,10 +516,10 @@ function Account(): JSX.Element {
   };
 
   if (isLoading || getTotalMonthDateIsLoading || getAccountTypeLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error || getTotalMonthDateError || getAccountTypeError) {
-    return <div>Error</div>;
+    return <Error />;
   }
 
   return (
