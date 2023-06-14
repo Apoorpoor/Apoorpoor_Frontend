@@ -13,27 +13,46 @@ interface ChartSocialExProps {
 function ChartSocialEx({ data }: ChartSocialExProps) {
   const width = 175;
   const height = 175;
-  const margin = 20; // 추가된 부분
+  const margin = 20;
+  const minBarHeight = 50;
 
   const maxDataValue = Math.max(...data.map((item) => item.value));
   const barCount = data.length;
-  const barWidth = (width - (barCount - 1) * 15 - margin * 2) / barCount; // 변경된 부분
+  const barWidth = (width - (barCount - 1) * 15 - margin * 2) / barCount;
   const borderRadius = 12;
 
   // 숫자 형식화 함수
   const formatNumber = (value: number) => {
-    if (value >= 10000) {
-      return `${(value / 10000).toFixed(0)}만원`;
+    if (value >= 100000) {
+      const stringValue = value.toString();
+      const firstTwoDigits = stringValue.substring(0, 2);
+      return `${firstTwoDigits}만원`;
     }
-    return value.toString();
+    if (value >= 10000 && value < 100000) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue[0];
+      const secondDigit = stringValue[1];
+      return `${firstDigit}만${secondDigit}천원`;
+    }
+    if (value >= 1000 && value < 10000) {
+      const firstDigit = Math.floor(value / 1000);
+      return `${firstDigit}천원`;
+    }
+    return `${value.toLocaleString().split('.')[0]}원`;
+  };
+
+  const calculateBarHeight = (value: number) => {
+    const calculatedHeight =
+      (value / maxDataValue) * (height - minBarHeight) + minBarHeight;
+    return Math.max(calculatedHeight, minBarHeight);
   };
 
   return (
     <svg width={width} height={height}>
       {data.map((item, index) => {
-        const x = index * (barWidth + 15) + margin; // 변경된 부분
-        const y = height - (item.value / maxDataValue) * height + 25;
-        const barHeight = (item.value / maxDataValue) * height;
+        const x = index * (barWidth + 15) + margin;
+        const y = height - calculateBarHeight(item.value) + 25;
+        const barHeight = calculateBarHeight(item.value);
         const topRadius = borderRadius;
 
         const pathData = `
