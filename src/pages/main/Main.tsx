@@ -96,10 +96,6 @@ function Main(): JSX.Element {
     return <Error />;
   }
 
-  // 천단위 콤마
-  // const priceComma = (price: number): string =>
-  //   price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
   return (
     <>
       {delModal && <MainDelModal id={delModal} delModalClose={delModalClose} />}

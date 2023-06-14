@@ -19,15 +19,11 @@ interface PieChartData {
 }
 
 function Chart({ id, currentMonth }: ChartProps): JSX.Element {
-  // const priceComma = (price: number): string =>
-  //   price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
   // 파이그래프 데이터
   const { isLoading, error, data }: UseQueryResult<PieChartData[]> = useQuery(
     ['getMonthPieChart', id, currentMonth],
     () => accounts.getMonthPieChart(id as string, currentMonth)
   );
-  // console.log('파이 데이터::', data);
 
   // 지출 카테고리별 차트 색상
   const getChartColor = (expenditureType: string): string => {
@@ -121,8 +117,8 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
   const totalExpense = sortedData?.reduce((acc, curr) => acc + curr.value, 0);
 
   // 제일 큰 카테고리의 비율 계산
-  const maxCategoryPercentage =
-    sortedData && totalExpense ? (sortedData[0].value / totalExpense) * 100 : 0;
+  // const maxCategoryPercentage =
+  //   sortedData && totalExpense ? (sortedData[0].value / totalExpense) * 100 : 0;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -158,10 +154,10 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
           enableArcLabels={false}
         />
       </div>
-      <div className="innerChart">
+      {/* <div className="innerChart">
         <p className="innerChartTitle">{getMaxCategory()}</p>
         <p className="innerChartPer">{Math.floor(maxCategoryPercentage)}%</p>
-      </div>
+      </div> */}
 
       {sortedData &&
         sortedData.map((item) => {

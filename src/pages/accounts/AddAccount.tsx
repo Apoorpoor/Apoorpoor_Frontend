@@ -15,7 +15,6 @@ function AddAccount(): JSX.Element {
   const navigate = useNavigate();
 
   // 현재 가계부의 id 조회
-  // const { id } = useParams<{ id: string }>();
   const { id } = useParams<{ id: string | undefined }>();
 
   // 금액 입력

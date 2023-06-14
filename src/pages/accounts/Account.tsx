@@ -166,28 +166,6 @@ function Account(): JSX.Element {
     { name: '기간 선택', selected: false },
   ]);
 
-  // 기간선택 버튼별 쿼리스트링
-  // let dateType = '';
-
-  // if (!term.some((item) => item.selected)) {
-  //   dateType = '';
-  // } else {
-  //   switch (true) {
-  //     case term[0].selected:
-  //       dateType = '&dateType=week';
-  //       break;
-  //     case term[1].selected:
-  //       dateType = '&dateType=month';
-  //       break;
-  //     case term[2].selected:
-  //       dateType = '&dateType=3month';
-  //       break;
-  //     default:
-  //       dateType = '';
-  //       break;
-  //   }
-  // }
-
   const categoryOnclick = (idx: number): void => {
     const updatedTerm = term.map((el, index) => {
       if (index === idx) {
@@ -556,7 +534,9 @@ function Account(): JSX.Element {
           }
         />
       )}
-      {monthModal && <AccountMonth setMonthModal={setMonthModal} />}
+      {monthModal && (
+        <AccountMonth setMoment={setMoment} setMonthModal={setMonthModal} />
+      )}
       <Header>
         <div className="month">
           <button
