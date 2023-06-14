@@ -1,0 +1,316 @@
+@import '../Palette';
+
+.socialBg2 {
+    width: 100%;
+    padding: 0px;
+    height: 100%;
+    background-color: $primaryD-550;
+    #socialHeader {
+        // background-color: white;
+        color: white;
+        position: sticky;
+        height: 80px;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      
+        & > button {
+          position: absolute;
+          top: 50%;
+          left: 15px;
+          transform: translateY(-50%);
+          width: 40px;
+          height: 24px;
+          color: white;
+        }
+        & > h1 {
+          font-size: 20px;
+          min-width: 100%;
+          text-align: center;
+        }
+        & > div {
+          position: absolute;
+          top: 55%;
+          right: 15px;
+          transform: translateY(-50%);
+          width: 40px;
+          font-size: 23px;
+        }
+      }
+    .BasicBackGround{
+        background-color: $primaryD-550;
+        margin-top: 10px;
+        position: relative;
+
+        & > .BasicBackGroundimage{
+        width: 285px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        }
+
+        &> .Top3Poor1{
+            position: absolute;
+            background-color: $primaryD-550;;
+            width: 162px;
+            height: 162px;
+            border-radius: 50%;
+            border: 2px solid #ffd12e;
+            // top:50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(36.5%);
+            overflow: hidden;
+                
+            &> .Top1Poor{
+                width: 95px;
+                left: 50%;
+                transform: translateX(35%) translateY(20%);
+            }
+            & > .Top1PoorItem {
+                width: 95px;
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%) translateY(22%);
+              z-index: 2;
+            }
+        }
+
+    .Top1Crown{
+        position: absolute;
+        width: 42px;
+        left: 50%;
+        transform: translateX(-50%) translateY(90%);
+        z-index: 9999;
+    }
+    .GoldMedal{
+        position: absolute;
+        width: 48px;
+        scale: 2;
+        left: 50%;
+        transform: translateX(-26%) translateY(180%);
+    }
+
+        &> .Top3Poor2{
+            position: absolute;
+            background-color: $primaryD-550;;
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 2px solid $gray-500;
+            top:50%;
+            right: 50%;
+            transform: translateX(-50%) translateY(150%);
+            overflow: hidden;
+
+
+            &> .Top2Poor{
+                width: 50px;
+                left: 50%;
+                transform: translateX(45%) translateY(25%);
+                z-index: 1;
+            }
+            
+            & > .Top2PoorItem {
+                width: 50px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-52%) translateY(25%);
+                z-index: 2;
+            }
+        }
+
+    .SilverMedal{
+        position: absolute;
+        width: 20px;
+        scale: 1.5;
+        left: 50%;
+        transform: translateX(-368%) translateY(550%);
+    }
+        &> .Top3Poor3{
+            position: absolute;
+            background-color: $primaryD-550;;
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 2px solid $gray-500;
+            top:50%;
+            left: 50%;
+            transform: translateX(50%) translateY(150%);
+            overflow: hidden;
+
+                &> .Top3Poor{
+                    width: 50px;
+                    left: 50%;
+                    transform: translateX(45%) translateY(25%);
+                    z-index: 1;
+            }
+            
+            & > .Top3PoorItem {
+                width: 50px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-51%) translateY(25%);
+                z-index: 2;
+            }
+        }
+        .CopperMedal{
+            position: absolute;
+            width: 20px;
+            scale: 1.5;
+            left: 50%;
+            transform: translateX(298%) translateY(550%);
+        }
+    }
+    .Top1Number{
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(60%);
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .Top1Nickname{
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(850%);
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+
+        &>.Top1Price{
+            color:$primary ;;
+        }
+    }
+    .Top2Number{
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-1250%) translateY(760%);
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .Top2Nickname{
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-230%) translateY(860%);
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+        &>.Top2Price{
+            color:$primary ;;
+        }
+
+    }
+    .Top3Number{
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(1100%) translateY(760%);
+        font-weight: 700;
+        font-size: 14px;
+}
+.Top3Nickname{
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    transform: translateX(360%) translateY(860%);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    &>.Top3Price{
+        color:$primary ;;
+    }
+
+}
+.socialRankingBox2 {
+    width: 387px;
+    margin-top: 380px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    overflow: auto;
+    position: absolute;
+    padding-bottom: 110px;
+  }
+  
+  .socialRankingBox2 > .Top10ListHeader {
+    display: flex;
+    color: $gray-450;
+    margin-left: 5%;
+    justify-content: space-between;
+    padding: 0px 10% 0px 17%;
+  }
+
+  @media (max-width: 768px) {
+    .socialRankingBox2 {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .socialRankingBox2 > .Top10ListHeader{
+        margin-left: 6%;
+        padding: 5px 10% 5px 10%;
+    }
+  }
+  .Top10List{
+    margin-top: 10px;
+    display: flex;
+
+    .Top10PoorsImage {
+        margin-left: 20px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: white;
+        position: relative; 
+        overflow: hidden;
+        &>.Top10Image{
+            width: 16px;
+            position: absolute;
+            transform: translate(37%, 20%);
+            z-index: 1;
+        }
+        & > .Top10ImageItem {
+            width: 16px;
+          position: absolute;
+        //   top: 50%;
+        //   left: 50%;
+            transform: translate(37%, 20%);
+          z-index: 2;
+        }
+    }
+    & p {
+        font-weight: 700;
+        line-height: 40px;
+        position: absolute;
+    }
+    .Top10Poors{
+        margin-left: 7%;
+        justify-content: space-between;
+        display: flex;
+        background-color: $gray-150 ;
+        width: 100%;
+        // height: 30px;
+        padding: 5px 10% 5px -0px;
+        // margin-left: 20px;
+        border-radius:999px;
+        line-height: 30px;
+        font-size: 14px;
+        
+        &>.ProfileNickname{
+            display: flex;
+            gap: 10px;
+        }
+        
+        &>.Top10PoorsPrice{
+            font-weight: 700;
+        }
+    }
+}
+}

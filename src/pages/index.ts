@@ -19,6 +19,8 @@ import PoorItemSetting from './poorRoom/PoorItemSetting';
 import UsersProfilePage from './poorTalk/UsersProfilePage';
 import AlarmStation from './poorRoom/AlarmStation';
 import Social from './social/Social';
+import Reduction from './social/Reduction';
+import Flex from './social/Flex';
 
 export {
   Account,
@@ -42,4 +44,6 @@ export {
   UsersProfilePage,
   AlarmStation,
   Social,
+  Reduction,
+  Flex,
 };
