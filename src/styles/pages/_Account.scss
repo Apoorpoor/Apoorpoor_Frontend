@@ -184,3 +184,18 @@
     }
   }
 }
+
+.emptyData {
+  margin-top: 120px;
+  margin-bottom: 187px;
+  text-align: center;
+  color: $gray-350;
+
+  & .title {
+    font-size: 40px;
+    font-weight: 700;
+  }
+  & .content {
+    font-size: 14px;
+  }
+}
