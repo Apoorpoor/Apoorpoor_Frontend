@@ -4,6 +4,7 @@ import '../../styles/components/_Chart.scss';
 import { useParams } from 'react-router';
 import { UseQueryResult, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
+import barChartImg from '../../static/image/account/barChart.png';
 
 // Account.tsx에서 받아온 props
 interface ChartLastMonthProps {
@@ -279,26 +280,35 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
           <h2>대비 지출내역</h2>
         </div>
         <p>
-          {dateTypeText}보다{' '}
-          {difference !== null && (
-            <span>
-              {difference < 0
-                ? `${Math.abs(difference).toLocaleString()}원 덜 쓰셨네요.`
-                : `${difference.toLocaleString()}원 더 쓰셨네요.`}
-            </span>
+          {data && data[0].month === null && data[1].month === null ? (
+            '가계부를 작성하고 지출을 확인해보세요!'
+          ) : (
+            <>
+              {dateTypeText}보다{' '}
+              {difference !== null && (
+                <span>
+                  {difference < 0
+                    ? `${Math.abs(difference).toLocaleString()}원 덜 쓰셨네요.`
+                    : `${difference.toLocaleString()}원 더 쓰셨네요.`}
+                </span>
+              )}
+            </>
           )}
         </p>
       </div>
 
       <div className="barChart">
-        <svg width={width} height={height}>
-          {dataChange.map((item, index) => {
-            const x = index * (barWidth + 15) + margin;
-            const y = height - calculateBarHeight(item.value) + 25;
-            const barHeight = calculateBarHeight(item.value);
-            const topRadius = borderRadius;
+        {data && data[0].month === null && data[1].month === null ? (
+          <img src={barChartImg} alt="barChartImg" style={{ width: '320px' }} />
+        ) : (
+          <svg width={width} height={height}>
+            {dataChange.map((item, index) => {
+              const x = index * (barWidth + 15) + margin;
+              const y = height - calculateBarHeight(item.value) + 25;
+              const barHeight = calculateBarHeight(item.value);
+              const topRadius = borderRadius;
 
-            const pathData = `
+              const pathData = `
               M ${x + topRadius} ${y}
               h ${barWidth - topRadius * 2}
               a ${topRadius} ${topRadius} 0 0 1 ${topRadius} ${topRadius}
@@ -309,48 +319,49 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
               Z
             `;
 
-            return (
-              <g key={item.category}>
-                <rect
-                  x={x}
-                  y={y - barHeight}
-                  width={barWidth}
-                  height={barHeight}
-                  fill="#FFFFFF"
-                />
-                <path d={pathData} fill={item.color} />
-                <text
-                  x={x + barWidth / 2}
-                  y={y - 10}
-                  textAnchor="middle"
-                  fill="#000"
-                  fontSize="14"
-                  fontWeight={700}
-                >
-                  {formatNumber(item.value)}
-                </text>
-                <text
-                  x={x + barWidth / 2}
-                  y={y + 20}
-                  textAnchor="middle"
-                  fill="#fff"
-                  fontSize="14"
-                  fontWeight={700}
-                >
-                  {item.category}
-                </text>
-              </g>
-            );
-          })}
-          <line
-            x1={0}
-            y1={height}
-            x2={252}
-            y2={height - 1}
-            stroke="#DFDFDF"
-            strokeWidth={1}
-          />
-        </svg>
+              return (
+                <g key={item.category}>
+                  <rect
+                    x={x}
+                    y={y - barHeight}
+                    width={barWidth}
+                    height={barHeight}
+                    fill="#FFFFFF"
+                  />
+                  <path d={pathData} fill={item.color} />
+                  <text
+                    x={x + barWidth / 2}
+                    y={y - 10}
+                    textAnchor="middle"
+                    fill="#000"
+                    fontSize="14"
+                    fontWeight={700}
+                  >
+                    {formatNumber(item.value)}
+                  </text>
+                  <text
+                    x={x + barWidth / 2}
+                    y={y + 20}
+                    textAnchor="middle"
+                    fill="#fff"
+                    fontSize="14"
+                    fontWeight={700}
+                  >
+                    {item.category}
+                  </text>
+                </g>
+              );
+            })}
+            <line
+              x1={0}
+              y1={height}
+              x2={252}
+              y2={height - 1}
+              stroke="#DFDFDF"
+              strokeWidth={1}
+            />
+          </svg>
+        )}
       </div>
     </div>
   );
