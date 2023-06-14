@@ -21,6 +21,9 @@ import {
   BadgeList,
   AlarmStation,
   Social,
+  Reduction,
+  Flex,
+
 } from './pages/index';
 
 function App() {
@@ -56,6 +59,8 @@ function App() {
         <Route path="/badgeList" element={<BadgeList />} />
         <Route path="/alarmStation" element={<AlarmStation />} />
         <Route path="/social" element={<Social />} />
+        <Route path="/social/reduction" element={<Reduction />} />
+        <Route path="/social/flex" element={<Flex />} />
       </Routes>
     </Layout>
   );

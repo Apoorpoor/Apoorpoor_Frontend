@@ -182,7 +182,7 @@ function Social() {
               <img src={bundle} alt="bundle" className="imgBundle" />
             </div>
             <p>절약 푸어</p>
-            <button type="button">랭킹 보기</button>
+            <button type="button" onClick={() => navigate('/social/reduction')}>랭킹 보기</button>
           </div>
 
           <div className="socialRanking">
@@ -190,7 +190,7 @@ function Social() {
               <img src={flex} alt="flex" className="imgFlex" />
             </div>
             <p>플렉스 푸어</p>
-            <button type="button">랭킹 보기</button>
+            <button type="button" onClick={() => navigate('/social/flex')}>랭킹 보기</button>
           </div>
         </div>
       </div>
