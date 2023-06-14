@@ -7,12 +7,18 @@ import bundle from '../../static/image/social/ranking1.png';
 import flex from '../../static/image/social/ranking2.png';
 import noneData from '../../static/image/social/noneData.png';
 import social from '../../api/social';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 interface ApiDataItem {
+  age_abb: number;
+  gender: string;
   percent: number;
   expenditure: number;
-  income: number;
+  expenditure_sum: number;
   expenditure_avg: number;
+  income: number;
+  income_sum: number;
   income_avg: number;
 }
 
@@ -88,11 +94,40 @@ function Social() {
     }
   }, [data]);
 
+  // 성별 조회
+  const getGenderLabel = (gender: string) => {
+    switch (gender) {
+      case 'female':
+        return '여자';
+      case 'male':
+        return '남자';
+      default:
+        return '기타';
+    }
+  };
+  const gender = data?.gender;
+  const label = gender ? getGenderLabel(gender) : '기타';
+
+  // 상위 퍼센트 계산
+  let percentage = '';
+
+  if (accountType === 'EXPENDITURE') {
+    const expenditure = data?.expenditure || 0;
+    const expenditureSum = data?.expenditure_sum || 1;
+    percentage = `${(100 - (expenditure / expenditureSum) * 100).toFixed(0)}%`;
+  } else if (accountType === 'INCOME') {
+    const income = data?.income || 0;
+    const incomeSum = data?.income_sum || 1;
+    percentage = `${(100 - (income / incomeSum) * 100).toFixed(0)}%`;
+  }
+
+  console.log(percentage);
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
 
   return (
@@ -100,8 +135,11 @@ function Social() {
       <div className="title">
         {rankData && rankData ? (
           <>
-            <p className="titleFirst">20대 남자 중 내 소비</p>
-            <p className="titleSecond">상위{data?.percent}%</p>
+            <p className="titleFirst">
+              {data?.age_abb}대 {label} 중 내{' '}
+              {currentSelect?.name === '소비' ? '소비' : '수입'}
+            </p>
+            <p className="titleSecond">상위{percentage}</p>
           </>
         ) : (
           <p className="noneDatatitle">
