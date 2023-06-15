@@ -19,6 +19,10 @@
         "labelAttributes": ["htmlFor"]
       }
     ],
-    "no-console": "off"
+    "no-console": "off",
+    "import/no-cycle": "off",
+    "no-alert": "off",
+    "no-unused-vars": "off",
+    "no-nested-ternary": "off"
   }
 }

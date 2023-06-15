@@ -1,36 +1,35 @@
-.finishedPage{
+.finishedPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  h1 {
+    font-size: 26px;
+    padding-bottom: 10px;
+  }
+  .finishedInfo {
+    color: gray;
+  }
+  .finishedImages {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: calc(100vh - 140px);
-    padding: 44px 15px 1px;
-    min-height: 575px;
-    h1{
-        font-size: 26px;
-        padding-bottom: 10px;
-    }
-    .finishedInfo{
-        color: gray;
-
-    }
-    .finishedImages{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        text-align: center;
-    }
-    .finishedImage{
-        border: 3px soild red;
-        width: 290px;
-        height: 260px;
-        position: absolute;
-        top: 275px;
-    }
-    .finishedImage1{
-        border: 3px soild red;
-        width: 350px;
-        height: 310px;
-        position: absolute;
-        top: 250px;
-    }
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+  }
+  .finishedImage {
+    border: 3px soild red;
+    width: 290px;
+    height: 260px;
+    position: absolute;
+    top: 275px;
+  }
+  .finishedImage1 {
+    border: 3px soild red;
+    width: 350px;
+    height: 310px;
+    position: absolute;
+    top: 250px;
+  }
 }

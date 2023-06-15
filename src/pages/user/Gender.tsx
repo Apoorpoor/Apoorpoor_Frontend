@@ -59,14 +59,14 @@ function Age() {
 
   return (
     <main className="genderPage">
-      <div>
-        <button type="button" onClick={() => navigate('/age')}>
-          <FaChevronLeft className="ArrowBackground" />
-        </button>
-        <h1>성별은 어떻게 되시나요?</h1>
-      </div>
       <article>
-        <div className='GenderBox'>
+        <div>
+          <button type="button" onClick={() => navigate('/age')}>
+            <FaChevronLeft className="ArrowBackground" />
+          </button>
+          <h1>성별은 어떻게 되시나요?</h1>
+        </div>
+        <div className="GenderBox">
           {malecheck ? (
             <button
               type="button"
@@ -74,6 +74,7 @@ function Age() {
               onClick={malegenderHandler}
             >
               <img src={male} alt="남자" />
+              남자
             </button>
           ) : (
             <button
@@ -82,6 +83,7 @@ function Age() {
               onClick={malegenderHandler}
             >
               <img src={male} alt="남자" />
+              남자
             </button>
           )}
           {femalecheck ? (
@@ -91,6 +93,7 @@ function Age() {
               onClick={femalegenderHandler}
             >
               <img src={female} alt="여자" />
+              여자
             </button>
           ) : (
             <button
@@ -99,14 +102,14 @@ function Age() {
               onClick={femalegenderHandler}
             >
               <img src={female} alt="여자" />
+              여자
             </button>
           )}
         </div>
-        <div>
+        <div className="genderFreeBox">
           {checked ? (
             <div className="CheckBox2">
               기타
-              {/* eslint-disable-next-line react/jsx-no-bind */}
               <FaCheckSquare
                 className="CheckBoxPoint2"
                 onClick={CheckBoxHandler}
@@ -115,7 +118,6 @@ function Age() {
           ) : (
             <div className="CheckBox1">
               기타
-              {/* eslint-disable-next-line react/jsx-no-bind */}
               <FaCheckSquare
                 className="CheckBoxPoint1"
                 onClick={CheckBoxHandler}

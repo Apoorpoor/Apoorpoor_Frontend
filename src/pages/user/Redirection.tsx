@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import instance from '../../api/instance';
+import Loading from '../status/Loading';
 
 const Redirection: React.FC = () => {
   const JWTEXPIRYTIME = 2 * 3600 * 1000; // 만료 시간 (2시간 밀리 초로 표현)
@@ -38,7 +39,6 @@ const Redirection: React.FC = () => {
         } else {
           navigate(`/nickname`);
         }
-
       } catch (error) {
         // 에러 처리
         console.log(error);
@@ -71,11 +71,7 @@ const Redirection: React.FC = () => {
       getAccessToken(urlCode);
     }
   }, []);
-  return (
-    <div>
-      <h1>리다이렉션 페이지</h1>
-    </div>
-  );
+  return <Loading />;
 };
 
 export default Redirection;
