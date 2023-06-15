@@ -327,11 +327,10 @@ function PoorRoom() {
 
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>
-          <p>단위 : 만원</p>
           <div
             style={{
               width: lineChartSection === true ? '100%' : '80%',
-              height: '370px',
+              height: '400px',
               margin: '0 auto',
             }}
           >
@@ -436,61 +435,86 @@ function PoorRoom() {
             </Button>
           </div>
           <div className="detailOfPoint">
-            <nav className="detailOfPointFilter">
-              <Button
-                className={`smallNav ${
-                  selectednavButtonIndex === 0 ? 'checked' : ''
-                }`}
-                onClick={() => kindFilterHandler(0)}
-              >
-                전체
-              </Button>
-              <Button
-                className={`smallNav ${
-                  selectednavButtonIndex === 1 ? 'checked' : ''
-                }`}
-                onClick={() => kindFilterHandler(1)}
-              >
-                적립
-              </Button>
-              <Button
-                className={`smallNav ${
-                  selectednavButtonIndex === 2 ? 'checked' : ''
-                }`}
-                onClick={() => kindFilterHandler(2)}
-              >
-                사용
-              </Button>
-            </nav>
-            <ul className="detailOfPointList">
-              {pointInquiryList?.map((list) => (
-                <li key={list.createdAt}>
-                  <p className="title">
-                    {list.pointDescription}{' '}
-                    <span>
-                      {new Date(list.createdAt).toLocaleString(undefined, {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                      })}
-                    </span>
-                  </p>
-                  <p
-                    className={`value ${
-                      list.usedPoints === null ? 'save' : 'use'
+            {pointInquiryList?.length === 0 ||
+            pointInquiryList === undefined ? (
+              <div className="dataNone textType">
+                <h2>텅 비었네요</h2>
+                <p>
+                  가계부를 작성하고
+                  <br />
+                  포인트를 받아보세요
+                </p>
+                <Button
+                  className="textType"
+                  onClick={() => {
+                    navigate('/');
+                  }}
+                >
+                  가계부 작성하기
+                </Button>
+              </div>
+            ) : (
+              <>
+                <nav className="detailOfPointFilter">
+                  <Button
+                    className={`smallNav ${
+                      selectednavButtonIndex === 0 ? 'checked' : ''
                     }`}
+                    onClick={() => kindFilterHandler(0)}
                   >
-                    {list.usedPoints === null ? '+' : '-'}
-                    {list.usedPoints === null
-                      ? list.earnedPoint
-                      : list.usedPoints}
-                    P <span>{list.usedPoints === null ? '적립' : '사용'}</span>
-                  </p>
-                </li>
-              ))}
-            </ul>
+                    전체
+                  </Button>
+                  <Button
+                    className={`smallNav ${
+                      selectednavButtonIndex === 1 ? 'checked' : ''
+                    }`}
+                    onClick={() => kindFilterHandler(1)}
+                  >
+                    적립
+                  </Button>
+                  <Button
+                    className={`smallNav ${
+                      selectednavButtonIndex === 2 ? 'checked' : ''
+                    }`}
+                    onClick={() => kindFilterHandler(2)}
+                  >
+                    사용
+                  </Button>
+                </nav>
+                <ul className="detailOfPointList">
+                  {pointInquiryList?.map((list) => (
+                    <li key={list.createdAt}>
+                      <p className="title">
+                        {list.pointDescription}{' '}
+                        <span>
+                          {new Date(list.createdAt).toLocaleString(undefined, {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                          })}
+                        </span>
+                      </p>
+                      <p
+                        className={`value ${
+                          list.usedPoints === null ? 'save' : 'use'
+                        }`}
+                      >
+                        {list.usedPoints === null ? '+' : '-'}
+                        {list.usedPoints === null
+                          ? list.earnedPoint
+                          : list.usedPoints}
+                        P{' '}
+                        <span>
+                          {list.usedPoints === null ? '적립' : '사용'}
+                        </span>
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
             {PointData?.length !== 0 && (
               <Button className="whiteCommon" onClick={showNextList}>
                 더 보기
