@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router';
 import {
   useMutation,
@@ -26,6 +26,7 @@ import {
   Tooltip,
 } from '../../components';
 import myPoorState from '../../shared/MyPoor';
+import BadgeState from '../../shared/BadgeList';
 import PoorCharacter from './PoorCharacter';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
@@ -36,6 +37,7 @@ function PoorRoom() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
+  const BadgeListState = useRecoilValue(BadgeState);
   const [scrollPosition, setScrollPosition] = useRecoilState(
     containerPositionState
   );
@@ -115,8 +117,6 @@ function PoorRoom() {
     ['getMyPointInquiry', { dateType, kind, page }],
     () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
-
-  console.log(PointData);
 
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
@@ -206,6 +206,19 @@ function PoorRoom() {
     navigate('/login');
   };
 
+  // 스크롤 이벤트
+  const [radarChartSection, setRadarChartSection] = useState(false);
+  const [lineChartSection, setLineChartSection] = useState(false);
+  console.log(scrollPosition);
+  useEffect(() => {
+    if (scrollPosition > 200) {
+      setRadarChartSection(true);
+    }
+    if (scrollPosition > 1300) {
+      setLineChartSection(true);
+    }
+  }, [scrollPosition]);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -238,7 +251,13 @@ function PoorRoom() {
         </section>
         <section id="myConsumePropensity">
           <h1>소비성향</h1>
-          <div style={{ width: '100%', height: '450px' }}>
+          <div
+            style={{
+              width: radarChartSection === true ? '100%' : '90%',
+              height: '450px',
+              margin: '0 auto',
+            }}
+          >
             <MyConsumePropensitychart />
           </div>
         </section>
@@ -251,14 +270,21 @@ function PoorRoom() {
             slidesToScroll={1}
             arrows={false}
           >
-            {data?.badgeList
-              .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
-              .map((item) => (
-                <div key={item.badgeTitle} className="item">
-                  <img src={item.badgeImage} alt={item.badgeTitle} />
-                  <p>{item.badgeTitle}</p>
-                </div>
-              ))}
+            {data?.badgeList.length === 0
+              ? BadgeListState.slice(0, 5).map((item) => (
+                  <div key={item.name} className="item">
+                    {/* <img src={item.badgeImage} alt={item.badgeTitle} /> */}
+                    <p>{item.name}</p>
+                  </div>
+                ))
+              : data?.badgeList
+                  .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
+                  .map((item) => (
+                    <div key={item.badgeTitle} className="item">
+                      <img src={item.badgeImage} alt={item.badgeTitle} />
+                      <p>{item.badgeTitle}</p>
+                    </div>
+                  ))}
           </SlickSlider>
           <Button
             className="whiteCommon"
@@ -270,7 +296,13 @@ function PoorRoom() {
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>
           <p>단위 : 만원</p>
-          <div style={{ width: '100%', height: '370px' }}>
+          <div
+            style={{
+              width: lineChartSection === true ? '100%' : '80%',
+              height: '370px',
+              margin: '0 auto',
+            }}
+          >
             <RecentMyConsumechart />
           </div>
         </section>

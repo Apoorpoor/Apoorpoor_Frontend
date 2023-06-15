@@ -132,46 +132,56 @@ function Social() {
 
   return (
     <div className="socialBg">
-      <div className="title">
+      <div className="socialContentsBox">
+        <div className="title">
+          {rankData && rankData ? (
+            <>
+              <p className="titleFirst">
+                {data?.age_abb}대 {label} 중 내 &nbsp;
+                {currentSelect?.name === '소비' ? '소비' : '수입'}
+              </p>
+              <p className="titleSecond">상위{percentage}</p>
+            </>
+          ) : (
+            <p className="noneDatatitle">
+              가계부를 작성하고 <br />내 소비습관 수준을 알아보세요!
+            </p>
+          )}
+        </div>
+
         {rankData && rankData ? (
           <>
-            <p className="titleFirst">
-              {data?.age_abb}대 {label} 중 내{' '}
-              {currentSelect?.name === '소비' ? '소비' : '수입'}
-            </p>
-            <p className="titleSecond">상위{percentage}</p>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <ChartSocialEx data={dataChange} />
+            </div>
+            <div className="socialController">
+              {selected.map((item, index) => (
+                <button
+                  type="button"
+                  key={item.name}
+                  className={item.selected ? 'contr' : 'contrNone'}
+                  onClick={() => selectedOnClick(index)}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
           </>
         ) : (
-          <p className="noneDatatitle">
-            가계부를 작성하고 <br />내 소비습관 수준을 알아보세요!
-          </p>
+          <div className="noneData">
+            <img src={noneData} alt="noneData" />
+            <button type="button" onClick={() => navigate('/')}>
+              가계부 작성하기
+            </button>
+          </div>
         )}
       </div>
-
-      {rankData && rankData ? (
-        <>
-          <ChartSocialEx data={dataChange} />
-          <div className="socialController">
-            {selected.map((item, index) => (
-              <button
-                type="button"
-                key={item.name}
-                className={item.selected ? 'contr' : 'contrNone'}
-                onClick={() => selectedOnClick(index)}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="noneData">
-          <img src={noneData} alt="noneData" />
-          <button type="button" onClick={() => navigate('/')}>
-            가계부 작성하기
-          </button>
-        </div>
-      )}
 
       <div className="socialRankingBox">
         <h2>랭킹</h2>

@@ -98,7 +98,7 @@ function RecentMyConsumechart() {
         legendOffset: -40,
         legendPosition: 'middle',
       }}
-      motionConfig="molasses"
+      motionConfig="wobbly"
       theme={theme}
       colors={['#4194F1']}
       enableGridX={false}

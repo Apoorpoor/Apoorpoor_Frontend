@@ -3,6 +3,24 @@
 #alarmStation {
   width: 100%;
 
+  & .noAlarm {
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    & > h2 {
+      color: $gray-350;
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    & > p {
+      color: $gray-350;
+    }
+  }
+
   & ul {
     width: 100%;
     padding: 20px;

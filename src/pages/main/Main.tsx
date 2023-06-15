@@ -10,6 +10,7 @@ import NumberAnimation from '../../components/elements/NumberAnimation';
 import { Button } from '../../components';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
+import MyPage from '../../static/image/ui/myPage.png';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -102,11 +103,15 @@ function Main(): JSX.Element {
 
       <div className="background">
         <div className="title">
-          <p>내 가계부</p>
-          <h1>
-            <NumberAnimation targetNumber={calculateTotalBalance()} />원
-          </h1>
-          {/* <h1>{priceComma(calculateTotalBalance())}원</h1> */}
+          <div>
+            <p>내 가계부</p>
+            <h1>
+              <NumberAnimation targetNumber={calculateTotalBalance()} />원
+            </h1>
+          </div>
+          <button type="button" onClick={() => navigate('/poorRoom')}>
+            <img src={MyPage} alt="마이페이지" />
+          </button>
         </div>
 
         <div className="accountList">

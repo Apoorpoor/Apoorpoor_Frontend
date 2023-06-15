@@ -472,7 +472,7 @@ function PoorItemSetting() {
           role="button"
           tabIndex={0}
         >
-          <div className={`modal ${isModalOpen ? 'active' : ''}`}>
+          <div className={`modal item ${isModalOpen ? 'active' : ''}`}>
             <h2>아이템 획득!</h2>
             <div className={`item ${purchaseItem.itemType}`}>
               <div>

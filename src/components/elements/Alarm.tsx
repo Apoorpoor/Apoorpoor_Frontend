@@ -11,7 +11,6 @@ interface ArrayType {
 
 function Alarm() {
   const [isConnected, setIsConnected] = useState(true);
-  const [isChecked, setIsChecked] = useState(false);
   const [savedNotification, setSavedNotification] = useState<ArrayType[]>([]);
   const navigate = useNavigate();
 
@@ -56,13 +55,15 @@ function Alarm() {
 
   const alarmCheckedHandler = () => {
     navigate('/AlarmStation');
-    setIsChecked(true);
   };
+
+  const notification = sessionStorage.getItem('notification');
+  const hasNotification = notification !== null && notification.length >= 1;
 
   return (
     <div>
       <Button
-        className={`iconButton ${isChecked === false ? 'checkMe' : ''}`}
+        className={`iconButton ${hasNotification === true ? 'checkMe' : ''}`}
         onClick={() => alarmCheckedHandler()}
       >
         <img
