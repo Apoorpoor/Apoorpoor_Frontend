@@ -22,7 +22,7 @@ function PoorItemSetting() {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate('/poorRoom');
   };
 
   const queryClient = useQueryClient();

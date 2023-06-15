@@ -71,7 +71,7 @@ function Social() {
 
     return [
       {
-        category: '내 소비',
+        category: accountType === 'EXPENDITURE' ? '내 소비' : '내 수입',
         value: value !== undefined ? value : 0,
         color: '#326BCF',
       },
@@ -192,7 +192,9 @@ function Social() {
               <img src={bundle} alt="bundle" className="imgBundle" />
             </div>
             <p>절약 푸어</p>
-            <button type="button" onClick={() => navigate('/social/reduction')}>랭킹 보기</button>
+            <button type="button" onClick={() => navigate('/social/reduction')}>
+              랭킹 보기
+            </button>
           </div>
 
           <div className="socialRanking">
@@ -200,7 +202,9 @@ function Social() {
               <img src={flex} alt="flex" className="imgFlex" />
             </div>
             <p>플렉스 푸어</p>
-            <button type="button" onClick={() => navigate('/social/flex')}>랭킹 보기</button>
+            <button type="button" onClick={() => navigate('/social/flex')}>
+              랭킹 보기
+            </button>
           </div>
         </div>
       </div>
