@@ -22,6 +22,13 @@ interface CalendarModalProps {
 }
 
 // 데이터 get할 때의 객체 interface
+interface Data {
+  content: LedgerItem[];
+  totalPages: number;
+  last: boolean;
+  number: number;
+}
+
 interface LedgerItem {
   id: number;
   title: string;
@@ -48,11 +55,24 @@ function CalendarModal({
   const { id } = useParams<{ id?: string }>();
 
   // 일자별 거래내역 조회
-  const { isLoading, error, data, refetch }: UseQueryResult<LedgerItem[]> =
-    useQuery(['getAccountsDate', id, selectedDate], () =>
-      accounts.getAccountsDate(id as string, selectedDate as string)
-    );
+  const { isLoading, error, data, refetch }: UseQueryResult<Data> = useQuery(
+    ['getAccountsDate', id, selectedDate],
+    () => accounts.getAccountsDate(id as string, selectedDate as string)
+  );
   console.log('일자별 거래내역 호출:', data);
+
+  const mappedData = data?.content.flatMap((item) => ({
+    accountType: item.accountType,
+    date: item.date,
+    expenditure: item.expenditure,
+    expenditureType: item.expenditureType,
+    id: item.id,
+    income: item.income,
+    incomeType: item.incomeType,
+    paymentMethod: item.paymentMethod,
+    title: item.title,
+  }));
+  console.log('일별데이터!!!', mappedData);
 
   // 모달창 닫기
   const calendarModalClose = (): void => {
@@ -158,7 +178,7 @@ function CalendarModal({
             </button>
           </div>
 
-          {data?.map((item, index) => {
+          {mappedData?.map((item, index) => {
             // 수입, 지출, 저축에 따른 금액 className
             let className = '';
             if (item.accountType === 'INCOME') {
