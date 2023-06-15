@@ -19,7 +19,7 @@ function AddAccount(): JSX.Element {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate(-1);
   };
 
   // 금액 입력
