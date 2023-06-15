@@ -89,10 +89,14 @@ function Social() {
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
       setRankData(true);
-    } else {
-      setRankData(false);
     }
-  }, [data]);
+    if (accountType === 'EXPENDITURE') {
+      if (data?.expenditure === 0) setRankData(false);
+    }
+    if (accountType === 'INCOME') {
+      if (data?.income === 0) setRankData(false);
+    }
+  }, [data, accountType]);
 
   // 성별 조회
   const getGenderLabel = (gender: string) => {
