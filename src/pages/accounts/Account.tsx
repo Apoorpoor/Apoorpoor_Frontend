@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 import { BsFillPenFill } from 'react-icons/bs';
@@ -59,7 +59,7 @@ interface TotalStatus {
 }
 
 function Account(): JSX.Element {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // 현재 가계부의 id 조회
   const { id } = useParams<{ id?: string }>();
@@ -71,6 +71,11 @@ function Account(): JSX.Element {
       setAccountId(id);
     }
   }, [id, setAccountId]);
+
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('/');
+  };
 
   // 캘린더 날짜 받는 라이브러리
   const [getMoment, setMoment] = useState(moment());
@@ -582,7 +587,7 @@ function Account(): JSX.Element {
       {monthModal && (
         <AccountMonth setMoment={setMoment} setMonthModal={setMonthModal} />
       )}
-      <Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>
         <div className="month">
           <button
             className="sideBtn"

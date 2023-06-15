@@ -53,10 +53,13 @@ function Calendar({
   // 날짜 클릭 시 상세 모달
   const [calendarModal, setCalendarModal] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>('');
+  // 모달 오픈/클로즈 애니메이션
+  const [modalAnimation, setModalAnimation] = useState('');
 
   const calendarModalOpen = (date: string): void => {
     setSelectedDate(date);
     setCalendarModal(true);
+    setModalAnimation('modalAnimation');
   };
 
   const firstWeek = today.clone().startOf('month').week();
@@ -176,6 +179,8 @@ function Calendar({
           expenditureType={expenditureType}
           getAccountRefetch={getAccountRefetch}
           getTotalMonthDateRefetch={getTotalMonthDateRefetch}
+          modalAnimation={modalAnimation}
+          setModalAnimation={setModalAnimation}
         />
       )}
       <div className="days">

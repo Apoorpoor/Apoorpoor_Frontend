@@ -19,6 +19,8 @@ interface CalendarModalProps {
   expenditureType: (type: string) => string;
   getAccountRefetch: QueryObserverResult['refetch'];
   getTotalMonthDateRefetch: QueryObserverResult['refetch'];
+  setModalAnimation: React.Dispatch<React.SetStateAction<string>>;
+  modalAnimation: string;
 }
 
 // 데이터 get할 때의 객체 interface
@@ -48,6 +50,8 @@ function CalendarModal({
   expenditureType,
   getAccountRefetch,
   getTotalMonthDateRefetch,
+  setModalAnimation,
+  modalAnimation,
 }: CalendarModalProps) {
   const navigate = useNavigate();
 
@@ -79,6 +83,7 @@ function CalendarModal({
     setCalendarModal(false);
     getAccountRefetch();
     getTotalMonthDateRefetch();
+    setModalAnimation('');
   };
 
   // 배경 누르면 모달 닫힘
@@ -90,6 +95,7 @@ function CalendarModal({
       calendarModalClose();
       getAccountRefetch();
       getTotalMonthDateRefetch();
+      setModalAnimation('');
     }
   };
 
@@ -150,12 +156,11 @@ function CalendarModal({
   const dateWithDay = (dateString: string): string => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     const date = new Date(dateString);
-    const year = date.getFullYear();
     const month = String(date.getMonth() + 1);
     const day = String(date.getDate());
     const dayOfWeek = days[date.getDay()];
 
-    return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
+    return `${month}월 ${day}일 ${dayOfWeek}요일`;
   };
 
   return (
@@ -166,7 +171,7 @@ function CalendarModal({
         onClick={handleBackgroundClick}
         aria-hidden="true"
       >
-        <div className="accountModalBox">
+        <div className={`accountModalBox ${modalAnimation}`}>
           <div className="titleRow">
             <h2 className="title">{dateWithDay(selectedDate)}</h2>
             <button

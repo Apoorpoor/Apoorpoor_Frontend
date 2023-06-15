@@ -13,6 +13,12 @@ interface ArrayType {
 
 function AlarmStation() {
   const navigate = useNavigate();
+
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('-1');
+  };
+
   const savedNotification = sessionStorage.getItem('notification');
   const parsedNotification: ArrayType[] = JSON.parse(savedNotification || '[]');
 
@@ -46,7 +52,7 @@ function AlarmStation() {
 
   return (
     <main id="alarmStation">
-      <Header>알림</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>알림</Header>
       <div className="alarmList">
         {parsedNotification.length === 0 ? (
           <div className="noAlarm">

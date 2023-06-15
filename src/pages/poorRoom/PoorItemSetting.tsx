@@ -8,6 +8,7 @@ import {
   UseQueryResult,
 } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router';
 import beggars from '../../api/beggars';
 import { Button, Header } from '../../components';
 import myPoorState from '../../shared/MyPoor';
@@ -17,6 +18,13 @@ import Error from '../status/Error';
 import Loading from '../status/Loading';
 
 function PoorItemSetting() {
+  const navigate = useNavigate();
+
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('-1');
+  };
+
   const queryClient = useQueryClient();
   const myPoorInfo = useRecoilValue(myPoorState);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -141,7 +149,7 @@ function PoorItemSetting() {
 
   return (
     <main id="poorItemSetting">
-      <Header>아이템</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>아이템</Header>
       <nav>
         <Button
           className={`nav ${selectedItem === 'top' ? 'active' : ''}`}

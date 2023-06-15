@@ -16,6 +16,11 @@ import BadgeState from '../../shared/BadgeList';
 function BadgeList() {
   const navigate = useNavigate();
 
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('-1');
+  };
+
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const BadgeListState = useRecoilValue(BadgeState);
@@ -74,7 +79,7 @@ function BadgeList() {
 
   return (
     <main id="BadgeList">
-      <Header>소비뱃지</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>소비뱃지</Header>
       <ul>
         {BadgeListState.map((item) => (
           <li
