@@ -18,7 +18,7 @@ function BadgeList() {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate(-1);
   };
 
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
