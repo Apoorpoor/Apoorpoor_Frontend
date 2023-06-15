@@ -45,6 +45,11 @@ function PoorRoom() {
     containerPositionState
   );
 
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('/');
+  };
+
   // =================================================================
   // *** PoorRoom Data Query *****************************************
   // =================================================================
@@ -231,7 +236,7 @@ function PoorRoom() {
 
   return (
     <main id="myPoorRoom">
-      <Header>MY</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>MY</Header>
       <article>
         <section id="myPoorInfo">
           <div className="poorProfile">

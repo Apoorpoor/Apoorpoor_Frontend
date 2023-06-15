@@ -17,6 +17,11 @@ function AddAccount(): JSX.Element {
   // 현재 가계부의 id 조회
   const { id } = useParams<{ id: string | undefined }>();
 
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('-1');
+  };
+
   // 금액 입력
   const [accountPriceInput, setAccountPriceInput] = useState('');
 
@@ -331,7 +336,9 @@ function AddAccount(): JSX.Element {
 
   return (
     <>
-      <Header>소비 / 수입 등록</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>
+        소비 / 수입 등록
+      </Header>
       <div className="addAccountBg">
         <div className="addAccountBody">
           <div className="addAccountContents">

@@ -5,6 +5,7 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { useQuery } from 'react-query';
 import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 import { getUser } from '../../api/members';
 import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
@@ -14,6 +15,12 @@ import Loading from '../status/Loading';
 import Error from '../status/Error';
 
 function PoorTalk(): JSX.Element {
+  const navigate = useNavigate();
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('-1');
+  };
+
   // 처음에 받아오는 내 푸어 정보
   const [user, setUser] = useState<any>(null);
   // 보여지는 메세지들, 닉네임 정보
@@ -214,7 +221,7 @@ function PoorTalk(): JSX.Element {
   // console.log("userId = ", userId)
   return (
     <div className="currentBackGround">
-      <Header>푸어talk</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk</Header>
       {modalOpen && (
         <UsersProfilePage
           setModalOpen={setModalOpen}
@@ -251,10 +258,12 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime1">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
-                          } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
-                          }`}
+                          ? `오후 ${
+                              Number(message.date.split(' ')[1]) - 12
+                            } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${
+                              message.date.split(' ')[3]
+                            }`}
                       </div>
                     </>
                   ) : (
@@ -283,10 +292,12 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
-                          } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
-                          }`}
+                          ? `오후 ${
+                              Number(message.date.split(' ')[1]) - 12
+                            } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${
+                              message.date.split(' ')[3]
+                            }`}
                       </div>
                     </>
                   )}
