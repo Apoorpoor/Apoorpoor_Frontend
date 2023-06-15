@@ -2,7 +2,7 @@
 
 .editAccountBg {
   background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
+  width: 430px;
   height: 100%;
   position: fixed;
   top: -0px;
@@ -44,5 +44,11 @@
       color: white;
       font-size: 16px;
     }
+  }
+}
+
+@media (max-width: 820px) {
+  .editAccountBg {
+    width: 100%;
   }
 }

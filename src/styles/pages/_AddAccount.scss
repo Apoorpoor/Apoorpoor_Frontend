@@ -6,25 +6,6 @@
   margin-bottom: 100px;
   box-sizing: border-box;
 
-  // .header {
-  //   height: 44px;
-  //   line-height: 44px;
-  //   margin-bottom: 60px;
-  //   .headerPreBtn {
-  //     width: 44px;
-  //     height: 44px;
-  //     display: flex;
-  //     align-items: center;
-  //     justify-content: center;
-  //     float: left;
-  //   }
-  //   .headerTitle {
-  //     display: flex;
-  //     justify-content: center;
-  //     align-items: center;
-  //   }
-  // }
-
   .addAccountBody {
     display: flex;
     flex-direction: column;
@@ -164,7 +145,13 @@
     margin: 30px;
     display: flex;
     align-items: center;
+    & button {
+      width: 20px;
+      height: 20px;
+    }
     .calControlBtn {
+      width: 20px;
+      height: 20px;
       margin-right: 10px;
     }
     .calYearSel {
@@ -187,13 +174,15 @@
 }
 
 .calCloseBox {
-  width: 410px;
-  // background-color: skyblue;
+  width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   .calCloseBtn {
     margin-top: 25px;
-    width: 360px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
     height: 56px;
     border-radius: 12px;
     background-color: $primary;

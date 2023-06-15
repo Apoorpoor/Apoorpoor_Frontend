@@ -269,7 +269,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
             type="button"
             onClick={handleLoadMore} // 데이터 추가를 처리하는 핸들러 호출
           >
-            데이터 추가
+            더보기
           </button>
         )}
       </div>

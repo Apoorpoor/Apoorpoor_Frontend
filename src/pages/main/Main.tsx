@@ -80,14 +80,18 @@ function Main(): JSX.Element {
 
   // 가계부 삭제 모달창 상태 관리
   const [delModal, setDelModal] = useState<string | null>(null);
+  // 모달 오픈/클로즈 애니메이션
+  const [modalAnimation, setModalAnimation] = useState('');
 
   const delModalOpen = (accountId: string): void => {
     setDelModal(accountId);
+    setModalAnimation('modalAnimation');
   };
 
   const delModalClose = (): void => {
     setDelModal(null);
     refetch();
+    setModalAnimation('');
   };
 
   if (isLoading) {
@@ -99,7 +103,13 @@ function Main(): JSX.Element {
 
   return (
     <>
-      {delModal && <MainDelModal id={delModal} delModalClose={delModalClose} />}
+      {delModal && (
+        <MainDelModal
+          id={delModal}
+          delModalClose={delModalClose}
+          modalAnimation={modalAnimation}
+        />
+      )}
 
       <div className="background">
         <div className="title">

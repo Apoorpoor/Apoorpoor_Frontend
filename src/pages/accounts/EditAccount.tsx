@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
-import { BsChevronLeft } from 'react-icons/bs';
+// import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
-import { Input } from '../../components';
+import { Header, Input } from '../../components';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 import { accountIdState } from '../../shared/Atom';
@@ -33,9 +33,14 @@ function EditAccount(): JSX.Element {
 
   const accountId = useRecoilValue(accountIdState);
 
+  // Header 이전 버튼
+  const navigateToPreviousPage = () => {
+    navigate('-1');
+  };
+
   // 이전 컴포넌트에서 불러온 수정 전 data
   const location = useLocation();
-  const data: LedgerItem[] = location.state?.data;
+  const data: LedgerItem[] = location.state?.data.content;
   const editData = data.filter((item: LedgerItem) => item.id === Number(id));
   console.log('전달받은 data::', editData);
 
@@ -132,7 +137,7 @@ function EditAccount(): JSX.Element {
     control: (provided: any, state: any) => ({
       ...provided,
       'marginTop': '20px',
-      'width': '320px',
+      'width': '100%',
       'height': '48px',
       'borderRadius': '12px',
       'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
@@ -156,7 +161,7 @@ function EditAccount(): JSX.Element {
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '12px',
-      width: '320px',
+      width: '100%',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
@@ -197,7 +202,7 @@ function EditAccount(): JSX.Element {
     control: (provided: any, state: any) => ({
       ...provided,
       'marginTop': '20px',
-      'width': '320px',
+      'width': '100%',
       'height': '48px',
       'borderRadius': '12px',
       'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
@@ -221,7 +226,7 @@ function EditAccount(): JSX.Element {
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '10px',
-      width: '320px',
+      width: '100%',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
@@ -263,7 +268,7 @@ function EditAccount(): JSX.Element {
     control: (provided: any, state: any) => ({
       ...provided,
       'marginTop': '20px',
-      'width': '320px',
+      'width': '100%',
       'height': '48px',
       'borderRadius': '12px',
       'border': `2px solid ${state.isFocused ? '#FFD12E' : '#dfdfdf'}`,
@@ -287,7 +292,7 @@ function EditAccount(): JSX.Element {
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '10px',
-      width: '320px',
+      width: '100%',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
@@ -375,20 +380,10 @@ function EditAccount(): JSX.Element {
   return (
     <>
       {editDoneModal && <EditAccountDone />}
+      <Header navigateToPreviousPage={navigateToPreviousPage}>
+        소비 / 수입 수정
+      </Header>
       <div className="addAccountBg">
-        <div className="header">
-          <button
-            type="button"
-            className="headerPreBtn"
-            onClick={() => navigate(-1)}
-          >
-            <BsChevronLeft />
-          </button>
-          <div className="headerTitle">
-            <h2 className="headerTitleH2">소비 / 수입 수정</h2>
-          </div>
-        </div>
-
         <div className="addAccountBody">
           <div className="addAccountContents">
             <p className="addAccountContentsTitle">금액</p>
