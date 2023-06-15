@@ -10,7 +10,7 @@ import NumberAnimation from '../../components/elements/NumberAnimation';
 import { Button } from '../../components';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
-import MyPage from '../../static/image/ui/myPage.png';
+import MyPage from '../../static/image/ui/mypage.png';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ function Main(): JSX.Element {
             </h1>
           </div>
           <button type="button" onClick={() => navigate('/poorRoom')}>
-            <img src={MyPage} alt="마이페이지" />
+            <img src={MyPage} alt="마이페이지" style={{ width: '48px' }} />
           </button>
         </div>
 
