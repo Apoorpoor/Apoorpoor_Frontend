@@ -10,6 +10,8 @@ import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
 import instance from '../../api/instance';
 import UsersProfilePage from './UsersProfilePage';
+import Loading from '../status/Loading';
+import Error from '../status/Error';
 
 function PoorTalk(): JSX.Element {
   // 처음에 받아오는 내 푸어 정보
@@ -202,10 +204,10 @@ function PoorTalk(): JSX.Element {
     setModalOpen(true);
   };
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
   // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
@@ -249,12 +251,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime1">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   ) : (
@@ -283,12 +283,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   )}
