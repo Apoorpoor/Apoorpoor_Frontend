@@ -7,13 +7,21 @@ import '../../styles/components/_AccountModal.scss';
 interface AccountMonthProps {
   setMonthModal: React.Dispatch<React.SetStateAction<boolean>>;
   setMoment: React.Dispatch<React.SetStateAction<moment.Moment>>;
+  setMonthAnimation: React.Dispatch<React.SetStateAction<string>>;
+  monthAnimation: string;
 }
 
-function AccountMonth({ setMonthModal, setMoment }: AccountMonthProps) {
+function AccountMonth({
+  setMonthModal,
+  setMoment,
+  setMonthAnimation,
+  monthAnimation,
+}: AccountMonthProps) {
   const monthModalRef = useRef<HTMLDivElement>(null);
 
   const monthModalClose = (): void => {
     setMonthModal(false);
+    setMonthAnimation('');
   };
 
   const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -70,7 +78,7 @@ function AccountMonth({ setMonthModal, setMoment }: AccountMonthProps) {
         onClick={handleBackgroundClick}
         aria-hidden="true"
       >
-        <div className="accountModalBox">
+        <div className={`accountModalBox ${monthAnimation}`}>
           <div className="titleRow">
             <h2 className="title">월 선택하기</h2>
             <button
