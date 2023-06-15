@@ -6,7 +6,7 @@ import { Header } from '../../components';
 import '../../styles/pages/_AlarmStation.scss';
 
 interface ArrayType {
-  id: number | null;
+  alarmType: string;
   msg: string | null;
   timestamp: string | null;
 }
@@ -16,7 +16,7 @@ function AlarmStation() {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('/poorRoom');
+    navigate(-1);
   };
 
   const savedNotification = sessionStorage.getItem('notification');
@@ -50,6 +50,14 @@ function AlarmStation() {
     return `${elapsedMinutes}분`;
   }
 
+  const checkAlarmHandler = (alarmType: string) => {
+    if (alarmType === '레벨업') {
+      navigate('/poorItemSetting');
+    } else if (alarmType === '소비뱃지') {
+      navigate('/badgeList');
+    }
+  };
+
   return (
     <main id="alarmStation">
       <Header navigateToPreviousPage={navigateToPreviousPage}>알림</Header>
@@ -66,12 +74,27 @@ function AlarmStation() {
         ) : (
           <ul>
             {parsedNotification?.map((notification) => (
-              <li key={notification.id} onClick={() => navigate('/badgeList')}>
+              <li
+                key={notification.msg}
+                onClick={() => checkAlarmHandler(notification.alarmType)}
+              >
                 <p>
-                  소비뱃지
+                  {notification.alarmType}
                   <span>{calculateElapsedTime(notification.timestamp)} 전</span>
                 </p>
-                <p>{notification.msg} 지금 확인하러 가볼까요?</p>
+
+                {notification.alarmType === '레벨업' ? (
+                  <p>
+                    <span>{notification.msg}레벨로 레벨UP! </span>
+                    여기까지 오시느라 고생하셨어요! 지금 열린 아이템을
+                    확인해보세요!
+                  </p>
+                ) : (
+                  <p>
+                    <span>{notification.msg}</span> 뱃지를 획득했어요! 지금
+                    확인하러 가볼까요?
+                  </p>
+                )}
               </li>
             ))}
           </ul>

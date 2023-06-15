@@ -306,14 +306,12 @@ function PoorRoom() {
               slidesToScroll={1}
               arrows={false}
             >
-              {data?.badgeList
-                .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
-                .map((item) => (
-                  <div key={item.badgeTitle} className="item">
-                    <img src={item.badgeImage} alt={item.badgeTitle} />
-                    <p>{item.badgeTitle}</p>
-                  </div>
-                ))}
+              {data?.badgeList.slice(0, 5).map((item) => (
+                <div key={item.badgeTitle} className="item">
+                  <img src={item.badgeImage} alt={item.badgeTitle} />
+                  <p>{item.badgeTitle}</p>
+                </div>
+              ))}
             </SlickSlider>
           )}
 

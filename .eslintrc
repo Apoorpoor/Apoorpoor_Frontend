@@ -10,7 +10,8 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".html"]
   },
   "rules": {
     "jsx-a11y/label-has-associated-control": [

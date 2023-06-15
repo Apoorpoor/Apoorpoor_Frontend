@@ -2,36 +2,20 @@
 
 // 푸어룸 : 뱃지 슬라이더
 #badgeSlide {
-  margin-top:20px;
+  margin-top: 20px;
   & .slick-initialized .slick-slide {
     position: relative;
-    width: 120px;
+    width: 140px !important;
     height: 155px;
-
-    &:first-child > div {
-      transform: translateX(22px);
-    }
-    &:nth-child(2) > div {
-      transform: translateX(12px);
-    }
-    &:nth-child(3) > div {
-      transform: translateX(2px);
-    }
-    &:nth-child(4) > div {
-      transform: translateX(-7px);
-    }
-    & > div {
-      width: 112px;
-      transform: translateX(-15px);
-    }
   }
 
   & .slick-slider .slick-track {
     position: relative;
-    left: -24px;
+    min-width: 100%;
   }
   & .item {
     position: relative;
+    width: 120px !important;
     height: 155px;
     flex: 0 0 auto;
     border-radius: 20px;
