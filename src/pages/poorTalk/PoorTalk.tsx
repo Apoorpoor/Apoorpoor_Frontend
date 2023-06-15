@@ -18,7 +18,7 @@ function PoorTalk(): JSX.Element {
   const navigate = useNavigate();
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate('/introTalk');
   };
 
   // 처음에 받아오는 내 푸어 정보

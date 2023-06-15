@@ -165,22 +165,45 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
   let monthDataRange = null;
   let lastMonth = '';
 
-  if (data && data[1]) {
+  if (data && data[1] && data[1].month) {
     lastMonth = data[1].month;
+  } else if (data && data[0] && data[0].month) {
+    const previousMonth = new Date(data[0].month);
+    previousMonth.setMonth(previousMonth.getMonth() - 1);
+    lastMonth = previousMonth.toISOString().slice(0, 7);
   }
 
   if (lastMonth) {
-    monthDataRange = lastMonth.slice(-2);
     monthDataRange =
-      monthDataRange.charAt(0) === '0'
-        ? monthDataRange.slice(1)
-        : monthDataRange;
+      lastMonth.slice(-2).charAt(0) === '0'
+        ? lastMonth.slice(-1)
+        : lastMonth.slice(-2);
   }
 
   const formattedDataRange =
     monthDataRange && monthDataRange.charAt(0) === '0'
       ? monthDataRange.slice(1)
       : monthDataRange;
+
+  // let monthDataRange = null;
+  // let lastMonth = '';
+
+  // if (data && data[1]) {
+  //   lastMonth = data[1].month;
+  // }
+
+  // if (lastMonth) {
+  //   monthDataRange = lastMonth.slice(-2);
+  //   monthDataRange =
+  //     monthDataRange.charAt(0) === '0'
+  //       ? monthDataRange.slice(1)
+  //       : monthDataRange;
+  // }
+
+  // const formattedDataRange =
+  //   monthDataRange && monthDataRange.charAt(0) === '0'
+  //     ? monthDataRange.slice(1)
+  //     : monthDataRange;
 
   // 작년 동월 데이터
   let yearDataRange = null;

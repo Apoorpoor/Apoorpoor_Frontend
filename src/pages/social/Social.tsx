@@ -84,7 +84,7 @@ function Social() {
   }, [data, accountType]);
 
   // 데이터 상태에 따른 화면 관리
-  const [rankData, setRankData] = useState<boolean>(true);
+  const [rankData, setRankData] = useState<boolean>(false);
 
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {

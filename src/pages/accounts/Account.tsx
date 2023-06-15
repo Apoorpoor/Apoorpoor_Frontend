@@ -559,11 +559,13 @@ function Account(): JSX.Element {
 
   // 월별 조회 모달창
   const [monthModal, setMonthModal] = useState<boolean>(false);
+  const [monthAnimation, setMonthAnimation] = useState('');
 
   const monthModalOpen = (): void => {
     setMonthModal(true);
     getTotalMonthDateRefetch();
     getAccountTypeRefetch();
+    setMonthAnimation('modalAnimation');
   };
 
   if (isLoading || getTotalMonthDateIsLoading || getAccountTypeLoading) {
@@ -586,7 +588,12 @@ function Account(): JSX.Element {
         />
       )}
       {monthModal && (
-        <AccountMonth setMoment={setMoment} setMonthModal={setMonthModal} />
+        <AccountMonth
+          setMoment={setMoment}
+          setMonthModal={setMonthModal}
+          setMonthAnimation={setMonthAnimation}
+          monthAnimation={monthAnimation}
+        />
       )}
       <Header navigateToPreviousPage={navigateToPreviousPage}>
         <div className="month">
