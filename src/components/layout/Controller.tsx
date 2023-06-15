@@ -65,10 +65,12 @@ function Controller() {
     page === '/poorItemSetting' ||
     page === '/badgeList' ||
     page === '/login' ||
+    page === '/nickname' ||
     page === '/age' ||
     page === '/gender' ||
     page === '/finished' ||
     page === '/AlarmStation' ||
+    page === '/oauth/kakao' ||
     /^\/addAccount\/\d+$/.test(page) ||
     /^\/addAccountDone\/\d+$/.test(page) ||
     /^\/editAccount\/\d+$/.test(page)

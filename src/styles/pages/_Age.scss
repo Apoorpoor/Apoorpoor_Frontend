@@ -1,104 +1,101 @@
-.AgePage{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: calc(100vh - 140px);
-    padding: 44px 15px 1px;
-    
-    h1{
-        font-size: 26px;
-        padding-bottom: 10px;
-    }
-    .ageInfo{
-        padding-bottom: 60px;
+.AgePage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
 
-    }
-    .nicknameForm{
-        position:relative;
+  h1 {
+    font-size: 26px;
+    padding-bottom: 10px;
+  }
+  .ageInfo {
+    padding-bottom: 60px;
+  }
+  .nicknameForm {
+    position: relative;
 
-        .nickname>input[type=text]{
-
-        }
-        .nicknameLabel{
-            opacity: 0;
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            font-size: 12px;
-            transition:.3s;
-        }
-        .nicknameLabel.active{
-            opacity:1;
-            top: 12px;
-            transform: initial;
-        }
-        .cursor{
-            opacity: 0;
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            width: 2px;
-            height: 20px;
-            background-color: #4194F1;
-        }
-        .cursor.active{
-            opacity: 1;
-            top: 32px;
-            transform: initial;
-        }
-        .nicknameValidationAlert{
-            position: absolute;
-            bottom: -23px;
-            left: 15px;
-            color: #FF3257;
-            font-size: 14px;
-        }
+    .nickname > input[type='text'] {
     }
-.checkError{
+    .nicknameLabel {
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      font-size: 12px;
+      transition: 0.3s;
+    }
+    .nicknameLabel.active {
+      opacity: 1;
+      top: 12px;
+      transform: initial;
+    }
+    .cursor {
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 20px;
+      background-color: #4194f1;
+    }
+    .cursor.active {
+      opacity: 1;
+      top: 32px;
+      transform: initial;
+    }
+    .nicknameValidationAlert {
+      position: absolute;
+      bottom: -23px;
+      left: 15px;
+      color: #ff3257;
+      font-size: 14px;
+    }
+  }
+  .checkError {
     margin-top: 28px;
     font-size: 14px;
     margin-left: 15px;
-    color: #FF3257;
-}
-    
+    color: #ff3257;
+  }
 }
 
-.ageNumberBox{
-    margin: 10px -15px -95px;
-    background-color: gray;
-    height: 350px;
+.ageNumberBox {
+  margin: 10px -15px -95px;
+  background-color: gray;
+  height: 350px;
 }
-.ageNumberBoxs{
-    margin-left: 7px;
-    margin-top: 5px;
-    background-color: gray;
-    height: 250px;
-    
+.ageNumberBoxs {
+  margin-left: 7px;
+  margin-top: 5px;
+  background-color: gray;
+  height: 250px;
 }
-.ageNumber{
-    background-color: #fff;
-    width: 130px;
-    border-radius: 5px;
-    margin-left: 5px;
-    margin-top: 10px;
-    &:hover{
-        filter: brightness(90%);
-    }
+.ageNumber {
+  background-color: #fff;
+  width: 130px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-top: 10px;
+  &:hover {
+    filter: brightness(90%);
+  }
 }
-.ageNumber2{
-    background-color: gray;
-    width: 130px;
-    border-radius: 5px;
-    margin-left: 5px;
-    margin-top: 10px;
+.ageNumber2 {
+  background-color: gray;
+  width: 130px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-top: 10px;
 }
-.ageNumber3{
-    position: relative;
-    background-color: black;
-    width: 130px;
-    border-radius: 5px;
-    margin-left: 130px;
-    height: 8px;
+.ageNumber3 {
+  position: relative;
+  background-color: black;
+  width: 130px;
+  border-radius: 5px;
+  margin-left: 130px;
+  height: 8px;
 }

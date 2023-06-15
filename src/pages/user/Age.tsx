@@ -9,14 +9,14 @@ import instance from '../../api/instance';
 
 function Age() {
   const [inputValue, setInputValue] = useRecoilState(inputState);
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
   const [nextButton, setNextButton] = useState(false);
 
   const token = localStorage.getItem('AToken');
 
-  const modalHandler = () => {
-    setModalOpen(!modalOpen);
-  };
+  // const modalHandler = () => {
+  //   setModalOpen(!modalOpen);
+  // };
 
   const navigate = useNavigate();
 
@@ -39,19 +39,19 @@ function Age() {
     }
   };
 
-  const ageButtonHandler = (event: string) => {
-    const value = inputValue + event;
-    setInputValue(value);
-    if (inputValue.length > 1) {
-      alert('너무 많습니다');
-      setInputValue('');
-      setNextButton(false);
-    }
-  };
-  const ageRemoveButtonHandler = () => {
-    const value = inputValue.slice(0, -1);
-    setInputValue(value);
-  };
+  // const ageButtonHandler = (event: string) => {
+  //   const value = inputValue + event;
+  //   setInputValue(value);
+  //   if (inputValue.length > 1) {
+  //     alert('너무 많습니다');
+  //     setInputValue('');
+  //     setNextButton(false);
+  //   }
+  // };
+  // const ageRemoveButtonHandler = () => {
+  //   const value = inputValue.slice(0, -1);
+  //   setInputValue(value);
+  // };
   const onNextClickButton = async () => {
     try {
       const response = await instance.put(
@@ -131,7 +131,7 @@ function Age() {
           </button>
         )}
 
-        {modalOpen ? (
+        {/* {modalOpen ? (
           <div className="ageNumberBox">
             <div className="ageNumberBoxs">
               <button
@@ -224,7 +224,7 @@ function Age() {
           <button className="ageNumber3" type="button" onClick={modalHandler}>
             .
           </button>
-        )}
+        )} */}
       </div>
     </main>
   );

@@ -86,7 +86,7 @@ function ProgressBar({ data }: { data: DataProps }) {
           cy="180"
           r={RADIUS}
           strokeWidth="20"
-          stroke="#d9d9d9"
+          stroke="#f5f5f5"
           fill="transparent"
           strokeDasharray={`${CIRCUMFERENCE * 0.65} ${CIRCUMFERENCE * 0.35}`}
           strokeDashoffset="-372"

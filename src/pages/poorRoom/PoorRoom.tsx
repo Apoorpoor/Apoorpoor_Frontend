@@ -31,6 +31,9 @@ import PoorCharacter from './PoorCharacter';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
 import containerPositionState from '../../shared/ScrollContainer';
+import badgeDefault01 from '../../static/image/ui/badge_disabled_01.png';
+import badgeDefault02 from '../../static/image/ui/badge_disabled_02.png';
+import badgeDefault03 from '../../static/image/ui/badge_disabled_03.png';
 
 function PoorRoom() {
   // PoorRoom Hooks & State
@@ -263,29 +266,52 @@ function PoorRoom() {
         </section>
         <section id="consumeBadgeArea">
           <h1>소비뱃지</h1>
-          <SlickSlider
-            id="badgeSlide"
-            loop={false}
-            slidesToShow={3}
-            slidesToScroll={1}
-            arrows={false}
-          >
-            {data?.badgeList.length === 0
-              ? BadgeListState.slice(0, 5).map((item) => (
-                  <div key={item.name} className="item">
-                    {/* <img src={item.badgeImage} alt={item.badgeTitle} /> */}
-                    <p>{item.name}</p>
+
+          {data?.badgeList.length === 0 ? (
+            <div
+              style={{
+                display: 'flex',
+                margin: '15px 0',
+                gap: '20px',
+                width: '100%',
+                overflow: 'hidden',
+              }}
+            >
+              <img
+                src={badgeDefault01}
+                alt="뱃지기본이미지"
+                style={{ width: '112px' }}
+              />
+              <img
+                src={badgeDefault02}
+                alt="뱃지기본이미지"
+                style={{ width: '112px' }}
+              />
+              <img
+                src={badgeDefault03}
+                alt="뱃지기본이미지"
+                style={{ width: '112px' }}
+              />
+            </div>
+          ) : (
+            <SlickSlider
+              id="badgeSlide"
+              loop={false}
+              slidesToShow={3}
+              slidesToScroll={1}
+              arrows={false}
+            >
+              {data?.badgeList
+                .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
+                .map((item) => (
+                  <div key={item.badgeTitle} className="item">
+                    <img src={item.badgeImage} alt={item.badgeTitle} />
+                    <p>{item.badgeTitle}</p>
                   </div>
-                ))
-              : data?.badgeList
-                  .filter((item) => item.badgeNum >= 1 && item.badgeNum <= 5)
-                  .map((item) => (
-                    <div key={item.badgeTitle} className="item">
-                      <img src={item.badgeImage} alt={item.badgeTitle} />
-                      <p>{item.badgeTitle}</p>
-                    </div>
-                  ))}
-          </SlickSlider>
+                ))}
+            </SlickSlider>
+          )}
+
           <Button
             className="whiteCommon"
             onClick={() => navigate('/badgeList')}
@@ -293,6 +319,7 @@ function PoorRoom() {
             모든 뱃지 보기
           </Button>
         </section>
+
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>
           <p>단위 : 만원</p>

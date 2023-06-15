@@ -3,7 +3,8 @@ import { ResponsiveRadar } from '@nivo/radar';
 import { useQuery } from 'react-query';
 import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
 import '../../styles/pages/_Error.scss';
-import Error from '../../static/image/status/error.png';
+import radarDefaultImg from '../../static/image/ui/radarChart_default.png';
+import { Error, Loading } from '../../pages';
 
 function MyConsumePropensitychart() {
   const theme = {
@@ -39,10 +40,10 @@ function MyConsumePropensitychart() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (error) {
-    return <div>Error</div>;
+    return <Error />;
   }
 
   const newIndex = (expenditureType: string) => {
@@ -113,11 +114,8 @@ function MyConsumePropensitychart() {
   if (data === undefined || data.length < 6) {
     return (
       <div className="dataNone">
-        <img src={Error} alt="에러이미지" />
-        <p>
-          데이터가 충분히 모이지 않았습니다. <br />
-          조금만 기다려주세요
-        </p>
+        <p>가계부를 작성하고 소비성향을 확인해보세요</p>
+        <img src={radarDefaultImg} alt="기본그래프" />
       </div>
     );
   }
