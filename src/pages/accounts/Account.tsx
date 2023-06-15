@@ -30,6 +30,7 @@ interface Data {
   totalPages: number;
   last: boolean;
   number: number;
+  totalElements: number;
 }
 
 interface LedgerHistoryResponseDto {
@@ -558,11 +559,13 @@ function Account(): JSX.Element {
 
   // 월별 조회 모달창
   const [monthModal, setMonthModal] = useState<boolean>(false);
+  const [monthAnimation, setMonthAnimation] = useState('');
 
   const monthModalOpen = (): void => {
     setMonthModal(true);
     getTotalMonthDateRefetch();
     getAccountTypeRefetch();
+    setMonthAnimation('modalAnimation');
   };
 
   if (isLoading || getTotalMonthDateIsLoading || getAccountTypeLoading) {
@@ -585,7 +588,12 @@ function Account(): JSX.Element {
         />
       )}
       {monthModal && (
-        <AccountMonth setMoment={setMoment} setMonthModal={setMonthModal} />
+        <AccountMonth
+          setMoment={setMoment}
+          setMonthModal={setMonthModal}
+          setMonthAnimation={setMonthAnimation}
+          monthAnimation={monthAnimation}
+        />
       )}
       <Header navigateToPreviousPage={navigateToPreviousPage}>
         <div className="month">
@@ -668,7 +676,9 @@ function Account(): JSX.Element {
         getAccountRefetch={getAccountRefetch}
       />
       <div className="line"> </div>
+
       <Chart id={id} currentMonth={currentMonth} />
+
       <div className="line"> </div>
       <ChartLastMonth currentMonth={currentMonth} />
       <div className="line"> </div>
@@ -774,7 +784,7 @@ function Account(): JSX.Element {
             지출
           </button>
         </ul>
-        {getAccountType?.pages.length === 1 ? (
+        {getAccountType?.pages[0].totalElements === 0 ? (
           <div className="emptyData">
             <p className="title">텅 비었네요</p>
             <p className="content">

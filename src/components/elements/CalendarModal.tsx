@@ -63,7 +63,7 @@ function CalendarModal({
     ['getAccountsDate', id, selectedDate],
     () => accounts.getAccountsDate(id as string, selectedDate as string)
   );
-  console.log('일자별 거래내역 호출:', data);
+  console.log('일자별 거래내역 호출:', data?.content);
 
   const mappedData = data?.content.flatMap((item) => ({
     accountType: item.accountType,
@@ -216,7 +216,7 @@ function CalendarModal({
                   <p>{item.title}</p>
                   <div>
                     <p className={className}>
-                      {item.accountType === 'INCOME' ? null : '-'}
+                      {item.accountType === 'INCOME' ? '+' : '-'}
                       {priceComma(
                         item.income === 0 || item.income === null
                           ? item.expenditure
