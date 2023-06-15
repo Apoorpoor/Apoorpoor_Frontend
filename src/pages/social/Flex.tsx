@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react'
-import "../../styles/pages/_Reduction.scss"
+import "../../styles/pages/_Flex.scss"
 import { useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 import { AiOutlineLeft } from 'react-icons/ai';
@@ -111,14 +111,14 @@ function Flex() {
                     {topList && topList[0].total.toLocaleString()}원
                 </div>
             </div>
-            <div className='Top2Nickname'>
+            <div className='Top2Nickname2'>
 
                 {topList && topList[1]?.nickname}
                 <div className='Top2Price'>
                     {topList && topList[1]?.total.toLocaleString()}원
                 </div>
             </div>
-            <div className='Top3Nickname'>
+            <div className='Top3Nickname2'>
                 {topList && topList[2]?.nickname}
                 <div className='Top3Price'>
                     {topList && topList[2]?.total.toLocaleString()}원
