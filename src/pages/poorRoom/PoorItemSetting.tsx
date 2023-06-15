@@ -488,7 +488,7 @@ function PoorItemSetting() {
               </div>
               <p>{purchaseItem.itemName}</p>
             </div>
-            <p>잔여 포인트 : {myPoorInfo.point}p</p>
+            <p>잔여 포인트 : {myPoorInfoData.point}p</p>
             <Button className="common" onClick={() => setIsModalOpen(false)}>
               확인
             </Button>
