@@ -57,6 +57,23 @@
         transform: translateY(-10px);
       }
     }
+    & > section.acc {
+      // 수영모
+      & ul li:first-child .itemBox .itemImg {
+        background-position: center 45px;
+      }
+      //면도기
+      & ul li:nth-child(2) .itemBox .itemImg {
+        background-size: 70%;
+        background-position: center 25px;
+      }
+      //로락스 시계, 사과 워치
+      & ul li:nth-child(3) .itemBox .itemImg,
+      & ul li:nth-child(4) .itemBox .itemImg {
+        background-size: 800%;
+        background-position: 83% -515px;
+      }
+    }
     & > section ul {
       width: calc(100% - (100% - 320px));
       padding: 0 calc((100% - 320px) / 2);

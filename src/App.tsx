@@ -23,7 +23,6 @@ import {
   Social,
   Reduction,
   Flex,
-
 } from './pages/index';
 
 function App() {
@@ -33,8 +32,17 @@ function App() {
   // 토큰 있는지 확인 -> 없으면 login 이동
   useEffect(() => {
     const token = localStorage.getItem('AToken') || Cookies.get('RToken');
+    const accountPageRegex = /^\/(account|account)\/\d+$/;
+    const accountAddPageRegex = /^\/(account|addAccount)\/\d+$/;
+    const accountDonePageRegex = /^\/(account|addAccountDone)\/\d+$/;
+    const accountEditPageRegex = /^\/(account|editAccount)\/\d+$/;
 
-    if (!token && location.pathname !== '/login') {
+    if (
+      (!token && !accountPageRegex.test(location.pathname)) ||
+      (!token && !accountAddPageRegex.test(location.pathname)) ||
+      (!token && !accountDonePageRegex.test(location.pathname)) ||
+      (!token && !accountEditPageRegex.test(location.pathname))
+    ) {
       navigate('/login');
     }
   }, [navigate, location]);
