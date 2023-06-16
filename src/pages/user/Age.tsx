@@ -88,14 +88,13 @@ function Age() {
               value={onlyNumber(inputValue)}
               id="nicknameInput"
               placeholder="나이를 입력하세요"
-              className="nickname"
+              className={`nickname ${inputValue.length > 0 ? 'pass' : ''}`}
               onChange={nicknameChangeHandler}
             />
             <label
               htmlFor="nicknameInput"
-              className={`nicknameLabel ${
-                inputValue.length > 0 ? 'active' : ''
-              }`}
+              className={`nicknameLabel ${inputValue.length > 0 ? 'active' : ''
+                }`}
             >
               나이
             </label>
@@ -107,11 +106,10 @@ function Age() {
             </label>
             <label
               htmlFor="nicknameInput"
-              className={`nicknameValidationAlert ${
-                inputValue.length > 0 ? 'active' : ''
-              }`}
+              className={`nicknameValidationAlert ${inputValue.length > 0 ? 'active' : ''
+                }`}
             >
-              ※ 욕설 및 성희롱을 연상하게 하는 이름은 쓸 수 없어요.
+              {/* ※ 욕설 및 성희롱을 연상하게 하는 이름은 쓸 수 없어요. */}
             </label>
           </div>
         </article>

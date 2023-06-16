@@ -12,7 +12,7 @@ import inputError from "../../static/image/nickname/inputError.png"
 
 function Nickname() {
   // 욕설
-  const badWords = ['18년',
+  const badWords = ['se세엑스x', '18년',
     '18놈',
     '18새끼',
     'ㄱㅐㅅㅐㄲl',
@@ -217,6 +217,8 @@ function Nickname() {
     '성폭행',
     '세꺄',
     '세끼',
+    '세엑스',
+    '세엑',
     '섹스',
     '섹스하자',
     '섹스해',
@@ -609,6 +611,8 @@ function Nickname() {
     'pennis',
     'pussy',
     'sex',
+    'se',
+    'ex'
   ]
   // 인풋값
   const [inputValue, setInputValue] = useRecoilState(inputState);
