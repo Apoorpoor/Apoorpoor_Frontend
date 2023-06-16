@@ -124,8 +124,11 @@
 
     & > div {
       margin-top: 50px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
       & > .cancleBtn {
-        width: 152px;
+        width: 100%;
         height: 56px;
         border-radius: 12px;
         background-color: $gray-350;
@@ -133,7 +136,7 @@
         margin-right: 16px;
       }
       & > .delBtn {
-        width: 152px;
+        width: 100%;
         height: 56px;
         border-radius: 12px;
         background-color: $systemError;

@@ -2,14 +2,15 @@ import React from 'react';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
 import { useRecoilValue } from 'recoil';
-import { messageState, categoryState } from '../../shared/Atom';
-import doneImg from '../../static/image/addAccountDone/Group 4257.png';
+import { messageState, categoryState, pointState } from '../../shared/Atom';
+import done from '../../static/image/addAccountDone/Group 4498.png';
 
 function AddAccountDone() {
   const navigate = useNavigate();
 
   const category = useRecoilValue(categoryState);
   const message = useRecoilValue(messageState);
+  const point = useRecoilValue(pointState);
 
   const categoryMsg = (cate: string): string => {
     if (cate === 'INCOME') {
@@ -26,10 +27,10 @@ function AddAccountDone() {
   return (
     <div className="doneBg">
       <div className="doneTitle">
-        <div className="donePoint">10포인트 적립</div>
+        <div className="donePoint">{point}포인트 적립</div>
         <h1>{categoryMsg(category)}</h1>
         <p>{message}</p>
-        <img className="doneImg" src={doneImg} alt="doneImg" />
+        <img className="doneImg" src={done} alt="doneImg" />
       </div>
 
       <div className="doneFooter">

@@ -12,6 +12,10 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 
+.react-datepicker__input-container {
+  height: 67px;
+}
+
 .react-datepicker {
   font-family: 'Pretendard', sans-serif;
   border: 2px solid #dfdfdf;

@@ -3,8 +3,6 @@ import { ResponsivePie } from '@nivo/pie';
 import { VscCircleFilled } from 'react-icons/vsc';
 import '../../styles/components/_Chart.scss';
 import { useInfiniteQuery } from 'react-query';
-// eslint-disable-next-line
-import { Fade } from 'react-awesome-reveal';
 import accounts from '../../api/accounts';
 import Loading from '../../pages/status/Loading';
 import pieChart from '../../static/image/account/pieChart.png';
@@ -140,6 +138,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
 
   // 지출 금액 순 정렬
   const sortedData = pieData?.sort((a, b) => b.value - a.value);
+  console.log('파이그래프::::::', sortedData);
 
   // 지출 제일 큰 카테고리 (한글)
   const getMaxCategory = (): string => {
@@ -170,33 +169,31 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
             : '가계부를 작성하고 상세 지출을 확인해보세요!'}
         </p>
       </div>
-      <Fade>
-        <div className="pieChart">
-          {!sortedData || sortedData.length === 0 ? (
-            <img
-              src={pieChart}
-              alt="pieChart"
-              style={{ width: '242px', marginTop: '60px' }}
-            />
-          ) : (
-            <ResponsivePie
-              colors={sortedData.map((item) => getChartColor(item.id))}
-              data={sortedData}
-              margin={{ top: 60, right: 50, bottom: 0, left: 50 }}
-              innerRadius={0.55}
-              activeOuterRadiusOffset={12}
-              isInteractive={false}
-              borderWidth={1}
-              borderColor={{
-                from: 'color',
-                modifiers: [['darker', 0.2]],
-              }}
-              enableArcLinkLabels={false}
-              enableArcLabels={false}
-            />
-          )}
-        </div>
-      </Fade>
+      <div className="pieChart">
+        {!sortedData || sortedData.length === 0 ? (
+          <img
+            src={pieChart}
+            alt="pieChart"
+            style={{ width: '242px', marginTop: '60px' }}
+          />
+        ) : (
+          <ResponsivePie
+            colors={sortedData.map((item) => getChartColor(item.id))}
+            data={sortedData}
+            margin={{ top: 60, right: 50, bottom: 0, left: 50 }}
+            innerRadius={0.55}
+            activeOuterRadiusOffset={12}
+            isInteractive={false}
+            borderWidth={1}
+            borderColor={{
+              from: 'color',
+              modifiers: [['darker', 0.2]],
+            }}
+            enableArcLinkLabels={false}
+            enableArcLabels={false}
+          />
+        )}
+      </div>
 
       {!sortedData || sortedData.length === 0 ? (
         <>

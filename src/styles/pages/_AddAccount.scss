@@ -87,8 +87,18 @@
       }
     }
   }
+  .errorMessage {
+    margin-top: 110px;
+    width: 100%;
+    height: 32px;
+    background-color: $systemError;
+    color: white;
+    font-weight: 700;
+    text-align: center;
+    line-height: 32px;
+  }
   .addAccountDoneBtn {
-    margin-top: 114px;
+    margin-top: 10px;
     width: 100%;
     height: 56px;
     border-radius: 12px;

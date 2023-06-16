@@ -35,7 +35,7 @@ function EditAccount(): JSX.Element {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate(`/account/${id}`);
   };
 
   // 이전 컴포넌트에서 불러온 수정 전 data
@@ -355,6 +355,53 @@ function EditAccount(): JSX.Element {
     }
   );
 
+  // 유효성 검사 에러 메세지
+  const [priceError, setPriceError] = useState(false);
+  const [titleError, setTitleError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [payError, setPayError] = useState(false);
+  const [categoryError, setCategoryError] = useState(false);
+
+  useEffect(() => {
+    if (accountPriceInput === '' || accountPriceInput === '0') {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+  }, [accountPriceInput]);
+
+  useEffect(() => {
+    if (title === '' || title === null) {
+      setTitleError(true);
+    } else {
+      setTitleError(false);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (date === '') {
+      setDateError(true);
+    } else {
+      setDateError(false);
+    }
+  }, [date]);
+
+  useEffect(() => {
+    if (paymentMethod === '' || paymentMethod === null) {
+      setPayError(true);
+    } else {
+      setPayError(false);
+    }
+  }, [paymentMethod]);
+
+  useEffect(() => {
+    if (incomeType === null && expenditureType === null) {
+      setCategoryError(true);
+    } else {
+      setCategoryError(false);
+    }
+  }, [incomeType, expenditureType]);
+
   const handleEdit = async () => {
     try {
       const requestData = {
@@ -368,6 +415,10 @@ function EditAccount(): JSX.Element {
         expenditure: expenditureType === '' ? null : accountPriceInput,
         date: date || '',
       };
+
+      if (priceError || titleError || dateError || payError || categoryError) {
+        return;
+      }
 
       await editAccountMutation.mutateAsync(requestData);
       console.log('거래내역 수정 요청 완료');
@@ -425,6 +476,12 @@ function EditAccount(): JSX.Element {
             >
               {' '}
             </label>
+            {titleError && (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">내용을 확인해주세요</p>
+              </div>
+            )}
           </div>
 
           <div className="addAccountContents">
@@ -452,6 +509,12 @@ function EditAccount(): JSX.Element {
           <div className="addAccountContents">
             <p className="addAccountContentsTitle">날짜</p>
             <AddAccountCalendar setOnDateChange={setOnDateChange} />
+            {dateError && (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">날짜를 확인해주세요</p>
+              </div>
+            )}
           </div>
 
           {accountType === 'INCOME' ? (
@@ -466,6 +529,12 @@ function EditAccount(): JSX.Element {
                 styles={paySelectCustom}
                 defaultValue={editPaymentMethod}
               />
+              {payError && (
+                <div className="warningBox">
+                  <RiErrorWarningFill className="warningIcon" />
+                  <p className="warningMsg">결제수단을 확인해주세요</p>
+                </div>
+              )}
             </div>
           )}
 
@@ -488,7 +557,24 @@ function EditAccount(): JSX.Element {
                 defaultValue={editExOptions}
               />
             )}
+            {categoryError && (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">카테고리를 확인해주세요</p>
+              </div>
+            )}
           </div>
+
+          {priceError ||
+          titleError ||
+          dateError ||
+          payError ||
+          categoryError ? (
+            <div className="errorMessage">작성 내용을 다시 확인해주세요!</div>
+          ) : (
+            ''
+          )}
+
           <button
             className="addAccountDoneBtn"
             type="button"
