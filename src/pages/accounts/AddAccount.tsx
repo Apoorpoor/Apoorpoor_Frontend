@@ -346,12 +346,17 @@ function AddAccount(): JSX.Element {
   }, [date]);
 
   useEffect(() => {
-    if (paymentMethod === '' || paymentMethod === null) {
-      setPayError(true);
-    } else {
+    if (accountType === 'EXPENDITURE') {
+      if (paymentMethod === '' || paymentMethod === null) {
+        setPayError(true);
+      } else {
+        setPayError(false);
+      }
+    }
+    if (accountType === 'INCOME') {
       setPayError(false);
     }
-  }, [paymentMethod]);
+  }, [accountType, paymentMethod]);
 
   useEffect(() => {
     if (incomeType === null && expenditureType === null) {
@@ -360,6 +365,15 @@ function AddAccount(): JSX.Element {
       setCategoryError(false);
     }
   }, [incomeType, expenditureType]);
+
+  console.log(
+    '에러:::',
+    priceError,
+    titleError,
+    dateError,
+    payError,
+    categoryError
+  );
 
   const handleRegister = async () => {
     try {
