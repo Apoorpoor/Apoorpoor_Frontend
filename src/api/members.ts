@@ -8,15 +8,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import instance from './instance';
 
-// 닉네임 중복체크
-const getNickNameDoubleCheck = async (
-  nickname: string
-): Promise<React.MouseEvent<HTMLButtonElement>> => {
+// 닉네임 전체 조회
+const getNicknameCheck = async () => {
   try {
-    const response = await instance.post(`/beggar`, { nickname });
+    const response = await instance.get(`/beggar/info`);
     return response.data;
   } catch (err) {
-    console.log(`닉네임 불러오는 API 오류 발생: ${err}`);
+    console.log(`닉네임 중복체크 API 오류 발생: ${err}`);
     throw err;
   }
 };
@@ -83,4 +81,4 @@ const getUsersProfile = async (userId: any) => {
   }
 };
 
-export { getNickNameDoubleCheck, firstLogin, getUser, getUsersProfile };
+export { getNicknameCheck, firstLogin, getUser, getUsersProfile };
