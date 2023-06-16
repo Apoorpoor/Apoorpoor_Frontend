@@ -23,7 +23,6 @@ import {
   Social,
   Reduction,
   Flex,
-
 } from './pages/index';
 
 function App() {
@@ -37,7 +36,7 @@ function App() {
     if (!token && location.pathname !== '/login') {
       navigate('/login');
     }
-  }, [navigate, location]);
+  }, [navigate, location.pathname]);
   return (
     <Layout>
       <Routes>
