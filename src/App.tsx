@@ -45,7 +45,7 @@ function App() {
     ) {
       navigate('/login');
     }
-  }, [navigate, location]);
+  }, [navigate, location.pathname]);
   return (
     <Layout>
       <Routes>
