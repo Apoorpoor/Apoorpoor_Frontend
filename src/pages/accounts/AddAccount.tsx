@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
@@ -20,6 +20,14 @@ function AddAccount(): JSX.Element {
   const navigateToPreviousPage = () => {
     navigate(`/account/${id}`);
   };
+
+  const priceRef = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    if (priceRef.current) {
+      priceRef.current.focus();
+    }
+  }, []);
 
   // 금액 입력
   const [accountPriceInput, setAccountPriceInput] = useState('');
@@ -411,7 +419,9 @@ function AddAccount(): JSX.Element {
       <div className="addAccountBg">
         <div className="addAccountBody">
           <div className="addAccountContents">
-            <p className="addAccountContentsTitle">금액</p>
+            <p ref={priceRef} className="addAccountContentsTitle">
+              금액
+            </p>
             <Input
               value={comma(accountPriceInput)}
               id="accountPriceInput"
