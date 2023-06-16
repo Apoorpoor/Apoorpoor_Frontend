@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
-// import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useNavigate, useParams } from 'react-router';
 import { useSetRecoilState } from 'recoil';
@@ -43,7 +42,9 @@ function AddAccount(): JSX.Element {
 
   // 엑스 버튼 누르면 금액 삭제
   const handleAccountPriceInputClear = () => {
-    setAccountPriceInput('');
+    setTimeout(() => {
+      setAccountPriceInput('');
+    }, 0);
   };
 
   // 100원 미만일 경우 경고 메세지
@@ -120,7 +121,7 @@ function AddAccount(): JSX.Element {
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '12px',
-      width: '320px',
+      width: '100%',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
@@ -179,7 +180,7 @@ function AddAccount(): JSX.Element {
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '10px',
-      width: '320px',
+      width: '100%',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
@@ -239,7 +240,7 @@ function AddAccount(): JSX.Element {
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '10px',
-      width: '320px',
+      width: '100%',
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
@@ -313,6 +314,53 @@ function AddAccount(): JSX.Element {
     }
   );
 
+  // 유효성 검사 에러 메세지
+  const [priceError, setPriceError] = useState(false);
+  const [titleError, setTitleError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [payError, setPayError] = useState(false);
+  const [categoryError, setCategoryError] = useState(false);
+
+  useEffect(() => {
+    if (accountPriceInput === '' || accountPriceInput === '0') {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+  }, [accountPriceInput]);
+
+  useEffect(() => {
+    if (title === '' || title === null) {
+      setTitleError(true);
+    } else {
+      setTitleError(false);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (date === '') {
+      setDateError(true);
+    } else {
+      setDateError(false);
+    }
+  }, [date]);
+
+  useEffect(() => {
+    if (paymentMethod === '' || paymentMethod === null) {
+      setPayError(true);
+    } else {
+      setPayError(false);
+    }
+  }, [paymentMethod]);
+
+  useEffect(() => {
+    if (incomeType === null && expenditureType === null) {
+      setCategoryError(true);
+    } else {
+      setCategoryError(false);
+    }
+  }, [incomeType, expenditureType]);
+
   const handleRegister = async () => {
     try {
       const requestData = {
@@ -327,13 +375,7 @@ function AddAccount(): JSX.Element {
         date: date || '',
       };
 
-      if (
-        (requestData.income === null && requestData.expenditure === null) ||
-        (requestData.income === '0' && requestData.expenditure === '0') ||
-        requestData.title === '' ||
-        requestData.date === ''
-      ) {
-        console.log('거래내역이 없으므로 전송되지 않았습니다.');
+      if (priceError || titleError || dateError || payError || categoryError) {
         return;
       }
 
@@ -370,7 +412,7 @@ function AddAccount(): JSX.Element {
             >
               {' '}
             </label>
-            {showWarning ? (
+            {showWarning || priceError ? (
               <div className="warningBox">
                 <RiErrorWarningFill className="warningIcon" />
                 <p className="warningMsg">100원 이상 등록해주세요</p>
@@ -394,6 +436,12 @@ function AddAccount(): JSX.Element {
             >
               {' '}
             </label>
+            {titleError && (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">내용을 확인해주세요</p>
+              </div>
+            )}
           </div>
 
           <div className="addAccountContents">
@@ -421,6 +469,12 @@ function AddAccount(): JSX.Element {
           <div className="addAccountContents">
             <p className="addAccountContentsTitle">날짜</p>
             <AddAccountCalendar setOnDateChange={setOnDateChange} />
+            {dateError && (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">날짜를 확인해주세요</p>
+              </div>
+            )}
           </div>
 
           {accountType === 'INCOME' ? (
@@ -434,6 +488,12 @@ function AddAccount(): JSX.Element {
                 onChange={(e: any) => setPaymentMethod(e.value)}
                 styles={paySelectCustom}
               />
+              {payError && (
+                <div className="warningBox">
+                  <RiErrorWarningFill className="warningIcon" />
+                  <p className="warningMsg">결제수단을 확인해주세요</p>
+                </div>
+              )}
             </div>
           )}
 
@@ -454,7 +514,23 @@ function AddAccount(): JSX.Element {
                 styles={exSelectCustom}
               />
             )}
+            {categoryError && (
+              <div className="warningBox">
+                <RiErrorWarningFill className="warningIcon" />
+                <p className="warningMsg">카테고리를 확인해주세요</p>
+              </div>
+            )}
           </div>
+          {priceError ||
+          titleError ||
+          dateError ||
+          payError ||
+          categoryError ? (
+            <div className="errorMessage">작성 내용을 다시 확인해주세요!</div>
+          ) : (
+            ''
+          )}
+
           <button
             className="addAccountDoneBtn"
             type="button"
