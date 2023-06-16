@@ -17,6 +17,12 @@ export const messageState: RecoilState<string> = atom<string>({
   default: '',
 });
 
+// 거래내역 등록 후 획득 포인트
+export const pointState: RecoilState<string> = atom<string>({
+  key: 'pointState',
+  default: '',
+});
+
 export const accountIdState: RecoilState<string> = atom<string>({
   key: 'accountIdState',
   default: '',

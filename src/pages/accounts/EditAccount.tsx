@@ -35,7 +35,7 @@ function EditAccount(): JSX.Element {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate(`/account/${id}`);
   };
 
   // 이전 컴포넌트에서 불러온 수정 전 data
@@ -368,6 +368,16 @@ function EditAccount(): JSX.Element {
         expenditure: expenditureType === '' ? null : accountPriceInput,
         date: date || '',
       };
+
+      if (
+        (requestData.income === null && requestData.expenditure === null) ||
+        (requestData.income === '0' && requestData.expenditure === '0') ||
+        requestData.title === '' ||
+        requestData.date === ''
+      ) {
+        console.log('거래내역이 없으므로 전송되지 않았습니다.');
+        return;
+      }
 
       await editAccountMutation.mutateAsync(requestData);
       console.log('거래내역 수정 요청 완료');

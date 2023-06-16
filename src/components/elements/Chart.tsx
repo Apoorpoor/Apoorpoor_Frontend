@@ -138,6 +138,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
 
   // 지출 금액 순 정렬
   const sortedData = pieData?.sort((a, b) => b.value - a.value);
+  console.log('파이그래프::::::', sortedData);
 
   // 지출 제일 큰 카테고리 (한글)
   const getMaxCategory = (): string => {
