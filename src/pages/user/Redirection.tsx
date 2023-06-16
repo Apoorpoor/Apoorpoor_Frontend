@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import axios from 'axios';
+import instance from '../../api/instance';
 import Loading from '../status/Loading';
 
 const Redirection: React.FC = () => {
@@ -15,7 +15,8 @@ const Redirection: React.FC = () => {
   useEffect(() => {
     const getAccessToken = async (urlCode: string): Promise<void> => {
       try {
-        const response = await axios.get(`https://www.apoorpoor.com/oauth/kakao?code=${urlCode}`
+        const response = await instance.get(
+          `/oauth/kakao?code=${urlCode}`
           // , {urlCode}
         );
         const accessToken = response.headers.access_key;
@@ -45,7 +46,8 @@ const Redirection: React.FC = () => {
     };
 
     const onSilentRefresh = () => {
-      axios.get(`https://www.apoorpoor.com/oauth/kakao?code=${urlCode}`)
+      instance
+        .get(`/oauth/kakao?code=${urlCode}`)
         .then(onLoginSuccess)
         .catch((error) => {
           // ... 로그인 실패 처리
@@ -57,7 +59,7 @@ const Redirection: React.FC = () => {
       const { accessToken } = response.data;
 
       // accessToken 설정
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      instance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       // accessToken 만료하기 1분 전에 로그인 연장
       setTimeout(onSilentRefresh, JWTEXPIRYTIME - 60000);
