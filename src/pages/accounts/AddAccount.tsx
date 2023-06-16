@@ -42,7 +42,9 @@ function AddAccount(): JSX.Element {
 
   // 엑스 버튼 누르면 금액 삭제
   const handleAccountPriceInputClear = () => {
-    setAccountPriceInput('');
+    setTimeout(() => {
+      setAccountPriceInput('');
+    }, 0);
   };
 
   // 100원 미만일 경우 경고 메세지
@@ -320,15 +322,12 @@ function AddAccount(): JSX.Element {
   const [categoryError, setCategoryError] = useState(false);
 
   useEffect(() => {
-    if (
-      (income === null && expenditure === null) ||
-      (income === '0' && expenditure === '0')
-    ) {
+    if (accountPriceInput === '' || accountPriceInput === '0') {
       setPriceError(true);
     } else {
       setPriceError(false);
     }
-  }, [income, expenditure]);
+  }, [accountPriceInput]);
 
   useEffect(() => {
     if (title === '' || title === null) {
