@@ -1,6 +1,8 @@
+@import '../Palette';
+
 .currentBackGround {
-    // margin-top: 46px;
-  }
+    height: 100%;
+}
 .Header{
     border-bottom: 1px solid #f5f5f5;;
     gap: 120px;
@@ -18,18 +20,18 @@
 // 전체 메세지 폼
 .Messagesbox{
     width: 100%;
-    max-height: 740px;
+    height: 70%;
+    position: absolute;
     overflow: auto;
     border-top: 1px solid #f5f5f5;  
-    display: flex;
+    // display: flexbox;
     flex-direction: column;
     padding-top: 20px;
-    scrollbar-width: thin;
-    scrollbar-color: #888888 #f5f5f5;
+    background-color: #4194F1;
     
 }
 .Messagesbox::-webkit-scrollbar {
-  width: 6px;
+  width: 1px;
 }
 
 .Messagesbox::-webkit-scrollbar-track {
@@ -83,7 +85,8 @@
     
 }
 // 다른 유저 프로필
-.yourChatProfile {
+.yourChatProfile1,
+.yourChatProfile2 {
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -92,10 +95,70 @@
     position: relative;
     left: 20px;
     overflow: hidden;
-    color: #4194F1;
+    // color: #4194F1;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
     
   }
+  // 다른 유저 프로필
+  .yourChatProfile3,
+  .yourChatProfile4 {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: white;
+      align-self: flex-start;
+      position: relative;
+      left: 20px;
+      overflow: hidden;
+      color: $secondary;
+      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+      
+    }
+    // 다른 유저 프로필
+    .yourChatProfile5,
+    .yourChatProfile6 {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: white;
+        align-self: flex-start;
+        position: relative;
+        left: 20px;
+        overflow: hidden;
+        color: #ff832c;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+        
+      }
+      // 다른 유저 프로필
+      .yourChatProfile7,
+      .yourChatProfile8 {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background-color: white;
+          align-self: flex-start;
+          position: relative;
+          left: 20px;
+          overflow: hidden;
+          color: #b62c1d;
+          box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+          
+        }
+        // 다른 유저 프로필
+        .yourChatProfile9,
+        .yourChatProfile10 {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: white;
+            align-self: flex-start;
+            position: relative;
+            left: 20px;
+            overflow: hidden;
+            color: #b43deb;
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+            
+          }
 // 다른 유저 이미지
 .sendYourImageBox{
     background-color: #f5f5f5;
@@ -158,9 +221,9 @@
     
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1366px) {
   .SendInput{
-    width: 90%;
+    width: 92%;
     padding: 20px 30% 20px 20px;
     margin-left: 30px;
   }

@@ -1,16 +1,12 @@
 import React from 'react';
 import '../../styles/pages/_IntroTalk.scss';
-import { FaExclamationCircle, FaCheckSquare } from 'react-icons/fa';
+import { FaExclamationCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import PoorCharacter from '../poorRoom/PoorCharacter';
 
 function IntroTalk() {
   const navigate = useNavigate();
 
-  const [checked, setChecked] = React.useState(false);
-  const CheckBoxHandler = () => {
-    setChecked(!checked);
-  };
   return (
     <main id="IntroTalkLayout">
       <section>
@@ -36,36 +32,15 @@ function IntroTalk() {
       </section>
 
       <section>
-        {checked ? (
-          <div className="CheckBox2">
-            이해했어요
-            <FaCheckSquare
-              className="CheckBoxPoint2"
-              onClick={CheckBoxHandler}
-            />
-          </div>
-        ) : (
-          <div className="CheckBox1">
-            이해했어요
-            <FaCheckSquare
-              className="CheckBoxPoint1"
-              onClick={CheckBoxHandler}
-            />
-          </div>
-        )}
-        {checked ? (
-          <button
-            className="StartChat2"
-            type="button"
-            onClick={() => navigate('/poorTalk')}
-          >
-            채팅 시작하기
-          </button>
-        ) : (
-          <button type="button" className="StartChat1">
-            채팅 시작하기
-          </button>
-        )}
+
+        <button
+          className="StartChat2"
+          type="button"
+          onClick={() => navigate('/poorTalk')}
+        >
+          채팅 시작하기
+        </button>
+
       </section>
     </main>
   );
