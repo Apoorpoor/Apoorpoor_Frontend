@@ -412,7 +412,7 @@ function AddAccount(): JSX.Element {
             >
               {' '}
             </label>
-            {showWarning ? (
+            {showWarning || priceError ? (
               <div className="warningBox">
                 <RiErrorWarningFill className="warningIcon" />
                 <p className="warningMsg">100원 이상 등록해주세요</p>
