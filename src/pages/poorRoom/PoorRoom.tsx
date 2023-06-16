@@ -219,10 +219,10 @@ function PoorRoom() {
   const [lineChartSection, setLineChartSection] = useState(false);
   console.log(scrollPosition);
   useEffect(() => {
-    if (scrollPosition > 200) {
+    if (scrollPosition > 180) {
       setRadarChartSection(true);
     }
-    if (scrollPosition > 1300) {
+    if (scrollPosition > 1100) {
       setLineChartSection(true);
     }
   }, [scrollPosition]);
@@ -250,7 +250,8 @@ function PoorRoom() {
               className="whiteRoundCommon"
               onClick={() => navigate('/poorItemSetting')}
             >
-              아이템 <BsFillCaretRightFill />
+              아이템{' '}
+              <BsFillCaretRightFill style={{ transform: 'translateY(2px)' }} />
             </Button>
             <Button className="textType" onClick={logout}>
               로그아웃
@@ -261,7 +262,7 @@ function PoorRoom() {
           <h1>소비성향</h1>
           <div
             style={{
-              width: radarChartSection === true ? '100%' : '90%',
+              width: radarChartSection === true ? '100%' : '70%',
               height: '450px',
               margin: '0 auto',
             }}
@@ -327,7 +328,7 @@ function PoorRoom() {
           <h1>최근 6개월 소비근황</h1>
           <div
             style={{
-              width: lineChartSection === true ? '100%' : '80%',
+              width: lineChartSection === true ? '100%' : '60%',
               height: '400px',
               margin: '0 auto',
             }}

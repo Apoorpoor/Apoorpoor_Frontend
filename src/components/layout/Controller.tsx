@@ -83,7 +83,11 @@ function Controller() {
       <div className="controllerRale">
         <button
           type="button"
-          className={isSelected(['/social'])}
+          className={isSelected([
+            '/social',
+            '/social/reduction',
+            '/social/flex',
+          ])}
           onClick={() => controllerHandler(0)}
         >
           소셜
