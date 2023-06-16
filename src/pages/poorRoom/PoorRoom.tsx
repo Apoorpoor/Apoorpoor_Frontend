@@ -126,6 +126,8 @@ function PoorRoom() {
     () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
 
+  console.log('PointData', PointData);
+
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
     onSuccess: (response) => {
@@ -168,18 +170,21 @@ function PoorRoom() {
     // 전체
     if (index === 0) {
       setPointInquiryList(PointData || []);
+      setKind('total');
       // 적립
     } else if (index === 1) {
       const filteredList = PointData?.filter(
         (item) => item.usedPoints === null || item.usedPoints === 0
       );
       setPointInquiryList(filteredList || []);
+      setKind('use');
       // 사용
     } else {
       const filteredList = PointData?.filter(
         (item) => item.usedPoints !== null && item.usedPoints > 0
       );
       setPointInquiryList(filteredList || []);
+      setKind('earn');
     }
   };
 

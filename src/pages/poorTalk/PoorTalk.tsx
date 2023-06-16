@@ -317,6 +317,11 @@ function PoorTalk(): JSX.Element {
             placeholder="message"
             value={sendMessage}
             onChange={(e) => setSendMessage(e.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                sendMessages(sendMessage);
+              }
+            }}
           />
         ) : (
           <img
