@@ -1,3 +1,5 @@
+@import '../Palette';
+
 .Nickname {
   display: flex;
   flex-direction: column;
@@ -14,6 +16,7 @@
 
     .nickname > input[type='text'] {
     }
+    // 인풋값 안에 "닉네임"
     .nicknameLabel {
       opacity: 0;
       position: absolute;
@@ -23,26 +26,37 @@
       font-size: 12px;
       transition: 0.3s;
     }
+    // 인풋값 안에 "닉네임"
     .nicknameLabel.active {
       opacity: 1;
       top: 12px;
       transform: initial;
     }
+    // 인풋값이 입력된 왼쪽 바
     .cursor {
       opacity: 0;
       position: absolute;
       top: 50%;
       left: 15px;
       transform: translateY(-50%);
-      width: 2px;
+      width: 1.5px;
       height: 20px;
-      background-color: #4194f1;
+      background-color: #ff3257;
     }
+    // 인풋값이 입력된 왼쪽 바
     .cursor.active {
       opacity: 1;
       top: 32px;
       transform: initial;
     }
+    // 인풋값이 입력된 왼쪽 바
+    .cursor.active.pass {
+      opacity: 1;
+      top: 32px;
+      transform: initial;
+      background-color: #4194f1;
+    }
+
     .nicknameValidationAlert {
       position: absolute;
       bottom: -23px;
@@ -52,9 +66,32 @@
     }
   }
   .checkError {
-    margin-top: 28px;
+    margin-top: 8px;
     font-size: 14px;
     margin-left: 15px;
     color: #ff3257;
   }
+  .checkError2 {
+    margin-top: 8px;
+    font-size: 14px;
+    margin-left: 15px;
+    color: #4194f1;
+  }
+  .inputError{
+    opacity: 0;
+    width: 24px;
+    position: absolute;
+    top: 28%;
+    left: 82%;
+    transform: (50%,50%);
+  }
+  .inputError.active{
+    opacity: 1;
+    width: 24px;
+    position: absolute;
+    top: 28%;
+    left: 82%;
+    transform: (50%,50%);
+  }
+
 }
