@@ -7,7 +7,7 @@ import { useSetRecoilState } from 'recoil';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
 import { Header, Input } from '../../components';
-import { messageState, categoryState } from '../../shared/Atom';
+import { messageState, categoryState, pointState } from '../../shared/Atom';
 import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 
@@ -19,7 +19,7 @@ function AddAccount(): JSX.Element {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate(-1);
+    navigate(`/account/${id}`);
   };
 
   // 금액 입력
@@ -275,6 +275,8 @@ function AddAccount(): JSX.Element {
   const setCategory = useSetRecoilState(categoryState);
   // 거래내역 추가 후, 랜덤 메시지 완료 페이지로 전달
   const setMessage = useSetRecoilState(messageState);
+  // 거래내역 추가 후, 획득 포인트 완료 페이지로 전달
+  const setPoint = useSetRecoilState(pointState);
 
   // 거래내역 추가
   const addAccountMutation = useMutation(
@@ -303,6 +305,7 @@ function AddAccount(): JSX.Element {
           }
         }
         setMessage(response.meassage);
+        setPoint(response.point);
       },
       onError: (error) => {
         console.log('거래내역 추가 실패:', error);
@@ -323,6 +326,16 @@ function AddAccount(): JSX.Element {
         expenditure: expenditureType === '' ? null : expenditure,
         date: date || '',
       };
+
+      if (
+        (requestData.income === null && requestData.expenditure === null) ||
+        (requestData.income === '0' && requestData.expenditure === '0') ||
+        requestData.title === '' ||
+        requestData.date === ''
+      ) {
+        console.log('거래내역이 없으므로 전송되지 않았습니다.');
+        return;
+      }
 
       await addAccountMutation.mutateAsync(requestData);
       console.log('거래내역 추가 요청 완료');
