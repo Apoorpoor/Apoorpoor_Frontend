@@ -88,8 +88,7 @@ function Age() {
               value={onlyNumber(inputValue)}
               id="nicknameInput"
               placeholder="나이를 입력하세요"
-              className={`nickname ${inputValue.length > 0 ? 'active' : ''
-                }`}
+              className={`nickname ${inputValue.length > 0 ? 'pass' : ''}`}
               onChange={nicknameChangeHandler}
             />
             <label
