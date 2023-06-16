@@ -77,6 +77,7 @@ function PoorItemSetting() {
   );
 
   const [selectedItem, setSelectedItem] = useState<string | null>('top');
+  const [point, setPoint] = useState(myPoorInfo.point);
 
   // 옷 입고 벗기 mutation
   const poorItemMutation = useMutation(beggars.patchPoorItem, {
@@ -108,11 +109,13 @@ function PoorItemSetting() {
     itemType,
     itemImage,
     itemName,
+    itemPrice,
   }: {
     itemState: string | null;
     itemType: string | null;
     itemImage: string;
     itemName: string;
+    itemPrice: number;
   }) => {
     const regex = /\/([^/]+)\.svg$/;
     const match = itemImage.match(regex);
@@ -128,6 +131,7 @@ function PoorItemSetting() {
         itemImage,
         itemType: itemType !== null ? itemType : 'top',
       });
+      setPoint(point - itemPrice);
       // state가 DONE일 경우엔 옷 입기
     } else if (itemState === 'DONE') {
       poorItemMutation.mutate({
@@ -226,6 +230,7 @@ function PoorItemSetting() {
                         itemType: item.itemType,
                         itemImage: item.itemImage,
                         itemName: item.itemName,
+                        itemPrice: item.itemPrice,
                       })
                     }
                   >
@@ -284,6 +289,7 @@ function PoorItemSetting() {
                         itemType: item.itemType,
                         itemImage: item.itemImage,
                         itemName: item.itemName,
+                        itemPrice: item.itemPrice,
                       })
                     }
                   >
@@ -342,6 +348,7 @@ function PoorItemSetting() {
                         itemType: item.itemType,
                         itemImage: item.itemImage,
                         itemName: item.itemName,
+                        itemPrice: item.itemPrice,
                       })
                     }
                   >
@@ -398,6 +405,7 @@ function PoorItemSetting() {
                         itemType: item.itemType,
                         itemImage: item.itemImage,
                         itemName: item.itemName,
+                        itemPrice: item.itemPrice,
                       })
                     }
                   >
@@ -456,6 +464,7 @@ function PoorItemSetting() {
                         itemType: item.itemType,
                         itemImage: item.itemImage,
                         itemName: item.itemName,
+                        itemPrice: item.itemPrice,
                       })
                     }
                   >
@@ -488,7 +497,7 @@ function PoorItemSetting() {
               </div>
               <p>{purchaseItem.itemName}</p>
             </div>
-            <p>잔여 포인트 : {myPoorInfoData.point}p</p>
+            <p>잔여 포인트 : {point}p</p>
             <Button className="common" onClick={() => setIsModalOpen(false)}>
               확인
             </Button>

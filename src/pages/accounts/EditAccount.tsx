@@ -35,7 +35,7 @@ function EditAccount(): JSX.Element {
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
-    navigate('-1');
+    navigate(-1);
   };
 
   // 이전 컴포넌트에서 불러온 수정 전 data
