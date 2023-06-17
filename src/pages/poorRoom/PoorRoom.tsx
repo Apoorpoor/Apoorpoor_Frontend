@@ -9,7 +9,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from 'react-query';
-import { BsFillCaretRightFill } from 'react-icons/bs';
+import { BsFillCaretRightFill, BsPenFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
@@ -100,6 +100,10 @@ function PoorRoom() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorInfo]);
+
+  const modifyNickname = () => {
+    
+  }
 
   // =================================================================
   // *** PoorRoom Point Inquiry Query ********************************
@@ -248,7 +252,12 @@ function PoorRoom() {
             <PoorCharacter avatarType="poorRoom" />
           </div>
           <LevelMedal level={data?.level as number} />
-          <h2 className="nickname">{data?.nickname}</h2>
+          <h2 className="nickname">
+            {data?.nickname}{' '}
+            <Button className='icon' onClick={() => navigate(-1)}>
+              <BsPenFill style={{ color: '#d8d8d8', fontSize: '14px' }} />
+            </Button>
+          </h2>
           <p className="info">
             {data?.gender === 'female' ? '여' : '남'} / {data?.age}
             <Button

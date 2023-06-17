@@ -46,6 +46,9 @@ dl {
 }
 
 @media (max-width: 1366px) {
+  html, body{
+    font-size: 14px;
+  }
   #portal{
     width:100%;
   }
