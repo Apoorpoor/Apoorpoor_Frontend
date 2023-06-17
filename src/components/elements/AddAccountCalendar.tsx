@@ -33,7 +33,6 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
   // 작성 젼, 선택한 날짜
   const mainDate = useRecoilValue(mainDateState);
   const mainDates = useMemo(() => new Date(mainDate), [mainDate]);
-  console.log('선택날짜!!!', mainDates);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(mainDates);
   console.log('selectedDate:::', selectedDate);
