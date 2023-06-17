@@ -190,9 +190,6 @@ function Account(): JSX.Element {
     setTerm(updatedTerm);
   };
 
-  const [currentTerm] = term.filter((e) => e.selected === true);
-  console.log('현재선택:', currentTerm?.name);
-
   // 하단 사용내역 카테고리 셀렉트 박스
   const [selectedInExFilter, setSelectedInExFilter] = useState('전체');
 
@@ -499,11 +496,11 @@ function Account(): JSX.Element {
     data: LedgerHistoryResponseDto[]
   ): Record<string, LedgerHistoryResponseDto[]> => {
     const sortedData = [...data].sort((a, b) => {
-      // 날짜를 비교하여 오름차순으로 정렬
-      if (a.date < b.date) {
+      // 날짜를 비교하여 내림차순으로 정렬
+      if (a.date > b.date) {
         return -1;
       }
-      if (a.date > b.date) {
+      if (a.date < b.date) {
         return 1;
       }
       return 0;
