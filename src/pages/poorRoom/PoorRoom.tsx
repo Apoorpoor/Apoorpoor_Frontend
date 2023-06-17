@@ -44,6 +44,7 @@ function PoorRoom() {
   const queryClient = useQueryClient();
   const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
   const BadgeListState = useRecoilValue(BadgeState);
+  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
   const [scrollPosition, setScrollPosition] = useRecoilState(
     containerPositionState
   );
@@ -119,6 +120,12 @@ function PoorRoom() {
 
   // 닉네임 수정
 
+  // 뱃지 모달
+  const handleBadgeClick = (badge: Badge) => {
+    setIsModalOpen(!isModalOpen);
+    setSelectedBadge(badge);
+  };
+
   // =================================================================
   // *** PoorRoom Point Inquiry Query ********************************
   // =================================================================
@@ -144,7 +151,7 @@ function PoorRoom() {
     () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
 
-  console.log('PointData', PointData);
+  // console.log('PointData', PointData);
 
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
@@ -238,7 +245,7 @@ function PoorRoom() {
   // 스크롤 이벤트
   const [radarChartSection, setRadarChartSection] = useState(false);
   const [lineChartSection, setLineChartSection] = useState(false);
-  console.log(scrollPosition);
+  // console.log(scrollPosition);
   useEffect(() => {
     if (scrollPosition > 180) {
       setRadarChartSection(true);
@@ -334,7 +341,15 @@ function PoorRoom() {
               arrows={false}
             >
               {data?.badgeList.slice(0, 5).map((item) => (
-                <div key={item.badgeTitle} className="item">
+                <div
+                  key={item.badgeTitle}
+                  className="item"
+                  onClick={() => handleBadgeClick(item)}
+                  onKeyDown={() => handleBadgeClick(item)}
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+                  role="button"
+                  tabIndex={0}
+                >
                   <img src={item.badgeImage} alt={item.badgeTitle} />
                   <p>{item.badgeTitle}</p>
                 </div>
@@ -507,7 +522,7 @@ function PoorRoom() {
                 </nav>
                 <ul className="detailOfPointList">
                   {pointInquiryList?.map((list) => (
-                    <li key={list.createdAt}>
+                    <li key={list.point_id}>
                       <p className="title">
                         {list.pointDescription}{' '}
                         <span>
@@ -583,6 +598,29 @@ function PoorRoom() {
                 수정
               </Button>
             </div>
+          </div>
+
+          <div className={`modal badge ${isModalOpen ? 'active' : ''}`}>
+            <div className="badge">
+              <div>
+                <img
+                  src={selectedBadge?.badgeImage}
+                  alt={selectedBadge?.badgeTitle}
+                />
+              </div>
+              <p>{selectedBadge?.badgeTitle}</p>
+            </div>
+            <p>
+              <span>ex.</span>
+              {
+                BadgeListState.find(
+                  (badge) => badge.name === selectedBadge?.badgeTitle
+                )?.description
+              }
+            </p>
+            <Button className="common" onClick={() => navigate('/Account')}>
+              가계부 작성하기
+            </Button>
           </div>
         </div>
       </Portal>

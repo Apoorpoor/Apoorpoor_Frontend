@@ -22,6 +22,7 @@ function BadgeList() {
   };
 
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [selectedClassName, setSelectedClassName] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const BadgeListState = useRecoilValue(BadgeState);
 
@@ -68,14 +69,23 @@ function BadgeList() {
     title: string;
     name: string;
     description: string;
+    n_description: string;
   };
 
   const handleBadgeClick = (badge: Badge) => {
     setIsModalOpen(!isModalOpen);
     setSelectedBadge(badge);
+    const className = data?.badgeList.some(
+      (item) => item.badgeTitle === badge.name
+    )
+      ? 'have'
+      : 'dontHave';
+    setSelectedClassName(className);
   };
 
-  console.log(data?.badgeList);
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const previousMonth = (currentMonth === 0 ? 11 : currentMonth - 1) + 1;
 
   return (
     <main id="BadgeList">
@@ -132,7 +142,10 @@ function BadgeList() {
             </div>
             <p>
               <span>ex.</span>
-              {selectedBadge?.description}
+              {selectedBadge &&
+                (selectedClassName === 'have'
+                  ? `${previousMonth}월 ${selectedBadge.description}`
+                  : selectedBadge.n_description)}
             </p>
             <Button className="common" onClick={() => navigate('/Account')}>
               가계부 작성하기
