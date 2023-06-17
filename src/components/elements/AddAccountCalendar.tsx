@@ -34,7 +34,14 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
   const mainDate = useRecoilValue(mainDateState);
   const mainDates = useMemo(() => new Date(mainDate), [mainDate]);
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(mainDates);
+  // Date 객체의 유효성을 검사하는 함수
+  const isValidDate = (date: Date): boolean =>
+    date instanceof Date && !Number.isNaN(date.getTime());
+
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    isValidDate(mainDates) ? mainDates : null
+  );
+
   console.log('selectedDate:::', selectedDate);
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 

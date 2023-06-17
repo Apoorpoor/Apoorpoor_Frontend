@@ -25,7 +25,7 @@ function Error() {
         <img src={error} alt="에러이미지" />
       </div>
       <div>
-        <Button className="textType" onClick={() => navigate('/account')}>
+        <Button className="textType" onClick={() => navigate('/')}>
           자산탭 바로가기
         </Button>
         <Button className="common" onClick={handleRefresh}>
