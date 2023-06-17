@@ -10,7 +10,7 @@ import NumberAnimation from '../../components/elements/NumberAnimation';
 import { Button } from '../../components';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
-import mypageicons from '../../static/image/ui/mypageicon.png';
+import poorImg from '../../static/image/main/mainPoor.png';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -113,14 +113,16 @@ function Main(): JSX.Element {
 
       <div className="background">
         <div className="title">
-          <div>
-            <p>내 가계부</p>
-            <h1>
-              <NumberAnimation targetNumber={calculateTotalBalance()} />원
-            </h1>
-          </div>
+          <p>내 가계부</p>
+          <h1>
+            <NumberAnimation targetNumber={calculateTotalBalance()} />원
+          </h1>
+        </div>
+
+        <div className="goPoorRoomBox">
           <button type="button" onClick={() => navigate('/poorRoom')}>
-            <img src={mypageicons} alt="마이페이지" style={{ width: '48px' }} />
+            <p>푸어 키우기</p>
+            <img src={poorImg} alt="poorImg" />
           </button>
         </div>
 

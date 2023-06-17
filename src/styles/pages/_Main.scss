@@ -8,20 +8,46 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 100px;
-  .title {
+
+  & .title {
     margin-top: 50px;
     margin-bottom: 20px;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    // display: flex;
+    // justify-content: space-between;
+    & > p {
+      font-weight: 700;
+    }
+    & > h1 {
+      color: #4194f1;
+    }
   }
 
-  .title p {
-    font-weight: 700;
-  }
+  & .goPoorRoomBox {
+    width: 100%;
+    height: 124px;
+    margin-bottom: 20px;
 
-  .title h1 {
-    color: #4194f1;
+    & > button {
+      display: flex;
+      justify-content: space-between;
+      background-color: $secondary;
+      box-sizing: border-box;
+      padding-left: 14px;
+      padding-right: 20px;
+      padding-top: 13px;
+      width: 100%;
+      height: 124px;
+      overflow: hidden;
+
+      & > p {
+        font-size: 14px;
+      }
+      & > img {
+        width: 122px;
+        margin-top: 8px;
+      }
+    }
   }
 }
 
