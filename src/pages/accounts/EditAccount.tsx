@@ -452,7 +452,7 @@ function EditAccount(): JSX.Element {
             >
               {' '}
             </label>
-            {showWarning ? (
+            {showWarning || priceError ? (
               <div className="warningBox">
                 <RiErrorWarningFill className="warningIcon" />
                 <p className="warningMsg">100원 이상 등록해주세요</p>
@@ -576,11 +576,15 @@ function EditAccount(): JSX.Element {
           )}
 
           <button
-            className="addAccountDoneBtn"
+            className={
+              priceError || titleError || dateError || payError || categoryError
+                ? 'errAddAccountDoneBtn'
+                : 'addAccountDoneBtn'
+            }
             type="button"
             onClick={handleEdit}
           >
-            등록하기
+            수정하기
           </button>
         </div>
       </div>

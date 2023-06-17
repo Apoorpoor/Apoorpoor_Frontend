@@ -90,20 +90,27 @@
   .errorMessage {
     margin-top: 110px;
     width: 100%;
-    height: 32px;
-    background-color: $systemError;
-    color: white;
-    font-weight: 700;
+    height: 17px;
+    color: $primary;
+    font-size: 14px;
     text-align: center;
-    line-height: 32px;
   }
   .addAccountDoneBtn {
-    margin-top: 10px;
+    margin-top: 20px;
     width: 100%;
     height: 56px;
     border-radius: 12px;
     background-color: $primary;
     color: white;
+  }
+  .errAddAccountDoneBtn {
+    margin-top: 20px;
+    width: 100%;
+    height: 56px;
+    border-radius: 12px;
+    background-color: $primaryL-600;
+    color: white;
+    cursor: default;
   }
 }
 

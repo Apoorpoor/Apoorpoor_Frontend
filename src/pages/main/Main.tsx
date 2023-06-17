@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Main.scss';
-import { FaPlus } from 'react-icons/fa';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
 import MainDelModal from '../../components/elements/MainDelModal';
 import NumberAnimation from '../../components/elements/NumberAnimation';
-import { Button } from '../../components';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
-import mypageicons from '../../static/image/ui/mypageicon.png';
+import poorImg from '../../static/image/main/mainPoor.png';
+import plusBtn from '../../static/image/main/plusBtn.png';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -32,6 +31,8 @@ function Main(): JSX.Element {
 
   const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
     useQuery('getAccountList', accounts.getAccountList);
+
+  console.log('메인데이터!!!', data);
 
   // 가계부 생성
   const addAccountMutation = useMutation(
@@ -78,6 +79,13 @@ function Main(): JSX.Element {
     navigate(`/account/${accountId}`);
   };
 
+  // 내역 추가 버튼
+  const goAddAccount = () => {
+    if (Array.isArray(data)) {
+      const account = data[0]; // 예시로 배열의 첫 번째 요소를 사용
+      navigate(`addAccount/${account.id}`);
+    }
+  };
   // 가계부 삭제 모달창 상태 관리
   const [delModal, setDelModal] = useState<string | null>(null);
   // 모달 오픈/클로즈 애니메이션
@@ -113,21 +121,23 @@ function Main(): JSX.Element {
 
       <div className="background">
         <div className="title">
-          <div>
-            <p>내 가계부</p>
-            <h1>
-              <NumberAnimation targetNumber={calculateTotalBalance()} />원
-            </h1>
-          </div>
+          <p>내 가계부</p>
+          <h1>
+            <NumberAnimation targetNumber={calculateTotalBalance()} />원
+          </h1>
+        </div>
+
+        <div className="goPoorRoomBox">
           <button type="button" onClick={() => navigate('/poorRoom')}>
-            <img src={mypageicons} alt="마이페이지" style={{ width: '48px' }} />
+            <p>푸어 키우기</p>
+            <img src={poorImg} alt="poorImg" />
           </button>
         </div>
 
         <div className="accountList">
-          <p>
+          {/* <p>
             가계부 <span>{data?.length}</span>
-          </p>
+          </p> */}
           {data?.map((item) => {
             if (!item) {
               return '';
@@ -168,12 +178,19 @@ function Main(): JSX.Element {
           })}
         </div>
 
-        <Button className="addAccountBtn" onClick={handleAddAccount}>
-          가계부 추가
-          <div className="addAccountPlusBtn">
-            <FaPlus />
-          </div>
-        </Button>
+        <div className="onClickBox">
+          {data?.length === 0 ? (
+            <button type="button" onClick={handleAddAccount}>
+              가계부 추가
+              <img src={plusBtn} alt="plusBtn" />
+            </button>
+          ) : (
+            <button type="button" onClick={goAddAccount}>
+              내역 추가
+              <img src={plusBtn} alt="plusBtn" />
+            </button>
+          )}
+        </div>
       </div>
     </>
   );

@@ -8,20 +8,73 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 100px;
-  .title {
+
+  & .title {
     margin-top: 50px;
     margin-bottom: 20px;
     width: 100%;
+    & > p {
+      font-weight: 700;
+    }
+    & > h1 {
+      color: #4194f1;
+    }
+  }
+
+  & .goPoorRoomBox {
+    width: 100%;
+    height: 124px;
+    margin-bottom: 20px;
+
+    & > button {
+      display: flex;
+      justify-content: space-between;
+      background-color: $secondary;
+      box-sizing: border-box;
+      padding-left: 14px;
+      padding-right: 20px;
+      padding-top: 13px;
+      width: 100%;
+      height: 124px;
+      overflow: hidden;
+
+      & > p {
+        font-size: 14px;
+      }
+      & > img {
+        width: 122px;
+        margin-top: 8px;
+      }
+    }
+  }
+
+  & .onClickBox {
     display: flex;
-    justify-content: space-between;
-  }
+    align-items: center;
+    // justify-content: space-between;
+    width: 100%;
+    height: 64px;
 
-  .title p {
-    font-weight: 700;
-  }
+    & > div {
+      width: 20px;
+      height: 64px;
+    }
 
-  .title h1 {
-    color: #4194f1;
+    & > button {
+      width: 100%;
+      height: 64px;
+      font-size: 16px;
+      border-radius: 12px;
+      background-color: $gray-150;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $gray-450;
+      & > img {
+        width: 28px;
+        margin-left: 8px;
+      }
+    }
   }
 }
 
@@ -42,7 +95,7 @@
   background-color: $gray-150;
   border-radius: 12px;
   box-sizing: border-box;
-  padding: 20px 30px;
+  padding: 20px 12px;
   margin-bottom: 20px;
   & > p {
     margin-bottom: 15px;
