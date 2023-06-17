@@ -3,6 +3,7 @@ import moment, { Moment } from 'moment';
 import { QueryObserverResult, UseQueryResult, useQuery } from 'react-query';
 import '../../styles/components/_Calender.scss';
 import { useParams } from 'react-router';
+import { isAfter } from 'date-fns';
 import CalendarModal from './CalendarModal';
 import accounts from '../../api/accounts';
 
@@ -56,10 +57,17 @@ function Calendar({
   // 모달 오픈/클로즈 애니메이션
   const [modalAnimation, setModalAnimation] = useState('');
 
+  // const calendarModalOpen = (date: string): void => {
+  //   setSelectedDate(date);
+  //   setCalendarModal(true);
+  //   setModalAnimation('modalAnimation');
+  // };
   const calendarModalOpen = (date: string): void => {
-    setSelectedDate(date);
-    setCalendarModal(true);
-    setModalAnimation('modalAnimation');
+    if (!isAfter(new Date(date), new Date())) {
+      setSelectedDate(date);
+      setCalendarModal(true);
+      setModalAnimation('modalAnimation');
+    }
   };
 
   const firstWeek = today.clone().startOf('month').week();
