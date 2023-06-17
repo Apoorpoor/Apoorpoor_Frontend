@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import { BsChevronLeft, BsChevronRight, BsXLg } from 'react-icons/bs';
 import { ko } from 'date-fns/esm/locale';
@@ -6,6 +6,8 @@ import '../../styles/pages/_AddAccount.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../styles/components/react-datePicker.css';
 import { getYear, getMonth, getDate } from 'date-fns';
+import { useRecoilValue } from 'recoil';
+import { mainDateState } from '../../shared/Atom';
 
 // AddAccount.tsx에서 전달받은 props
 interface AddAccountCalendarProps {
@@ -28,8 +30,13 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
     '12월',
   ];
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // 작성 젼, 선택한 날짜
+  const mainDate = useRecoilValue(mainDateState);
+  const mainDates = useMemo(() => new Date(mainDate), [mainDate]);
+  console.log('선택날짜!!!', mainDates);
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(mainDates);
+  console.log('selectedDate:::', selectedDate);
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
   // 캘린더 열고 닫는 상태 관리
@@ -63,6 +70,12 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
       setOnDateChange(formattedDate);
     }
   }, [currentDate, setOnDateChange]);
+
+  useEffect(() => {
+    if (!currentDate) {
+      setCurrentDate(mainDates);
+    }
+  }, [currentDate, mainDates]);
 
   return (
     <DatePicker

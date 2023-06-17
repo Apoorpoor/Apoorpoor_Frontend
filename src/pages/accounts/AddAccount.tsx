@@ -376,12 +376,18 @@ function AddAccount(): JSX.Element {
 
   console.log(
     '에러:::',
+    '금액:',
     priceError,
+    '내용:',
     titleError,
+    '날짜:',
     dateError,
+    '결제수단:',
     payError,
+    '카테고리:',
     categoryError
   );
+  console.log('날짜!!!!', date);
 
   const handleRegister = async () => {
     try {

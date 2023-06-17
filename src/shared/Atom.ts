@@ -23,6 +23,12 @@ export const pointState: RecoilState<string> = atom<string>({
   default: '',
 });
 
+// 가계부 캘린더 선택 날짜
+export const mainDateState: RecoilState<string> = atom<string>({
+  key: 'mainDateState',
+  default: '',
+});
+
 export const accountIdState: RecoilState<string> = atom<string>({
   key: 'accountIdState',
   default: '',
