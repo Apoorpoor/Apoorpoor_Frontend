@@ -54,9 +54,10 @@
     width: 50%;
     max-width: 170px;
     height: 200px;
+    opacity: 0.5;
     // margin-left: 20px;
     &:hover {
-      border: 3px solid #4194f1;
+      border: 3px solid $gray-350;
     }
   }
   .genderButton2 {

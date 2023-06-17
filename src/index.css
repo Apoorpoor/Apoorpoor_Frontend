@@ -27,7 +27,7 @@ button {
   cursor: pointer;
   border: none;
   background-color: transparent;
-  color:#333;
+  color: #333;
 }
 ol,
 ul,
@@ -37,12 +37,12 @@ dl {
   margin: 0;
 }
 
-#portal{
-  width:430px;
+#portal {
+  width: 430px;
   margin: 0 auto;
 }
-.modalbg{
-  width:430px;
+.modalbg {
+  width: 430px;
 }
 
 @media (max-width: 1366px) {
@@ -52,7 +52,7 @@ dl {
   #portal{
     width:100%;
   }
-  .modalbg{
-    width:100%;
+  .modalbg {
+    width: 100%;
   }
 }

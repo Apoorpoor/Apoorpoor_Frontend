@@ -253,17 +253,22 @@ function PoorTalk(): JSX.Element {
                             />
                           </div>
                         ) : (
-                          <div>{message.message}</div>
+                          <div>{message.message}
+                            <button
+                              type="button"
+                              className={`yourChatProfile${message.userId}`}
+                              onClick={() => usersProfileHandler(message.userId)}
+                            >
+                              {message.level}
+                            </button></div>
                         )}
                       </div>
                       <div className="nowTime1">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   ) : (
@@ -292,12 +297,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   )}
