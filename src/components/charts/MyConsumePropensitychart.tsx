@@ -111,7 +111,7 @@ function MyConsumePropensitychart() {
         return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
     }
   };
-  if (data === undefined || data.length < 6) {
+  if (data === undefined || data.length === 0) {
     return (
       <div className="dataNone">
         <p>가계부를 작성하고 소비성향을 확인해보세요!</p>

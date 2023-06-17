@@ -62,8 +62,21 @@ const getMyPointInquiry = async ({
   page: number;
 }) => {
   try {
-    const response = await instance.get(`/point?dateType=${dateType}&kind=${kind}&page=${page}&size=10`);
+    const response = await instance.get(
+      `/point?dateType=${dateType}&kind=${kind}&page=${page}&size=10`
+    );
     return response.data.content;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// 거지 닉네임 수정
+const patchPoorNickname = async (nickname: string) => {
+  try {
+    const response = await instance.patch('/beggar', nickname);
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;
@@ -76,4 +89,5 @@ export default {
   patchPoorItem,
   patchBuyPoorItem,
   getMyPointInquiry,
+  patchPoorNickname,
 };

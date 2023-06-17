@@ -47,7 +47,7 @@ function RecentMyConsumechart() {
     return <Error />;
   }
 
-  if (data === undefined || data.length < 6) {
+  if (data === undefined || data.length === 0) {
     return (
       <div className="dataNone">
         <p>가계부를 작성하고 소비근황을 확인해보세요!</p>

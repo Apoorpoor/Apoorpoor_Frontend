@@ -9,7 +9,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from 'react-query';
-import { BsFillCaretRightFill } from 'react-icons/bs';
+import { BsFillCaretRightFill, BsPenFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
@@ -101,6 +101,10 @@ function PoorRoom() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorInfo]);
 
+  const modifyNickname = () => {
+    
+  }
+
   // =================================================================
   // *** PoorRoom Point Inquiry Query ********************************
   // =================================================================
@@ -125,6 +129,8 @@ function PoorRoom() {
     ['getMyPointInquiry', { dateType, kind, page }],
     () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
+
+  console.log('PointData', PointData);
 
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
@@ -168,18 +174,21 @@ function PoorRoom() {
     // 전체
     if (index === 0) {
       setPointInquiryList(PointData || []);
+      setKind('total');
       // 적립
     } else if (index === 1) {
       const filteredList = PointData?.filter(
         (item) => item.usedPoints === null || item.usedPoints === 0
       );
       setPointInquiryList(filteredList || []);
+      setKind('use');
       // 사용
     } else {
       const filteredList = PointData?.filter(
         (item) => item.usedPoints !== null && item.usedPoints > 0
       );
       setPointInquiryList(filteredList || []);
+      setKind('earn');
     }
   };
 
@@ -243,7 +252,12 @@ function PoorRoom() {
             <PoorCharacter avatarType="poorRoom" />
           </div>
           <LevelMedal level={data?.level as number} />
-          <h2 className="nickname">{data?.nickname}</h2>
+          <h2 className="nickname">
+            {data?.nickname}{' '}
+            <Button className='icon' onClick={() => navigate(-1)}>
+              <BsPenFill style={{ color: '#d8d8d8', fontSize: '14px' }} />
+            </Button>
+          </h2>
           <p className="info">
             {data?.gender === 'female' ? '여' : '남'} / {data?.age}
             <Button

@@ -46,8 +46,11 @@ dl {
 }
 
 @media (max-width: 1366px) {
-  #portal {
-    width: 100%;
+  html, body{
+    font-size: 14px;
+  }
+  #portal{
+    width:100%;
   }
   .modalbg {
     width: 100%;

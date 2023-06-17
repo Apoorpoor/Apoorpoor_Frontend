@@ -98,7 +98,7 @@ function PoorItemSetting() {
   if (error && myPoorInfoError) {
     return <Error />;
   }
-  console.log(data);
+  // console.log(data);
 
   const tabMenuHandler = (category: string) => {
     setSelectedItem(category);
