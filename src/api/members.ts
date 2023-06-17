@@ -49,6 +49,7 @@ const firstLogin = async () => {
     throw err;
   }
 };
+
 const getUser = async () => {
   // 토큰
   const token = localStorage.getItem('AToken');
