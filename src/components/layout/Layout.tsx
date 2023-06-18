@@ -3,6 +3,7 @@
 import React, { ReactNode, useState, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import containerPositionState from '../../shared/ScrollContainer';
+import scrollMoveDirection from '../../shared/ScrollMoveDirection';
 import '../../styles/components/_Layout.scss';
 import Controller from './Controller';
 
@@ -16,6 +17,8 @@ function Layout({ children }: ChildrenType) {
   const [scrollPosition, setScrollPosition] = useRecoilState(
     containerPositionState
   );
+  const [scollMoveDirection, setSrollMoveDirection] =
+    useRecoilState(scrollMoveDirection);
   const [throttle, setThrottle] = useState(false);
 
   useEffect(() => {
@@ -25,9 +28,16 @@ function Layout({ children }: ChildrenType) {
         setThrottle(true);
         setTimeout(async () => {
           const position = containerRef.current?.scrollTop || 0;
+          const scrollChange = position - scrollPosition;
+          // 컨트롤러 위치 조정
+          if (scrollChange > 0) {
+            setSrollMoveDirection('bottom');
+          } else {
+            setSrollMoveDirection('top');
+          }
           setScrollPosition(position);
           setThrottle(false);
-        }, 800);
+        }, 500);
       }
     };
 

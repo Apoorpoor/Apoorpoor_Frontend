@@ -2,8 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/components/_Controller.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import scrollMoveDirection from '../../shared/ScrollMoveDirection';
 
 function Controller() {
+  const scollMoveDirection = useRecoilValue(scrollMoveDirection);
   const navigate = useNavigate();
   const location = useLocation();
   const page = location.pathname;
@@ -79,7 +82,11 @@ function Controller() {
   }
 
   return (
-    <div className="controller">
+    <div
+      className={`controller ${
+        scollMoveDirection === 'top' ? 'top' : 'bottom'
+      }`}
+    >
       <div className="controllerRale">
         <button
           type="button"

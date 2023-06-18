@@ -44,3 +44,27 @@
     transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 }
+
+@keyframes slideIn {
+  from {
+    bottom: -120px;
+  }
+  to {
+    bottom: 40px;
+  }
+}
+@keyframes slideOut {
+  from {
+    bottom: 40px;
+  }
+  to {
+    bottom: -120px;
+  }
+}
+.controller.top {
+  animation: slideIn 0.3s ease-out  forwards;
+}
+
+.controller.bottom {
+  animation: slideOut 0.3s ease-out  forwards;
+}
