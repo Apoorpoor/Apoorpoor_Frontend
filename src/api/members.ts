@@ -8,6 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import instance from './instance';
 
+interface ErrorType extends Error {
+  response: {
+    data: {
+      message: string;
+      code: number;
+    };
+    status: number;
+  };
+}
+
 // 닉네임 전체 조회
 const getNicknameCheck = async () => {
   try {
@@ -20,13 +30,13 @@ const getNicknameCheck = async () => {
 };
 
 // 닉네임 중복, 욕설 테스트
-const checkNicknameValidation = async (nickname: string): Promise<void> => {
+const checkNicknameValidation = async (nickname: string): Promise<any> => {
   try {
     const response = await instance.get(`/beggar/check/${nickname}`);
-    return response.data;
+    return response;
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log((error as ErrorType).response);
+    return (error as ErrorType).response.status;
   }
 };
 
@@ -39,6 +49,32 @@ const postNickname = async (nickname: string): Promise<void> => {
     return response.data;
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+};
+
+// 나이 등록하기
+const putAge = async (age: string): Promise<void> => {
+  try {
+    const response = await instance.post(`/user/age`, {
+      age,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`나이입력  API 오류 발생: ${error}`);
+    throw error;
+  }
+};
+
+// 성별 등록하기
+const putGender = async (gender: string): Promise<void> => {
+  try {
+    const response = await instance.post(`/user/gender`, {
+      gender,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`성별입력  API 오류 발생: ${error}`);
     throw error;
   }
 };
@@ -105,5 +141,7 @@ export {
   getUser,
   getUsersProfile,
   postNickname,
+  putAge,
+  putGender,
   checkNicknameValidation,
 };

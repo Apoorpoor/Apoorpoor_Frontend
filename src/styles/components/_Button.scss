@@ -118,3 +118,7 @@ button {
     cursor: default;
   }
 }
+button:disabled {
+  background-color: $gray-500 !important;
+  color: $gray-150;
+}

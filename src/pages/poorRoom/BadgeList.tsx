@@ -24,6 +24,7 @@ function BadgeList() {
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
   const [selectedClassName, setSelectedClassName] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [badgeModal, setBadgeModal] = useState(false);
   const BadgeListState = useRecoilValue(BadgeState);
 
   // 마이푸어룸 데이터 불러오기
@@ -81,6 +82,7 @@ function BadgeList() {
       ? 'have'
       : 'dontHave';
     setSelectedClassName(className);
+    setBadgeModal(true);
   };
 
   const currentDate = new Date();
@@ -130,7 +132,11 @@ function BadgeList() {
           role="button"
           tabIndex={0}
         >
-          <div className={`modal badge ${isModalOpen ? 'active' : ''}`}>
+          <div
+            className={`modal badge ${isModalOpen ? 'active' : ''} ${
+              badgeModal === true ? 'show' : ''
+            }`}
+          >
             <div className="badge">
               <div>
                 <img

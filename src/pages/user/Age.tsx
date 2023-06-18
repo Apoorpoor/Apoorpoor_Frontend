@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
@@ -6,17 +7,12 @@ import { Input } from '../../components/index';
 import inputState from '../../shared/Atom';
 import '../../styles/pages/_Age.scss';
 import instance from '../../api/instance';
+import { UserAge } from '../../shared/JoinUserInfo';
 
 function Age() {
   const [inputValue, setInputValue] = useRecoilState(inputState);
-  // const [modalOpen, setModalOpen] = useState(false);
+  const [userAge, setUserAge] = useRecoilState(UserAge);
   const [nextButton, setNextButton] = useState(false);
-
-  const token = localStorage.getItem('AToken');
-
-  // const modalHandler = () => {
-  //   setModalOpen(!modalOpen);
-  // };
 
   const navigate = useNavigate();
 
@@ -52,26 +48,7 @@ function Age() {
   //   const value = inputValue.slice(0, -1);
   //   setInputValue(value);
   // };
-  const onNextClickButton = async () => {
-    try {
-      const response = await instance.put(
-        `/user/age`,
-        {
-          age: inputValue,
-        },
-        {
-          headers: {
-            ACCESS_KEY: `Bearer ${token}`,
-          },
-        }
-      );
-      navigate('/gender');
-      return response.data;
-    } catch (err) {
-      console.log(`나이입력  API 오류 발생: ${err}`);
-      throw err;
-    }
-  };
+  
   return (
     <main className="AgePage">
       <div className="between">
@@ -93,8 +70,9 @@ function Age() {
             />
             <label
               htmlFor="nicknameInput"
-              className={`nicknameLabel ${inputValue.length > 0 ? 'active' : ''
-                }`}
+              className={`nicknameLabel ${
+                inputValue.length > 0 ? 'active' : ''
+              }`}
             >
               나이
             </label>
@@ -106,8 +84,9 @@ function Age() {
             </label>
             <label
               htmlFor="nicknameInput"
-              className={`nicknameValidationAlert ${inputValue.length > 0 ? 'active' : ''
-                }`}
+              className={`nicknameValidationAlert ${
+                inputValue.length > 0 ? 'active' : ''
+              }`}
             >
               {/* ※ 욕설 및 성희롱을 연상하게 하는 이름은 쓸 수 없어요. */}
             </label>
@@ -115,114 +94,18 @@ function Age() {
         </article>
       </div>
       <div>
-        {nextButton ? (
-          <button className="common" type="button" onClick={onNextClickButton}>
-            다음
-          </button>
-        ) : (
-          <button
-            className="common"
-            type="button"
-            onClick={() => alert('나이를 입력해주세요')}
-          >
-            다음
-          </button>
-        )}
-
-        {/* {modalOpen ? (
-          <div className="ageNumberBox">
-            <div className="ageNumberBoxs">
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('1')}
-              >
-                1
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('2')}
-              >
-                2
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('3')}
-              >
-                3
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('4')}
-              >
-                4
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('5')}
-              >
-                5
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('6')}
-              >
-                6
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('7')}
-              >
-                7
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('8')}
-              >
-                8
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('9')}
-              >
-                9
-              </button>
-              <button
-                className="ageNumber2"
-                type="button"
-                onClick={modalHandler}
-              >
-                .
-              </button>
-              <button
-                className="ageNumber"
-                type="button"
-                onClick={() => ageButtonHandler('0')}
-              >
-                0
-              </button>
-              <button
-                className="ageNumber2"
-                type="button"
-                onClick={() => ageRemoveButtonHandler()}
-              >
-                지우기
-              </button>
-            </div>
-          </div>
-        ) : (
-          <button className="ageNumber3" type="button" onClick={modalHandler}>
-            .
-          </button>
-        )} */}
+        <button
+          className="common"
+          disabled={nextButton === false}
+          type="button"
+          onClick={() => {
+            navigate('/gender')
+            setUserAge(inputValue);
+            setInputValue('');
+          }}
+        >
+          다음
+        </button>
       </div>
     </main>
   );

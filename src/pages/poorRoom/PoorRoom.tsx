@@ -37,6 +37,7 @@ import badgeDefault02 from '../../static/image/ui/badge_disabled_02.png';
 import badgeDefault03 from '../../static/image/ui/badge_disabled_03.png';
 import Portal from '../../shared/Portal';
 import inputState from '../../shared/Atom';
+import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
 
 function PoorRoom() {
   // PoorRoom Hooks & State
@@ -50,6 +51,7 @@ function PoorRoom() {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modifyNicknameModal, setModifyNicknameModal] = useState(false);
+  const [badgeModal, setBadgeModal] = useState(false);
   const [inputValue, setInputValue] = useRecoilState(inputState);
 
   // Header 이전 버튼
@@ -111,7 +113,7 @@ function PoorRoom() {
   // 닉네임 수정 모달 핸들러
   const modifyModalOpen = () => {
     setIsModalOpen(!isModalOpen);
-    setModifyNicknameModal(!modifyNicknameModal);
+    setModifyNicknameModal(true);
   };
 
   const changeInput = () => {};
@@ -124,6 +126,7 @@ function PoorRoom() {
   const handleBadgeClick = (badge: Badge) => {
     setIsModalOpen(!isModalOpen);
     setSelectedBadge(badge);
+    setBadgeModal(true);
   };
 
   // =================================================================
@@ -565,25 +568,35 @@ function PoorRoom() {
       <Portal>
         <div
           className={`modalbg ${isModalOpen ? 'active' : ''}`}
-          onClick={() => setIsModalOpen(!isModalOpen)}
-          onKeyDown={() => setIsModalOpen(!isModalOpen)}
+          onClick={(e) => {
+            setIsModalOpen(false);
+            setModifyNicknameModal(false);
+            setBadgeModal(false);
+          }}
+          onKeyDown={(e) => {
+            setIsModalOpen(false);
+            setModifyNicknameModal(false);
+            setBadgeModal(false);
+          }}
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
           role="button"
           tabIndex={0}
         >
+          {/* 닉네임 모달 */}
           <div
             className={`modal modifyNickname ${
               modifyNicknameModal === true ? 'show' : ''
             }`}
+            onClick={(e) => {
+              e.stopPropagation(); // 이벤트 전파를 막습니다.
+            }}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+            }}
+            role="button"
+            tabIndex={0}
           >
-            <Input
-              value={inputValue}
-              id="modify"
-              placeholder=""
-              className="modifyNicknameInput"
-              onChange={changeInput}
-            />
-            <p>유효성 검사 테스트</p>
+            <NicknamedbCheck />
             <div className="buttonWrap">
               <Button
                 className="grayBotton"
@@ -600,7 +613,12 @@ function PoorRoom() {
             </div>
           </div>
 
-          <div className={`modal badge ${isModalOpen ? 'active' : ''}`}>
+          {/* 뱃지 모달 */}
+          <div
+            className={`modal badge ${isModalOpen ? 'active' : ''} ${
+              badgeModal === true ? 'show' : ''
+            }`}
+          >
             <div className="badge">
               <div>
                 <img
