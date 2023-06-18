@@ -369,7 +369,7 @@ function PoorRoom() {
           <div
             style={{
               width: lineChartSection === true ? '100%' : '60%',
-              height: '400px',
+              height: '500px',
               margin: '0 auto',
             }}
           >

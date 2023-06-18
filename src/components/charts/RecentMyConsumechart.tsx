@@ -5,6 +5,48 @@ import getRecentMyConsume from '../../api/charts/RecentMyConsumechart';
 import lineDefaultImg from '../../static/image/ui/lineChart_default.png';
 import { Error, Loading } from '../../pages';
 
+type ExpenditureData = {
+  month: string;
+  expenditure_sum: number;
+};
+
+type IncomeData = {
+  month: string;
+  income_sum: number;
+};
+
+type InputData = {
+  expenditureSum: ExpenditureData[];
+  incomeSum: IncomeData[];
+};
+
+// 데이터 변환 함수 추가
+function transformData(inputData: InputData) {
+  const { expenditureSum, incomeSum } = inputData;
+
+  const expenditureDataSet = {
+    id: '지출',
+    data: expenditureSum
+      .map((item) => ({
+        x: `${parseInt(item.month.split('-')[1], 10)}월`,
+        y: item.expenditure_sum / 10000,
+      }))
+      .reverse(),
+  };
+
+  const incomeDataSet = {
+    id: '수입',
+    data: incomeSum
+      .map((item) => ({
+        x: `${parseInt(item.month.split('-')[1], 10)}월`,
+        y: item.income_sum / 10000,
+      }))
+      .reverse(),
+  };
+
+  return [expenditureDataSet, incomeDataSet];
+}
+
 function RecentMyConsumechart() {
   const theme = {
     background: 'transparent', // 배경 설정
@@ -38,8 +80,6 @@ function RecentMyConsumechart() {
     getRecentMyConsume
   );
 
-  // console.log('6개월 소비근황', data);
-
   if (isLoading) {
     return <Loading />;
   }
@@ -47,7 +87,11 @@ function RecentMyConsumechart() {
     return <Error />;
   }
 
-  if (data === undefined || data.length === 0) {
+  if (
+    data === undefined ||
+    data.expenditureSum === undefined ||
+    data.incomeSum === undefined
+  ) {
     return (
       <div className="dataNone">
         <p>가계부를 작성하고 소비근황을 확인해보세요!</p>
@@ -64,42 +108,28 @@ function RecentMyConsumechart() {
     );
   }
 
-  const yValues = data.map(({ month_sum }: { month_sum: number }) =>
-    Math.round(month_sum / 10000)
+  const transformedData = transformData(data);
+
+  const yValues = transformedData.flatMap((dataset) =>
+    dataset.data.map((value) => value.y)
   );
-  const minY = Math.min(...yValues);
-  const maxY = Math.max(...yValues);
+
+  console.log('yValues', yValues);
+  const minY = Math.min(...yValues) - 100
+  const maxY = Math.max(...yValues) + 100;
 
   return (
     <>
       <p>단위 : 만원</p>
       <ResponsiveLine
-        data={[
-          {
-            id: 'line',
-            data: data
-              .map(
-                ({
-                  month,
-                  month_sum,
-                }: {
-                  month: string;
-                  month_sum: number;
-                }) => ({
-                  x: `${month.split('-')[1]}월`,
-                  y: Math.round(month_sum / 10000),
-                })
-              )
-              .reverse(),
-          },
-        ]}
-        margin={{ top: 50, right: 20, bottom: 50, left: 30 }}
+        data={transformedData}
+        margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         xScale={{ type: 'point' }}
         yScale={{
           type: 'linear',
-          min: minY - 1,
-          max: maxY + 1,
-          stacked: true,
+          min: minY,
+          max: maxY,
+          stacked: false,
           reverse: false,
         }}
         yFormat=" >-.2f"
@@ -123,27 +153,30 @@ function RecentMyConsumechart() {
         }}
         motionConfig="wobbly"
         theme={theme}
-        colors={['#4194F1']}
+        colors={['#4194F1', '#FFD12E']}
         enableGridX={false}
-        pointSize={18}
-        pointColor="#4194F1"
-        pointBorderWidth={7}
-        pointBorderColor="#E9F2FC"
+        pointSize={15}
+        pointBorderWidth={10}
+        pointBorderColor={{
+          from: 'color',
+          modifiers: [['opacity', 0.3]],
+        }}
         pointLabelYOffset={-12}
-        useMesh={false}
+        isInteractive
+        useMesh
         legends={[
           {
-            anchor: 'bottom-right',
-            direction: 'column',
+            anchor: 'top-right',
+            direction: 'row',
             justify: false,
-            translateX: 100,
-            translateY: 0,
-            itemsSpacing: 0,
+            translateX: -40,
+            translateY: -40,
+            itemsSpacing: 20,
             itemDirection: 'left-to-right',
-            itemWidth: 80,
+            itemWidth: 35,
             itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
+            itemOpacity: 1,
+            symbolSize: 15,
             symbolShape: 'circle',
             symbolBorderColor: 'rgba(0, 0, 0, .5)',
             effects: [
