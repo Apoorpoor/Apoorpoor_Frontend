@@ -8,8 +8,10 @@ import {
   useMutation,
   useQuery,
 } from 'react-query';
+import { useSetRecoilState } from 'recoil';
 import Portal from '../../shared/Portal';
 import accounts from '../../api/accounts';
+import { mainDateState } from '../../shared/Atom';
 
 // Calendar.tsx에서 받아오는 props
 interface CalendarModalProps {
@@ -63,7 +65,6 @@ function CalendarModal({
     ['getAccountsDate', id, selectedDate],
     () => accounts.getAccountsDate(id as string, selectedDate as string)
   );
-  console.log('일자별 거래내역 호출:', data?.content);
 
   const mappedData = data?.content.flatMap((item) => ({
     accountType: item.accountType,
@@ -76,7 +77,10 @@ function CalendarModal({
     paymentMethod: item.paymentMethod,
     title: item.title,
   }));
-  console.log('일별데이터!!!', mappedData);
+
+  console.log('날짜props:::', selectedDate);
+  // 가계부 캘린더 선택 날짜
+  const setMainDate = useSetRecoilState(mainDateState);
 
   // 모달창 닫기
   const calendarModalClose = (): void => {
@@ -265,7 +269,10 @@ function CalendarModal({
           <button
             type="button"
             className="accountAddBtn"
-            onClick={() => navigate(`/addAccount/${id}`)}
+            onClick={() => {
+              navigate(`/addAccount/${id}`);
+              setMainDate(selectedDate);
+            }}
           >
             <div className="accountAddBtnIcon">
               <BsPlusLg />

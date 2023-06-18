@@ -374,14 +374,20 @@ function AddAccount(): JSX.Element {
     }
   }, [incomeType, expenditureType]);
 
-  console.log(
-    '에러:::',
-    priceError,
-    titleError,
-    dateError,
-    payError,
-    categoryError
-  );
+  // console.log(
+  //   '에러:::',
+  //   '금액:',
+  //   priceError,
+  //   '내용:',
+  //   titleError,
+  //   '날짜:',
+  //   dateError,
+  //   '결제수단:',
+  //   payError,
+  //   '카테고리:',
+  //   categoryError
+  // );
+  // console.log('날짜!!!!', date);
 
   const handleRegister = async () => {
     try {
@@ -556,7 +562,11 @@ function AddAccount(): JSX.Element {
           )}
 
           <button
-            className="addAccountDoneBtn"
+            className={
+              priceError || titleError || dateError || payError || categoryError
+                ? 'errAddAccountDoneBtn'
+                : 'addAccountDoneBtn'
+            }
             type="button"
             onClick={handleRegister}
           >
