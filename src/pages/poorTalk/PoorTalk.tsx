@@ -253,22 +253,28 @@ function PoorTalk(): JSX.Element {
                             />
                           </div>
                         ) : (
-                          <div>{message.message}
+                          <div>
+                            {message.message}
                             <button
                               type="button"
                               className={`yourChatProfile${message.userId}`}
-                              onClick={() => usersProfileHandler(message.userId)}
+                              onClick={() =>
+                                usersProfileHandler(message.userId)
+                              }
                             >
                               {message.level}
-                            </button></div>
+                            </button>
+                          </div>
                         )}
                       </div>
                       <div className="nowTime1">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
-                          } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
-                          }`}
+                          ? `오후 ${
+                              Number(message.date.split(' ')[1]) - 12
+                            } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${
+                              message.date.split(' ')[3]
+                            }`}
                       </div>
                     </>
                   ) : (
@@ -297,10 +303,12 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
-                          } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
-                          }`}
+                          ? `오후 ${
+                              Number(message.date.split(' ')[1]) - 12
+                            } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${
+                              message.date.split(' ')[3]
+                            }`}
                       </div>
                     </>
                   )}
@@ -312,27 +320,30 @@ function PoorTalk(): JSX.Element {
           ))}
         </div>
       )}
-      <div>
-        {thumbnailImage === '' ? (
-          <input
-            className="SendInput"
-            type="text"
-            placeholder="message"
-            value={sendMessage}
-            onChange={(e) => setSendMessage(e.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                sendMessages(sendMessage);
-              }
-            }}
-          />
-        ) : (
-          <img
-            className="SanthumbnailImage"
-            src={thumbnailImage}
-            alt="Thumbnail"
-          />
-        )}
+      <div className="sendInputWrap">
+        <div className="thumbnailImageBox">
+          {thumbnailImage === '' ? (
+            ''
+          ) : (
+            <img
+              className="SanthumbnailImage"
+              src={thumbnailImage}
+              alt="Thumbnail"
+            />
+          )}
+        </div>
+        <input
+          className="SendInput"
+          type="text"
+          placeholder="message"
+          value={sendMessage}
+          onChange={(e) => setSendMessage(e.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              sendMessages(sendMessage);
+            }
+          }}
+        />
         <button
           className="SendButton"
           type="button"
