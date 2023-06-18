@@ -346,7 +346,7 @@ function AddAccount(): JSX.Element {
   }, [title]);
 
   useEffect(() => {
-    if (date === '') {
+    if (date === '' || date === 'NaN-NaN-NaN') {
       setDateError(true);
     } else {
       setDateError(false);
@@ -374,20 +374,20 @@ function AddAccount(): JSX.Element {
     }
   }, [incomeType, expenditureType]);
 
-  // console.log(
-  //   '에러:::',
-  //   '금액:',
-  //   priceError,
-  //   '내용:',
-  //   titleError,
-  //   '날짜:',
-  //   dateError,
-  //   '결제수단:',
-  //   payError,
-  //   '카테고리:',
-  //   categoryError
-  // );
-  // console.log('날짜!!!!', date);
+  console.log(
+    '에러:::',
+    '금액:',
+    priceError,
+    '내용:',
+    titleError,
+    '날짜:',
+    dateError,
+    '결제수단:',
+    payError,
+    '카테고리:',
+    categoryError
+  );
+  console.log('날짜!!!!', date);
 
   const handleRegister = async () => {
     try {
