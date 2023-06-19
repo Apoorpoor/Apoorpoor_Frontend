@@ -7,12 +7,8 @@ on:
     types: [closed]
 
 jobs:
-  deploy:
-    if: github.event.pull_request.merged == true
+  run:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - name: Checkout source code.
@@ -29,8 +25,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-          audience: sts.amazonaws.com
+          aws-region: us-east-1
 
       - name: Deploy to S3
         run: aws s3 sync . s3://${{ secrets.DEV_AWS_S3_BUCKET }} --delete
@@ -38,11 +33,3 @@ jobs:
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation \
           --distribution-id ${{ secrets.DEV_AWS_DISTRIBUTION_ID }} --paths "/*"
-      # - name: CloudFront 캐시 무력화 설정
-      #   uses: chetan/invalidate-cloudfront-action@v2
-      #   env:
-      #     DISTRIBUTION: ${{ secrets.DEV_AWS_DISTRIBUTION_ID }}
-      #     PATHS: '/*'
-      #     AWS_REGION: us-east-1
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
