@@ -34,7 +34,6 @@ const checkNicknameValidation = async (nickname: string): Promise<any> => {
     const response = await instance.get(`/beggar/check/${nickname}`);
     return response.status;
   } catch (error) {
-    console.log((error as ErrorType).response);
     return (error as ErrorType).response.status;
   }
 };

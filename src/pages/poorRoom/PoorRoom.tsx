@@ -245,19 +245,6 @@ function PoorRoom() {
     navigate('/login');
   };
 
-  // 스크롤 이벤트
-  const [radarChartSection, setRadarChartSection] = useState(false);
-  const [lineChartSection, setLineChartSection] = useState(false);
-  // console.log(scrollPosition);
-  useEffect(() => {
-    if (scrollPosition > 180) {
-      setRadarChartSection(true);
-    }
-    if (scrollPosition > 1100) {
-      setLineChartSection(true);
-    }
-  }, [scrollPosition]);
-
   if (isLoading) {
     return <Loading />;
   }
@@ -296,15 +283,7 @@ function PoorRoom() {
         </section>
         <section id="myConsumePropensity">
           <h1>소비성향</h1>
-          <div
-            style={{
-              width: radarChartSection === true ? '100%' : '70%',
-              height: '450px',
-              margin: '0 auto',
-            }}
-          >
-            <MyConsumePropensitychart />
-          </div>
+          <MyConsumePropensitychart />
         </section>
         <section id="consumeBadgeArea">
           <h1>소비뱃지</h1>
@@ -369,15 +348,8 @@ function PoorRoom() {
         </section>
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>
-          <div
-            style={{
-              width: lineChartSection === true ? '100%' : '60%',
-              height: '500px',
-              margin: '0 auto',
-            }}
-          >
-            <RecentMyConsumechart />
-          </div>
+
+          <RecentMyConsumechart />
         </section>
         <section id="myPointBreakdown">
           <h1>

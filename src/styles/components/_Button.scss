@@ -20,7 +20,7 @@ button {
     font-size: 14px;
     color: $gray-350;
   }
-  &.grayCommon{
+  &.grayCommon {
     background-color: $gray-350;
     color: #fff;
   }
@@ -128,11 +128,12 @@ button {
     color: $gray-500;
   }
   &.itemButton:disabled {
+    background-color: $secondaryL-400;
     opacity: 0.5;
     cursor: default;
   }
 }
 button:disabled {
-  background-color: $primaryD-500 !important;
+  background-color: $primaryL-600;
   color: #fff;
 }

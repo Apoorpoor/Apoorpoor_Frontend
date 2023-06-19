@@ -159,7 +159,10 @@
             box-sizing: border-box;
           }
         }
-      }
+      } 
+    }
+    & > section.custom li.closed .disabled > p {
+      top: 110px;
     }
   }
 }
