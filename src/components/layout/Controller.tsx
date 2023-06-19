@@ -97,14 +97,14 @@ function Controller() {
           ])}
           onClick={() => controllerHandler(0)}
         >
-          소셜
+          랭킹
         </button>
         <button
           type="button"
           className={isSelected(['/', '/account'])}
           onClick={() => controllerHandler(1)}
         >
-          자산
+          홈
         </button>
         <button
           type="button"

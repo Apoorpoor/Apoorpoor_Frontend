@@ -599,7 +599,7 @@ function PoorRoom() {
             <NicknamedbCheck />
             <div className="buttonWrap">
               <Button
-                className="grayBotton"
+                className="grayCommon"
                 onClick={() => {
                   setIsModalOpen(!isModalOpen);
                   setModifyNicknameModal(!modifyNicknameModal);
@@ -607,7 +607,7 @@ function PoorRoom() {
               >
                 취소
               </Button>
-              <Button className="commonbutton" onClick={() => navigate(-1)}>
+              <Button className="common" onClick={() => navigate(-1)}>
                 수정
               </Button>
             </div>

@@ -20,6 +20,10 @@ button {
     font-size: 14px;
     color: $gray-350;
   }
+  &.grayCommon{
+    background-color: $gray-350;
+    color: #fff;
+  }
   &.whiteRoundCommon {
     height: initial;
     padding: 7.5px 12px;
@@ -129,6 +133,6 @@ button {
   }
 }
 button:disabled {
-  background-color: $gray-500 !important;
-  color: $gray-150;
+  background-color: $primaryD-500 !important;
+  color: #fff;
 }

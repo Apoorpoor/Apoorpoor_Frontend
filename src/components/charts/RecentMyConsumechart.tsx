@@ -89,8 +89,8 @@ function RecentMyConsumechart() {
 
   if (
     data === undefined ||
-    data.expenditureSum === undefined ||
-    data.incomeSum === undefined
+    data.expenditureSum.length === 0 ||
+    data.incomeSum.length === 0
   ) {
     return (
       <div className="dataNone">
@@ -114,8 +114,7 @@ function RecentMyConsumechart() {
     dataset.data.map((value) => value.y)
   );
 
-  console.log('yValues', yValues);
-  const minY = Math.min(...yValues) - 100
+  const minY = Math.min(...yValues) - 100;
   const maxY = Math.max(...yValues) + 100;
 
   return (

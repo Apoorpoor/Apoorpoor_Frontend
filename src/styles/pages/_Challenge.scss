@@ -8,13 +8,49 @@
   background-image: url('#{$path}#{$challengeAmount}.#{$format}');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 115%;
-  width: 50%;
-  max-width: 200px;
-  min-height: 250px;
+  background-size: 100%;
+  width: 175px;
+  min-height: 228px;
+  border-radius: 15px;
+}
+
+@mixin stampImg(
+  $stampStatus,
+  $path: '../../static/image/challenge/stamp_',
+  $format: 'png'
+) {
+  background-image: url('#{$path}#{$stampStatus}.#{$format}');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  width: 100%;
+  height: 120px;
+  margin: 7px 0 18px 0;
 }
 
 #challenge {
+  position: relative;
+  & .snackbar {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    background-color: $primaryD-500;
+    z-index: 6;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 15px;
+    box-sizing: border-box;
+    & svg {
+      width: 25px;
+      height: 25px;
+      color: #93bbf1;
+      margin-right: 7px;
+    }
+  }
   & article {
     padding: 0 20px 20px;
     box-sizing: border-box;
@@ -43,10 +79,14 @@
   & section {
     & ul {
       display: flex;
+      justify-content: flex-start;
       flex-wrap: wrap;
-      margin: 15px 0;
+      gap: 15px;
+      margin: 20px auto;
       & li {
-        transition: 0.3s ease-in-out;
+        transition: 0.3s;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px;
       }
       & li:first-child {
         @include challengeMenu('20000');
@@ -57,16 +97,254 @@
       & li:nth-child(3) {
         @include challengeMenu('100000');
       }
-      & li:last-child {
+      & li:nth-child(4) {
         @include challengeMenu('0');
       }
+      & li:last-child {
+        @include challengeMenu('stamp');
+      }
       & li:hover {
-        background-size: 118%;
+        transform: scale(1.05);
       }
     }
 
     & li p {
       display: none;
     }
+
+    & .myChallenge {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      & > p {
+        color: $primary;
+      }
+    }
+  }
+}
+
+#challengeEx {
+  & article {
+  }
+  & section {
+    padding: 0 20px 60px;
+    border-bottom: 12px solid $gray-150;
+    & h1 {
+      font-size: 26px;
+      margin-bottom: 7px;
+      & p {
+        font-size: 16px;
+      }
+      & span {
+        color: $primary;
+      }
+    }
+  }
+  & section:nth-child(2) {
+    padding-top: 60px;
+  }
+  & .challengeProcessBar {
+    width: 100%;
+    margin: 20px 0;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    & > p {
+      font-size: 16px;
+      font-weight: 700;
+      text-align: right;
+      padding: 0 10px 10px 0;
+    }
+    & .progressTrack {
+      position: relative;
+      width: 100%;
+      height: 16px;
+      background-color: $gray-150;
+      border-radius: 10px;
+      & .progressValue {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 70%;
+        height: 16px;
+        background-color: $primary;
+        border-radius: 10px;
+        & span {
+          position: absolute;
+          top: -25px;
+          left: 70%;
+          width: 75px;
+          font-size: 16px;
+          font-weight: 700;
+          color: $primary;
+        }
+      }
+    }
+  }
+  & .challengeCalendar {
+    width: 100%;
+    margin: 20px 0;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    & ul {
+      display: flex;
+      justify-content: space-between;
+      & li {
+        text-align: center;
+        & button {
+          width: 35px;
+          height: 35px;
+          border-radius: 20px;
+          background-color: $gray-300;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 300;
+        }
+        & button.today {
+          background-color: $primary;
+        }
+        & button.next {
+          background-color: #fff;
+          color: #333;
+          border: 1px solid $gray-300;
+        }
+        & label {
+          display: block;
+          margin-bottom: 5px;
+          color: $gray-500;
+        }
+        & label.today {
+          color: #333;
+        }
+        & label.next {
+          color: #333;
+          font-weight: 500;
+        }
+      }
+    }
+    & .challengeAccount {
+      padding: 20px 0;
+      text-align: center;
+      & img {
+        margin-top: 50px;
+        transform: translateX(-20px);
+      }
+      & > p:first-of-type {
+        font-size: 26px;
+        font-weight: 700;
+        color: $primary;
+        margin: 20px 0;
+      }
+      & > p:last-of-type {
+        display: inline;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        border-radius: 15px;
+        background-color: $secondaryL-600;
+      }
+    }
+  }
+  & .challengeStamp {
+    padding: 40px 0;
+    & ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 15px;
+      & li {
+        width: 33%;
+        max-width: 119px;
+        text-align: center;
+        margin-bottom: 32px;
+        & div.success {
+          @include stampImg('success');
+        }
+        & div.fail {
+          @include stampImg('fail');
+        }
+        & div.next {
+          @include stampImg('next');
+        }
+        & div.possible {
+          @include stampImg('possible');
+        }
+        & p {
+          font-size: 16px;
+          font-weight: 700;
+        }
+        & p.point {
+          display: inline;
+          padding: 5px 15px;
+          border-radius: 15px;
+          background-color: $gray-150;
+          font-weight: 500;
+        }
+        & p.point.fail,
+        & p.point.success {
+          color: $gray-400;
+        }
+        & p.point.possible {
+          color: #333;
+        }
+        & p.point.next {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  & .notice {
+    width: 100%;
+    height: 78px;
+    overflow: hidden;
+    padding: 20px 20px 30px;
+    background-color: $gray-150;
+    border-radius: 15px;
+    box-sizing: border-box;
+    transition: 0.3s ease-in-out;
+    & p {
+      & img {
+        width: 25px;
+        height: 25px;
+        transform: translateY(7px);
+        margin-right: 7px;
+      }
+    }
+    & div {
+      padding-top: 25px;
+      & ul {
+        padding-top: 25px;
+        padding-left: 20px;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+        & li {
+          width: 125px;
+          margin-right: 30px;
+          & span {
+            color: $primary;
+            padding-left: 8px;
+          }
+        }
+      }
+    }
+  }
+  & .notice.open {
+    height: 300px;
+  }
+  & label[for='dynamicBox'] {
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+    color: $gray-350;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
