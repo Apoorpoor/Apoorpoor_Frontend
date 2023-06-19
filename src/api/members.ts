@@ -135,6 +135,17 @@ const getUsersProfile = async (userId: any) => {
   }
 };
 
+// 채팅참여 전체 조회
+const getChatList = async () => {
+  try {
+    const response = await instance.get(`/chat/list`);
+    return response.data;
+  } catch (err) {
+    console.log(`채팅참여 API 오류 발생: ${err}`);
+    throw err;
+  }
+};
+
 export {
   getNicknameCheck,
   firstLogin,
@@ -144,4 +155,5 @@ export {
   putAge,
   putGender,
   checkNicknameValidation,
+  getChatList
 };
