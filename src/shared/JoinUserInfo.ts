@@ -5,9 +5,9 @@ export const UserNickname: RecoilState<string> = atom<string>({
   default: '',
 });
 
-export const UserAge: RecoilState<string> = atom<string>({
+export const UserAge: RecoilState<number> = atom<number>({
   key: 'UserAge',
-  default: '0',
+  default: 0,
 });
 
 export const UserGender: RecoilState<string> = atom<string>({
