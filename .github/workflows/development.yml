@@ -6,10 +6,15 @@ on:
       - main
     types: [closed]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     # strategy:
     #   matrix:
     #     node-versions: [16.x]
@@ -23,10 +28,6 @@ jobs:
 
       - name: Build
         run: yarn build
-
-       - name: .env setting
-        run: |
-          echo "REACT_APP_SERVER_URL=${{ secrets.REACT_APP_SERVER_URL }}" >> .env
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
