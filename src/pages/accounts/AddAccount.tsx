@@ -420,7 +420,7 @@ function AddAccount(): JSX.Element {
   return (
     <>
       <Header navigateToPreviousPage={navigateToPreviousPage}>
-        소비 / 수입 등록
+        수입 / 지출 등록
       </Header>
       <div className="addAccountBg">
         <div className="addAccountBody">

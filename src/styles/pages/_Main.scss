@@ -53,6 +53,12 @@
           margin-top: 4px;
           font-size: 14px;
           font-weight: 400;
+          color: $primaryL-600;
+        }
+        & .priceText {
+          margin-top: 28px;
+          color: white;
+          font-weight: 700;
         }
       }
 

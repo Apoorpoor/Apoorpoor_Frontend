@@ -8,16 +8,17 @@ interface TutorialProps {
   setTutorial: React.Dispatch<React.SetStateAction<boolean>>;
   setFir: React.Dispatch<React.SetStateAction<boolean>>;
   fir: boolean;
+  setSec: React.Dispatch<React.SetStateAction<boolean>>;
+  sec: boolean;
 }
 
-function Tutorial({ setTutorial, setFir, fir }: TutorialProps) {
+function Tutorial({ setTutorial, setFir, fir, setSec, sec }: TutorialProps) {
   // 모달창 닫기
   const tutorialClose = () => {
     setTutorial(false);
   };
 
   // 페이지 상태 관리
-  const [sec, setSec] = useState(false);
   const [thir, setThir] = useState(false);
   const [four, setFour] = useState(false);
 

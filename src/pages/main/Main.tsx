@@ -95,28 +95,20 @@ function Main(): JSX.Element {
   // 사용 설명 모달
   const [tutorial, setTutorial] = useState(false);
   const [fir, setFir] = useState(false);
+  const [sec, setSec] = useState(false);
 
-  // 사용 설명 모달 오픈
-  const tutorialOpen = () => {
+  // (최초) 사용 설명 모달 오픈
+  const firTutorialOpen = () => {
     setTutorial(true);
     setFir(true);
   };
 
-  // 가계부 삭제 모달창 상태 관리
-  // const [delModal, setDelModal] = useState<string | null>(null);
-  // 모달 오픈/클로즈 애니메이션
-  // const [modalAnimation, setModalAnimation] = useState('');
-
-  // const delModalOpen = (accountId: string): void => {
-  //   setDelModal(accountId);
-  //   setModalAnimation('modalAnimation');
-  // };
-
-  // const delModalClose = (): void => {
-  //   setDelModal(null);
-  //   refetch();
-  //   setModalAnimation('');
-  // };
+  // 사용 설명 모달 오픈
+  const tutorialOpen = () => {
+    setTutorial(true);
+    setFir(false);
+    setSec(true);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -128,7 +120,13 @@ function Main(): JSX.Element {
   return (
     <>
       {tutorial && (
-        <Tutorial setTutorial={setTutorial} setFir={setFir} fir={fir} />
+        <Tutorial
+          setTutorial={setTutorial}
+          setFir={setFir}
+          fir={fir}
+          setSec={setSec}
+          sec={sec}
+        />
       )}
 
       <div className="background">
@@ -149,7 +147,7 @@ function Main(): JSX.Element {
           {data?.map((item) => {
             if (!item) {
               return (
-                <button type="button">
+                <button type="button" onClick={firTutorialOpen}>
                   <div className="title">
                     <h2>처음 오셨나요?</h2>
                     <p>클릭해서 가계부를 생성해주세요</p>
@@ -177,8 +175,9 @@ function Main(): JSX.Element {
                   <h2>가계부</h2>
                   <p>쉽고 편한 가계부 작성</p>
                   {/* <p className="accountName">{item.title}</p> */}
-                  <p>
-                    <NumberAnimation targetNumber={balanceValue} />원
+                  <p className="priceText">
+                    모은 금액 : <NumberAnimation targetNumber={balanceValue} />
+                    원
                   </p>
                 </div>
                 <img src={accountIcon} alt="accountIcon" />
