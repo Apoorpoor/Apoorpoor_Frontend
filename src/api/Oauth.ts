@@ -10,10 +10,10 @@ const REDIRECT_URI = 'http://https://apoorpoor.vercel.app/oauth/kakao';
 
 // 로컬에서 테스트 서버랑 주고받을 때 url
 
-const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=b285dc18b3ecd8e4bc2dcc9a9460a12d&redirect_uri=http://localhost:3000/oauth/kakao&response_type=code`;
+// const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=b285dc18b3ecd8e4bc2dcc9a9460a12d&redirect_uri=http://localhost:3000/oauth/kakao&response_type=code`;
 
 // 배포 주소 연결
-// const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=b285dc18b3ecd8e4bc2dcc9a9460a12d&redirect_uri=https://www.apoorpoor.com/oauth/kakao&response_type=code`;
+const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=b285dc18b3ecd8e4bc2dcc9a9460a12d&redirect_uri=https://apoorpoor.com/oauth/kakao&response_type=code`;
 
 // ${process.env.REACT_APP_SERVER_URL}
 export default KAKAO_AUTH_URL;
