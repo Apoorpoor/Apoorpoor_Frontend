@@ -54,9 +54,9 @@ const postNickname = async (nickname: string): Promise<void> => {
 };
 
 // 나이 등록하기
-const putAge = async (age: string): Promise<void> => {
+const putAge = async (age: number): Promise<void> => {
   try {
-    const response = await instance.post(`/user/age`, {
+    const response = await instance.put(`/user/age`, {
       age,
     });
     return response.data;
@@ -69,7 +69,7 @@ const putAge = async (age: string): Promise<void> => {
 // 성별 등록하기
 const putGender = async (gender: string): Promise<void> => {
   try {
-    const response = await instance.post(`/user/gender`, {
+    const response = await instance.put(`/user/gender`, {
       gender,
     });
     return response.data;

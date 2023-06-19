@@ -21,6 +21,8 @@ import AlarmStation from './poorRoom/AlarmStation';
 import Social from './social/Social';
 import Reduction from './social/Reduction';
 import Flex from './social/Flex';
+import Challenge from './challenge/Challenge';
+import ChallengeEx from './challenge/ChallengeEx';
 
 export {
   Account,
@@ -46,4 +48,6 @@ export {
   Social,
   Reduction,
   Flex,
+  Challenge,
+  ChallengeEx,
 };

@@ -11,6 +11,16 @@ import { UserAge, UserGender, UserNickname } from '../../shared/JoinUserInfo';
 import { Button } from '../../components';
 import { postNickname, putAge, putGender } from '../../api/members';
 
+interface ErrorType extends Error {
+  response: {
+    data: {
+      message: string;
+      code: number;
+    };
+    status: number;
+  };
+}
+
 function Age() {
   const [malecheck, setMalecheck] = React.useState(false);
   const [femalecheck, setFemalecheck] = React.useState(false);
@@ -45,10 +55,29 @@ function Age() {
       await postNickname(userNickname);
       await putAge(userAge);
       await putGender(userGender);
+      navigate('/finished');
     } catch (error) {
-      console.log('에러 발생:', error);
+      if (userNickname === '') {
+        alert('닉네임이 입력되지 않았습니다.');
+      } else if (userGender === '') {
+        alert('성별이 입력되지 않았습니다.');
+      }
+      if ((error as ErrorType).response.status === 400) {
+        alert(
+          '이미 카카오톡 회원가입이 등록된 유저입니다. 로그인을 진행해주세요'
+        );
+      }
     }
   };
+
+  console.log(
+    'userNickname =',
+    userNickname,
+    'userAge =',
+    userAge,
+    'userGender =',
+    userGender
+  );
 
   return (
     <main className="genderPage">

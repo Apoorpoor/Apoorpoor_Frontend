@@ -48,7 +48,7 @@ function Age() {
   //   const value = inputValue.slice(0, -1);
   //   setInputValue(value);
   // };
-  
+
   return (
     <main className="AgePage">
       <div className="between">
@@ -99,8 +99,8 @@ function Age() {
           disabled={nextButton === false}
           type="button"
           onClick={() => {
-            navigate('/gender')
-            setUserAge(inputValue);
+            navigate('/gender');
+            setUserAge(Number(inputValue));
             setInputValue('');
           }}
         >
