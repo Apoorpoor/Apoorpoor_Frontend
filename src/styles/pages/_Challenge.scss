@@ -1,0 +1,72 @@
+@import '../_Palette.scss';
+
+@mixin challengeMenu(
+  $challengeAmount,
+  $path: '../../static/image/challenge/challenge_',
+  $format: 'svg'
+) {
+  background-image: url('#{$path}#{$challengeAmount}.#{$format}');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 115%;
+  width: 50%;
+  max-width: 200px;
+  min-height: 250px;
+}
+
+#challenge {
+  & article {
+    padding: 0 20px 20px;
+    box-sizing: border-box;
+  }
+  & .banner {
+    width: 100%;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    background-color: $gray-150;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & p {
+      font-size: 20px;
+      font-weight: 700;
+      & span {
+        font-size: 14px;
+        display: block;
+        font-weight: 500;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  & section {
+    & ul {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 15px 0;
+      & li {
+        transition: 0.3s ease-in-out;
+      }
+      & li:first-child {
+        @include challengeMenu('20000');
+      }
+      & li:nth-child(2) {
+        @include challengeMenu('50000');
+      }
+      & li:nth-child(3) {
+        @include challengeMenu('100000');
+      }
+      & li:last-child {
+        @include challengeMenu('0');
+      }
+      & li:hover {
+        background-size: 118%;
+      }
+    }
+
+    & li p {
+      display: none;
+    }
+  }
+}
