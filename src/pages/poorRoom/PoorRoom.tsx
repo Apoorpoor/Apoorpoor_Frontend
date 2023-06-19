@@ -9,6 +9,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from 'react-query';
+import { MdLock } from 'react-icons/md';
 import { BsFillCaretRightFill, BsPenFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
 import beggars from '../../api/beggars';
@@ -16,7 +17,6 @@ import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
 import {
   Button,
-  Controller,
   Header,
   LevelMedal,
   RecentMyConsumechart,
@@ -32,11 +32,7 @@ import PoorCharacter from './PoorCharacter';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
 import containerPositionState from '../../shared/ScrollContainer';
-import badgeDefault01 from '../../static/image/ui/badge_disabled_01.png';
-import badgeDefault02 from '../../static/image/ui/badge_disabled_02.png';
-import badgeDefault03 from '../../static/image/ui/badge_disabled_03.png';
 import Portal from '../../shared/Portal';
-import inputState from '../../shared/Atom';
 import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
 
 function PoorRoom() {
@@ -46,13 +42,9 @@ function PoorRoom() {
   const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
   const BadgeListState = useRecoilValue(BadgeState);
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
-  const [scrollPosition, setScrollPosition] = useRecoilState(
-    containerPositionState
-  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modifyNicknameModal, setModifyNicknameModal] = useState(false);
   const [badgeModal, setBadgeModal] = useState(false);
-  const [inputValue, setInputValue] = useRecoilState(inputState);
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
@@ -69,6 +61,12 @@ function PoorRoom() {
     createdAt: string;
     id: number;
     modifiedAt: string;
+  };
+
+  type RecoilBadge = {
+    title: string;
+    name: string;
+    n_description: string;
   };
 
   interface MyData {
@@ -116,16 +114,24 @@ function PoorRoom() {
     setModifyNicknameModal(true);
   };
 
-  const changeInput = () => {};
-
-  // 닉네임 유효성 검사
-
-  // 닉네임 수정
-
   // 뱃지 모달
   const handleBadgeClick = (badge: Badge) => {
     setIsModalOpen(!isModalOpen);
     setSelectedBadge(badge);
+    setBadgeModal(true);
+  };
+
+  const handleNoneBadgeClick = (badge: RecoilBadge) => {
+    const newBadge = {
+      badgeImage: `https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/badge/badge_${badge.title}.svg`,
+      badgeNum: 0,
+      badgeTitle: badge.name,
+      createdAt: '2023-06-07T22:05:00.826883',
+      id: 404,
+      modifiedAt: '2023-06-07T22:05:00.826883',
+    };
+    setIsModalOpen(!isModalOpen);
+    setSelectedBadge(newBadge);
     setBadgeModal(true);
   };
 
@@ -153,8 +159,6 @@ function PoorRoom() {
     ['getMyPointInquiry', { dateType, kind, page }],
     () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
-
-  // console.log('PointData', PointData);
 
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
@@ -245,6 +249,8 @@ function PoorRoom() {
     navigate('/login');
   };
 
+  // 소비 뱃지
+
   if (isLoading) {
     return <Loading />;
   }
@@ -289,31 +295,36 @@ function PoorRoom() {
           <h1>소비뱃지</h1>
 
           {data?.badgeList.length === 0 ? (
-            <div
-              style={{
-                display: 'flex',
-                margin: '15px 0',
-                gap: '20px',
-                width: '100%',
-                overflow: 'hidden',
-              }}
+            <SlickSlider
+              id="badgeSlide"
+              loop={false}
+              slidesToShow={3}
+              slidesToScroll={1}
+              arrows={false}
             >
-              <img
-                src={badgeDefault01}
-                alt="뱃지기본이미지"
-                style={{ width: '112px' }}
-              />
-              <img
-                src={badgeDefault02}
-                alt="뱃지기본이미지"
-                style={{ width: '112px' }}
-              />
-              <img
-                src={badgeDefault03}
-                alt="뱃지기본이미지"
-                style={{ width: '112px' }}
-              />
-            </div>
+              {BadgeListState.slice(0, 5).map((item) => (
+                <div
+                  key={item.name}
+                  className="item dontHave"
+                  onClick={() => handleNoneBadgeClick(item)}
+                  onKeyDown={() => handleNoneBadgeClick(item)}
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="disabled">
+                    <p>
+                      <MdLock />
+                    </p>
+                    <p>{item.name}</p>
+                  </div>
+                  <img
+                    src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/badge/badge_${item.title}.svg`}
+                    alt={item.title}
+                  />
+                </div>
+              ))}
+            </SlickSlider>
           ) : (
             <SlickSlider
               id="badgeSlide"
@@ -602,11 +613,14 @@ function PoorRoom() {
             </div>
             <p>
               <span>ex.</span>
-              {
-                BadgeListState.find(
-                  (badge) => badge.name === selectedBadge?.badgeTitle
-                )?.description
-              }
+              {/* 없는 뱃지의 아이디는 404로 통일해 놓았음 */}
+              {selectedBadge?.id === 404
+                ? BadgeListState.find(
+                    (badge) => badge.name === selectedBadge?.badgeTitle
+                  )?.n_description
+                : BadgeListState.find(
+                    (badge) => badge.name === selectedBadge?.badgeTitle
+                  )?.description}
             </p>
             <Button className="common" onClick={() => navigate('/Account')}>
               가계부 작성하기
