@@ -24,6 +24,7 @@ import {
   ProgressBar,
   SlickSlider,
   Tooltip,
+  Input,
 } from '../../components';
 import myPoorState from '../../shared/MyPoor';
 import BadgeState from '../../shared/BadgeList';
@@ -34,6 +35,9 @@ import containerPositionState from '../../shared/ScrollContainer';
 import badgeDefault01 from '../../static/image/ui/badge_disabled_01.png';
 import badgeDefault02 from '../../static/image/ui/badge_disabled_02.png';
 import badgeDefault03 from '../../static/image/ui/badge_disabled_03.png';
+import Portal from '../../shared/Portal';
+import inputState from '../../shared/Atom';
+import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
 
 function PoorRoom() {
   // PoorRoom Hooks & State
@@ -41,9 +45,14 @@ function PoorRoom() {
   const queryClient = useQueryClient();
   const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
   const BadgeListState = useRecoilValue(BadgeState);
+  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
   const [scrollPosition, setScrollPosition] = useRecoilState(
     containerPositionState
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modifyNicknameModal, setModifyNicknameModal] = useState(false);
+  const [badgeModal, setBadgeModal] = useState(false);
+  const [inputValue, setInputValue] = useRecoilState(inputState);
 
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
@@ -101,9 +110,24 @@ function PoorRoom() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorInfo]);
 
-  const modifyNickname = () => {
-    
-  }
+  // 닉네임 수정 모달 핸들러
+  const modifyModalOpen = () => {
+    setIsModalOpen(!isModalOpen);
+    setModifyNicknameModal(true);
+  };
+
+  const changeInput = () => {};
+
+  // 닉네임 유효성 검사
+
+  // 닉네임 수정
+
+  // 뱃지 모달
+  const handleBadgeClick = (badge: Badge) => {
+    setIsModalOpen(!isModalOpen);
+    setSelectedBadge(badge);
+    setBadgeModal(true);
+  };
 
   // =================================================================
   // *** PoorRoom Point Inquiry Query ********************************
@@ -130,7 +154,7 @@ function PoorRoom() {
     () => beggars.getMyPointInquiry({ dateType, kind, page })
   );
 
-  console.log('PointData', PointData);
+  // console.log('PointData', PointData);
 
   // 포인트 내역 조회 mutation
   const pointInquiryMutation = useMutation(beggars.getMyPointInquiry, {
@@ -169,26 +193,24 @@ function PoorRoom() {
   };
 
   // 전체,적립,사용 필터링
-  const kindFilterHandler = (index: number) => {
+  const kindFilterHandler = (index: number, kindFilter: string) => {
     setSelectednavButtonIndex(index);
+    setKind(kindFilter);
     // 전체
     if (index === 0) {
       setPointInquiryList(PointData || []);
-      setKind('total');
       // 적립
     } else if (index === 1) {
       const filteredList = PointData?.filter(
         (item) => item.usedPoints === null || item.usedPoints === 0
       );
       setPointInquiryList(filteredList || []);
-      setKind('use');
       // 사용
     } else {
       const filteredList = PointData?.filter(
         (item) => item.usedPoints !== null && item.usedPoints > 0
       );
       setPointInquiryList(filteredList || []);
-      setKind('earn');
     }
   };
 
@@ -226,7 +248,7 @@ function PoorRoom() {
   // 스크롤 이벤트
   const [radarChartSection, setRadarChartSection] = useState(false);
   const [lineChartSection, setLineChartSection] = useState(false);
-  console.log(scrollPosition);
+  // console.log(scrollPosition);
   useEffect(() => {
     if (scrollPosition > 180) {
       setRadarChartSection(true);
@@ -254,7 +276,7 @@ function PoorRoom() {
           <LevelMedal level={data?.level as number} />
           <h2 className="nickname">
             {data?.nickname}{' '}
-            <Button className='icon' onClick={() => navigate(-1)}>
+            <Button className="icon" onClick={() => modifyModalOpen()}>
               <BsPenFill style={{ color: '#d8d8d8', fontSize: '14px' }} />
             </Button>
           </h2>
@@ -322,7 +344,15 @@ function PoorRoom() {
               arrows={false}
             >
               {data?.badgeList.slice(0, 5).map((item) => (
-                <div key={item.badgeTitle} className="item">
+                <div
+                  key={item.badgeTitle}
+                  className="item"
+                  onClick={() => handleBadgeClick(item)}
+                  onKeyDown={() => handleBadgeClick(item)}
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+                  role="button"
+                  tabIndex={0}
+                >
                   <img src={item.badgeImage} alt={item.badgeTitle} />
                   <p>{item.badgeTitle}</p>
                 </div>
@@ -337,13 +367,12 @@ function PoorRoom() {
             모든 뱃지 보기
           </Button>
         </section>
-
         <section id="myConsumeRecentGraph">
           <h1>최근 6개월 소비근황</h1>
           <div
             style={{
               width: lineChartSection === true ? '100%' : '60%',
-              height: '400px',
+              height: '500px',
               margin: '0 auto',
             }}
           >
@@ -378,7 +407,7 @@ function PoorRoom() {
               onClick={() =>
                 getPointInquiry({
                   newDateType: 'week',
-                  newKind: 'total',
+                  newKind: kind,
                   newPage: 0,
                   buttonIndex: 0,
                 })
@@ -393,7 +422,7 @@ function PoorRoom() {
               onClick={() =>
                 getPointInquiry({
                   newDateType: 'month',
-                  newKind: 'total',
+                  newKind: kind,
                   newPage: 0,
                   buttonIndex: 1,
                 })
@@ -408,7 +437,7 @@ function PoorRoom() {
               onClick={() =>
                 getPointInquiry({
                   newDateType: '3month',
-                  newKind: 'total',
+                  newKind: kind,
                   newPage: 0,
                   buttonIndex: 2,
                 })
@@ -423,7 +452,7 @@ function PoorRoom() {
               onClick={() =>
                 getPointInquiry({
                   newDateType: '6month',
-                  newKind: 'total',
+                  newKind: kind,
                   newPage: 0,
                   buttonIndex: 3,
                 })
@@ -438,7 +467,7 @@ function PoorRoom() {
               onClick={() =>
                 getPointInquiry({
                   newDateType: 'year',
-                  newKind: 'total',
+                  newKind: kind,
                   newPage: 0,
                   buttonIndex: 4,
                 })
@@ -473,7 +502,7 @@ function PoorRoom() {
                     className={`smallNav ${
                       selectednavButtonIndex === 0 ? 'checked' : ''
                     }`}
-                    onClick={() => kindFilterHandler(0)}
+                    onClick={() => kindFilterHandler(0, 'total')}
                   >
                     전체
                   </Button>
@@ -481,7 +510,7 @@ function PoorRoom() {
                     className={`smallNav ${
                       selectednavButtonIndex === 1 ? 'checked' : ''
                     }`}
-                    onClick={() => kindFilterHandler(1)}
+                    onClick={() => kindFilterHandler(1, 'earn')}
                   >
                     적립
                   </Button>
@@ -489,14 +518,14 @@ function PoorRoom() {
                     className={`smallNav ${
                       selectednavButtonIndex === 2 ? 'checked' : ''
                     }`}
-                    onClick={() => kindFilterHandler(2)}
+                    onClick={() => kindFilterHandler(2, 'use')}
                   >
                     사용
                   </Button>
                 </nav>
                 <ul className="detailOfPointList">
                   {pointInquiryList?.map((list) => (
-                    <li key={list.createdAt}>
+                    <li key={list.point_id}>
                       <p className="title">
                         {list.pointDescription}{' '}
                         <span>
@@ -536,6 +565,83 @@ function PoorRoom() {
           </div>
         </section>
       </article>
+      <Portal>
+        <div
+          className={`modalbg ${isModalOpen ? 'active' : ''}`}
+          onClick={(e) => {
+            setIsModalOpen(false);
+            setModifyNicknameModal(false);
+            setBadgeModal(false);
+          }}
+          onKeyDown={(e) => {
+            setIsModalOpen(false);
+            setModifyNicknameModal(false);
+            setBadgeModal(false);
+          }}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+          role="button"
+          tabIndex={0}
+        >
+          {/* 닉네임 모달 */}
+          <div
+            className={`modal modifyNickname ${
+              modifyNicknameModal === true ? 'show' : ''
+            }`}
+            onClick={(e) => {
+              e.stopPropagation(); // 이벤트 전파를 막습니다.
+            }}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            <NicknamedbCheck />
+            <div className="buttonWrap">
+              <Button
+                className="grayBotton"
+                onClick={() => {
+                  setIsModalOpen(!isModalOpen);
+                  setModifyNicknameModal(!modifyNicknameModal);
+                }}
+              >
+                취소
+              </Button>
+              <Button className="commonbutton" onClick={() => navigate(-1)}>
+                수정
+              </Button>
+            </div>
+          </div>
+
+          {/* 뱃지 모달 */}
+          <div
+            className={`modal badge ${isModalOpen ? 'active' : ''} ${
+              badgeModal === true ? 'show' : ''
+            }`}
+          >
+            <div className="badge">
+              <div>
+                <img
+                  src={selectedBadge?.badgeImage}
+                  alt={selectedBadge?.badgeTitle}
+                />
+              </div>
+              <p>{selectedBadge?.badgeTitle}</p>
+            </div>
+            <p>
+              <span>ex.</span>
+              {
+                BadgeListState.find(
+                  (badge) => badge.name === selectedBadge?.badgeTitle
+                )?.description
+              }
+            </p>
+            <Button className="common" onClick={() => navigate('/Account')}>
+              가계부 작성하기
+            </Button>
+          </div>
+        </div>
+      </Portal>
     </main>
   );
 }

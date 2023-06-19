@@ -1,19 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { FaChevronLeft, FaCheckSquare } from 'react-icons/fa';
 import '../../styles/pages/_Gender.scss';
 import { useNavigate } from 'react-router';
-// import { useQuery, useMutation, useQueryClient } from "react-query";
-import instance from '../../api/instance';
+import { useRecoilState } from 'recoil';
+import { useQuery } from 'react-query';
 import male from '../../static/image/gender/male.svg';
 import female from '../../static/image/gender/female.svg';
+import { UserAge, UserGender, UserNickname } from '../../shared/JoinUserInfo';
+import { Button } from '../../components';
+import { postNickname, putAge, putGender } from '../../api/members';
 
 function Age() {
-  const [inputValue, setInputValue] = React.useState('');
   const [malecheck, setMalecheck] = React.useState(false);
   const [femalecheck, setFemalecheck] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
-
-  const token = localStorage.getItem('AToken');
+  const [userNickname, setUserNickname] = useRecoilState(UserNickname);
+  const [userAge, setUserAge] = useRecoilState(UserAge);
+  const [userGender, setUserGender] = useRecoilState(UserGender);
 
   const navigate = useNavigate();
 
@@ -21,39 +25,28 @@ function Age() {
     setMalecheck(!malecheck);
     setFemalecheck(false);
     setChecked(false);
-    setInputValue('male');
+    setUserGender('male');
   };
   const femalegenderHandler = () => {
     setFemalecheck(!femalecheck);
     setMalecheck(false);
     setChecked(false);
-    setInputValue('female');
+    setUserGender('female');
   };
   const CheckBoxHandler = () => {
     setChecked(!checked);
     setMalecheck(false);
     setFemalecheck(false);
-    setInputValue('기타');
+    setUserGender('기타');
   };
 
   const onNextClickButton = async () => {
     try {
-      const response = await instance.put(
-        `/user/gender`,
-        {
-          gender: inputValue,
-        },
-        {
-          headers: {
-            ACCESS_KEY: `Bearer ${token}`,
-          },
-        }
-      );
-      navigate('/finished');
-      return response.data;
-    } catch (err) {
-      console.log(`나이입력  API 오류 발생: ${err}`);
-      throw err;
+      await postNickname(userNickname);
+      await putAge(userAge);
+      await putGender(userGender);
+    } catch (error) {
+      console.log('에러 발생:', error);
     }
   };
 
@@ -128,19 +121,17 @@ function Age() {
       </article>
 
       <div>
-        {checked || femalecheck || malecheck ? (
-          <button className="common" type="button" onClick={onNextClickButton}>
-            다음
-          </button>
-        ) : (
-          <button
-            className="common"
-            type="button"
-            onClick={() => alert('성별을 입력해주세요')}
-          >
-            다음
-          </button>
-        )}
+        <Button
+          className="common"
+          disabled={
+            checked === false && femalecheck === false && malecheck === false
+          }
+          onClick={() => {
+            onNextClickButton();
+          }}
+        >
+          다음
+        </Button>
       </div>
     </main>
   );

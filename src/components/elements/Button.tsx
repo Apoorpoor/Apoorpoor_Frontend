@@ -4,15 +4,25 @@ import '../../styles/components/_Button.scss';
 type ButtonChildren = {
   children: ReactNode;
   className: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
-}
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
+};
 
-function Button({ children, className, onClick}: ButtonChildren) {
+function Button({ children, className, onClick, disabled }: ButtonChildren) {
   return (
-  <button type='button' className={className} onClick={onClick}>
-    {children}
-  </button>
+    <button
+      type="button"
+      className={className}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }
+
+Button.defaultProps = {
+  disabled: false,
+};
 
 export default Button;

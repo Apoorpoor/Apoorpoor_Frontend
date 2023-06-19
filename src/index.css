@@ -37,6 +37,9 @@ dl {
   margin: 0;
 }
 
+/* ===================================================
+                    Portal 영역 css
+=================================================== */
 #portal {
   width: 430px;
   margin: 0 auto;
@@ -45,12 +48,97 @@ dl {
   width: 430px;
 }
 
+/* 닉네임 설정이 포탈에서도 사용되어서 부득이하게 이쪽으로 이동하였습니다! */
+.nicknameForm {
+  position: relative;
+  width: 100%;
+}
+/* 인풋값 안에 "닉네임" */
+.nicknameLabel {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  transition: 0.3s;
+}
+/* 인풋값 안에 "닉네임" */
+.nicknameLabel.active {
+  opacity: 1;
+  top: 12px;
+  transform: initial;
+}
+/* 인풋값이 입력된 왼쪽 바 */
+.cursor {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  width: 1.5px;
+  height: 20px;
+  background-color: #ff3257;
+}
+/* 인풋값이 입력된 왼쪽 바 */
+.cursor.active {
+  opacity: 1;
+  top: 32px;
+  transform: initial;
+}
+/* 인풋값이 입력된 왼쪽 바 */
+.cursor.active.pass {
+  opacity: 1;
+  top: 32px;
+  transform: initial;
+  background-color: #4194f1;
+}
+.nicknameValidationAlert {
+  position: absolute;
+  bottom: -23px;
+  left: 15px;
+  color: #ff3257;
+  font-size: 14px;
+}
+.nicknameValidationAlert.pass {
+  color: #4194f1;
+}
+.checkError {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  color: #ff3257;
+  font-size: 20px;
+  opacity: 0;
+}
+.checkError.active {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  color: #ff3257;
+  font-size: 20px;
+  opacity: 1;
+}
+.checkError.pass {
+  opacity: 0;
+}
+.nicknameForm label.clearInput {
+  height: initial !important;
+  position: absolute !important;
+  top: 70%;
+  right: 12px;
+}
+.nicknameForm label.clearInput button {
+  height: initial !important;
+}
+
 @media (max-width: 1366px) {
-  html, body{
+  html,
+  body {
     font-size: 14px;
   }
-  #portal{
-    width:100%;
+  #portal {
+    width: 100%;
   }
   .modalbg {
     width: 100%;

@@ -8,6 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import instance from './instance';
 
+interface ErrorType extends Error {
+  response: {
+    data: {
+      message: string;
+      code: number;
+    };
+    status: number;
+  };
+}
+
 // 닉네임 전체 조회
 const getNicknameCheck = async () => {
   try {
@@ -19,9 +29,58 @@ const getNicknameCheck = async () => {
   }
 };
 
+// 닉네임 중복, 욕설 테스트
+const checkNicknameValidation = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.get(`/beggar/check/${nickname}`);
+    return response;
+  } catch (error) {
+    console.log((error as ErrorType).response);
+    return (error as ErrorType).response.status;
+  }
+};
+
+// 닉네임 등록하기
+const postNickname = async (nickname: string): Promise<void> => {
+  try {
+    const response = await instance.post(`/beggar`, {
+      nickname,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// 나이 등록하기
+const putAge = async (age: string): Promise<void> => {
+  try {
+    const response = await instance.post(`/user/age`, {
+      age,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`나이입력  API 오류 발생: ${error}`);
+    throw error;
+  }
+};
+
+// 성별 등록하기
+const putGender = async (gender: string): Promise<void> => {
+  try {
+    const response = await instance.post(`/user/gender`, {
+      gender,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`성별입력  API 오류 발생: ${error}`);
+    throw error;
+  }
+};
+
 const firstLogin = async () => {
   const navigate = useNavigate();
-  console.log('로그인 api 실행');
   const url = new URL(window.location.href);
   const urlCode = url.searchParams.get('code');
 
@@ -49,15 +108,10 @@ const firstLogin = async () => {
     throw err;
   }
 };
+
 const getUser = async () => {
-  // 토큰
-  const token = localStorage.getItem('AToken');
   try {
-    const response = await instance.get(`/beggar`, {
-      headers: {
-        ACCESS_KEY: `Bearer ${token}`,
-      },
-    });
+    const response = await instance.get(`/beggar`);
     return response.data;
   } catch (err) {
     console.log(`거지조회  API 오류 발생: ${err}`);
@@ -81,4 +135,13 @@ const getUsersProfile = async (userId: any) => {
   }
 };
 
-export { getNicknameCheck, firstLogin, getUser, getUsersProfile };
+export {
+  getNicknameCheck,
+  firstLogin,
+  getUser,
+  getUsersProfile,
+  postNickname,
+  putAge,
+  putGender,
+  checkNicknameValidation,
+};

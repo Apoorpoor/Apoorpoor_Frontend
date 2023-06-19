@@ -22,7 +22,9 @@ function BadgeList() {
   };
 
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [selectedClassName, setSelectedClassName] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [badgeModal, setBadgeModal] = useState(false);
   const BadgeListState = useRecoilValue(BadgeState);
 
   // 마이푸어룸 데이터 불러오기
@@ -68,14 +70,24 @@ function BadgeList() {
     title: string;
     name: string;
     description: string;
+    n_description: string;
   };
 
   const handleBadgeClick = (badge: Badge) => {
     setIsModalOpen(!isModalOpen);
     setSelectedBadge(badge);
+    const className = data?.badgeList.some(
+      (item) => item.badgeTitle === badge.name
+    )
+      ? 'have'
+      : 'dontHave';
+    setSelectedClassName(className);
+    setBadgeModal(true);
   };
 
-  console.log(data?.badgeList);
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const previousMonth = (currentMonth === 0 ? 11 : currentMonth - 1) + 1;
 
   return (
     <main id="BadgeList">
@@ -120,7 +132,11 @@ function BadgeList() {
           role="button"
           tabIndex={0}
         >
-          <div className={`modal badge ${isModalOpen ? 'active' : ''}`}>
+          <div
+            className={`modal badge ${isModalOpen ? 'active' : ''} ${
+              badgeModal === true ? 'show' : ''
+            }`}
+          >
             <div className="badge">
               <div>
                 <img
@@ -132,7 +148,10 @@ function BadgeList() {
             </div>
             <p>
               <span>ex.</span>
-              {selectedBadge?.description}
+              {selectedBadge &&
+                (selectedClassName === 'have'
+                  ? `${previousMonth}월 ${selectedBadge.description}`
+                  : selectedBadge.n_description)}
             </p>
             <Button className="common" onClick={() => navigate('/Account')}>
               가계부 작성하기
