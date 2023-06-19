@@ -23,6 +23,8 @@ import {
   Social,
   Reduction,
   Flex,
+  Challenge,
+  ChallengeEx,
 } from './pages/index';
 
 function App() {
@@ -69,6 +71,8 @@ function App() {
         <Route path="/social" element={<Social />} />
         <Route path="/social/reduction" element={<Reduction />} />
         <Route path="/social/flex" element={<Flex />} />
+        <Route path="/challenge" element={<Challenge />} />
+        <Route path="/challengeEx" element={<ChallengeEx />} />
       </Routes>
     </Layout>
   );

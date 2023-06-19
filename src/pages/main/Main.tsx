@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Main.scss';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+// import { BsThreeDotsVertical } from 'react-icons/bs';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
-import MainDelModal from '../../components/elements/MainDelModal';
+// import MainDelModal from '../../components/elements/MainDelModal';
 import NumberAnimation from '../../components/elements/NumberAnimation';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
 import poorImg from '../../static/image/main/mainPoor.png';
 import plusBtn from '../../static/image/main/plusBtn.png';
+import mainIcon from '../../static/image/main/mainIcon.png';
+import alarmIcon from '../../static/image/ui/alarm.png';
+import accountIcon from '../../static/image/main/accountIcon.png';
+import chalIcon from '../../static/image/main/chalIcon.png';
+import Tutorial from '../../components/elements/Tutorial';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -57,22 +62,22 @@ function Main(): JSX.Element {
   };
 
   // 가계부들 잔액의 합
-  const calculateTotalBalance = () => {
-    if (Array.isArray(data)) {
-      return data.reduce((sum, item) => {
-        let balance = 0;
-        if (typeof item.balance === 'object' && item.balance !== null) {
-          balance =
-            (item.balance.incomeTotal || 0) -
-            (item.balance.expenditureTotal || 0);
-        } else if (typeof item.balance === 'number') {
-          balance = item.balance;
-        }
-        return sum + balance;
-      }, 0);
-    }
-    return 0;
-  };
+  // const calculateTotalBalance = () => {
+  //   if (Array.isArray(data)) {
+  //     return data.reduce((sum, item) => {
+  //       let balance = 0;
+  //       if (typeof item.balance === 'object' && item.balance !== null) {
+  //         balance =
+  //           (item.balance.incomeTotal || 0) -
+  //           (item.balance.expenditureTotal || 0);
+  //       } else if (typeof item.balance === 'number') {
+  //         balance = item.balance;
+  //       }
+  //       return sum + balance;
+  //     }, 0);
+  //   }
+  //   return 0;
+  // };
 
   // 가계부 상세페이지 이동
   const handleGoToAccount = (accountId: string) => {
@@ -86,20 +91,23 @@ function Main(): JSX.Element {
       navigate(`addAccount/${account.id}`);
     }
   };
-  // 가계부 삭제 모달창 상태 관리
-  const [delModal, setDelModal] = useState<string | null>(null);
-  // 모달 오픈/클로즈 애니메이션
-  const [modalAnimation, setModalAnimation] = useState('');
 
-  const delModalOpen = (accountId: string): void => {
-    setDelModal(accountId);
-    setModalAnimation('modalAnimation');
+  // 사용 설명 모달
+  const [tutorial, setTutorial] = useState(false);
+  const [fir, setFir] = useState(false);
+  const [sec, setSec] = useState(false);
+
+  // (최초) 사용 설명 모달 오픈
+  const firTutorialOpen = () => {
+    setTutorial(true);
+    setFir(true);
   };
 
-  const delModalClose = (): void => {
-    setDelModal(null);
-    refetch();
-    setModalAnimation('');
+  // 사용 설명 모달 오픈
+  const tutorialOpen = () => {
+    setTutorial(true);
+    setFir(false);
+    setSec(true);
   };
 
   if (isLoading) {
@@ -111,36 +119,41 @@ function Main(): JSX.Element {
 
   return (
     <>
-      {delModal && (
-        <MainDelModal
-          id={delModal}
-          delModalClose={delModalClose}
-          modalAnimation={modalAnimation}
+      {tutorial && (
+        <Tutorial
+          setTutorial={setTutorial}
+          setFir={setFir}
+          fir={fir}
+          setSec={setSec}
+          sec={sec}
         />
       )}
 
       <div className="background">
-        <div className="title">
-          <p>내 가계부</p>
+        <div className="header">
+          {/* <p>내 가계부</p>
           <h1>
             <NumberAnimation targetNumber={calculateTotalBalance()} />원
-          </h1>
-        </div>
-
-        <div className="goPoorRoomBox">
-          <button type="button" onClick={() => navigate('/poorRoom')}>
-            <p>푸어 키우기</p>
-            <img src={poorImg} alt="poorImg" />
+          </h1> */}
+          <button type="button" onClick={tutorialOpen}>
+            <img src={mainIcon} alt="mainIcon" />
+          </button>
+          <button type="button" onClick={() => navigate('/alarmStation')}>
+            <img src={alarmIcon} alt="alarmIcon" />
           </button>
         </div>
 
         <div className="accountList">
-          {/* <p>
-            가계부 <span>{data?.length}</span>
-          </p> */}
           {data?.map((item) => {
             if (!item) {
-              return '';
+              return (
+                <button type="button" onClick={firTutorialOpen}>
+                  <div className="title">
+                    <h2>처음 오셨나요?</h2>
+                    <p>클릭해서 가계부를 생성해주세요</p>
+                  </div>
+                </button>
+              );
             }
 
             // 수입 잔액 - 지출 잔액
@@ -153,32 +166,49 @@ function Main(): JSX.Element {
               balanceValue = item.balance;
             }
             return (
-              <div key={item.id} className="account">
-                <div>
-                  <p className="accountName">{item.title}</p>
-                  <p className="accountMoney">
-                    <NumberAnimation targetNumber={balanceValue} />원
+              <button
+                type="button"
+                onClick={() => handleGoToAccount(item.id)}
+                key={item.id}
+              >
+                <div className="title">
+                  <p className="titleName">가계부</p>
+                  <p>쉽고 편한 가계부 작성</p>
+                  {/* <p className="accountName">{item.title}</p> */}
+                  <p className="priceText">
+                    모은 금액 : <NumberAnimation targetNumber={balanceValue} />
+                    원
                   </p>
                 </div>
-                <div className="moreNdelBtn">
-                  <button
-                    type="button"
-                    className="goAccountBtn"
-                    onClick={() => handleGoToAccount(item.id)}
-                  >
-                    자세히
-                  </button>
-                  <BsThreeDotsVertical
-                    className="mainDelBtn"
-                    onClick={() => delModalOpen(item.id)}
-                  />
-                </div>
-              </div>
+                <img src={accountIcon} alt="accountIcon" />
+              </button>
             );
           })}
         </div>
 
-        <div className="onClickBox">
+        <div className="rowBox">
+          <div className="goPoorRoomBox">
+            <button type="button" onClick={() => navigate('/poorRoom')}>
+              <div>
+                <p className="titleName">푸어 키우기</p>
+                <p>나만의 푸어 키우기</p>
+              </div>
+              <img src={poorImg} alt="poorImg" />
+            </button>
+          </div>
+
+          <div className="goChalBox">
+            <button type="button">
+              <div>
+                <p className="titleName">소비 챌린지</p>
+                <p>아직 개발 중입니다! 조금만 기다려주세요</p>
+              </div>
+              <img src={chalIcon} alt="chalIcon" />
+            </button>
+          </div>
+        </div>
+
+        <div className="goAccountBox">
           {data?.length === 0 ? (
             <button type="button" onClick={handleAddAccount}>
               가계부 추가
@@ -186,8 +216,7 @@ function Main(): JSX.Element {
             </button>
           ) : (
             <button type="button" onClick={goAddAccount}>
-              내역 추가
-              <img src={plusBtn} alt="plusBtn" />
+              빠른 가계부 작성
             </button>
           )}
         </div>

@@ -9,7 +9,7 @@ button {
   &.common {
     min-width: 100%;
     color: #fff;
-    background-color: #4194f1;
+    background-color: $primary;
   }
   &.whiteCommon {
     width: 208px;
@@ -28,6 +28,16 @@ button {
     color: #949494;
     font-size: 14px;
     font-weight: 500;
+  }
+  &.smallCommon {
+    height: initial;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 500;
+    background-color: $primary;
+    color: #fff;
   }
   &.addAccountBtn {
     width: 100%;
