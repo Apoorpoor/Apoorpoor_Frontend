@@ -6,14 +6,13 @@ on:
       - main
     types: [closed]
 
-permissions:
-  id-token: write
-  contents: write
-
 jobs:
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     # strategy:
     #   matrix:
