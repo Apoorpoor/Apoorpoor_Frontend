@@ -29,19 +29,12 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Generate Environment Variables File for Production
-        run: |
-          echo "REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL" >> .env
-         env:
-          REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
-
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          audience: sts.amazonaws.com
 
       - name: Deploy to S3
         run: aws s3 sync build/ s3://${{ secrets.DEV_AWS_S3_BUCKET }} --delete
