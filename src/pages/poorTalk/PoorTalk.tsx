@@ -6,7 +6,7 @@ import SockJS from 'sockjs-client';
 import { useQuery } from 'react-query';
 import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
-import { getUser } from '../../api/members';
+import { getUser, getChatList } from '../../api/members';
 import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
 import instance from '../../api/instance';
@@ -41,6 +41,8 @@ function PoorTalk(): JSX.Element {
   // const userId = localStorage.getItem("userId");
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
+  // 채팅 유저들 받아오기
+  const { data: ChatList } = useQuery('getChatList', getChatList);
   // 소켓 최종
   const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`);
   // 클라이언트
@@ -219,6 +221,7 @@ function PoorTalk(): JSX.Element {
   // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
   // console.log("userId = ", userId)
+  console.log("ChatList = ", ChatList)
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk</Header>
@@ -255,26 +258,15 @@ function PoorTalk(): JSX.Element {
                         ) : (
                           <div>
                             {message.message}
-                            <button
-                              type="button"
-                              className={`yourChatProfile${message.userId}`}
-                              onClick={() =>
-                                usersProfileHandler(message.userId)
-                              }
-                            >
-                              {message.level}
-                            </button>
                           </div>
                         )}
                       </div>
                       <div className="nowTime1">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   ) : (
@@ -282,8 +274,10 @@ function PoorTalk(): JSX.Element {
                     <>
                       <button
                         type="button"
-                        className="yourChatProfile"
-                        onClick={() => usersProfileHandler(message.userId)}
+                        className={`yourChatProfile${message?.level}`}
+                        onClick={() =>
+                          usersProfileHandler(message.userId)
+                        }
                       >
                         {message.level}
                       </button>
@@ -303,12 +297,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   )}
