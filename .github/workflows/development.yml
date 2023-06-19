@@ -8,7 +8,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   deploy:
@@ -28,6 +28,12 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL" >> .env
+         env:
+          REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
