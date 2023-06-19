@@ -35,7 +35,7 @@ jobs:
           echo $AWS_ACCESS_KEY_ID
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region: us-east-1
-        run: |
+        run:
           echo $AWS_ACCESS_KEY_ID
           echo $AWS_SECRET_ACCESS_KEY
 
