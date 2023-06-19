@@ -432,7 +432,7 @@ function EditAccount(): JSX.Element {
     <>
       {editDoneModal && <EditAccountDone />}
       <Header navigateToPreviousPage={navigateToPreviousPage}>
-        소비 / 수입 수정
+        수입 / 지출 수정
       </Header>
       <div className="addAccountBg">
         <div className="addAccountBody">
