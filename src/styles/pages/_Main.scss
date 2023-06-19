@@ -51,6 +51,8 @@
         justify-content: space-around;
         & .titleName {
           font-size: 20px;
+          font-weight: 700;
+          color: white;
         }
         & p {
           margin-top: 4px;
@@ -105,6 +107,8 @@
 
           & .titleName {
             font-size: 20px;
+            font-weight: 700;
+            color: black;
           }
 
           & p {
@@ -144,6 +148,12 @@
         & div {
           width: 100%;
           text-align: left;
+
+          & .titleName {
+            font-size: 20px;
+            font-weight: 700;
+            color: black;
+          }
 
           & p {
             margin-top: 4px;
