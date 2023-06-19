@@ -172,7 +172,7 @@ function Main(): JSX.Element {
                 key={item.id}
               >
                 <div className="title">
-                  <h2>가계부</h2>
+                  <p className="titleName">가계부</p>
                   <p>쉽고 편한 가계부 작성</p>
                   {/* <p className="accountName">{item.title}</p> */}
                   <p className="priceText">
@@ -190,7 +190,7 @@ function Main(): JSX.Element {
           <div className="goPoorRoomBox">
             <button type="button" onClick={() => navigate('/poorRoom')}>
               <div>
-                <h2>푸어 키우기</h2>
+                <p className="titleName">푸어 키우기</p>
                 <p>나만의 푸어 키우기</p>
               </div>
               <img src={poorImg} alt="poorImg" />
@@ -200,8 +200,8 @@ function Main(): JSX.Element {
           <div className="goChalBox">
             <button type="button">
               <div>
-                <h2>소비 챌린지</h2>
-                <p>일주일 소비 챌린지</p>
+                <p className="titleName">소비 챌린지</p>
+                <p>아직 개발 중입니다! 조금만 기다려주세요</p>
               </div>
               <img src={chalIcon} alt="chalIcon" />
             </button>

@@ -49,6 +49,9 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        & .titleName {
+          font-size: 20px;
+        }
         & p {
           margin-top: 4px;
           font-size: 14px;
@@ -99,6 +102,10 @@
         & div {
           width: 100%;
           text-align: left;
+
+          & .titleName {
+            font-size: 20px;
+          }
 
           & p {
             margin-top: 4px;
