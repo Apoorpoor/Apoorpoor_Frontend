@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Main.scss';
-// import { BsThreeDotsVertical } from 'react-icons/bs';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import accounts from '../../api/accounts';
-// import MainDelModal from '../../components/elements/MainDelModal';
 import NumberAnimation from '../../components/elements/NumberAnimation';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
 import poorImg from '../../static/image/main/mainPoor.png';
-import plusBtn from '../../static/image/main/plusBtn.png';
 import mainIcon from '../../static/image/main/mainIcon.png';
 import alarmIcon from '../../static/image/ui/alarm.png';
 import accountIcon from '../../static/image/main/accountIcon.png';
@@ -37,8 +34,6 @@ function Main(): JSX.Element {
   const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
     useQuery('getAccountList', accounts.getAccountList);
 
-  console.log('메인데이터!!!', data);
-
   // 가계부 생성
   const addAccountMutation = useMutation(
     (title: string) => accounts.addAccountList(title),
@@ -60,24 +55,6 @@ function Main(): JSX.Element {
       console.log('가계부 추가 실패:', err);
     }
   };
-
-  // 가계부들 잔액의 합
-  // const calculateTotalBalance = () => {
-  //   if (Array.isArray(data)) {
-  //     return data.reduce((sum, item) => {
-  //       let balance = 0;
-  //       if (typeof item.balance === 'object' && item.balance !== null) {
-  //         balance =
-  //           (item.balance.incomeTotal || 0) -
-  //           (item.balance.expenditureTotal || 0);
-  //       } else if (typeof item.balance === 'number') {
-  //         balance = item.balance;
-  //       }
-  //       return sum + balance;
-  //     }, 0);
-  //   }
-  //   return 0;
-  // };
 
   // 가계부 상세페이지 이동
   const handleGoToAccount = (accountId: string) => {
@@ -101,6 +78,7 @@ function Main(): JSX.Element {
   const firTutorialOpen = () => {
     setTutorial(true);
     setFir(true);
+    handleAddAccount();
   };
 
   // 사용 설명 모달 오픈
@@ -143,29 +121,38 @@ function Main(): JSX.Element {
           </button>
         </div>
 
-        <div className="accountList">
-          {data?.map((item) => {
-            if (!item) {
-              return (
-                <button type="button" onClick={firTutorialOpen}>
-                  <div className="title">
-                    <h2>처음 오셨나요?</h2>
-                    <p>클릭해서 가계부를 생성해주세요</p>
-                  </div>
-                </button>
-              );
-            }
+        {data?.length === 0 ? (
+          <div className="noneAccountList">
+            <button type="button" onClick={firTutorialOpen}>
+              <div>
+                <div className="title">
+                  <p className="titleName">처음 오셨나요?</p>
+                  <p>클릭해서 가계부를 생성해주세요</p>
+                </div>
+                <div className="makeAccount">가계부 생성하기</div>
+              </div>
+              <img src={accountIcon} alt="accountIcon" />
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
+        {data?.map((item) => {
+          if (!item) {
+            return '';
+          }
 
-            // 수입 잔액 - 지출 잔액
-            let balanceValue = 0;
-            if (typeof item.balance === 'object' && item.balance !== null) {
-              balanceValue =
-                (item.balance.incomeTotal || 0) -
-                (item.balance.expenditureTotal || 0);
-            } else if (typeof item.balance === 'string') {
-              balanceValue = item.balance;
-            }
-            return (
+          // 수입 잔액 - 지출 잔액
+          let balanceValue = 0;
+          if (typeof item.balance === 'object' && item.balance !== null) {
+            balanceValue =
+              (item.balance.incomeTotal || 0) -
+              (item.balance.expenditureTotal || 0);
+          } else if (typeof item.balance === 'string') {
+            balanceValue = item.balance;
+          }
+          return (
+            <div className="accountList">
               <button
                 type="button"
                 onClick={() => handleGoToAccount(item.id)}
@@ -182,9 +169,9 @@ function Main(): JSX.Element {
                 </div>
                 <img src={accountIcon} alt="accountIcon" />
               </button>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
 
         <div className="rowBox">
           <div className="goPoorRoomBox">
@@ -210,10 +197,7 @@ function Main(): JSX.Element {
 
         <div className="goAccountBox">
           {data?.length === 0 ? (
-            <button type="button" onClick={handleAddAccount}>
-              가계부 추가
-              <img src={plusBtn} alt="plusBtn" />
-            </button>
+            ''
           ) : (
             <button type="button" onClick={goAddAccount}>
               빠른 가계부 작성
