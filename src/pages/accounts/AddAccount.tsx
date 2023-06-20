@@ -338,56 +338,49 @@ function AddAccount(): JSX.Element {
   }, [accountPriceInput]);
 
   useEffect(() => {
-    if (title === '' || title === null) {
-      setTitleError(true);
-    } else {
-      setTitleError(false);
-    }
-  }, [title]);
-
-  useEffect(() => {
-    if (date === '' || date === 'NaN-NaN-NaN') {
-      setDateError(true);
-    } else {
-      setDateError(false);
-    }
-  }, [date]);
-
-  useEffect(() => {
-    if (accountType === 'EXPENDITURE') {
-      if (paymentMethod === '' || paymentMethod === null) {
-        setPayError(true);
+    if (titleError) {
+      if (title === '' || title === null) {
+        setTitleError(true);
       } else {
+        setTitleError(false);
+      }
+    }
+  }, [titleError, title]);
+
+  useEffect(() => {
+    if (dateError) {
+      if (date === '' || date === 'NaN-NaN-NaN') {
+        setDateError(true);
+      } else {
+        setDateError(false);
+      }
+    }
+  }, [dateError, date]);
+
+  useEffect(() => {
+    if (payError) {
+      if (accountType === 'EXPENDITURE') {
+        if (paymentMethod === '' || paymentMethod === null) {
+          setPayError(true);
+        } else {
+          setPayError(false);
+        }
+      }
+      if (accountType === 'INCOME') {
         setPayError(false);
       }
     }
-    if (accountType === 'INCOME') {
-      setPayError(false);
-    }
-  }, [accountType, paymentMethod]);
+  }, [payError, accountType, paymentMethod]);
 
   useEffect(() => {
-    if (incomeType === null && expenditureType === null) {
-      setCategoryError(true);
-    } else {
-      setCategoryError(false);
+    if (categoryError) {
+      if (incomeType === null && expenditureType === null) {
+        setCategoryError(true);
+      } else {
+        setCategoryError(false);
+      }
     }
-  }, [incomeType, expenditureType]);
-
-  console.log(
-    '에러:::',
-    '금액:',
-    priceError,
-    '내용:',
-    titleError,
-    '날짜:',
-    dateError,
-    '결제수단:',
-    payError,
-    '카테고리:',
-    categoryError
-  );
-  console.log('날짜!!!!', date);
+  }, [categoryError, incomeType, expenditureType]);
 
   const handleRegister = async () => {
     try {
@@ -403,8 +396,33 @@ function AddAccount(): JSX.Element {
         date: date || '',
       };
 
-      if (priceError || titleError || dateError || payError || categoryError) {
-        return;
+      if (title === '' || title === null) {
+        setTitleError(true);
+      } else {
+        setTitleError(false);
+      }
+
+      if (date === '' || date === 'NaN-NaN-NaN') {
+        setDateError(true);
+      } else {
+        setDateError(false);
+      }
+
+      if (accountType === 'EXPENDITURE') {
+        if (paymentMethod === '' || paymentMethod === null) {
+          setPayError(true);
+        } else {
+          setPayError(false);
+        }
+      }
+      if (accountType === 'INCOME') {
+        setPayError(false);
+      }
+
+      if (incomeType === null && expenditureType === null) {
+        setCategoryError(true);
+      } else {
+        setCategoryError(false);
       }
 
       await addAccountMutation.mutateAsync(requestData);
@@ -551,22 +569,9 @@ function AddAccount(): JSX.Element {
               </div>
             )}
           </div>
-          {priceError ||
-          titleError ||
-          dateError ||
-          payError ||
-          categoryError ? (
-            <div className="errorMessage">작성 내용을 다시 확인해주세요!</div>
-          ) : (
-            ''
-          )}
 
           <button
-            className={
-              priceError || titleError || dateError || payError || categoryError
-                ? 'errAddAccountDoneBtn'
-                : 'addAccountDoneBtn'
-            }
+            className="addAccountDoneBtn"
             type="button"
             onClick={handleRegister}
           >

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
-import { BsFillPenFill } from 'react-icons/bs';
+import { BsFillPenFill, BsPlusLg } from 'react-icons/bs';
 import moment, { Moment } from 'moment';
 import Select from 'react-select';
 import { UseQueryResult, useQuery, useInfiniteQuery } from 'react-query';
@@ -76,6 +76,11 @@ function Account(): JSX.Element {
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
     navigate('/');
+  };
+
+  // 내역 추가 버튼
+  const goAddAccount = () => {
+    navigate(`/addAccount/${id}`);
   };
 
   // 캘린더 날짜 받는 라이브러리
@@ -477,7 +482,6 @@ function Account(): JSX.Element {
       },
     }
   );
-  console.log('data 호출:', getAccountType);
 
   const [bottomObserveRef, bottomInView] = useInView({
     threshold: 0,
@@ -486,7 +490,6 @@ function Account(): JSX.Element {
   // useEffect를 사용하여 스크롤 이벤트 리스너 등록
   useEffect(() => {
     if (bottomInView) {
-      console.log('무한스크롤!!!', bottomInView);
       fetchNextPage();
     }
   }, [bottomInView, fetchNextPage]);
@@ -593,33 +596,43 @@ function Account(): JSX.Element {
         />
       )}
       <Header navigateToPreviousPage={navigateToPreviousPage}>
-        <div className="month">
-          <button
-            className="sideBtn"
-            type="button"
-            onClick={() => {
-              setMoment(getMoment.clone().subtract(1, 'month'));
-              getTotalMonthDateRefetch();
-              getAccountTypeRefetch();
-            }}
-          >
-            <AiFillCaretLeft />
-          </button>
+        <div id="accountHeader">
+          <div className="month">
+            <button
+              className="sideBtn"
+              type="button"
+              onClick={() => {
+                setMoment(getMoment.clone().subtract(1, 'month'));
+                getTotalMonthDateRefetch();
+                getAccountTypeRefetch();
+              }}
+            >
+              <AiFillCaretLeft />
+            </button>
 
-          <button type="button" onClick={monthModalOpen}>
-            <h1>{today.format('M')}월</h1>
-          </button>
+            <button type="button" onClick={monthModalOpen}>
+              <h1>{today.format('M')}월</h1>
+            </button>
+
+            <button
+              type="button"
+              className="sideBtn"
+              onClick={() => {
+                setMoment(getMoment.clone().add(1, 'month'));
+                getTotalMonthDateRefetch();
+                getAccountTypeRefetch();
+              }}
+            >
+              <AiFillCaretRight />
+            </button>
+          </div>
 
           <button
             type="button"
-            className="sideBtn"
-            onClick={() => {
-              setMoment(getMoment.clone().add(1, 'month'));
-              getTotalMonthDateRefetch();
-              getAccountTypeRefetch();
-            }}
+            className="goAddAccountBtn"
+            onClick={goAddAccount}
           >
-            <AiFillCaretRight />
+            <BsPlusLg />
           </button>
         </div>
       </Header>

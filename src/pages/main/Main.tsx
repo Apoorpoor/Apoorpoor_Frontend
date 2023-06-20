@@ -64,7 +64,7 @@ function Main(): JSX.Element {
   // 내역 추가 버튼
   const goAddAccount = () => {
     if (Array.isArray(data)) {
-      const account = data[0]; // 예시로 배열의 첫 번째 요소를 사용
+      const account = data[0];
       navigate(`addAccount/${account.id}`);
     }
   };
