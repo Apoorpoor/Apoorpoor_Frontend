@@ -1,0 +1,102 @@
+#numberAnimation {
+  display: inline-flex;
+  //   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+  & .number {
+    animation-name: roll;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+  }
+  .number:nth-child(1) {
+    animation: rollA 1s ease-out forwards;
+  }
+
+  .number:nth-child(2) {
+    animation: rollB 1s ease-out forwards;
+  }
+
+  .number:nth-child(3) {
+    animation: rollC 1s ease-out forwards;
+  }
+  .number:nth-child(4) {
+    animation: rollD 1s ease-out forwards;
+  }
+}
+
+@keyframes rollA {
+  0% {
+    transform: translateY(-30%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes rollB {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(-30%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes rollC {
+  0% {
+    transform: translateY(-70%);
+  }
+  35% {
+    transform: translateY(-50%);
+  }
+  55% {
+    transform: translateY(-30%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes rollD {
+  0% {
+    transform: translateY(-90%);
+  }
+  25% {
+    transform: translateY(-70%);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+  75% {
+    transform: translateY(-30%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes roll {
+  0% {
+    transform: translateY(-95%);
+  }
+  20% {
+    transform: translateY(-90%);
+  }
+  40% {
+    transform: translateY(-70%);
+  }
+  60% {
+    transform: translateY(-50%);
+  }
+  80% {
+    transform: translateY(-30%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
