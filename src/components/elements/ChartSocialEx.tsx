@@ -30,7 +30,7 @@ function ChartSocialEx({ data }: ChartSocialExProps) {
     }
     if (value >= 100000) {
       const stringValue = value.toString();
-      const firstTwoDigits = stringValue.substring(0, 2);
+      const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
       return `${firstTwoDigits}만원`;
     }
     if (value >= 10000 && value < 100000) {
