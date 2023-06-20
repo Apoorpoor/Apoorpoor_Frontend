@@ -49,7 +49,31 @@ function Calendar({
   );
 
   const monthTotal = getTotalMonthDate?.accountTotalResponseDtoList;
-  // console.log('총 금액 호출:', monthTotal);
+
+  // 숫자 형식화 함수
+  const formatNumber = (value: number) => {
+    if (value >= 100000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 8);
+      return `${remainingDigits}억원`;
+    }
+    if (value >= 100000) {
+      const stringValue = value.toString();
+      const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
+      return `${firstTwoDigits}만원`;
+    }
+    if (value >= 10000 && value < 100000) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue[0];
+      const secondDigit = stringValue[1];
+      return `${firstDigit}만${secondDigit}천원`;
+    }
+    if (value >= 1000 && value < 10000) {
+      const firstDigit = Math.floor(value / 1000);
+      return `${firstDigit}천원`;
+    }
+    return `${value.toLocaleString().split('.')[0]}원`;
+  };
 
   // 날짜 클릭 시 상세 모달
   const [calendarModal, setCalendarModal] = useState<boolean>(false);
@@ -57,11 +81,6 @@ function Calendar({
   // 모달 오픈/클로즈 애니메이션
   const [modalAnimation, setModalAnimation] = useState('');
 
-  // const calendarModalOpen = (date: string): void => {
-  //   setSelectedDate(date);
-  //   setCalendarModal(true);
-  //   setModalAnimation('modalAnimation');
-  // };
   const calendarModalOpen = (date: string): void => {
     if (!isAfter(new Date(date), new Date())) {
       setSelectedDate(date);
@@ -110,14 +129,14 @@ function Calendar({
                 <div className="accountPriceHeight">
                   {matchingData?.expenditure_sum ? (
                     <span className="accountPrice expenditure">
-                      -{matchingData.expenditure_sum.toLocaleString()}
+                      -{formatNumber(matchingData.expenditure_sum)}
                     </span>
                   ) : (
                     ''
                   )}
                   {matchingData?.income_sum ? (
                     <span className="accountPrice income">
-                      +{matchingData.income_sum.toLocaleString()}
+                      +{formatNumber(matchingData.income_sum)}
                     </span>
                   ) : (
                     ''
@@ -150,14 +169,14 @@ function Calendar({
               <div className="accountPriceHeight">
                 {matchingData?.expenditure_sum ? (
                   <span className="accountPrice expenditure">
-                    -{matchingData.expenditure_sum.toLocaleString()}
+                    -{formatNumber(matchingData.expenditure_sum)}
                   </span>
                 ) : (
                   ''
                 )}
                 {matchingData?.income_sum ? (
                   <span className="accountPrice income">
-                    +{matchingData.income_sum.toLocaleString()}
+                    +{formatNumber(matchingData.income_sum)}
                   </span>
                 ) : (
                   ''
