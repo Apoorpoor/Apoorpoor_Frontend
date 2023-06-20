@@ -7,7 +7,6 @@ interface NumberAnimationProps {
 
 function NumberAnimation({ targetNumber }: NumberAnimationProps): JSX.Element {
   const targetNumberOnly = Number(targetNumber.toString().replace('-', ''));
-  console.log('targetNumberOnly', targetNumberOnly);
   const [animatedDigits, setAnimatedDigits] = useState<number[]>([]);
 
   useEffect(() => {
@@ -17,15 +16,12 @@ function NumberAnimation({ targetNumber }: NumberAnimationProps): JSX.Element {
     // 랜덤 배열 생성
     const generateRandomDigits = (num: number): number[] => {
       const digits = Array.from(String(num), Number);
-      console.log('digits:', digits);
       const digitsLength = digits.length;
-      console.log('digitsLength:', digitsLength);
       const randomDigits: number[] = [];
 
       for (let i = 0; i < digitsLength; i += 1) {
         const randomDigit = Math.floor(Math.random() * 10);
         randomDigits.push(randomDigit);
-        console.log('randomDigits:', randomDigits);
       }
 
       return randomDigits;
@@ -59,7 +55,6 @@ function NumberAnimation({ targetNumber }: NumberAnimationProps): JSX.Element {
   }, [targetNumberOnly]);
 
   const arrayDigits = Array.from(animatedDigits);
-  console.log('arrayDigits:', arrayDigits);
 
   // 배열의 고유 key
   let key = 0;

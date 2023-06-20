@@ -302,7 +302,6 @@ function AddAccount(): JSX.Element {
     }) => accounts.addAccount(requestData),
     {
       onSuccess: (response) => {
-        console.log('거래내역 추가 성공:', response);
         if (accountType === 'INCOME') {
           setCategory('INCOME');
         }
@@ -426,7 +425,6 @@ function AddAccount(): JSX.Element {
       }
 
       await addAccountMutation.mutateAsync(requestData);
-      console.log('거래내역 추가 요청 완료');
       setAccountPriceInput('');
       setTitle('');
       navigate(`/addAccountDone/${id}`);

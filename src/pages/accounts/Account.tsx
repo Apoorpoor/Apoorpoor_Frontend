@@ -474,7 +474,6 @@ function Account(): JSX.Element {
       accounts.getAccountType(id as string, dateType, params, pageParam),
     {
       getNextPageParam: (lastPage) => {
-        console.log(lastPage);
         if (lastPage.number + 1 < lastPage.totalPages) {
           return lastPage.number + 1;
         }

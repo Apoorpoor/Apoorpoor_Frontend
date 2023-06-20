@@ -50,7 +50,6 @@ function Main(): JSX.Element {
   const handleAddAccount = async () => {
     try {
       await addAccountMutation.mutateAsync('새로운 가계부');
-      console.log('가계부 추가 성공!!');
     } catch (err) {
       console.log('가계부 추가 실패:', err);
     }
@@ -109,10 +108,6 @@ function Main(): JSX.Element {
 
       <div className="background">
         <div className="header">
-          {/* <p>내 가계부</p>
-          <h1>
-            <NumberAnimation targetNumber={calculateTotalBalance()} />원
-          </h1> */}
           <button type="button" onClick={tutorialOpen}>
             <img src={mainIcon} alt="mainIcon" />
           </button>
@@ -159,9 +154,8 @@ function Main(): JSX.Element {
                 key={item.id}
               >
                 <div className="title">
-                  <p className="titleName">가계부</p>
+                  <p className="titleName">{item.title}</p>
                   <p>쉽고 편한 가계부 작성</p>
-                  {/* <p className="accountName">{item.title}</p> */}
                   <p className="priceText">
                     모은 금액 : <NumberAnimation targetNumber={balanceValue} />
                     원

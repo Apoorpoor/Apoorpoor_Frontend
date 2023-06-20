@@ -42,7 +42,6 @@ function EditAccount(): JSX.Element {
   const location = useLocation();
   const data: LedgerItem[] = location.state?.data.content;
   const editData = data.filter((item: LedgerItem) => item.id === Number(id));
-  console.log('전달받은 data::', editData);
 
   // 금액 수정 전 input
   const returnPrice = (): number => {
@@ -346,9 +345,7 @@ function EditAccount(): JSX.Element {
       date: string;
     }) => accounts.editAccount(id, requestData),
     {
-      onSuccess: () => {
-        console.log('거래내역 수정 성공');
-      },
+      onSuccess: () => {},
       onError: (error) => {
         console.log('거래내역 수정 실패:', error);
       },
@@ -421,7 +418,6 @@ function EditAccount(): JSX.Element {
       }
 
       await editAccountMutation.mutateAsync(requestData);
-      console.log('거래내역 수정 요청 완료');
       setEditDoneModal(true);
     } catch (error) {
       console.log('거래내역 수정 실패:', error);
