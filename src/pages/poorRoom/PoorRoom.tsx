@@ -26,7 +26,7 @@ import {
   Tooltip,
   Input,
 } from '../../components';
-import myPoorState from '../../shared/MyPoor';
+import { myPoorState } from '../../shared/MyPoor';
 import BadgeState from '../../shared/BadgeList';
 import PoorCharacter from './PoorCharacter';
 import Loading from '../status/Loading';

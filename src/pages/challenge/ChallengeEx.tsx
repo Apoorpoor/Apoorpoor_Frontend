@@ -18,14 +18,17 @@ function ChallengeEx() {
     success: true,
   };
   return (
-    <main id="challengeEx">
-      <Header navigateToPreviousPage={navigateToPreviousPage}>&nbsp;</Header>
+    <main id="challengeSt">
+      <Header navigateToPreviousPage={navigateToPreviousPage}>
+        챌린지가 무엇인가요?
+      </Header>
       <article>
         <section>
           <h1>
             <span>1주일동안</span> 한정된 금액으로
           </h1>
           <p>무지출 부터 10만원까지 한정된 금액으로 1주일 동안 살아보기!</p>
+          <p>챌린지를 시작하면 챌린지 진행 상황과 챌린지 기간 중 사용내역을 조회할 수 있어요</p>
           <div className="challengeProcessBar">
             <p>{data.challengeAmount / 10000}만원</p>
             <div className="progressTrack">
@@ -113,46 +116,39 @@ function ChallengeEx() {
           <h1>
             스탬프로 <span>포인트 획득</span>
           </h1>
-          <p>
-            1주일 챌린지에 성공할때마다 포인트 팡팡! 스탬프 로 또 다시 포인트
-            획득!
-          </p>
+          <p>1주일 챌린지에 성공할 때마다 포인트와 스탬프 획득!</p>
+          <p>챌린지를 10번 성공하면 보너스 100포인트 더!</p>
           <div className="challengeStamp">
             <ul>
               <li>
-                <p>월</p>
-                <div className="stamp fail">&nbsp;</div>
-                <p className="point fail">0p</p>
-              </li>
-              <li>
-                <p>화</p>
                 <div className="stamp success">&nbsp;</div>
-                <p className="point success">0p</p>
               </li>
               <li>
-                <p>수</p>
+                <div className="stamp success">&nbsp;</div>
+              </li>
+              <li>
                 <div className="stamp possible">&nbsp;</div>
-                <p className="point possible">0p</p>
               </li>
               <li>
-                <p>목</p>
                 <div className="stamp next">&nbsp;</div>
-                <p className="point next">0p</p>
               </li>
               <li>
-                <p>금</p>
                 <div className="stamp next">&nbsp;</div>
-                <p className="point next">0p</p>
               </li>
               <li>
-                <p>토</p>
                 <div className="stamp next">&nbsp;</div>
-                <p className="point next">0p</p>
               </li>
               <li>
-                <p>일</p>
                 <div className="stamp next">&nbsp;</div>
-                <p className="point next">0p</p>
+              </li>
+              <li>
+                <div className="stamp next">&nbsp;</div>
+              </li>
+              <li>
+                <div className="stamp next">&nbsp;</div>
+              </li>
+              <li>
+                <div className="stamp point100">&nbsp;</div>
               </li>
             </ul>
           </div>
@@ -162,12 +158,17 @@ function ChallengeEx() {
           >
             <p>
               <img src={infoIcon} alt="정보" />
-              1주일에 한가지 챌린지만 도전 가능해요
+              모든 챌린지는 <span>월요일에 오픈</span>돼요
             </p>
             <div>
               <p>
                 <img src={infoIcon} alt="정보" />
-                포인트 획득 기준을 알려드릴게요(완료기준)
+                <span>1주일에 한가지 챌린지</span>만 도전 가능해요
+              </p>
+              <p>
+                <img src={infoIcon} alt="정보" />
+                포인트 획득 기준을 알려드릴게요
+                <span className="gray">(완료기준)</span>
               </p>
               <ul>
                 <li>
@@ -193,7 +194,7 @@ function ChallengeEx() {
             onClick={() => setDynamicBoxOpen(!dynamicBoxOpen)}
             onKeyDown={() => setDynamicBoxOpen(!dynamicBoxOpen)}
           >
-            자세히
+            {dynamicBoxOpen === true ? `최소화` : `자세히 보기`}
           </label>
         </section>
       </article>

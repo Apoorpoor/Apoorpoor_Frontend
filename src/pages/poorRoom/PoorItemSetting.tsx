@@ -11,7 +11,7 @@ import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router';
 import beggars from '../../api/beggars';
 import { Button, Header } from '../../components';
-import myPoorState from '../../shared/MyPoor';
+import { myPoorState } from '../../shared/MyPoor';
 import Portal from '../../shared/Portal';
 import '../../styles/pages/_PoorItemSetting.scss';
 import Error from '../status/Error';

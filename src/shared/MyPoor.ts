@@ -16,7 +16,7 @@ interface MyData {
   accImage: string;
   customImage: string;
 }
-const myPoorState: RecoilState<MyData> = atom<MyData>({
+export const myPoorState: RecoilState<MyData> = atom<MyData>({
   key: 'myPoorState',
   default: {
     beggarId: '',
@@ -36,4 +36,16 @@ const myPoorState: RecoilState<MyData> = atom<MyData>({
   },
 });
 
-export default myPoorState;
+interface ChallengeInfoType {
+  challengeTitle: string;
+  startTime: string;
+}
+
+export const myChallengeInfo: RecoilState<ChallengeInfoType> =
+  atom<ChallengeInfoType>({
+    key: 'myChallengeInfo',
+    default: {
+      challengeTitle: '',
+      startTime: '',
+    },
+  });

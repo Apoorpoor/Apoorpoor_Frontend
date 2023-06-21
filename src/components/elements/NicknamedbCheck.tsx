@@ -4,12 +4,12 @@ import { useRecoilState } from 'recoil';
 import { IoMdAlert } from 'react-icons/io';
 import { checkNicknameValidation } from '../../api/members';
 import '../../styles/components/_Input.scss';
-import inputState from '../../shared/Atom';
+import { NicknameInputState } from '../../shared/Atom';
 import Input from './Input';
 import { dbNicknamecheck } from '../../shared/JoinUserInfo';
 
 function NicknamedbCheck() {
-  const [inputValue, setInputValue] = useRecoilState(inputState);
+  const [inputValue, setInputValue] = useRecoilState(NicknameInputState);
   const [dbNicknameCheck, setdbNicknameCheck] = useRecoilState(dbNicknamecheck);
   const [validationAlert, setValidationAlert] = useState('');
   const [isInputting, setIsInputting] = useState(false);
