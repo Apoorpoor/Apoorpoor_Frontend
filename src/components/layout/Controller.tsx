@@ -72,6 +72,10 @@ function Controller() {
     page === '/age' ||
     page === '/gender' ||
     page === '/finished' ||
+    page === '/challenge' ||
+    page === '/challengeEx' ||
+    page === '/myChallenge' ||
+    page === '/stampBoard' ||
     page === '/AlarmStation' ||
     page === '/oauth/kakao' ||
     /^\/addAccount\/\d+$/.test(page) ||

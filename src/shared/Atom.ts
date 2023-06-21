@@ -5,6 +5,11 @@ const inputState: RecoilState<string> = atom<string>({
   default: '',
 });
 
+export const NicknameInputState: RecoilState<string> = atom<string>({
+  key: 'NicknameInputState',
+  default: '',
+});
+
 // 거래내역 등록 후 랜덤 메세지 위한 카테고리
 export const categoryState: RecoilState<string> = atom<string>({
   key: 'categoryState',

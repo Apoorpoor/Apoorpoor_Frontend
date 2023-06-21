@@ -54,7 +54,9 @@ div.modalbg.active {
   display: none;
 }
 .modal.modifyNickname.show {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -67,6 +69,21 @@ div.modalbg.active {
   background-color: #fff;
   &::before {
     display: none;
+  }
+
+  & .nicknameValidationAlert {
+    left: 0px;
+  }
+
+  & .buttonWrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    & button {
+      min-width: initial;
+      width: 50%;
+    }
   }
 }
 

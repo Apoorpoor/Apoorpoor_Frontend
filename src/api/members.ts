@@ -24,8 +24,7 @@ const getNicknameCheck = async () => {
     const response = await instance.get(`/beggar/info`);
     return response.data;
   } catch (err) {
-    console.log(`닉네임 중복체크 API 오류 발생: ${err}`);
-    throw err;
+    return err as ErrorType;
   }
 };
 
@@ -33,49 +32,45 @@ const getNicknameCheck = async () => {
 const checkNicknameValidation = async (nickname: string): Promise<any> => {
   try {
     const response = await instance.get(`/beggar/check/${nickname}`);
-    return response;
+    return response.status;
   } catch (error) {
-    console.log((error as ErrorType).response);
     return (error as ErrorType).response.status;
   }
 };
 
 // 닉네임 등록하기
-const postNickname = async (nickname: string): Promise<void> => {
+const postNickname = async (nickname: string): Promise<any> => {
   try {
     const response = await instance.post(`/beggar`, {
       nickname,
     });
     return response.data;
   } catch (error) {
-    console.log(error);
-    throw error;
+    return error as ErrorType;
   }
 };
 
 // 나이 등록하기
-const putAge = async (age: number): Promise<void> => {
+const putAge = async (age: number): Promise<any> => {
   try {
     const response = await instance.put(`/user/age`, {
       age,
     });
     return response.data;
   } catch (error) {
-    console.log(`나이입력  API 오류 발생: ${error}`);
-    throw error;
+    return error as ErrorType;
   }
 };
 
 // 성별 등록하기
-const putGender = async (gender: string): Promise<void> => {
+const putGender = async (gender: string): Promise<any> => {
   try {
     const response = await instance.put(`/user/gender`, {
       gender,
     });
     return response.data;
   } catch (error) {
-    console.log(`성별입력  API 오류 발생: ${error}`);
-    throw error;
+    return error as ErrorType;
   }
 };
 
