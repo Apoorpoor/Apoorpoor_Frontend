@@ -34,6 +34,7 @@ import Error from '../status/Error';
 import containerPositionState from '../../shared/ScrollContainer';
 import Portal from '../../shared/Portal';
 import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
+import nonePoorInfoImg from '../../static/image/poor/nonePoorInfo.png';
 
 function PoorRoom() {
   // PoorRoom Hooks & State
@@ -100,6 +101,7 @@ function PoorRoom() {
     'getMyPoorRoom',
     beggars.getMyPoorRoom
   );
+  console.log('푸어데이터:', data);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -263,29 +265,49 @@ function PoorRoom() {
       <Header navigateToPreviousPage={navigateToPreviousPage}>MY</Header>
       <article>
         <section id="myPoorInfo">
-          <div className="poorProfile">
-            <PoorCharacter avatarType="poorRoom" />
-          </div>
-          <LevelMedal level={data?.level as number} />
-          <h2 className="nickname">
-            {data?.nickname}{' '}
-            <Button className="icon" onClick={() => modifyModalOpen()}>
-              <BsPenFill style={{ color: '#d8d8d8', fontSize: '14px' }} />
-            </Button>
-          </h2>
-          <p className="info">
-            {data?.gender === 'female' ? '여' : '남'} / {data?.age}
-            <Button
-              className="whiteRoundCommon"
-              onClick={() => navigate('/poorItemSetting')}
-            >
-              아이템{' '}
-              <BsFillCaretRightFill style={{ transform: 'translateY(2px)' }} />
-            </Button>
-            <Button className="textType" onClick={logout}>
-              로그아웃
-            </Button>
-          </p>
+          {data?.age === null ||
+          data?.gender === null ||
+          data?.nickname === null ||
+          data?.nickname === '' ? (
+            <>
+              <img
+                src={nonePoorInfoImg}
+                alt="nonePoorInfoImg"
+                onClick={() => navigate('/nickname')}
+              />
+              <Button className="textType" onClick={logout}>
+                로그아웃
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="poorProfile">
+                <PoorCharacter avatarType="poorRoom" />
+              </div>
+              <LevelMedal level={data?.level as number} />
+              <h2 className="nickname">
+                {data?.nickname}{' '}
+                <Button className="icon" onClick={() => modifyModalOpen()}>
+                  <BsPenFill style={{ color: '#d8d8d8', fontSize: '14px' }} />
+                </Button>
+              </h2>
+              <p className="info">
+                {data?.gender === 'female' ? '여' : '남'} / {data?.age}
+                <Button
+                  className="whiteRoundCommon"
+                  onClick={() => navigate('/poorItemSetting')}
+                >
+                  아이템{' '}
+                  <BsFillCaretRightFill
+                    style={{ transform: 'translateY(2px)' }}
+                  />
+                </Button>
+                <Button className="textType" onClick={logout}>
+                  로그아웃
+                </Button>
+              </p>
+            </>
+          )}
         </section>
         <section id="myConsumePropensity">
           <h1>소비성향</h1>

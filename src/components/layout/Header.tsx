@@ -1,8 +1,8 @@
 import React from 'react';
 import '../../styles/components/_Header.scss';
-import { AiOutlineLeft } from 'react-icons/ai';
 import { useLocation } from 'react-router';
 import Alarm from '../elements/Alarm';
+import prevButton from '../../static/image/ui/Chevron left.png';
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ function Header({ children, navigateToPreviousPage }: HeaderProps) {
   return (
     <div id="header">
       <button type="button" onClick={navigateToPreviousPage}>
-        <AiOutlineLeft />
+        <img src={prevButton} alt="prevButton" />
       </button>
       <h1>{children}</h1>
       {page === '/poorRoom' ? <Alarm /> : null}
