@@ -29,7 +29,6 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
   ];
 
   const [selectCpValue, setSelectCpValue] = useState('');
-  console.log('현재선택데이터::', selectCpValue);
 
   // 쿼리스트링
   let dateType = '&dateType=month';
@@ -50,7 +49,6 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
     ['getDifference', id, currentMonth, dateType],
     () => accounts.getDifference(id as string, currentMonth, dateType)
   );
-  console.log('막대 데이터::', data);
 
   const getCategoryLabel = (month: string | null): string => {
     if (month === null) {
@@ -184,26 +182,6 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
     monthDataRange && monthDataRange.charAt(0) === '0'
       ? monthDataRange.slice(1)
       : monthDataRange;
-
-  // let monthDataRange = null;
-  // let lastMonth = '';
-
-  // if (data && data[1]) {
-  //   lastMonth = data[1].month;
-  // }
-
-  // if (lastMonth) {
-  //   monthDataRange = lastMonth.slice(-2);
-  //   monthDataRange =
-  //     monthDataRange.charAt(0) === '0'
-  //       ? monthDataRange.slice(1)
-  //       : monthDataRange;
-  // }
-
-  // const formattedDataRange =
-  //   monthDataRange && monthDataRange.charAt(0) === '0'
-  //     ? monthDataRange.slice(1)
-  //     : monthDataRange;
 
   // 작년 동월 데이터
   let yearDataRange = null;

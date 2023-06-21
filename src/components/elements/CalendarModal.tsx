@@ -78,7 +78,6 @@ function CalendarModal({
     title: item.title,
   }));
 
-  console.log('날짜props:::', selectedDate);
   // 가계부 캘린더 선택 날짜
   const setMainDate = useSetRecoilState(mainDateState);
 
