@@ -12,24 +12,22 @@ function NicknamedbCheck() {
   const [inputValue, setInputValue] = useRecoilState(NicknameInputState);
   const [dbNicknameCheck, setdbNicknameCheck] = useRecoilState(dbNicknamecheck);
   const [validationAlert, setValidationAlert] = useState('');
-  const [isInputting, setIsInputting] = useState(false);
 
   const { data }: UseQueryResult<number> = useQuery(
     ['checkNicknameValidation', inputValue],
-    () => checkNicknameValidation(inputValue)
+    () => checkNicknameValidation(inputValue),
+    {
+      enabled: inputValue.length > 0,
+    }
   );
 
   const nicknameChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setInputValue(event.target.value);
-    setIsInputting(true);
   };
 
   useEffect(() => {
-    if (isInputting) {
-      return;
-    }
     if (data && data === 403) {
       setValidationAlert('※ 욕설 및 비속어가 들어간 이름은 쓸 수 없어요.');
       setdbNicknameCheck(false);
@@ -52,13 +50,7 @@ function NicknamedbCheck() {
       setValidationAlert('');
       setdbNicknameCheck(true);
     }
-  }, [data, inputValue, isInputting, setdbNicknameCheck]);
-
-  useEffect(() => {
-    if (isInputting) {
-      setIsInputting(false);
-    }
-  }, [inputValue, isInputting]);
+  }, [data, inputValue, setdbNicknameCheck]);
 
   return (
     <div className="nicknameForm">

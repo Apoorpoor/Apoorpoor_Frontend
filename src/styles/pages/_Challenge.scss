@@ -136,8 +136,10 @@
   & article {
   }
   & section {
+    height: calc(100vh - 80px);
     padding: 0 20px 60px;
     border-bottom: 12px solid $gray-150;
+    box-sizing: border-box;
     & h1 {
       font-size: 26px;
       margin-bottom: 7px;
@@ -147,6 +149,12 @@
       & span {
         color: $primary;
       }
+    }
+    & .myChallenge {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
   & section:nth-child(2) {
@@ -183,7 +191,7 @@
           position: absolute;
           top: 20px;
           left: 70%;
-          width: 75px;
+          width: 90px;
           font-size: 16px;
           font-weight: 700;
           color: $primary;
@@ -255,6 +263,36 @@
         color: #333;
         border-radius: 15px;
         background-color: $secondaryL-600;
+      }
+      & ul {
+        display: block;
+        margin-top: 20px;
+        & li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          padding-bottom: 20px;
+
+          & p span {
+            display: block;
+            text-align: left;
+          }
+          & p span:first-child {
+            font-size: 13px;
+            padding-bottom: 12px;
+          }
+          & p span:nth-child(2) {
+            padding-bottom: 7px;
+          }
+          & p span:last-child {
+            font-size: 13px;
+            color: $gray-500;
+          }
+          & p:last-child {
+            font-weight: 700;
+          }
+        }
       }
     }
   }
