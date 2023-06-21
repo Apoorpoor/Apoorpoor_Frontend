@@ -30,6 +30,7 @@ import {
   ChallengeStart,
 } from './pages/index';
 import ChallengeDone from './pages/challenge/ChallengeDone';
+import PoorInfoError from './pages/status/PoorInfoError';
 
 function App() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ function App() {
         <Route path="/challengeEx" element={<ChallengeEx />} />
         <Route path="/challengestart" element={<ChallengeStart />} />
         <Route path="/challengeDone" element={<ChallengeDone />} />
+        <Route path="/poorError" element={<PoorInfoError />} />
         <Route path="/myChallenge" element={<MyChallenge />} />
         <Route path="/stampBoard" element={<StampBoard />} />
       </Routes>
