@@ -6,12 +6,12 @@ import { Button } from '../../components/index';
 import '../../styles/pages/_Nickname.scss';
 import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
 import { dbNicknamecheck, UserNickname } from '../../shared/JoinUserInfo';
-import inputState from '../../shared/Atom';
+import inputState, { NicknameInputState } from '../../shared/Atom';
 
 function Nickname() {
   const navigate = useNavigate();
   const dbNicknameCheck = useRecoilValue(dbNicknamecheck);
-  const [inputValue, setInputValue] = useRecoilState(inputState);
+  const [inputValue, setInputValue] = useRecoilState(NicknameInputState);
   const [userNickname, setUserNickname] = useRecoilState(UserNickname);
 
   return (

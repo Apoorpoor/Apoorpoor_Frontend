@@ -62,8 +62,8 @@ function NumberAnimation({ targetNumber }: NumberAnimationProps): JSX.Element {
   return (
     <span id="numberAnimation">
       {targetNumber < 0 ? '-' : ''}
-      {arrayDigits.length === 0
-        ? ''
+      {arrayDigits.length === 1
+        ? targetNumber
         : arrayDigits.map((item, index) => {
             const uniqueKey = `${(key += 1)}`;
             const comma =
