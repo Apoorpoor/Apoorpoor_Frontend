@@ -29,6 +29,7 @@ import {
   StampBoard,
   ChallengeStart,
 } from './pages/index';
+import ChallengeDone from './pages/challenge/ChallengeDone';
 
 function App() {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ function App() {
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challengeEx" element={<ChallengeEx />} />
         <Route path="/challengestart" element={<ChallengeStart />} />
+        <Route path="/challengeDone" element={<ChallengeDone />} />
         <Route path="/myChallenge" element={<MyChallenge />} />
         <Route path="/stampBoard" element={<StampBoard />} />
       </Routes>
