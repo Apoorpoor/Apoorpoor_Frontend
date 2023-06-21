@@ -33,7 +33,6 @@ function Main(): JSX.Element {
 
   const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
     useQuery('getAccountList', accounts.getAccountList);
-  console.log('data:', data);
 
   // 가계부 생성
   const addAccountMutation = useMutation(
