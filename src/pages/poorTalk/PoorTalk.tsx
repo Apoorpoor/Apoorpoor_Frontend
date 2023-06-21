@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
@@ -9,6 +8,8 @@ import SockJS from 'sockjs-client';
 import { useQuery } from 'react-query';
 import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { atom, useRecoilState } from 'recoil';
 import { getUser, getChatList } from '../../api/members';
 import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
@@ -22,6 +23,14 @@ import people2 from '../../static/image/poortalk/people2.png'
 import photo from '../../static/image/poortalk/photo.png'
 import rightArrow from '../../static/image/poortalk/rightArrow.png'
 import x from '../../static/image/poortalk/x.png'
+
+// ChatList atom 정의
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const chatListAtom = atom({
+  key: 'chatList',
+  default: [],
+});
+
 
 function PoorTalk(): JSX.Element {
   const navigate = useNavigate();
@@ -54,9 +63,24 @@ function PoorTalk(): JSX.Element {
   // const userId = localStorage.getItem("userId");
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
+
+
+  const [chatList, setChatList] = useRecoilState(chatListAtom);
   // 채팅 유저들 받아오기
   const { data: ChatList } = useQuery('getChatList', getChatList);
 
+
+  useEffect(() => {
+    if (ChatList) {
+      setChatList(ChatList);
+    }
+  }, [ChatList, setChatList]);
+
+  console.log("chatList = ", chatList)
+
+  // 채팅 유저들 받아오기
+  // const { data: getMessageList2 } = useQuery('getChatList', getMessageList);
+  // console.log("getMessageList = ", getMessageList2)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filteredData, setFilteredData] = useState<any[]>([]);
   // 소켓 최종
@@ -101,9 +125,9 @@ function PoorTalk(): JSX.Element {
         connectHeaders: {
           ACCESS_KEY: `Bearer ${token}`,
         },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
+        // reconnectDelay: 5000,
+        // heartbeatIncoming: 4000,
+        // heartbeatOutgoing: 4000,
         // 접속했을 때 구독 서버에서 받은 URL필요
         onConnect: () => {
           client.subscribe('/sub/chat/room', (chatContent) => {
@@ -153,7 +177,7 @@ function PoorTalk(): JSX.Element {
       // 컴포넌트가 언마운트될 때 연결을 끊음
       if (stompClientRef.current) stompClientRef.current.deactivate();
     };
-  }, [data, ChatList]);
+  }, [data]);
 
   // 채팅 업로드 핸들러
   const sendMessages = (nowChatMessage: string): void => {
@@ -161,10 +185,13 @@ function PoorTalk(): JSX.Element {
       console.log('내용을 입력해주세요.');
       return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const message2 = `${nowChatMessage}  `;
+
     const sendList = {
       beggar_id: data.beggarId,
       date: timestring,
-      message: nowChatMessage.trim(),
+      message: message2,
       sender: data.nickname,
       type: 'TALK',
       userId: data.userId,
@@ -255,7 +282,7 @@ function PoorTalk(): JSX.Element {
   // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
   // console.log("userId = ", userId)
-  console.log("ChatList = ", ChatList)
+  // console.log("ChatList = ", ChatList)
 
   return (
     <div className="currentBackGround">
@@ -316,7 +343,7 @@ function PoorTalk(): JSX.Element {
               <div className='chatListHeader'>
                 <img className='chatListHeaderPeople' src={people} alt='피플' />대화상대
               </div>
-              {filteredData?.map((poor: any) => <div className='chatListModalForm'>
+              {ChatList?.map((poor: any) => <div className='chatListModalForm'>
                 <div className={`chatListModalWrap${poor?.level}`}>{poor.level}</div>
                 <div>{poor.sender}</div>
               </div>
