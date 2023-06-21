@@ -57,6 +57,7 @@ function PoorTalk(): JSX.Element {
   // 채팅 유저들 받아오기
   const { data: ChatList } = useQuery('getChatList', getChatList);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filteredData, setFilteredData] = useState<any[]>([]);
   // 소켓 최종
   const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`);
@@ -92,12 +93,7 @@ function PoorTalk(): JSX.Element {
   // }, [ChatList]);
 
   useEffect(() => {
-    if (data !== undefined && ChatList) {
-      const updatedFilteredData = Object.values(ChatList)?.filter(
-        (item: any, index: any, arr: any[]) =>
-          !arr.slice(0, index).some((prevItem) => prevItem.userId === item.userId)
-      );
-      setFilteredData(updatedFilteredData);
+    if (data !== undefined) {
       setUser(data);
       // 클라이언트 생성 후 소켓 연결(헤더에 토큰)
       const client = new Client({
@@ -259,7 +255,7 @@ function PoorTalk(): JSX.Element {
   // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
   // console.log("userId = ", userId)
-  console.log("filteredData = ", filteredData)
+  console.log("ChatList = ", ChatList)
 
   return (
     <div className="currentBackGround">
@@ -329,7 +325,7 @@ function PoorTalk(): JSX.Element {
           </button>
         </div>}
         <div className='AllUsers'>
-          <img src={people2} alt='피플' />{filteredData?.length}</div>
+          <img src={people2} alt='피플' />{ChatList?.length}</div>
       </Header>
       {modalOpen && (
         <UsersProfilePage
