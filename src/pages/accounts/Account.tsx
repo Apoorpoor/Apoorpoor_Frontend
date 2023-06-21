@@ -78,9 +78,6 @@ function Account(): JSX.Element {
     navigate('/');
   };
 
-  // 스크롤 위치 저장
-  const categoryRef = useRef<HTMLDivElement>(null);
-
   // 내역 추가 버튼
   const goAddAccount = () => {
     navigate(`/addAccount/${id}`);
@@ -383,6 +380,7 @@ function Account(): JSX.Element {
   };
 
   const dateType = getCurrentDateType();
+  console.log('term:', term);
 
   // 카테고리별 쿼리스트링
   let params = '';
@@ -485,12 +483,15 @@ function Account(): JSX.Element {
     }
   );
 
+  // 스크롤 위치 저장
+  const categoryRef = useRef<HTMLDivElement>(null);
+
   // 데이터 호출할 때마다 스크롤 위치 복원
   useEffect(() => {
-    if (currentString) {
+    if (term && term.some((el) => el.selected)) {
       categoryRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [currentString, getAccountType]);
+  }, [term, getAccountType]);
 
   const [bottomObserveRef, bottomInView] = useInView({
     threshold: 0,
