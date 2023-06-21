@@ -20,6 +20,13 @@
     align-items: center;
     padding: 10px 0 30px 0;
 
+    // 푸어 생성 안 했을 때
+    & > img {
+      width: 360px;
+      margin-bottom: 30px;
+      cursor: pointer;
+    }
+
     & > .poorProfile {
       width: 300px;
       height: 320px;

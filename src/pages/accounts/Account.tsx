@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/pages/_Account.scss';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
@@ -482,6 +482,16 @@ function Account(): JSX.Element {
     }
   );
 
+  // 스크롤 위치 저장
+  const categoryRef = useRef<HTMLDivElement>(null);
+
+  // 데이터 호출할 때마다 스크롤 위치 복원
+  useEffect(() => {
+    if (term && term.some((el) => el.selected)) {
+      categoryRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [term, getAccountType]);
+
   const [bottomObserveRef, bottomInView] = useInView({
     threshold: 0,
   });
@@ -693,7 +703,7 @@ function Account(): JSX.Element {
       <div className="line"> </div>
 
       <div className="_AccountBackground">
-        <div className="accountRangeBtn">
+        <div className="accountRangeBtn" ref={categoryRef}>
           {term.map((el, i) => (
             <div
               key={el.name}

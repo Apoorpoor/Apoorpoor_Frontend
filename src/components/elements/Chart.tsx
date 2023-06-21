@@ -7,6 +7,7 @@ import accounts from '../../api/accounts';
 import Loading from '../../pages/status/Loading';
 import pieChart from '../../static/image/account/pieChart.png';
 import pieChartDots from '../../static/image/account/pieChartDots.png';
+import { Error } from '../../pages';
 
 // Account.tsx에서 받아온 props
 interface ChartProps {
@@ -42,7 +43,6 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
         accounts.getMonthPieChart(id as string, currentMonth, pageParam),
       {
         getNextPageParam: (lastPage) => {
-          console.log(lastPage);
           if (lastPage.number + 1 < lastPage.totalPages) {
             return lastPage.number + 1;
           }
@@ -153,7 +153,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
     return <Loading />;
   }
   if (error) {
-    return <div>잠시 후 다시 시도해주세요!</div>;
+    return <Error />;
   }
 
   return (
