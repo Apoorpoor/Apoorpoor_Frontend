@@ -42,7 +42,7 @@ export const getStampBoard = async () => {
 };
 
 // 챌린지 지출내역 조회
-export const getChallengeLedger = async () => {
+export const getChallengeAccountHistory = async () => {
   try {
     const response = await instance.get(`/challenge/ledger`);
     return response.data;
