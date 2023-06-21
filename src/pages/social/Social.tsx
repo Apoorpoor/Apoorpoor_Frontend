@@ -9,6 +9,9 @@ import noneData from '../../static/image/social/noneData.png';
 import social from '../../api/social';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
+import {
+  Tooltip,
+} from '../../components';
 
 interface ApiDataItem {
   age_abb: number;
@@ -37,7 +40,14 @@ function Social() {
     { name: '소비', selected: true },
     { name: '수입', selected: false },
   ]);
-
+  // const [modal1, setModal1] = useState(false)
+  // const moda1Hander = ()=>{
+  //   setModal1(!modal1);
+  // }
+  // const [modal2, setModal2] = useState(false)
+  // const moda2Hander = ()=>{
+  //   setModal2(!modal2);
+  // }
   const selectedOnClick = (idx: number): void => {
     if (selected[idx].selected) {
       return;
@@ -192,21 +202,43 @@ function Social() {
 
         <div className="row">
           <div className="socialRanking">
+            <div className='imgWarning'>
+              <Tooltip>
+                <h3>절약 푸어란?</h3>
+                <ul>
+                  <p>
+                    가장 많이 절약을 한 푸어를 1위 ~ 10위
+                    까지 보여줘요.
+                  </p>
+                </ul>
+              </Tooltip>
+            </div>
             <div className="imgBox">
               <img src={bundle} alt="bundle" className="imgBundle" />
             </div>
             <p>절약 푸어</p>
-            <button type="button" onClick={() => navigate('/social/reduction')}>
+            <button className='imgButton' type="button" onClick={() => navigate('/social/reduction')}>
               랭킹 보기
             </button>
           </div>
 
           <div className="socialRanking">
+            <div className='imgWarning'>
+              <Tooltip>
+                <h3>플렉스 푸어란?</h3>
+                <ul>
+                  <p>
+                    가장 많은 소비를 한 푸어를 1위 ~ 10위
+                    까지 보여줘요.
+                  </p>
+                </ul>
+              </Tooltip>
+            </div>
             <div className="imgBox">
               <img src={flex} alt="flex" className="imgFlex" />
             </div>
             <p>플렉스 푸어</p>
-            <button type="button" onClick={() => navigate('/social/flex')}>
+            <button className='imgButton' type="button" onClick={() => navigate('/social/flex')}>
               랭킹 보기
             </button>
           </div>
