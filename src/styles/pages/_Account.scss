@@ -15,15 +15,26 @@
   float: left;
 }
 
-.month {
-  width: 120px;
-  margin: 0 auto;
-  transform: translateX(-10px);
+#accountHeader {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-around;
-  & .sideBtn {
-    color: $gray-500;
+  & .month {
+    width: 120px;
+    margin: 0 auto;
+    transform: translateX(30px);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    & .sideBtn {
+      color: $gray-500;
+    }
+  }
+  & .goAddAccountBtn {
+    margin-right: 10px;
+    width: 44px;
+    height: 44px;
+    font-size: 30px;
   }
 }
 

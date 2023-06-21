@@ -153,9 +153,13 @@ function BadgeList() {
                   ? `${previousMonth}월 ${selectedBadge.description}`
                   : selectedBadge.n_description)}
             </p>
-            <Button className="common" onClick={() => navigate('/Account')}>
-              가계부 작성하기
-            </Button>
+            {selectedClassName === 'have' ? (
+              ''
+            ) : (
+              <Button className="common" onClick={() => navigate('/Account')}>
+                가계부 작성하기
+              </Button>
+            )}
           </div>
         </div>
       </Portal>

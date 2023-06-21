@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { ResponsiveRadar } from '@nivo/radar';
 import { useQuery } from 'react-query';
 import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
 import '../../styles/pages/_Error.scss';
 import radarDefaultImg from '../../static/image/ui/radarChart_default.png';
 import { Error, Loading } from '../../pages';
+import containerPositionState from '../../shared/ScrollContainer';
 
 function MyConsumePropensitychart() {
   const theme = {
@@ -38,6 +40,16 @@ function MyConsumePropensitychart() {
     'getMyConsumePropensity',
     getMyConsumePropensity
   );
+
+  // 스크롤 이벤트
+  const scrollPosition = useRecoilValue(containerPositionState);
+  const [radarChartSection, setRadarChartSection] = useState(false);
+
+  useEffect(() => {
+    if (scrollPosition > 180) {
+      setRadarChartSection(true);
+    }
+  }, [scrollPosition]);
 
   if (isLoading) {
     return <Loading />;
@@ -124,7 +136,13 @@ function MyConsumePropensitychart() {
     );
   }
   return (
-    <>
+    <div
+      style={{
+        width: radarChartSection === true ? '100%' : '70%',
+        height: '450px',
+        margin: '0 auto',
+      }}
+    >
       <ul className="consumeStyle">
         {data.map((d) => (
           <li key={d.expenditureType}>
@@ -149,7 +167,7 @@ function MyConsumePropensitychart() {
         motionConfig="wobbly"
         theme={theme}
       />
-    </>
+    </div>
   );
 }
 

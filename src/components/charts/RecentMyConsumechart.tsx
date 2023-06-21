@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { ResponsiveLine } from '@nivo/line';
 import { useQuery } from 'react-query';
 import getRecentMyConsume from '../../api/charts/RecentMyConsumechart';
 import lineDefaultImg from '../../static/image/ui/lineChart_default.png';
 import { Error, Loading } from '../../pages';
+import containerPositionState from '../../shared/ScrollContainer';
 
 type ExpenditureData = {
   month: string;
@@ -48,6 +50,17 @@ function transformData(inputData: InputData) {
 }
 
 function RecentMyConsumechart() {
+  const scrollPosition = useRecoilValue(containerPositionState);
+
+  // 스크롤 이벤트
+  const [lineChartSection, setLineChartSection] = useState(false);
+
+  useEffect(() => {
+    if (scrollPosition > 1100) {
+      setLineChartSection(true);
+    }
+  }, [scrollPosition]);
+
   const theme = {
     background: 'transparent', // 배경 설정
     fontFamily: 'Pretendard, sans-serif', // 원하는 폰트 패밀리로 변경
@@ -89,8 +102,8 @@ function RecentMyConsumechart() {
 
   if (
     data === undefined ||
-    data.expenditureSum === undefined ||
-    data.incomeSum === undefined
+    data.expenditureSum.length === 0 ||
+    data.incomeSum.length === 0
   ) {
     return (
       <div className="dataNone">
@@ -114,12 +127,17 @@ function RecentMyConsumechart() {
     dataset.data.map((value) => value.y)
   );
 
-  console.log('yValues', yValues);
-  const minY = Math.min(...yValues) - 100
+  const minY = Math.min(...yValues) - 100;
   const maxY = Math.max(...yValues) + 100;
 
   return (
-    <>
+    <div
+      style={{
+        width: lineChartSection === true ? '100%' : '60%',
+        height: '500px',
+        margin: '0 auto',
+      }}
+    >
       <p>단위 : 만원</p>
       <ResponsiveLine
         data={transformedData}
@@ -191,7 +209,7 @@ function RecentMyConsumechart() {
           },
         ]}
       />
-    </>
+    </div>
   );
 }
 
