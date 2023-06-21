@@ -265,7 +265,8 @@ function PoorRoom() {
       <Header navigateToPreviousPage={navigateToPreviousPage}>MY</Header>
       <article>
         <section id="myPoorInfo">
-          {data?.age === null ||
+          {data === undefined ||
+          data?.age === null ||
           data?.gender === null ||
           data?.nickname === null ||
           data?.nickname === '' ? (
