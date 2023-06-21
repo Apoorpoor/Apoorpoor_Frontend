@@ -62,21 +62,23 @@ function NumberAnimation({ targetNumber }: NumberAnimationProps): JSX.Element {
   return (
     <span id="numberAnimation">
       {targetNumber < 0 ? '-' : ''}
-      {arrayDigits.map((item, index) => {
-        const uniqueKey = `${(key += 1)}`;
-        const comma =
-          index > 0 &&
-          (arrayDigits.length - index) % 3 === 0 &&
-          index !== arrayDigits.length - 1
-            ? ','
-            : '';
-        const formattedItem = `${comma}${item}`;
-        return (
-          <React.Fragment key={uniqueKey}>
-            <span className="number">{formattedItem}</span>
-          </React.Fragment>
-        );
-      })}
+      {arrayDigits.length === 0
+        ? ''
+        : arrayDigits.map((item, index) => {
+            const uniqueKey = `${(key += 1)}`;
+            const comma =
+              index > 0 &&
+              (arrayDigits.length - index) % 3 === 0 &&
+              index !== arrayDigits.length - 1
+                ? ','
+                : '';
+            const formattedItem = `${comma}${item}`;
+            return (
+              <React.Fragment key={uniqueKey}>
+                <span className="number">{formattedItem}</span>
+              </React.Fragment>
+            );
+          })}
     </span>
   );
 }
