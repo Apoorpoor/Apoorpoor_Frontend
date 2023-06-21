@@ -45,6 +45,7 @@
     padding: 15px;
     border-radius: 12px;
     box-sizing: border-box;
+    z-index: 51;
     & svg {
       width: 25px;
       height: 25px;
@@ -387,7 +388,7 @@
         color: $primary;
         margin-bottom: 30px;
       }
-      & img{
+      & img {
         width: 192px;
       }
     }

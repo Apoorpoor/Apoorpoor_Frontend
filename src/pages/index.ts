@@ -24,6 +24,8 @@ import Flex from './social/Flex';
 import Challenge from './challenge/Challenge';
 import ChallengeEx from './challenge/ChallengeEx';
 import MyChallenge from './challenge/MyChallenge';
+import ChallengeDone from './challenge/ChallengeDone';
+import ChallengeFail from './challenge/ChallengeFail';
 import StampBoard from './challenge/StampBoard';
 
 export {
@@ -53,5 +55,7 @@ export {
   Challenge,
   ChallengeEx,
   MyChallenge,
+  ChallengeFail,
+  ChallengeDone,
   StampBoard,
 };
