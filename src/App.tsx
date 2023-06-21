@@ -30,6 +30,7 @@ import {
   ChallengeStart,
 } from './pages/index';
 import ChallengeDone from './pages/challenge/ChallengeDone';
+import ChallengeFail from './pages/challenge/ChallengeFail';
 
 function App() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ function App() {
         <Route path="/challengeEx" element={<ChallengeEx />} />
         <Route path="/challengestart" element={<ChallengeStart />} />
         <Route path="/challengeDone" element={<ChallengeDone />} />
+        <Route path="/challengeFail" element={<ChallengeFail />} />
         <Route path="/myChallenge" element={<MyChallenge />} />
         <Route path="/stampBoard" element={<StampBoard />} />
       </Routes>

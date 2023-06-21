@@ -12,6 +12,7 @@ import {
 import { MdLock } from 'react-icons/md';
 import { BsFillCaretRightFill, BsPenFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
+import { AxiosError } from 'axios';
 import beggars from '../../api/beggars';
 import '../../styles/pages/_PoorRoom.scss';
 import '../../styles/components/_Slickslider.scss';
@@ -35,6 +36,7 @@ import containerPositionState from '../../shared/ScrollContainer';
 import Portal from '../../shared/Portal';
 import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
 import nonePoorInfoImg from '../../static/image/poor/nonePoorInfo.png';
+import PoorInfoError from '../status/PoorInfoError';
 
 function PoorRoom() {
   // PoorRoom Hooks & State
@@ -102,6 +104,7 @@ function PoorRoom() {
     beggars.getMyPoorRoom
   );
   console.log('푸어데이터:', data);
+  console.log('에러코드:', (error as AxiosError)?.response?.status);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -257,6 +260,12 @@ function PoorRoom() {
     return <Loading />;
   }
   if (error) {
+    if (
+      (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 404
+    ) {
+      return <PoorInfoError />;
+    }
     return <Error />;
   }
 
