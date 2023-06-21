@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import myPoorState from '../../shared/MyPoor';
+import { myPoorState } from '../../shared/MyPoor';
 import '../../styles/components/_PoorCharacter.scss';
 
 interface PoorCharacterProps {

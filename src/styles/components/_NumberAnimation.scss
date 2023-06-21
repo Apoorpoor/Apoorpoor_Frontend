@@ -5,18 +5,18 @@
   align-items: flex-start;
   overflow: hidden;
   & .number {
-    animation-name: roll;
-    animation-duration: 1s;
-    animation-timing-function: ease-out;
-    animation-iteration-count: 1;
+    // animation-name: roll;
+    // animation-duration: 1s;
+    // animation-timing-function: ease-out;
+    // animation-iteration-count: 1;
   }
-  .number:nth-child(even) {
-    animation: rollA 1s ease-out forwards;
-  }
+  // .number:nth-child(even) {
+  //   animation: rollA 1s ease-out forwards;
+  // }
 
-  .number:nth-child(odd) {
-    animation: rollB 1s ease-out forwards;
-  }
+  // .number:nth-child(odd) {
+  //   animation: rollB 1s ease-out forwards;
+  // }
 }
 
 @keyframes rollA {
@@ -39,9 +39,17 @@
 
 @keyframes rollB {
   0% {
-    transform: translateY(-30%);
+    transform: translateY(50%);
   }
-
+  25% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(0%);
+  }
+  75% {
+    transform: translateY(50%);
+  }
   100% {
     transform: translateY(0%);
   }

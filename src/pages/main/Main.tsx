@@ -33,6 +33,7 @@ function Main(): JSX.Element {
 
   const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
     useQuery('getAccountList', accounts.getAccountList);
+  console.log('data:', data);
 
   // 가계부 생성
   const addAccountMutation = useMutation(
@@ -132,40 +133,38 @@ function Main(): JSX.Element {
         ) : (
           ''
         )}
-        {data?.map((item) => {
-          if (!item) {
-            return '';
-          }
-
-          // 수입 잔액 - 지출 잔액
-          let balanceValue = 0;
-          if (typeof item.balance === 'object' && item.balance !== null) {
-            balanceValue =
-              (item.balance.incomeTotal || 0) -
-              (item.balance.expenditureTotal || 0);
-          } else if (typeof item.balance === 'string') {
-            balanceValue = item.balance;
-          }
-          return (
-            <div className="accountList">
-              <button
-                type="button"
-                onClick={() => handleGoToAccount(item.id)}
-                key={item.id}
-              >
-                <div className="title">
-                  <p className="titleName">{item.title}</p>
-                  <p>쉽고 편한 가계부 작성</p>
-                  <p className="priceText">
-                    모은 금액 : <NumberAnimation targetNumber={balanceValue} />
-                    원
-                  </p>
+        {data?.length !== 0
+          ? data?.map((item) => {
+              // 수입 잔액 - 지출 잔액
+              let balanceValue = 0;
+              if (typeof item.balance === 'object' && item.balance !== null) {
+                balanceValue =
+                  (item.balance.incomeTotal || 0) -
+                  (item.balance.expenditureTotal || 0);
+              } else if (typeof item.balance === 'string') {
+                balanceValue = item.balance;
+              }
+              return (
+                <div className="accountList">
+                  <button
+                    type="button"
+                    onClick={() => handleGoToAccount(item.id)}
+                    key={item.id}
+                  >
+                    <div className="title">
+                      <p className="titleName">{item.title}</p>
+                      <p>쉽고 편한 가계부 작성</p>
+                      <p className="priceText">
+                        모은 금액 :{' '}
+                        <NumberAnimation targetNumber={balanceValue} />원
+                      </p>
+                    </div>
+                    <img src={accountIcon} alt="accountIcon" />
+                  </button>
                 </div>
-                <img src={accountIcon} alt="accountIcon" />
-              </button>
-            </div>
-          );
-        })}
+              );
+            })
+          : ''}
 
         <div className="rowBox">
           <div className="goPoorRoomBox">
@@ -179,7 +178,7 @@ function Main(): JSX.Element {
           </div>
 
           <div className="goChalBox">
-            <button type="button">
+            <button type="button" onClick={() => navigate('/challenge')}>
               <div>
                 <p className="titleName">소비 챌린지</p>
                 <p>아직 준비 중입니다! 조금만 기다려주세요</p>
