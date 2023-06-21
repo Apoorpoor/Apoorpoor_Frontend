@@ -311,6 +311,7 @@
   background: rgba(0, 0, 0, 0.3);
   cursor: auto;
   z-index: 1;
+  // overflow: hidden; /* 슬라이드 효과를 위해 추가 */
 
   .chatListModalWrapper{
     background-color: #FFFFFF;
@@ -322,6 +323,20 @@
     right: 0px;
     top: 0px;
     padding: 20px;
+    right: -100%; /* 시작 위치를 왼쪽으로 이동 */
+    top: 0px;
+    padding: 20px;
+    animation: slideInRight 0.5s forwards; /* 애니메이션 속성 추가 */
+
+      /* 모달 창이 나타날 때 오른쪽으로 슬라이드 */
+      @keyframes slideInRight {
+        0% {
+          right: -100%;
+        }
+        100% {
+          right: 0;
+        }
+      }
 
     .chatMessageImagecontainer{
       // flex-direction: row;
