@@ -141,6 +141,17 @@ const getChatList = async () => {
   }
 };
 
+// 메세지 불러오기
+const getMessageList = async () => {
+  try {
+    const response = await instance.get(`/chat/messageList`);
+    return response.data;
+  } catch (err) {
+    console.log(`메시지 받아오기 API 오류 발생: ${err}`);
+    throw err;
+  }
+};
+
 export {
   getNicknameCheck,
   firstLogin,
@@ -150,5 +161,6 @@ export {
   putAge,
   putGender,
   checkNicknameValidation,
-  getChatList
+  getChatList,
+  getMessageList
 };

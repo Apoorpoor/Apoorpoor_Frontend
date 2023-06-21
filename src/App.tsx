@@ -28,6 +28,8 @@ import {
   MyChallenge,
   StampBoard,
 } from './pages/index';
+import ChallengeDone from './pages/challenge/ChallengeDone';
+import ChallengeFail from './pages/challenge/ChallengeFail';
 
 function App() {
   const navigate = useNavigate();

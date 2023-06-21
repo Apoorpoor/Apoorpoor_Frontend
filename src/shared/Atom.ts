@@ -49,4 +49,10 @@ export const endDateState = atom<Date | null>({
   default: null,
 });
 
+// 채팅하는 사람들 목록
+export const chatListPeople: RecoilState<string> = atom<string>({
+  key: 'chatListPeople',
+  default: '',
+});
+
 export default inputState;
