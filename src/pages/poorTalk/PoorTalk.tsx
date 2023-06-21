@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
@@ -6,13 +9,19 @@ import SockJS from 'sockjs-client';
 import { useQuery } from 'react-query';
 import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
-import { getUser } from '../../api/members';
+import { getUser, getChatList } from '../../api/members';
 import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
 import instance from '../../api/instance';
 import UsersProfilePage from './UsersProfilePage';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
+import hamburgerBt from '../../static/image/poortalk/hamburgerBt.png'
+import people from '../../static/image/poortalk/people.png'
+import people2 from '../../static/image/poortalk/people2.png'
+import photo from '../../static/image/poortalk/photo.png'
+import rightArrow from '../../static/image/poortalk/rightArrow.png'
+import x from '../../static/image/poortalk/x.png'
 
 function PoorTalk(): JSX.Element {
   const navigate = useNavigate();
@@ -35,12 +44,20 @@ function PoorTalk(): JSX.Element {
   const [inMessageUserId, setinMessageUserId] = useState<number>(user?.userId);
   // 상대 유저들 모달창
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  // 채팅 리스트 모달창
+  const [chatListModal, setChatListModal] = useState(false)
+  // 채팅 이미지 리스트 모달창
+  const [imageListModal, setImageListModal] = useState(false)
   // 토큰
   const token = localStorage.getItem('AToken');
   // 유정 고유 아이디
   // const userId = localStorage.getItem("userId");
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
+  // 채팅 유저들 받아오기
+  const { data: ChatList } = useQuery('getChatList', getChatList);
+
+  const [filteredData, setFilteredData] = useState<any[]>([]);
   // 소켓 최종
   const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`);
   // 클라이언트
@@ -64,8 +81,23 @@ function PoorTalk(): JSX.Element {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 
+  // useEffect(() => {
+  //   if (ChatList) {
+  //     const updatedFilteredData = Object.values(ChatList)?.filter(
+  //       (item: any, index: any, arr: any[]) =>
+  //         !arr.slice(0, index).some((prevItem) => prevItem.userId === item.userId)
+  //     );
+  //     setFilteredData(updatedFilteredData);
+  //   }
+  // }, [ChatList]);
+
   useEffect(() => {
-    if (data !== undefined) {
+    if (data !== undefined && ChatList) {
+      const updatedFilteredData = Object.values(ChatList)?.filter(
+        (item: any, index: any, arr: any[]) =>
+          !arr.slice(0, index).some((prevItem) => prevItem.userId === item.userId)
+      );
+      setFilteredData(updatedFilteredData);
       setUser(data);
       // 클라이언트 생성 후 소켓 연결(헤더에 토큰)
       const client = new Client({
@@ -125,7 +157,7 @@ function PoorTalk(): JSX.Element {
       // 컴포넌트가 언마운트될 때 연결을 끊음
       if (stompClientRef.current) stompClientRef.current.deactivate();
     };
-  }, [data]);
+  }, [data, ChatList]);
 
   // 채팅 업로드 핸들러
   const sendMessages = (nowChatMessage: string): void => {
@@ -216,12 +248,89 @@ function PoorTalk(): JSX.Element {
   if (error) {
     return <Error />;
   }
+
+
+  const chatListModalHandler = () => {
+    setChatListModal(!chatListModal)
+  }
+  const imageListModalHandler = () => {
+    setImageListModal(!imageListModal)
+  }
   // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
   // console.log("userId = ", userId)
+  console.log("filteredData = ", filteredData)
+
   return (
     <div className="currentBackGround">
-      <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk</Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk<button type='button' onClick={chatListModalHandler}>
+        <img className='HamburgerBt' src={hamburgerBt} alt='햄버거 버튼' />
+      </button>
+        {imageListModal &&
+          <div className='imageListModalOpen'
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            role="button"
+            tabIndex={0}
+          >
+            <div className='imageListModalCloseForm' onClick={imageListModalHandler}>
+              <button type='button' onClick={imageListModalHandler}>
+                <img className='imageListModalClose' src={x} alt='x 버튼' />
+              </button>
+              <div className='imageListModalCloseBack'>사진</div>
+            </div>
+            <div className='imageListModalImageForm'>
+              {chatMessages?.map((item, index) => (
+                <div key={index}>
+                  {/* 이미지가 있는 경우 */}
+                  {item.image !== null && item.image !== undefined && (
+                    <img className='imageListModalImage' src={item.image} alt='' />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        }
+        {chatListModal && <div>
+          <button className='chatListModalContainer'
+            onClick={chatListModalHandler} >
+            <div className='chatListModalWrapper'
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="button"
+              tabIndex={0}
+            >
+              <div className='chatListHeaderImage'
+                onClick={imageListModalHandler}>
+                <div>
+                  <img src={photo} alt='피플' />사진
+                </div>
+                <img src={rightArrow} alt='애로우' />
+              </div>
+              <div className='chatMessageImagecontainer'>
+                {chatMessages?.map((item, index) => (
+                  <div key={index}>
+                    {/* 이미지가 있는 경우 */}
+                    {item.image !== null && item.image !== undefined && (
+                      <img className='chatMessageImage' src={item.image} alt='' />
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className='chatListHeader'>
+                <img className='chatListHeaderPeople' src={people} alt='피플' />대화상대
+              </div>
+              {filteredData?.map((poor: any) => <div className='chatListModalForm'>
+                <div className={`chatListModalWrap${poor?.level}`}>{poor.level}</div>
+                <div>{poor.sender}</div>
+              </div>
+              )}
+            </div>
+          </button>
+        </div>}
+        <div className='AllUsers'>
+          <img src={people2} alt='피플' />{filteredData?.length}</div>
+      </Header>
       {modalOpen && (
         <UsersProfilePage
           setModalOpen={setModalOpen}
@@ -255,26 +364,15 @@ function PoorTalk(): JSX.Element {
                         ) : (
                           <div>
                             {message.message}
-                            <button
-                              type="button"
-                              className={`yourChatProfile${message.userId}`}
-                              onClick={() =>
-                                usersProfileHandler(message.userId)
-                              }
-                            >
-                              {message.level}
-                            </button>
                           </div>
                         )}
                       </div>
                       <div className="nowTime1">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   ) : (
@@ -282,8 +380,10 @@ function PoorTalk(): JSX.Element {
                     <>
                       <button
                         type="button"
-                        className="yourChatProfile"
-                        onClick={() => usersProfileHandler(message.userId)}
+                        className={`yourChatProfile${message?.level}`}
+                        onClick={() =>
+                          usersProfileHandler(message.userId)
+                        }
                       >
                         {message.level}
                       </button>
@@ -303,12 +403,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date.split(' ')[1]) - 12
-                            } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${
-                              message.date.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
+                          } : ${message.date.split(' ')[3]}`
+                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   )}
@@ -396,3 +494,11 @@ interface IMessage {
   userId: number;
   level: number;
 }
+
+// interface ChatListType {
+//   length: ReactNode;
+//   beggarId: number;
+//   sender: string;
+//   userId: number;
+//   level: number;
+// }
