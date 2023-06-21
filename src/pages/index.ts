@@ -23,7 +23,6 @@ import Reduction from './social/Reduction';
 import Flex from './social/Flex';
 import Challenge from './challenge/Challenge';
 import ChallengeEx from './challenge/ChallengeEx';
-import ChallengeStart from './challenge/ChallengeStart';
 import MyChallenge from './challenge/MyChallenge';
 import StampBoard from './challenge/StampBoard';
 
@@ -53,7 +52,6 @@ export {
   Flex,
   Challenge,
   ChallengeEx,
-  ChallengeStart,
   MyChallenge,
   StampBoard,
 };

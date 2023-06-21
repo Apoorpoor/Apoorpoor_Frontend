@@ -21,7 +21,10 @@ function Challenge() {
 
   // 나의 챌린지 정보
   const [myChallengeinfo, setMyChallengeinfo] = useRecoilState(myChallengeInfo);
+
   const [myChallenge, setMyChallenge] = useState(false);
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   // 챌린지 타입
   const challengeTypeList: { [key: string]: string } = {
@@ -44,6 +47,16 @@ function Challenge() {
     }
   }, [getMychallengeData]);
 
+  // 챌린지 버튼 클릭 핸들러
+  const chooseChallengeHandler = () => {
+    if (myChallenge !== true) {
+      navigate('/myChallenge');
+    } else {
+      setShowSnackbar(true);
+      setTimeout(() => setShowSnackbar(false), 2500);
+    }
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -52,14 +65,14 @@ function Challenge() {
   }
   return (
     <main id="challenge">
+      <div className={`snackbar ${showSnackbar === false ? '' : 'show'}`}>
+        <IoAlertCircleOutline />
+        1주일에 한가지 챌린지만 가능해요!
+      </div>
       <Header navigateToPreviousPage={navigateToPreviousPage}>
         1주일 소비 챌린지
       </Header>
       <article>
-        <div className={`snackbar ${myChallenge === false ? '' : 'show'}`}>
-          <IoAlertCircleOutline />
-          1주일에 한가지 챌린지만 가능해요!
-        </div>
         <div className="banner">
           <p>
             1주일 소비 챌린지<span>어떤 챌린지인지 궁금하신가요?</span>
@@ -88,7 +101,7 @@ function Challenge() {
                 key={key}
                 onClick={() => {
                   setMyChallengeinfo({ challengeTitle: key, startTime: value });
-                  navigate('/ChanllengeStart');
+                  chooseChallengeHandler();
                 }}
               >
                 <p>{key}</p>
