@@ -9,8 +9,7 @@ import { useQuery } from 'react-query';
 import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { atom, useRecoilState } from 'recoil';
-import { getUser, getChatList } from '../../api/members';
+import { getUser, getChatList, getMessageList } from '../../api/members';
 import '../../styles/pages/_PoorTalk.scss';
 import { Header } from '../../components';
 import instance from '../../api/instance';
@@ -23,14 +22,6 @@ import people2 from '../../static/image/poortalk/people2.png'
 import photo from '../../static/image/poortalk/photo.png'
 import rightArrow from '../../static/image/poortalk/rightArrow.png'
 import x from '../../static/image/poortalk/x.png'
-
-// ChatList atom 정의
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const chatListAtom = atom({
-  key: 'chatList',
-  default: [],
-});
-
 
 function PoorTalk(): JSX.Element {
   const navigate = useNavigate();
@@ -64,27 +55,14 @@ function PoorTalk(): JSX.Element {
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
 
-
-  const [chatList, setChatList] = useRecoilState(chatListAtom);
   // 채팅 유저들 받아오기
-  const { data: ChatList } = useQuery('getChatList', getChatList);
-
-
-  useEffect(() => {
-    if (ChatList) {
-      setChatList(ChatList);
-    }
-  }, [ChatList, setChatList]);
-
-  console.log("chatList = ", chatList)
-
-  // 채팅 유저들 받아오기
-  // const { data: getMessageList2 } = useQuery('getChatList', getMessageList);
-  // console.log("getMessageList = ", getMessageList2)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filteredData, setFilteredData] = useState<any[]>([]);
-  // 소켓 최종
-  const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`);
+  const { data: ChatList } = useQuery(['getChatList'], async () => {
+    const asdasd = await getChatList()
+    return asdasd
+  }, {
+    refetchInterval: 500,
+    refetchIntervalInBackground: true,
+  });
   // 클라이언트
   const stompClientRef = useRef<Client | null>(null);
   // 최신글이 올라오면 맨 밑으로 포커싱
@@ -106,28 +84,18 @@ function PoorTalk(): JSX.Element {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 
-  // useEffect(() => {
-  //   if (ChatList) {
-  //     const updatedFilteredData = Object.values(ChatList)?.filter(
-  //       (item: any, index: any, arr: any[]) =>
-  //         !arr.slice(0, index).some((prevItem) => prevItem.userId === item.userId)
-  //     );
-  //     setFilteredData(updatedFilteredData);
-  //   }
-  // }, [ChatList]);
-
   useEffect(() => {
     if (data !== undefined) {
       setUser(data);
       // 클라이언트 생성 후 소켓 연결(헤더에 토큰)
       const client = new Client({
-        webSocketFactory: () => socket,
+        webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`),
         connectHeaders: {
           ACCESS_KEY: `Bearer ${token}`,
         },
-        // reconnectDelay: 5000,
-        // heartbeatIncoming: 4000,
-        // heartbeatOutgoing: 4000,
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
         // 접속했을 때 구독 서버에서 받은 URL필요
         onConnect: () => {
           client.subscribe('/sub/chat/room', (chatContent) => {
@@ -185,7 +153,6 @@ function PoorTalk(): JSX.Element {
       console.log('내용을 입력해주세요.');
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const message2 = `${nowChatMessage}  `;
 
     const sendList = {
