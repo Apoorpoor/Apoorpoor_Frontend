@@ -25,6 +25,9 @@ import {
   Flex,
   Challenge,
   ChallengeEx,
+  MyChallenge,
+  StampBoard,
+  ChallengeStart,
 } from './pages/index';
 
 function App() {
@@ -73,6 +76,9 @@ function App() {
         <Route path="/social/flex" element={<Flex />} />
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challengeEx" element={<ChallengeEx />} />
+        <Route path="/challengestart" element={<ChallengeStart />} />
+        <Route path="/myChallenge" element={<MyChallenge />} />
+        <Route path="/stampBoard" element={<StampBoard />} />
       </Routes>
     </Layout>
   );
