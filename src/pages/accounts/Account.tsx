@@ -380,7 +380,6 @@ function Account(): JSX.Element {
   };
 
   const dateType = getCurrentDateType();
-  console.log('term:', term);
 
   // 카테고리별 쿼리스트링
   let params = '';
