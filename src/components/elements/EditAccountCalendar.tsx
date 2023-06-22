@@ -6,15 +6,17 @@ import '../../styles/pages/_AddAccount.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../styles/components/react-datePicker.css';
 import { getYear, getMonth, getDate } from 'date-fns';
-import { useRecoilValue } from 'recoil';
-import { mainDateState } from '../../shared/Atom';
 
 // AddAccount.tsx에서 전달받은 props
-interface AddAccountCalendarProps {
+interface EditAccountCalendarProps {
   setOnDateChange: React.Dispatch<React.SetStateAction<string>>;
+  beforeDate: string;
 }
 
-function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
+function EditAccountCalendar({
+  setOnDateChange,
+  beforeDate,
+}: EditAccountCalendarProps) {
   const months = [
     '1월',
     '2월',
@@ -30,19 +32,28 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
     '12월',
   ];
 
-  // 작성 젼, 선택한 날짜
-  const mainDate = useRecoilValue(mainDateState);
-  const mainDates = useMemo(() => new Date(mainDate), [mainDate]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  // Date 객체의 유효성을 검사하는 함수
-  const isValidDate = (date: Date): boolean =>
-    date instanceof Date && !Number.isNaN(date.getTime());
-
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    isValidDate(mainDates) ? mainDates : null
-  );
+  // 수정 전, 해당 날짜
+  const beforeDateType = useMemo(() => {
+    if (beforeDate) {
+      return new Date(beforeDate);
+    }
+    return null;
+  }, [beforeDate]);
 
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (beforeDate) {
+      setSelectedDate(beforeDateType);
+      setCurrentDate(beforeDateType);
+    }
+    if (currentDate) {
+      setSelectedDate(currentDate);
+      setCurrentDate(currentDate);
+    }
+  }, [beforeDate, currentDate, beforeDateType]);
 
   // 캘린더 열고 닫는 상태 관리
   const calendar = useRef<DatePicker | null>(null);
@@ -66,7 +77,21 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
 
   // "yyyy-mm-dd" 형식으로 변환
   useEffect(() => {
-    if (currentDate) {
+    if (currentDate === null || beforeDateType === null) {
+      return;
+    }
+
+    if (currentDate === beforeDateType) {
+      const formattedDate = `${getYear(beforeDateType)}-${(
+        getMonth(beforeDateType) + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${getDate(beforeDateType)
+        .toString()
+        .padStart(2, '0')}`;
+      setOnDateChange(formattedDate);
+    }
+    if (currentDate !== beforeDateType) {
       const formattedDate = `${getYear(currentDate)}-${(
         getMonth(currentDate) + 1
       )
@@ -74,13 +99,8 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
         .padStart(2, '0')}-${getDate(currentDate).toString().padStart(2, '0')}`;
       setOnDateChange(formattedDate);
     }
-  }, [currentDate, setOnDateChange]);
-
-  useEffect(() => {
-    if (!currentDate) {
-      setCurrentDate(mainDates);
-    }
-  }, [currentDate, mainDates]);
+  }, [currentDate, beforeDateType, setOnDateChange]);
+  console.log('current:', currentDate, 'before:', beforeDate);
 
   return (
     <DatePicker
@@ -143,4 +163,4 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
   );
 }
 
-export default AddAccountCalendar;
+export default EditAccountCalendar;

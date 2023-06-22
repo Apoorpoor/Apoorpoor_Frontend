@@ -28,9 +28,9 @@ import {
   MyChallenge,
   StampBoard,
   ChallengeStart,
+  ChallengeDone,
+  ChallengeFail,
 } from './pages/index';
-import ChallengeDone from './pages/challenge/ChallengeDone';
-import ChallengeFail from './pages/challenge/ChallengeFail';
 
 function App() {
   const navigate = useNavigate();

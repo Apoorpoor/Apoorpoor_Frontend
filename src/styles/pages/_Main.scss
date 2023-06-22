@@ -260,7 +260,7 @@
   }
 }
 
-@media (max-width: 1366px) {
+@media (min-width: 800px) and (max-width: 1366px) {
   .delModalBg {
     width: 100%;
   }
