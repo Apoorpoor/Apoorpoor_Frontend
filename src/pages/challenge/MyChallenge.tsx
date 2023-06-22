@@ -40,6 +40,7 @@ function MyChallenge() {
     myExpenditureSum: 17000,
     success: true,
   };
+
   // 챌린지 목표 금액 저장
   const [targetAmount, setTargetAmount] = useState(0);
 
@@ -204,17 +205,6 @@ function MyChallenge() {
     setSelectedDay(day);
   };
 
-  console.log(
-    accountHistoryData?.challengeLedgerHistoryList.filter(
-      (date: ChallengeLedger) => date.date === '2023-06-07'
-    )
-
-    // accountHistoryData?.challengeLedgerHistoryList.filter(
-    //   (date: ChallengeLedger) =>
-    //     date.date.substring(8, 10) === String(selectedDay)
-    // )
-  );
-
   if (myChallengeLoading || accountHistoryLoading) {
     return <Loading />;
   }
@@ -224,7 +214,9 @@ function MyChallenge() {
   return (
     <main id="challengeSt">
       <Header navigateToPreviousPage={navigateToPreviousPage}>
-        {myChallengeData.challengeTitle.split('')[0] === 0
+        {myChallengeData === null
+          ? '챌린지 예시'
+          : myChallengeData.challengeTitle.split('')[0] === 0
           ? '무지출 챌린지'
           : `${myChallengeData.challengeTitle.split('')[0]}만원 챌린지`}
       </Header>
@@ -235,7 +227,9 @@ function MyChallenge() {
               <p className="challengeMessage">{challengeMessege}</p>
               <div className="challengeProcessBar">
                 <p>
-                  {myChallengeData.challengeTitle.split('')[0] === 0
+                  {myChallengeData === null
+                    ? '5만원'
+                    : myChallengeData.challengeTitle.split('')[0] === 0
                     ? '무지출'
                     : `${myChallengeData.challengeTitle.split('')[0]}만원`}
                 </p>
