@@ -56,8 +56,8 @@ export {
   Challenge,
   ChallengeEx,
   ChallengeStart,
-  ChallengeDone,
-  ChallengeFail,
   MyChallenge,
+  ChallengeFail,
+  ChallengeDone,
   StampBoard,
 };

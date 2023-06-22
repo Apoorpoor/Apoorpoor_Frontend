@@ -78,10 +78,9 @@ function App() {
         <Route path="/social/flex" element={<Flex />} />
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challengeEx" element={<ChallengeEx />} />
-        <Route path="/challengestart" element={<ChallengeStart />} />
-        <Route path="/challengeDone" element={<ChallengeDone />} />
-        <Route path="/challengeFail" element={<ChallengeFail />} />
         <Route path="/myChallenge" element={<MyChallenge />} />
+        <Route path="/challengedone" element={<ChallengeDone />} />
+        <Route path="/challengefail" element={<ChallengeFail />} />
         <Route path="/stampBoard" element={<StampBoard />} />
       </Routes>
     </Layout>

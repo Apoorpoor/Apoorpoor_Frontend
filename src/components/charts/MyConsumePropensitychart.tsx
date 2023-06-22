@@ -87,7 +87,7 @@ function MyConsumePropensitychart() {
       case 'OTHER':
         return '기타';
       default:
-        return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
+        return expenditureType;
     }
   };
 
