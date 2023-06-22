@@ -126,7 +126,7 @@ function MyConsumePropensitychart() {
         return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
     }
   };
-  if (data === undefined || data.length === 0) {
+  if (data === undefined || data.length < 3) {
     return (
       <div className="dataNone">
         <p>가계부를 작성하고 소비성향을 확인해보세요!</p>
@@ -161,7 +161,7 @@ function MyConsumePropensitychart() {
         keys={['total_sum']}
         indexBy={(d) => newIndex(d.expenditureType)}
         valueFormat=">-.2f"
-        margin={{ top: 0, right: 80, bottom: 40, left: 80 }}
+        margin={{ top: 60, right: 80, bottom: 0, left: 80 }}
         borderColor={{ from: 'color' }}
         gridShape="linear"
         gridLabelOffset={36}
