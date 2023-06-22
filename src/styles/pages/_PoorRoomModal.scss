@@ -125,18 +125,17 @@ div.modalbg.active {
     background-color: $gray-150;
     width: 320px;
     height: 155px;
-    padding: 20px 40px;
+    padding: 53px 40px;
     box-sizing: border-box;
     border-radius: 20px;
     text-align: center;
     word-break: keep-all;
     font-size: 16px;
     font-weight: 700;
-    line-height: 2;
+    line-height: 1.5;
 
     & span {
-      display: block;
-      color: $systemError;
+      color: $primary;
     }
   }
 }

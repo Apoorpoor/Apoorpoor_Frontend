@@ -301,6 +301,7 @@
       & li {
         text-align: center;
         & button {
+          position: relative;
           width: 35px;
           height: 35px;
           border-radius: 20px;
@@ -311,6 +312,17 @@
         }
         & button.today {
           background-color: $primary;
+          &::after{
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 13.5px;
+            width: 8px;
+            height: 8px;
+            display: block;
+            background-color: $secondary;
+            border-radius: 3px;
+          }
         }
         & button.next {
           background-color: #fff;
