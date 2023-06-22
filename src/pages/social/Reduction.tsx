@@ -43,6 +43,10 @@ function Reduction() {
         4: 1,
         5: 5,
         6: 6,
+        7: 7,
+        8: 8,
+        9: 9,
+        10: 10
     };
 
     if (isLoading) {
@@ -51,7 +55,6 @@ function Reduction() {
     if (error) {
         return <Error />;
     }
-
     return (
         <div className='socialBg2'>
             <div id="socialHeader">
@@ -62,44 +65,44 @@ function Reduction() {
             </div>
             <div>
                 <div className='BasicBackGround'>
-                    <img className='BasicBackGroundimage' src={BasicBackGround} alt="배경" />
+                    <img className='BasicBackGroundimage' src={BasicBackGround} alt="" />
                     <div className='Top3Poor2'>
                         {topList && topList[1] && topList[1].level && (
-                            <img className='Top2Poor' src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[1].level]}.svg`} alt="2등거지" />
+                            <img className='Top2Poor' src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[1].level]}.svg`} alt="" />
                         )}
                         {topList && topList[1] && topList[1].top_url && (
-                            <img className='Top2PoorItem' src={topList[1].top_url} alt="2등거지 아이템" />
+                            <img className='Top2PoorItem' src={topList[1].top_url} alt="" />
                         )}
                         {topList && topList[1] && topList[1].acc_url && (
-                            <img className='Top2PoorItem' src={topList[1].acc_url} alt="2등거지 아이템" />
+                            <img className='Top2PoorItem' src={topList[1].acc_url} alt="" />
                         )}
                     </div>
-                    <img className='SilverMedal' src={SilverMedal} alt="은메달" />
+                    <img className='SilverMedal' src={SilverMedal} alt="" />
                     <div className='Top3Poor3'>
                         {topList && topList[2] && topList[2].level && (
-                            <img className='Top3Poor' src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[2].level]}.svg`} alt="3등거지" />
+                            <img className='Top3Poor' src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[2].level]}.svg`} alt="" />
                         )}
                         {topList && topList[2] && topList[2].top_url && (
-                            <img className='Top3PoorItem' src={topList[2].top_url} alt="3등거지 아이템" />
+                            <img className='Top3PoorItem' src={topList[2].top_url} alt="" />
                         )}
                         {topList && topList[2] && topList[2].acc_url && (
-                            <img className='Top3PoorItem' src={topList[2].acc_url} alt="3등거지 아이템" />
+                            <img className='Top3PoorItem' src={topList[2].acc_url} alt="" />
                         )}
                     </div>
-                    <img className='CopperMedal' src={CopperMedal} alt="동메달" />
-                    <img className='Top1Crown' src={Crown} alt="왕관" />
+                    <img className='CopperMedal' src={CopperMedal} alt="" />
+                    <img className='Top1Crown' src={Crown} alt="" />
                     <div className='Top3Poor1'>
                         {topList && topList[0] && topList[0].level && (
-                            <img className='Top1Poor' src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[0].level]}.svg`} alt="1등거지" />
+                            <img className='Top1Poor' src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[0].level]}.svg`} alt="" />
                         )}
                         {topList && topList[0] && topList[0].top_url && (
-                            <img className='Top1PoorItem' src={topList[0].top_url} alt="1등거지 아이템" />
+                            <img className='Top1PoorItem' src={topList[0].top_url} alt="" />
                         )}
                         {topList && topList[0] && topList[0].acc_url && (
-                            <img className='Top1PoorItem' src={topList[0].acc_url} alt="1등거지 아이템" />
+                            <img className='Top1PoorItem' src={topList[0].acc_url} alt="" />
                         )}
                     </div>
-                    <img className='GoldMedal' src={GoldMedal} alt="금메달" />
+                    <img className='GoldMedal' src={GoldMedal} alt="" />
                 </div>
             </div>
             <div className='Top1Number'>1</div>
@@ -128,23 +131,30 @@ function Reduction() {
                 <div className='Top10ListHeader'>
                     <p>닉네임</p> <p>금액</p>
                 </div>
-                {topList?.map((item, index) => (
-                    <div key={index} className='Top10List'>
-                        <p>{item.rank_num}</p>
-                        <div className='Top10Poors'>
-                            <div className='ProfileNickname'>
-                                <div className="Top10PoorsImage">
-                                    <img className="Top10Image" src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[item.level]
-                                        }.svg`} alt='푸어 이미지' />
-                                    <img className='Top10ImageItem' src={item.top_url} alt='푸어 상의' />
-                                    <img className='Top10ImageItem' src={item.acc_url} alt='푸어 악세서리' />
+                {topList?.map((poor, index) => {
+                    if (poor.beggar_id !== 1) {
+                        return (
+                            <div key={index} className='Top10List'>
+                                <p>{poor.rank_num}</p>
+                                <div className='Top10Poors'>
+                                    <div className='ProfileNickname'>
+                                        <div className="Top10PoorsImage">
+                                            <img className="Top10Image" src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[poor.level]}.svg`} alt='' />
+                                            <img className='Top10ImageItem' src={poor.top_url} alt='' />
+                                            <img className='Top10ImageItem' src={poor.acc_url} alt='' />
+                                        </div>
+                                        {poor.nickname}
+                                    </div>
+                                    <div className='Top10PoorsPrice'>
+                                        {poor.total.toLocaleString()}원
+                                    </div>
                                 </div>
-                                {item.nickname}
                             </div>
-                            <div className='Top10PoorsPrice'>
-                                {item.total.toLocaleString()}원</div></div>
-                    </div>
-                ))}
+                        );
+                    }
+                    return null; // Skip rendering if id is 1
+
+                })}
             </div>
         </div >
     )

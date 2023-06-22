@@ -152,6 +152,17 @@ const getMessageList = async () => {
   }
 };
 
+// 사진 불러오기
+const getImageList = async () => {
+  try {
+    const response = await instance.get(`/chat/images`);
+    return response.data;
+  } catch (err) {
+    console.log(`이미지 받아오기 API 오류 발생: ${err}`);
+    throw err;
+  }
+};
+
 export {
   getNicknameCheck,
   firstLogin,
@@ -162,5 +173,6 @@ export {
   putGender,
   checkNicknameValidation,
   getChatList,
-  getMessageList
+  getMessageList,
+  getImageList
 };
