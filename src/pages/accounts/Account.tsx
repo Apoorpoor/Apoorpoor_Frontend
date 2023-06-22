@@ -9,6 +9,8 @@ import { UseQueryResult, useQuery, useInfiniteQuery } from 'react-query';
 import { format, subMonths, subWeeks } from 'date-fns';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useInView } from 'react-intersection-observer';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import accounts from '../../api/accounts';
 import { Calendar, Chart, Header } from '../../components';
 import ChartLastMonth from '../../components/elements/ChartLastMonth';
@@ -584,6 +586,15 @@ function Account(): JSX.Element {
     return <Loading />;
   }
   if (error || getTotalMonthDateError || getAccountTypeError) {
+    if (
+      (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 403
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
     return <Error />;
   }
 

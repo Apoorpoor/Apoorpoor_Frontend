@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import {
   getChallengeAccountHistory,
   getMyChallenge,
@@ -26,7 +28,7 @@ function MyChallenge() {
   // =================================================================
   const {
     isLoading: myChallengeLoading,
-    isError: myChallengeError,
+    error: myChallengeError,
     data: myChallengeData,
   } = useQuery('getMyChallenge', getMyChallenge);
 
@@ -105,7 +107,7 @@ function MyChallenge() {
 
   const {
     isLoading: accountHistoryLoading,
-    isError: accountHistoryError,
+    error: accountHistoryError,
     data: accountHistoryData,
   } = useQuery('getChallengeAccountHistory', getChallengeAccountHistory);
 
@@ -209,6 +211,17 @@ function MyChallenge() {
     return <Loading />;
   }
   if (myChallengeError || accountHistoryError) {
+    if (
+      ((myChallengeError as AxiosError).response &&
+        (myChallengeError as AxiosError).response?.status === 403) ||
+      ((accountHistoryError as AxiosError).response &&
+        (accountHistoryError as AxiosError).response?.status === 403)
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
     return <Error />;
   }
   return (
