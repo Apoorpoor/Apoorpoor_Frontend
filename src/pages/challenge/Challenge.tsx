@@ -49,7 +49,8 @@ function Challenge() {
 
   // 챌린지 버튼 클릭 핸들러
   const chooseChallengeHandler = () => {
-    if (myChallenge !== true) {
+    // 
+    if (getMychallengeData !== null) {
       navigate('/myChallenge');
     } else {
       setShowSnackbar(true);
