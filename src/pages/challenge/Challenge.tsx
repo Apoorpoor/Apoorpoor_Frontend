@@ -105,10 +105,12 @@ function Challenge() {
                 }}
               >
                 <p>{key}</p>
+                <div>&nbsp;</div>
               </li>
             ))}
             <li onClick={() => navigate('/stampBoard')}>
               <p>스탬프 보기</p>
+              <div>&nbsp;</div>
             </li>
           </ul>
         </section>

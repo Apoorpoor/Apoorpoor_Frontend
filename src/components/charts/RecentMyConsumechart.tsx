@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { ResponsiveLine } from '@nivo/line';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router';
 import getRecentMyConsume from '../../api/charts/RecentMyConsumechart';
 import lineDefaultImg from '../../static/image/ui/lineChart_default.png';
 import { Error, Loading } from '../../pages';
 import containerPositionState from '../../shared/ScrollContainer';
+import Button from '../elements/Button';
 
 type ExpenditureData = {
   month: string;
@@ -50,6 +52,7 @@ function transformData(inputData: InputData) {
 }
 
 function RecentMyConsumechart() {
+  const navigate = useNavigate();
   const scrollPosition = useRecoilValue(containerPositionState);
 
   // 스크롤 이벤트
@@ -112,11 +115,13 @@ function RecentMyConsumechart() {
           src={lineDefaultImg}
           alt="기본그래프"
           style={{
-            width: '95%',
-            margin: '20px 0',
-            transform: 'translateX(-10px)',
+            width: '100%',
+            marginTop: '20px',
           }}
         />
+        <Button className="common" onClick={() => navigate('/account')}>
+          가계부 작성하기
+        </Button>
       </div>
     );
   }

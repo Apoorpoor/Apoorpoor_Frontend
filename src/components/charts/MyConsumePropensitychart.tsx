@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { ResponsiveRadar } from '@nivo/radar';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router';
 import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
 import '../../styles/pages/_Error.scss';
 import radarDefaultImg from '../../static/image/ui/radarChart_default.png';
 import { Error, Loading } from '../../pages';
 import containerPositionState from '../../shared/ScrollContainer';
+import Button from '../elements/Button';
 
 function MyConsumePropensitychart() {
+  const navigate = useNavigate();
   const theme = {
     background: 'transparent', // 배경 설정
     fontFamily: 'Pretendard, sans-serif', // 원하는 폰트 패밀리로 변경
@@ -132,6 +135,9 @@ function MyConsumePropensitychart() {
           alt="기본그래프"
           style={{ width: '90%', marginTop: '60px' }}
         />
+        <Button className="common" onClick={() => navigate('/account')}>
+          가계부 작성하기
+        </Button>
       </div>
     );
   }
