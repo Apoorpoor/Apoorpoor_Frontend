@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
-// import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import Select from 'react-select';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { Header, Input } from '../../components';
-import AddAccountCalendar from '../../components/elements/AddAccountCalendar';
 import accounts from '../../api/accounts';
 import { accountIdState } from '../../shared/Atom';
 import EditAccountDone from './EditAccountDone';
+import EditAccountCalendar from '../../components/elements/EditAccountCalendar';
 
 // 불러온 data의 타입
 interface LedgerItem {
@@ -308,6 +307,7 @@ function EditAccount(): JSX.Element {
   const [date, setOnDateChange] = useState('');
   // 수정 전 날짜
   const beforeDate = editData[0].date;
+  console.log('날짜:', date);
 
   const [expenditure, setExpenditure] = useState<string | null>(
     accountPriceInput || null
@@ -532,7 +532,7 @@ function EditAccount(): JSX.Element {
 
           <div className="addAccountContents">
             <p className="addAccountContentsTitle">날짜</p>
-            <AddAccountCalendar
+            <EditAccountCalendar
               setOnDateChange={setOnDateChange}
               beforeDate={beforeDate}
             />

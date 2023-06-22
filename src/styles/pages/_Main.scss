@@ -1,8 +1,10 @@
 @import '../Palette';
 
-.background {
+#mainBackground {
   box-sizing: border-box;
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -258,7 +260,7 @@
   }
 }
 
-@media (max-width: 1366px) {
+@media (min-width: 800px) and (max-width: 1366px) {
   .delModalBg {
     width: 100%;
   }

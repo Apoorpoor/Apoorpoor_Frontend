@@ -490,7 +490,10 @@ function Account(): JSX.Element {
     if (term && term.some((el) => el.selected)) {
       categoryRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [term, getAccountType]);
+    if (params) {
+      categoryRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [term, params, getAccountType]);
 
   const [bottomObserveRef, bottomInView] = useInView({
     threshold: 0,
