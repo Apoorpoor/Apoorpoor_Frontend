@@ -12,9 +12,13 @@ import { mainDateState } from '../../shared/Atom';
 // AddAccount.tsx에서 전달받은 props
 interface AddAccountCalendarProps {
   setOnDateChange: React.Dispatch<React.SetStateAction<string>>;
+  beforeDate?: string;
 }
 
-function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
+function AddAccountCalendar({
+  setOnDateChange,
+  beforeDate,
+}: AddAccountCalendarProps) {
   const months = [
     '1월',
     '2월',
@@ -42,6 +46,21 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
     isValidDate(mainDates) ? mainDates : null
   );
 
+  // 수정 전, 해당 날짜
+  const beforeDateType = useMemo(() => {
+    if (beforeDate) {
+      return new Date(beforeDate);
+    }
+    return new Date();
+  }, [beforeDate]);
+
+  useEffect(() => {
+    if (beforeDate) {
+      setSelectedDate(beforeDateType);
+    }
+  }, [beforeDate, beforeDateType]);
+
+  console.log('beforeDate:::', beforeDate);
   console.log('selectedDate:::', selectedDate);
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
 
@@ -75,7 +94,17 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
         .padStart(2, '0')}-${getDate(currentDate).toString().padStart(2, '0')}`;
       setOnDateChange(formattedDate);
     }
-  }, [currentDate, setOnDateChange]);
+    if (beforeDateType) {
+      const formattedDate = `${getYear(beforeDateType)}-${(
+        getMonth(beforeDateType) + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${getDate(beforeDateType)
+        .toString()
+        .padStart(2, '0')}`;
+      setOnDateChange(formattedDate);
+    }
+  }, [currentDate, beforeDateType, setOnDateChange]);
 
   useEffect(() => {
     if (!currentDate) {
@@ -143,4 +172,9 @@ function AddAccountCalendar({ setOnDateChange }: AddAccountCalendarProps) {
     </DatePicker>
   );
 }
+
+AddAccountCalendar.defaultProps = {
+  beforeDate: undefined,
+};
+
 export default AddAccountCalendar;

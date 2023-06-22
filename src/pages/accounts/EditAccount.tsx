@@ -42,6 +42,7 @@ function EditAccount(): JSX.Element {
   const location = useLocation();
   const data: LedgerItem[] = location.state?.data.content;
   const editData = data.filter((item: LedgerItem) => item.id === Number(id));
+  console.log('editData::', editData);
 
   // 금액 수정 전 input
   const returnPrice = (): number => {
@@ -305,6 +306,8 @@ function EditAccount(): JSX.Element {
 
   // AddAccountCalendar.tsx에서 받아온 날짜
   const [date, setOnDateChange] = useState('');
+  // 수정 전 날짜
+  const beforeDate = editData[0].date;
 
   const [expenditure, setExpenditure] = useState<string | null>(
     accountPriceInput || null
@@ -376,7 +379,7 @@ function EditAccount(): JSX.Element {
   }, [title]);
 
   useEffect(() => {
-    if (date === '') {
+    if (date === '' || date === 'NaN-NaN-NaN') {
       setDateError(true);
     } else {
       setDateError(false);
@@ -413,8 +416,33 @@ function EditAccount(): JSX.Element {
         date: date || '',
       };
 
-      if (priceError || titleError || dateError || payError || categoryError) {
-        return;
+      if (title === '' || title === null) {
+        setTitleError(true);
+      } else {
+        setTitleError(false);
+      }
+
+      if (date === '' || date === 'NaN-NaN-NaN') {
+        setDateError(true);
+      } else {
+        setDateError(false);
+      }
+
+      if (accountType === 'EXPENDITURE') {
+        if (paymentMethod === '' || paymentMethod === null) {
+          setPayError(true);
+        } else {
+          setPayError(false);
+        }
+      }
+      if (accountType === 'INCOME') {
+        setPayError(false);
+      }
+
+      if (incomeType === null && expenditureType === null) {
+        setCategoryError(true);
+      } else {
+        setCategoryError(false);
       }
 
       await editAccountMutation.mutateAsync(requestData);
@@ -504,7 +532,10 @@ function EditAccount(): JSX.Element {
 
           <div className="addAccountContents">
             <p className="addAccountContentsTitle">날짜</p>
-            <AddAccountCalendar setOnDateChange={setOnDateChange} />
+            <AddAccountCalendar
+              setOnDateChange={setOnDateChange}
+              beforeDate={beforeDate}
+            />
             {dateError && (
               <div className="warningBox">
                 <RiErrorWarningFill className="warningIcon" />
@@ -561,22 +592,8 @@ function EditAccount(): JSX.Element {
             )}
           </div>
 
-          {priceError ||
-          titleError ||
-          dateError ||
-          payError ||
-          categoryError ? (
-            <div className="errorMessage">작성 내용을 다시 확인해주세요!</div>
-          ) : (
-            ''
-          )}
-
           <button
-            className={
-              priceError || titleError || dateError || payError || categoryError
-                ? 'errAddAccountDoneBtn'
-                : 'addAccountDoneBtn'
-            }
+            className="addAccountDoneBtn"
             type="button"
             onClick={handleEdit}
           >

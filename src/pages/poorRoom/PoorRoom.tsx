@@ -103,8 +103,6 @@ function PoorRoom() {
     'getMyPoorRoom',
     beggars.getMyPoorRoom
   );
-  console.log('푸어데이터:', data);
-  console.log('에러코드:', (error as AxiosError)?.response?.status);
 
   useEffect(() => {
     if (data !== undefined) {
