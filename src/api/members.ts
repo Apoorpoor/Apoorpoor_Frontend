@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import instance from './instance';
 
+const userId = localStorage.getItem("userId");
+
 interface ErrorType extends Error {
   response: {
     data: {
@@ -144,7 +146,7 @@ const getChatList = async () => {
 // 메세지 불러오기
 const getMessageList = async () => {
   try {
-    const response = await instance.get(`/chat/messageList`);
+    const response = await instance.get(`/chatRoom/enter/${userId}`);
     return response.data;
   } catch (err) {
     console.log(`메시지 받아오기 API 오류 발생: ${err}`);

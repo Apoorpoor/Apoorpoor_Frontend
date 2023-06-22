@@ -73,24 +73,49 @@ function PoorTalk(): JSX.Element {
   //   refetchInterval: 500,
   //   refetchIntervalInBackground: true,
   // });
-  // const { data: messageList } = useQuery('getMessageList', getMessageList)getImageList
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: messageList } = useQuery(['getMessageList'], async () => {
+    const asdasd = await getMessageList()
+    return asdasd
+  }, {
+    // refetchInterval: 500,
+  });
   interface ImageListType {
     imageId: number,
     imageUrl: string,
   }
-  const { data: imageList }: ImageListType | any = useQuery('getImageList', getImageList)
-
-  // 123123123
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+  const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
+  const imageList = Array.isArray(imageList2) ? imageList2 : [];
+  // 이미지 디테일 (확대)
   const [imageDetailModal, setImageDetailModal] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+  // 이미지 디테일에 보내주는 img src값 src={imageDetailModalSrc}
   const [imageDetailModalSrc, setImageDetailModalSrc] = useState<string | undefined>('')
 
   // 클라이언트
   const stompClientRef = useRef<Client | null>(null);
   // 최신글이 올라오면 맨 밑으로 포커싱
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  // 날짜 데이터
+
+
+  // // 테스트
+  // const chatListRef = useRef<HTMLDivElement | null>(null);
+  // // 날짜 데이터
+  // const chatListRefCurrent = chatListRef.current; // 현재 값 저장
+
+  // if (chatListRefCurrent) {
+  //   chatListRefCurrent.current = chatMessages;
+  // }
+
+  const chatListRef = useRef<{ current: typeof chatMessages | null }>({ current: null });
+  const chatListRefCurrent = chatListRef.current;
+
+  if (chatListRefCurrent) {
+    chatListRefCurrent.current = messageList?.chatList;
+  }
+
+
+  // console.log("chatListRef = ", chatListRef.current.current?.map((itme) => itme.beggar_id));
+  // console.log(chatListRef.current.current)
   const today = new Date(); // today 객체에 Date()의 결과를 넣어줬다
   const time = {
     year: today.getFullYear(), // 현재 년도
@@ -105,7 +130,8 @@ function PoorTalk(): JSX.Element {
   // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
+
+  }, [chatMessages, messageList]);
 
   // useEffect(() => {
   //   console.log(imageList)
@@ -133,6 +159,7 @@ function PoorTalk(): JSX.Element {
                 newMessage,
               ]);
             }
+            getMessageList()
           });
           // 서버에서 정해둔 URL 필요 => 구독 후 입장시 메세지 보내는 로직
           client.publish({
@@ -140,7 +167,7 @@ function PoorTalk(): JSX.Element {
             body: JSON.stringify({
               beggar_id: data?.beggarId,
               date: timestring,
-              message: `${data.nickname}님 입장하셨습니다.`,
+              message: `${data.nickname}님 입장213231하셨습니다.`,
               sender: data.nickname,
               type: 'ENTER',
               userId: data.userId,
@@ -177,7 +204,7 @@ function PoorTalk(): JSX.Element {
   // 채팅 업로드 핸들러
   const sendMessages = (nowChatMessage: string): void => {
     if (nowChatMessage.trim() === '') {
-      console.log('내용을 입력해주세요.');
+      // console.log('내용을 입력해주세요.');
       return;
     }
     const message2 = `${nowChatMessage}  `;
@@ -391,7 +418,7 @@ function PoorTalk(): JSX.Element {
       )}
       {chatMessages && chatMessages.length > 0 && (
         <div className="Messagesbox">
-          {chatMessages?.map((message, index) => (
+          {chatListRef.current.current?.map((message, index) => (
             <div className="chatBox" key={index}>
               {message.type === 'ENTER' && message.beggar_id !== null && (
                 <div className="introMessage">{message.message}</div>
@@ -454,10 +481,10 @@ function PoorTalk(): JSX.Element {
                         )}
                       </div>
                       <div className="nowTime2">
-                        {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
-                          } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                        {Number(message.date?.split(' ')[1]) > 12
+                          ? `오후 ${Number(message.date?.split(' ')[1]) - 12
+                          } : ${message.date?.split(' ')[3]}`
+                          : `오전 ${message.date?.split(' ')[1]} : ${message.date?.split(' ')[3]
                           }`}
                       </div>
                     </>

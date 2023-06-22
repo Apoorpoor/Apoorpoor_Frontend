@@ -345,6 +345,12 @@
       // border: 1px solid blue;
       overflow: hidden;
       // height: 110px;
+//       overflow-x: auto;
+      
+// .chatMessageImagecontainer::-webkit-scrollbar {
+//   width: 1px;
+//   op
+// }
     }
       .chatMessageImage{
         // width: 100px;
@@ -542,10 +548,15 @@
 
 }
 
-@media (min-width: 800px) and (max-width: 1366px) {
+@media (max-width: 1366px) {
   
 .asdasdasd{
   width: 40%;
   margin: 100px auto;
+}
+.currentBackGround{
+  max-width: 800px;
+margin: 0px auto;
+background: white
 }
 }
