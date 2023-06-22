@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
-// import { BsChevronLeft } from 'react-icons/bs';
 import '../../styles/pages/_AddAccount.scss';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import Select from 'react-select';
