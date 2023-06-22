@@ -88,7 +88,7 @@ function Challenge() {
           <button
             type="button"
             className={`myChallenge ${
-              getMychallengeData !== null ? 'ing' : ''
+              getMychallengeData !== null ? '' : 'ing'
             }`}
             onClick={() => navigate('/myChallenge')}
           >

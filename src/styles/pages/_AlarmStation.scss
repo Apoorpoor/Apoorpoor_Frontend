@@ -25,6 +25,9 @@
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
+    @media (min-width: 800px) and (max-width: 1366px) {
+      padding: 0 calc((100% - 800px) / 2) 20px;
+    }
     & > li {
       width: 100%;
       padding: 20px;
