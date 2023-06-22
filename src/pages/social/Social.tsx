@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import '../../styles/pages/_Social.scss';
 import { useNavigate } from 'react-router';
 import { UseQueryResult, useQuery } from 'react-query';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import ChartSocialEx from '../../components/elements/ChartSocialEx';
 import bundle from '../../static/image/social/ranking1.png';
 import flex from '../../static/image/social/ranking2.png';
@@ -135,6 +137,15 @@ function Social() {
     return <Loading />;
   }
   if (error) {
+    if (
+      (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 403
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
     return <Error />;
   }
 
