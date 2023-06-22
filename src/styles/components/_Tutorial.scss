@@ -14,9 +14,15 @@
       position: fixed;
       top: -0px;
       z-index: 5000;
-      @media (min-width: 800px) and (max-width: 1366px) {
+      @media (max-width: 1366px) {
+        width: 100%;
         padding: 64px calc((100% - 757px) / 2) 20px;
-        left: -2px;
+        left: -1px;
+      }
+      @media (max-width: 800px) {
+        min-width: 375px;
+        padding: 64px 23px 20px 20px;
+        left: 0px;
       }
 
       // 첫 번째 페이지
