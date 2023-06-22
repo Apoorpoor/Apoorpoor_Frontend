@@ -9,9 +9,7 @@ import noneData from '../../static/image/social/noneData.png';
 import social from '../../api/social';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
-import {
-  Tooltip,
-} from '../../components';
+import { Tooltip } from '../../components';
 
 interface ApiDataItem {
   age_abb: number;
@@ -40,14 +38,7 @@ function Social() {
     { name: '소비', selected: true },
     { name: '수입', selected: false },
   ]);
-  // const [modal1, setModal1] = useState(false)
-  // const moda1Hander = ()=>{
-  //   setModal1(!modal1);
-  // }
-  // const [modal2, setModal2] = useState(false)
-  // const moda2Hander = ()=>{
-  //   setModal2(!modal2);
-  // }
+
   const selectedOnClick = (idx: number): void => {
     if (selected[idx].selected) {
       return;
@@ -71,7 +62,6 @@ function Social() {
     ['getAgeAvg', accountType],
     () => social.getAgeAvg(accountType)
   );
-  console.log('data 호출:', data);
 
   const dataChange = useMemo(() => {
     const value =
@@ -126,16 +116,20 @@ function Social() {
   let percentage = '';
 
   if (accountType === 'EXPENDITURE') {
-    const expenditure = data?.expenditure || 0;
-    const expenditureSum = data?.expenditure_sum || 1;
-    percentage = `${(100 - (expenditure / expenditureSum) * 100).toFixed(0)}%`;
+    if (data && data?.percent <= 50) {
+      percentage = `상위${100 - data.percent}%`;
+    }
+    if (data && data?.percent > 50) {
+      percentage = `하위${100 - data.percent}%`;
+    }
   } else if (accountType === 'INCOME') {
-    const income = data?.income || 0;
-    const incomeSum = data?.income_sum || 1;
-    percentage = `${(100 - (income / incomeSum) * 100).toFixed(0)}%`;
+    if (data && data?.percent <= 50) {
+      percentage = `상위${100 - data.percent}%`;
+    }
+    if (data && data?.percent > 50) {
+      percentage = `하위${100 - data.percent}%`;
+    }
   }
-
-  console.log(percentage);
 
   if (isLoading) {
     return <Loading />;
@@ -154,7 +148,7 @@ function Social() {
                 {data?.age_abb}대 {label} 중 내 &nbsp;
                 {currentSelect?.name === '소비' ? '소비' : '수입'}
               </p>
-              <p className="titleSecond">상위{percentage}</p>
+              <p className="titleSecond">{percentage}</p>
             </>
           ) : (
             <p className="noneDatatitle">
@@ -202,13 +196,12 @@ function Social() {
 
         <div className="row">
           <div className="socialRanking">
-            <div className='imgWarning'>
+            <div className="imgWarning">
               <Tooltip>
                 <h3>절약 푸어란?</h3>
                 <ul>
                   <p>
-                    지난 달 가장 많이 절약을 한 푸어를 1위 ~ 10위
-                    까지 보여줘요.
+                    지난 달 가장 많이 절약을 한 푸어를 1위 ~ 10위 까지 보여줘요.
                   </p>
                 </ul>
               </Tooltip>
@@ -217,19 +210,22 @@ function Social() {
               <img src={bundle} alt="bundle" className="imgBundle" />
             </div>
             <p>절약 푸어</p>
-            <button className='imgButton' type="button" onClick={() => navigate('/social/reduction')}>
+            <button
+              className="imgButton"
+              type="button"
+              onClick={() => navigate('/social/reduction')}
+            >
               랭킹 보기
             </button>
           </div>
 
           <div className="socialRanking">
-            <div className='imgWarning'>
+            <div className="imgWarning">
               <Tooltip>
                 <h3>플렉스 푸어란?</h3>
                 <ul>
                   <p>
-                    지난 달 가장 많은 소비를 한 푸어를 1위 ~ 10위
-                    까지 보여줘요.
+                    지난 달 가장 많은 소비를 한 푸어를 1위 ~ 10위 까지 보여줘요.
                   </p>
                 </ul>
               </Tooltip>
@@ -238,7 +234,11 @@ function Social() {
               <img src={flex} alt="flex" className="imgFlex" />
             </div>
             <p>플렉스 푸어</p>
-            <button className='imgButton' type="button" onClick={() => navigate('/social/flex')}>
+            <button
+              className="imgButton"
+              type="button"
+              onClick={() => navigate('/social/flex')}
+            >
               랭킹 보기
             </button>
           </div>
