@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import { getMyChallenge, getStampBoard } from '../../api/challenge';
 import { Button, Header } from '../../components';
 import Error from '../status/Error';
@@ -22,7 +24,7 @@ function StampBoard() {
   // =================================================================
   // *** Stamp Data Query ********************************************
   // =================================================================
-  const { isLoading, isError, data } = useQuery('getStampBoard', getStampBoard);
+  const { isLoading, error, data } = useQuery('getStampBoard', getStampBoard);
 
   const totalStamp = 10;
   const [earnStamp, setEarnStamp] = useState(0);
@@ -52,7 +54,16 @@ function StampBoard() {
   if (isLoading) {
     return <Loading />;
   }
-  if (isError) {
+  if (error) {
+    if (
+      (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 403
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
     return <Error />;
   }
   return (
