@@ -40,6 +40,7 @@ function MyChallenge() {
     myExpenditureSum: 17000,
     success: true,
   };
+
   // 챌린지 목표 금액 저장
   const [targetAmount, setTargetAmount] = useState(0);
 
@@ -213,19 +214,25 @@ function MyChallenge() {
   return (
     <main id="challengeSt">
       <Header navigateToPreviousPage={navigateToPreviousPage}>
-        2만원 챌린지
+        {myChallengeData === null
+          ? '챌린지 예시'
+          : myChallengeData.challengeTitle.split('')[0] === 0
+          ? '무지출 챌린지'
+          : `${myChallengeData.challengeTitle.split('')[0]}만원 챌린지`}
       </Header>
       <article>
-        <section className='myChallenge'>
-          <div
-            className={`${
-              myChallengeData !== null ? '' : 'example'
-            }`}
-          >
+        <section className="myChallenge">
+          <div className={`${myChallengeData !== null ? '' : 'example'}`}>
             <div>
               <p className="challengeMessage">{challengeMessege}</p>
               <div className="challengeProcessBar">
-                <p>{myChallengeData.challengeTitle.split('')[0]}만원</p>
+                <p>
+                  {myChallengeData === null
+                    ? '5만원'
+                    : myChallengeData.challengeTitle.split('')[0] === 0
+                    ? '무지출'
+                    : `${myChallengeData.challengeTitle.split('')[0]}만원`}
+                </p>
                 <div className="progressTrack">
                   <div
                     className={`progressValue ${challengeTheme}`}
@@ -262,7 +269,7 @@ function MyChallenge() {
                       accountHistoryData.challengeLedgerHistoryList
                         .filter(
                           (date: ChallengeLedger) =>
-                            Number(date.date.split('')[8]) === selectedDay
+                            Number(date.date.substring(8, 10)) === selectedDay
                         )
                         .map((list: ChallengeLedger) => (
                           <li key={list.title}>

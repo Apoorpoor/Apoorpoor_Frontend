@@ -1,8 +1,9 @@
 .Wrapper {
   width: 100%;
+  min-width: 375px;
   height: 100vh;
   background-color: #4194f1;
-  overflow:hidden;
+  overflow: hidden;
 }
 .Container {
   position: relative;

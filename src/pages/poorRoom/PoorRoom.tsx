@@ -388,7 +388,7 @@ function PoorRoom() {
           </Button>
         </section>
         <section id="myConsumeRecentGraph">
-          <h1>최근 6개월 소비근황</h1>
+          <h1>최근 6개월 소비, 수입 근황</h1>
 
           <RecentMyConsumechart />
         </section>
@@ -642,16 +642,40 @@ function PoorRoom() {
               <p>{selectedBadge?.badgeTitle}</p>
             </div>
             <p>
-              <span>ex.</span>
-              {/* 없는 뱃지의 아이디는 404로 통일해 놓았음 */}
-              {selectedBadge?.id === 404
-                ? BadgeListState.find(
-                    (badge) => badge.name === selectedBadge?.badgeTitle
-                  )?.n_description
-                : BadgeListState.find(
-                    (badge) => badge.name === selectedBadge?.badgeTitle
-                  )?.description}
+              {selectedBadge?.id === 404 ? (
+                <>
+                  {`${
+                    BadgeListState.find(
+                      (badge) => badge.name === selectedBadge?.badgeTitle
+                    )?.name
+                  } 뱃지를 받으려면 `}
+                  <span>
+                    {
+                      BadgeListState.find(
+                        (badge) => badge.name === selectedBadge?.badgeTitle
+                      )?.n_description
+                    }
+                  </span>
+                  을 해보세요
+                </>
+              ) : (
+                <>
+                  {
+                    BadgeListState.find(
+                      (badge) => badge.name === selectedBadge?.badgeTitle
+                    )?.description
+                  }
+                  <span>
+                    {
+                      BadgeListState.find(
+                        (badge) => badge.name === selectedBadge?.badgeTitle
+                      )?.sub_description
+                    }
+                  </span>
+                </>
+              )}
             </p>
+
             <Button className="common" onClick={() => navigate('/Account')}>
               가계부 작성하기
             </Button>

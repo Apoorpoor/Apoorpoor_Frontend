@@ -50,12 +50,19 @@ function AlarmStation() {
     return `${elapsedMinutes}분`;
   }
 
-  const checkAlarmHandler = (alarmType: string) => {
+  const checkAlarmHandler = (alarmType: string, key: string | null) => {
     if (alarmType === '레벨업') {
       navigate('/poorItemSetting');
     } else if (alarmType === '소비뱃지') {
       navigate('/badgeList');
     }
+    // 클릭한 리스트 아이템의 key 값으로 해당 객체를 찾아서 제거
+    const updatedNotification = parsedNotification.filter(
+      (notification) => notification.timestamp !== key
+    );
+
+    // 변경된 배열을 sessionStorage에 저장
+    sessionStorage.setItem('notification', JSON.stringify(updatedNotification));
   };
 
   return (
@@ -75,8 +82,13 @@ function AlarmStation() {
           <ul>
             {parsedNotification?.map((notification) => (
               <li
-                key={notification.msg}
-                onClick={() => checkAlarmHandler(notification.alarmType)}
+                key={notification.timestamp}
+                onClick={() =>
+                  checkAlarmHandler(
+                    notification.alarmType,
+                    notification.timestamp
+                  )
+                }
               >
                 <p>
                   {notification.alarmType}

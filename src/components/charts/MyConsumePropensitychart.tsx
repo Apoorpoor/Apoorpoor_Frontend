@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { ResponsiveRadar } from '@nivo/radar';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router';
 import getMyConsumePropensity from '../../api/charts/MyconsumePropensitychart';
 import '../../styles/pages/_Error.scss';
 import radarDefaultImg from '../../static/image/ui/radarChart_default.png';
 import { Error, Loading } from '../../pages';
 import containerPositionState from '../../shared/ScrollContainer';
+import Button from '../elements/Button';
 
 function MyConsumePropensitychart() {
+  const navigate = useNavigate();
   const theme = {
     background: 'transparent', // 배경 설정
     fontFamily: 'Pretendard, sans-serif', // 원하는 폰트 패밀리로 변경
@@ -123,7 +126,7 @@ function MyConsumePropensitychart() {
         return expenditureType; // 기본적으로는 원래의 expenditureType 값을 반환합니다.
     }
   };
-  if (data === undefined || data.length === 0) {
+  if (data === undefined || data.length < 3) {
     return (
       <div className="dataNone">
         <p>가계부를 작성하고 소비성향을 확인해보세요!</p>
@@ -132,6 +135,9 @@ function MyConsumePropensitychart() {
           alt="기본그래프"
           style={{ width: '90%', marginTop: '60px' }}
         />
+        <Button className="common" onClick={() => navigate('/account')}>
+          가계부 작성하기
+        </Button>
       </div>
     );
   }
@@ -155,7 +161,7 @@ function MyConsumePropensitychart() {
         keys={['total_sum']}
         indexBy={(d) => newIndex(d.expenditureType)}
         valueFormat=">-.2f"
-        margin={{ top: 0, right: 80, bottom: 40, left: 80 }}
+        margin={{ top: 60, right: 80, bottom: 0, left: 80 }}
         borderColor={{ from: 'color' }}
         gridShape="linear"
         gridLabelOffset={36}

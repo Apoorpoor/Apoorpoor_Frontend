@@ -7,11 +7,9 @@
 ) {
   background-image: url('#{$path}#{$challengeAmount}.#{$format}');
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   background-size: 100%;
-  width: 183px;
-  min-height: 230px;
-  border-radius: 15px;
+  width: 100%;
 }
 
 @mixin stampImg(
@@ -56,14 +54,19 @@
   & .snackbar.show {
     top: 10px;
   }
-  @media (max-width: 1366px) {
+  @media (min-width: 800px) and (max-width: 1366px) {
     & .snackbar {
-      width: calc(100% - 40px);
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
     }
   }
   & article {
     padding: 0 20px 20px;
     box-sizing: border-box;
+    @media (min-width: 800px) and (max-width: 1366px) {
+      padding: 0 calc((100% - 800px) / 2) 20px;
+    }
   }
   & .banner {
     width: 100%;
@@ -89,30 +92,86 @@
 
   & section {
     & ul {
+      width: 100%;
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 4%;
       margin: 20px auto;
       & li {
+        position: relative;
+        width: 48%;
+        height: 250px;
+        margin-bottom: 4%;
         transition: 0.3s;
         cursor: pointer;
+        border-radius: 15px;
+        overflow: hidden;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px;
+        & > div {
+          width: 100%;
+          max-width: 150px;
+          height: 100%;
+          margin: 0 auto;
+        }
+        @media (min-width: 550px) and (max-width: 700px) {
+          width: 30%;
+          height: 250px;
+          & > div {
+            max-width: 130px;
+          }
+        }
+        @media (min-width: 701px) and (max-width: 1366px) {
+          width: 30%;
+          height: 300px;
+          & > div {
+            max-width: 170px;
+          }
+        }
       }
       & li:first-child {
-        @include challengeMenu('20000');
+        background-color: #c8dab2;
+        & > div {
+          @include challengeMenu('20000');
+          max-width: 170px;
+        }
       }
       & li:nth-child(2) {
-        @include challengeMenu('50000');
+        background-color: #dabe74;
+        & > div {
+          @include challengeMenu('50000');
+        }
       }
       & li:nth-child(3) {
-        @include challengeMenu('100000');
+        background-color: #dabe74;
+        & > div {
+          @include challengeMenu('100000');
+          max-width: 100%;
+          background-position-x: 10px;
+        }
       }
+      // 무지출
       & li:nth-child(4) {
-        @include challengeMenu('0');
+        background-color: #fff;
+        & > div {
+          @include challengeMenu('0');
+          max-width: 100%;
+          @media (min-width: 550px) and (max-width: 1366px) {
+            background-position-y: 125px;
+          }
+        }
       }
+      // 스탬프
       & li:last-child {
-        @include challengeMenu('stamp');
+        background-color: #fff;
+        & > div {
+          @include challengeMenu('stamp');
+          max-width: 130px;
+          background-position: center 63%;
+          @media (min-width: 701px) and (max-width: 1366px) {
+            max-width: 120px;
+          }
+        }
       }
       & li:hover {
         transform: scale(1.05);
@@ -120,7 +179,11 @@
     }
 
     & li p {
-      display: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-weight: 700;
+      font-size: 1.5rem;
     }
 
     & .myChallenge.ing {
@@ -140,8 +203,6 @@
 }
 
 #challengeSt {
-  & article {
-  }
   & section {
     padding: 0 20px 60px;
     border-bottom: 12px solid $gray-150;
@@ -155,6 +216,9 @@
       & span {
         color: $primary;
       }
+    }
+    @media (min-width: 800px) and (max-width: 1366px) {
+      padding: 0 calc((100% - 800px) / 2) 20px;
     }
   }
   & .myChallenge {
@@ -236,6 +300,7 @@
       & li {
         text-align: center;
         & button {
+          position: relative;
           width: 35px;
           height: 35px;
           border-radius: 20px;
@@ -246,6 +311,17 @@
         }
         & button.today {
           background-color: $primary;
+          &::after{
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 13.5px;
+            width: 8px;
+            height: 8px;
+            display: block;
+            background-color: $secondary;
+            border-radius: 3px;
+          }
         }
         & button.next {
           background-color: #fff;

@@ -70,6 +70,7 @@ function BadgeList() {
     title: string;
     name: string;
     description: string;
+    sub_description: string;
     n_description: string;
   };
 
@@ -85,9 +86,9 @@ function BadgeList() {
     setBadgeModal(true);
   };
 
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const previousMonth = (currentMonth === 0 ? 11 : currentMonth - 1) + 1;
+  // const currentDate = new Date();
+  // const currentMonth = currentDate.getMonth();
+  // const previousMonth = (currentMonth === 0 ? 11 : currentMonth - 1) + 1;
 
   return (
     <main id="BadgeList">
@@ -147,12 +148,20 @@ function BadgeList() {
               <p>{selectedBadge?.name}</p>
             </div>
             <p>
-              <span>ex.</span>
               {selectedBadge &&
-                (selectedClassName === 'have'
-                  ? `${previousMonth}월 ${selectedBadge.description}`
-                  : selectedBadge.n_description)}
+                (selectedClassName === 'have' ? (
+                  <>
+                    {selectedBadge.description}<br />
+                    <span>{selectedBadge.sub_description}</span>
+                  </>
+                ) : (
+                  <>
+                    &quot;{selectedBadge.name}&quot; 뱃지를 받으려면<br />
+                    <span>{selectedBadge.n_description}</span>을 해보세요
+                  </>
+                ))}
             </p>
+
             {selectedClassName === 'have' ? (
               ''
             ) : (

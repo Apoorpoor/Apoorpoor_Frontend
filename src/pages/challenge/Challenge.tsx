@@ -49,7 +49,8 @@ function Challenge() {
 
   // 챌린지 버튼 클릭 핸들러
   const chooseChallengeHandler = () => {
-    if (myChallenge !== true) {
+    // 
+    if (getMychallengeData !== null) {
       navigate('/myChallenge');
     } else {
       setShowSnackbar(true);
@@ -88,7 +89,7 @@ function Challenge() {
           <button
             type="button"
             className={`myChallenge ${
-              getMychallengeData !== null ? 'ing' : ''
+              getMychallengeData !== null ? '' : 'ing'
             }`}
             onClick={() => navigate('/myChallenge')}
           >
@@ -105,10 +106,12 @@ function Challenge() {
                 }}
               >
                 <p>{key}</p>
+                <div>&nbsp;</div>
               </li>
             ))}
             <li onClick={() => navigate('/stampBoard')}>
               <p>스탬프 보기</p>
+              <div>&nbsp;</div>
             </li>
           </ul>
         </section>
