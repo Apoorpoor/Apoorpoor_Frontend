@@ -27,10 +27,9 @@ import {
   ChallengeEx,
   MyChallenge,
   StampBoard,
-  ChallengeStart,
+  ChallengeDone,
+  ChallengeFail,
 } from './pages/index';
-import ChallengeDone from './pages/challenge/ChallengeDone';
-import ChallengeFail from './pages/challenge/ChallengeFail';
 
 function App() {
   const navigate = useNavigate();
@@ -78,10 +77,9 @@ function App() {
         <Route path="/social/flex" element={<Flex />} />
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challengeEx" element={<ChallengeEx />} />
-        <Route path="/challengestart" element={<ChallengeStart />} />
-        <Route path="/challengeDone" element={<ChallengeDone />} />
-        <Route path="/challengeFail" element={<ChallengeFail />} />
         <Route path="/myChallenge" element={<MyChallenge />} />
+        <Route path="/challengedone" element={<ChallengeDone />} />
+        <Route path="/challengefail" element={<ChallengeFail />} />
         <Route path="/stampBoard" element={<StampBoard />} />
       </Routes>
     </Layout>

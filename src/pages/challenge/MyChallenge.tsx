@@ -47,10 +47,12 @@ function MyChallenge() {
   const [calendar, setCalendar] = useState<{ day: string; date: string }[]>([
     { day: '', date: '' },
   ]);
+  // 오늘 날짜
+  const today = new Date().getDate();
 
   useEffect(() => {
     if (myChallengeData) {
-      // data가 로딩 되면 목표금액 다시 설정
+      // data가 로딩 되면 목표 금액 설정
       setTargetAmount(
         Number(myChallengeData.challengeTitle.split('')[0]) * 10000
       );
@@ -60,17 +62,22 @@ function MyChallenge() {
         const date = new Date(dateStr);
         const weekday = date.getDay();
 
-        const startDate = new Date(date.getTime() - weekday * 86400000);
+        const startDate = new Date(
+          // 일요일이 아니라 월요일 부터 시작하고 싶어서 -2
+          date.getTime() - (weekday > 0 ? weekday - 2 : 6) * 86400000
+        );
+
         const weekDates: { day: string; date: string }[] = [];
 
+        const weekD = ['월', '화', '수', '목', '금', '토', '일'];
         for (let i = 0; i < 7; i += 1) {
-          const weekD = ['일', '월', '화', '수', '목', '금', '토'];
           const currentDate = new Date(startDate.getTime() + i * 86400000);
           const formattedDate = currentDate
             .toISOString()
             .split('T')[0]
             .slice(8);
-          weekDates.push({ day: weekD[i], date: formattedDate });
+          const dayIndex = i % 7;
+          weekDates.push({ day: weekD[dayIndex], date: formattedDate });
         }
 
         return weekDates;
@@ -104,6 +111,47 @@ function MyChallenge() {
   // 챌린지동안 사용한 금액 저장
   const [usedAmount, setUsedAmount] = useState(0);
 
+  // 챌린지 진행 상태 퍼센트
+  const [usedPercent, setUsedPercent] = useState(0);
+
+  // 챌린지 상태 문구
+  const [challengeMessege, setChallengeMessage] = useState('');
+  const [challengeTheme, setChallengeTheme] = useState('step1');
+
+  // 소비 내역 타입 변환
+  const newIndex = (expenditureType: string) => {
+    switch (expenditureType) {
+      case 'UTILITY_BILL':
+        return '월세/관리비/공과금';
+      case 'CONDOLENCE_EXPENSE':
+        return '경조사비';
+      case 'TRANSPORTATION':
+        return '교통비';
+      case 'COMMUNICATION_EXPENSES':
+        return '통신비';
+      case 'INSURANCE':
+        return '보험';
+      case 'EDUCATION':
+        return '교육';
+      case 'SAVINGS':
+        return '저축';
+      case 'CULTURE':
+        return '문화';
+      case 'HEALTH':
+        return '건강';
+      case 'FOOD_EXPENSES':
+        return '식비';
+      case 'SHOPPING':
+        return '쇼핑';
+      case 'LEISURE_ACTIVITIES':
+        return '여가활동';
+      case 'OTHER':
+        return '기타';
+      default:
+        return expenditureType;
+    }
+  };
+
   // 챌린지 소비 내역 조회 및 총 사용 금액 계산
   useEffect(() => {
     getChallengeAccountHistory();
@@ -119,8 +167,27 @@ function MyChallenge() {
         return totalAmount;
       };
       setUsedAmount(AmountUsed(accountHistoryData));
+
+      // 챌린지 진행 상태 표시
+      const challengeGage = (usedAmount / targetAmount) * 100;
+      setUsedPercent(challengeGage);
+
+      // 챌린지 문구
+      if (challengeGage <= 50) {
+        setChallengeTheme('step1');
+        setChallengeMessage('이제 시작! 1주일 동안 잘 할 수 있어요!');
+      } else if (challengeGage <= 70) {
+        setChallengeTheme('step2');
+        setChallengeMessage('슬슬 허리띠 졸라매기!');
+      } else if (challengeGage <= 100) {
+        setChallengeTheme('step3');
+        setChallengeMessage('아슬아슬 한데요?');
+      } else {
+        setChallengeTheme('step4');
+        setChallengeMessage('이제라도 아껴보는건 어때요?');
+      }
     }
-  }, []);
+  }, [accountHistoryData, challengeMessege]);
 
   // 챌린지 시작하기
   const startChallengeHandler = async () => {
@@ -129,6 +196,12 @@ function MyChallenge() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // 챌린지 가계부 내역 조회
+  const [selectedDay, setSelectedDay] = useState(today);
+  const selectedDayHandler = (day: number) => {
+    setSelectedDay(day);
   };
 
   if (myChallengeLoading || accountHistoryLoading) {
@@ -143,131 +216,65 @@ function MyChallenge() {
         2만원 챌린지
       </Header>
       <article>
-        <section>
-          {myChallengeData !== null ? (
-            <div className="myChallenge">
-              <div>
-                <p>이제 시작! 1주일 동안 잘 할 수 있어요!</p>
-                <div className="challengeProcessBar">
-                  <p>{myChallengeData.challengeTitle.split('')[0]}만원</p>
-                  <div className="progressTrack">
-                    <div className="progressValue">
-                      <p>&nbsp;</p>
-                      <span>- {targetAmount - usedAmount} 원</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="challengeCalendar">
-                  <ul>
-                    {calendar.map((date) => (
-                      <li key={date.day}>
-                        <label>{date.day}</label>
-                        <button type="button">{date.date}</button>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="challengeAccount">
-                    <ul>
-                      {/* {accountHistoryData.map((list) => {
-
-                      })} */}
-                      <li>
-                        <p>
-                          <span>6월 19일</span>
-                          <span>세븐일레븐</span>
-                          <span>식비</span>
-                        </p>
-                        <p>-3000원</p>
-                      </li>
-                    </ul>
+        <section className='myChallenge'>
+          <div
+            className={`${
+              myChallengeData !== null ? '' : 'example'
+            }`}
+          >
+            <div>
+              <p className="challengeMessage">{challengeMessege}</p>
+              <div className="challengeProcessBar">
+                <p>{myChallengeData.challengeTitle.split('')[0]}만원</p>
+                <div className="progressTrack">
+                  <div
+                    className={`progressValue ${challengeTheme}`}
+                    style={{ width: `${usedPercent}%`, minWidth: '16px' }}
+                  >
+                    <span>{usedAmount} 원</span>
                   </div>
                 </div>
               </div>
-              <Button
-                className="common"
-                onClick={() => {
-                  navigate('/account');
-                }}
-              >
-                가계부 바로가기
-              </Button>
-            </div>
-          ) : (
-            <div className="myChallenge">
-              <div>
-                <div className="challengeProcessBar example">
-                  <p>{fakeData.challengeAmount / 10000}만원</p>
-                  <div className="progressTrack">
-                    <div className="progressValue">
-                      <p>&nbsp;</p>
-                      <span>
-                        - {fakeData.challengeAmount - fakeData.myExpenditureSum}
-                        원
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="challengeCalendar">
+              <div className="challengeCalendar">
+                <ul>
+                  {calendar.map((date) => (
+                    <li key={date.day}>
+                      <label>{date.day}</label>
+                      <button
+                        type="button"
+                        className={
+                          today < Number(date.date)
+                            ? 'next'
+                            : today === Number(date.date)
+                            ? 'today'
+                            : ''
+                        }
+                        onClick={() => selectedDayHandler(Number(date.date))}
+                      >
+                        {date.date}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div className="challengeAccount">
                   <ul>
-                    <li>
-                      <label htmlFor="mon" className="pre">
-                        월
-                      </label>
-                      <button type="button" id="mon" className="pre">
-                        30
-                      </button>
-                    </li>
-                    <li>
-                      <label htmlFor="tue" className="pre">
-                        화
-                      </label>
-                      <button type="button" id="tue" className="pre">
-                        31
-                      </button>
-                    </li>
-                    <li>
-                      <label htmlFor="wed" className="today">
-                        수
-                      </label>
-                      <button type="button" id="wed" className="today">
-                        1
-                      </button>
-                    </li>
-                    <li>
-                      <label htmlFor="thu" className="next">
-                        목
-                      </label>
-                      <button type="button" id="thu" className="next">
-                        2
-                      </button>
-                    </li>
-                    <li>
-                      <label htmlFor="fri" className="next">
-                        금
-                      </label>
-                      <button type="button" id="fri" className="next">
-                        3
-                      </button>
-                    </li>
-                    <li>
-                      <label htmlFor="sat" className="next">
-                        토
-                      </label>
-                      <button type="button" id="sat" className="next">
-                        4
-                      </button>
-                    </li>
-                    <li>
-                      <label htmlFor="sun" className="next">
-                        일
-                      </label>
-                      <button type="button" id="sun" className="next">
-                        5
-                      </button>
-                    </li>
-                  </ul>
-                  <div className="challengeAccount">
-                    <ul>
+                    {myChallengeData !== null ? (
+                      accountHistoryData.challengeLedgerHistoryList
+                        .filter(
+                          (date: ChallengeLedger) =>
+                            Number(date.date.split('')[8]) === selectedDay
+                        )
+                        .map((list: ChallengeLedger) => (
+                          <li key={list.title}>
+                            <p>
+                              <span>{list.date}</span>
+                              <span>{list.title}</span>
+                              <span>{newIndex(list.expenditureType)}</span>
+                            </p>
+                            <p>-{list.expenditure}원</p>
+                          </li>
+                        ))
+                    ) : (
                       <li>
                         <p>
                           <span>6월 19일</span>
@@ -276,11 +283,22 @@ function MyChallenge() {
                         </p>
                         <p>????원</p>
                       </li>
-                    </ul>
-                  </div>
+                    )}
+                  </ul>
                 </div>
               </div>
-              <div>
+            </div>
+            {myChallengeData !== null ? (
+              <Button
+                className="common"
+                onClick={() => {
+                  navigate('/account');
+                }}
+              >
+                가계부 바로가기
+              </Button>
+            ) : (
+              <>
                 <div className="notice">
                   <p>
                     <img src={infoIcon} alt="정보" />
@@ -293,9 +311,9 @@ function MyChallenge() {
                 >
                   챌린지 시작하기
                 </Button>
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </div>
         </section>
       </article>
     </main>
