@@ -39,6 +39,9 @@
 
       // 두 번째 페이지
       & .goAccountText {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
         margin-top: 31px;
         color: rgb(128, 128, 128);
         font-size: 16px;
@@ -47,6 +50,9 @@
         background-color: rgb(128, 128, 128);
         margin-top: 20px;
         width: 100%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
         height: 124px;
         border-radius: 12px;
       }
@@ -175,10 +181,13 @@
   }
 }
 
-@media (max-width: 1366px) {
+@media (min-width: 800px) and (max-width: 1366px) {
   #tutorial {
     #page {
-      .background,
+      .background {
+        width: 100%;
+        padding: 64px calc((100% - 757px) / 2) 20px;
+      }
       .contentBg {
         width: 100%;
       }

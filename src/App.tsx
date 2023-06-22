@@ -27,6 +27,7 @@ import {
   ChallengeEx,
   MyChallenge,
   StampBoard,
+  ChallengeStart,
   ChallengeDone,
   ChallengeFail,
 } from './pages/index';

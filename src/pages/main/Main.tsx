@@ -106,7 +106,7 @@ function Main(): JSX.Element {
         />
       )}
 
-      <div className="background">
+      <div id="mainBackground">
         <div className="header">
           <button type="button" onClick={tutorialOpen}>
             <img src={mainIcon} alt="mainIcon" />
