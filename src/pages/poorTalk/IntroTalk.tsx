@@ -1,11 +1,28 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect } from 'react';
 import '../../styles/pages/_IntroTalk.scss';
 import { FaExclamationCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { UseQueryResult, useQuery } from 'react-query';
 import PoorCharacter from '../poorRoom/PoorCharacter';
+import { myPoorState } from '../../shared/MyPoor';
+import beggars from '../../api/beggars';
 
 function IntroTalk() {
   const navigate = useNavigate();
+  const [myPoorInfo, setMyPoorInfo] = useRecoilState(myPoorState);
+  const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
+    'getMyPoorRoom',
+    beggars.getMyPoorRoom
+  );
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setMyPoorInfo(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, setMyPoorInfo]);
 
   return (
     <div id="IntroTalkLayout">
@@ -47,3 +64,30 @@ function IntroTalk() {
 }
 
 export default IntroTalk;
+
+
+interface MyData {
+  beggarId: string;
+  userId: string;
+  nickname: string;
+  exp: number;
+  point: number;
+  level: number;
+  description: string;
+  age: number;
+  gender: string;
+  topImage: string;
+  bottomImage: string;
+  shoesImage: string;
+  accImage: string;
+  customImage: string;
+  badgeList: Badge[];
+}
+type Badge = {
+  badgeImage: string;
+  badgeNum: number;
+  badgeTitle: string;
+  createdAt: string;
+  id: number;
+  modifiedAt: string;
+};

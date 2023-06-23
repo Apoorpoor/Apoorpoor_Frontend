@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
@@ -56,7 +57,6 @@ function PoorTalk(): JSX.Element {
 
   // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
   const [chatList, setChatList] = useState([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: chatList2 } = useQuery('getChatList', getChatList, {
     onSuccess: (res) => {
       setChatList(res)
@@ -66,7 +66,6 @@ function PoorTalk(): JSX.Element {
 
   // 보여지는 메세지들, 닉네임 정보
   const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: messageList } = useQuery("getMessageList", getMessageList, {
     refetchOnWindowFocus: false,
     onSuccess: (res) => {
@@ -191,10 +190,11 @@ function PoorTalk(): JSX.Element {
         destination: '/pub/chat/send',
         body: JSON.stringify(sendList),
       });
-      queryClient.invalidateQueries("getUser")
-      queryClient.invalidateQueries("getChatList")
-      queryClient.invalidateQueries("getMessageList")
-      queryClient.invalidateQueries("getImageList")
+      queryClient.invalidateQueries(["getUser", "getChatList", "getMessageList", "getImageList"])
+      // queryClient.invalidateQueries("getUser")
+      // queryClient.invalidateQueries("getChatList")
+      // queryClient.invalidateQueries("getMessageList")
+      // queryClient.invalidateQueries("getImageList")
     }
     setSendMessage('');
   };

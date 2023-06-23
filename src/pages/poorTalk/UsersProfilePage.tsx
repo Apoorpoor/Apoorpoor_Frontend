@@ -64,7 +64,7 @@ function UsersProfilePage({ setModalOpen, inMessageUserId }: AccountNameProps): 
   };
   // 유저 정보 받아오기
   const { data: dataUsersProfile }: UseQueryResult<DataUsersProfile> = useQuery("getUsersProfile", () => getUsersProfile(inMessageUserId));
-  console.log("dataUsersProfile = ", dataUsersProfile)
+  // console.log("dataUsersProfile = ", dataUsersProfile)
   const badgeList = dataUsersProfile?.badgeList
   // console.log("badgeList = ", badgeList)
 
@@ -105,7 +105,7 @@ function UsersProfilePage({ setModalOpen, inMessageUserId }: AccountNameProps): 
           slidesToScroll={1}
           arrows={false}
         >
-          {Array.isArray(badgeList) && badgeList?.map((badge: BadgeListType, index: any) => (
+          {Array.isArray(badgeList) && badgeList.length > 0 && badgeList?.map((badge: BadgeListType, index: any) => (
             <div key={index}
               className="item" role="button" tabIndex={0}>
               <img src={badge.badgeImage} alt="" />
