@@ -497,6 +497,21 @@
   z-index: 2;
   overflow: auto;
 }
+.imageListModalOpen::-webkit-scrollbar {
+  width: 0px;  /* 스크롤바의 너비 */
+}
+
+.imageListModalOpen::-webkit-scrollbar-thumb {
+  // height: 30%; /* 스크롤바의 길이 */
+  // background: #217af4; /* 스크롤바의 색상 */
+  opacity: 0;
+  
+  border-radius: 10px;
+}
+
+.imageListModalOpen::-webkit-scrollbar-track {
+  // background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
 .imageListModalCloseForm{
   display: flex;
   margin-bottom: 36px;

@@ -190,37 +190,28 @@ function Reduction() {
         <div className="Top10ListHeader">
           <p>닉네임</p> <p>금액</p>
         </div>
-        {topList?.map((item, index) => (
-          <div key={index} className="Top10List">
-            <p>{item.rank_num}</p>
-            <div className="Top10Poors">
-              <div className="ProfileNickname">
-                <div className="Top10PoorsImage">
-                  <img
-                    className="Top10Image"
-                    src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[item.level]
-                      }.svg`}
-                    alt=""
-                  />
-                  <img
-                    className="Top10ImageItem"
-                    src={item.top_url}
-                    alt=""
-                  />
-                  <img
-                    className="Top10ImageItem"
-                    src={item.acc_url}
-                    alt=""
-                  />
+        {topList?.map((poor, index) => {
+          if (poor.beggar_id !== 1) {
+            return (
+              <div key={index} className='Top10List'>
+                <p>{poor.rank_num}</p>
+                <div className='Top10Poors'>
+                  <div className='ProfileNickname'>
+                    <div className="Top10PoorsImage">
+                      <img className="Top10Image" src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[poor.level]}.svg`} alt='푸어 이미지' />
+                      <img className='Top10ImageItem' src={poor.top_url} alt='푸어 상의' />
+                      <img className='Top10ImageItem' src={poor.acc_url} alt='푸어 악세서리' />
+                    </div>
+                    {poor.nickname}
+                  </div>
+                  <div className='Top10PoorsPrice'>
+                    {poor.total.toLocaleString()}원
+                  </div>
                 </div>
-                {item.nickname}
               </div>
-              <div className="Top10PoorsPrice">
-                {item.total.toLocaleString()}원
-              </div>
-            </div>
-          </div>
-        ))}
+            );
+          } return null;
+        })}
       </div>
     </div>
   );
