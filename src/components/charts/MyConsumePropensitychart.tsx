@@ -148,10 +148,9 @@ function MyConsumePropensitychart() {
   }
   return (
     <div
+      className="radarChartContainer"
       style={{
         width: radarChartSection === true ? '100%' : '70%',
-        height: '450px',
-        margin: '0 auto',
       }}
     >
       <ul className="consumeStyle">

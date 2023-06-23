@@ -64,11 +64,11 @@ function AlarmStation() {
       navigate('/badgeList');
     } else if (alarmType === '챌린지') {
       if (msg === '성공') {
-        navigate('/badgeList');
+        navigate('/challengedone');
       } else if (msg === '실패') {
-        navigate('/badgeList');
+        navigate('/challengefail');
       } else if (msg === '시작') {
-        navigate('/badgeList');
+        navigate('/myChallenge');
       }
     }
     // 클릭한 리스트 아이템의 key 값으로 해당 객체를 찾아서 제거

@@ -61,13 +61,13 @@ function Alarm() {
   const notification = sessionStorage.getItem('notification');
 
   useEffect(() => {
-    if (notification !== null && notification.length > 0) {
+    // notification이 문자열로 취급되어서 감싸고 있는 대괄호도 length로 인식,length가 2 이상이어야 알림 내역이 있음
+    if (notification !== null && notification.length > 2) {
       setNotificationCount(true);
     } else {
       setNotificationCount(false);
     }
   }, [notification]);
-
   return (
     <div>
       <Button
