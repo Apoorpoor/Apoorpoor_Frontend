@@ -5,6 +5,8 @@
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+    max-width: 800px;
+    margin: 0 auto;
     & > button {
       padding: 15px 10px;
     }
@@ -62,14 +64,9 @@
       & ul li:first-child .itemBox .itemImg {
         background-position: center 45px;
       }
-      //면도기
-      & ul li:nth-child(2) .itemBox .itemImg {
-        background-size: 70%;
-        background-position: center 25px;
-      }
       //로락스 시계, 사과 워치
-      & ul li:nth-child(3) .itemBox .itemImg,
-      & ul li:nth-child(4) .itemBox .itemImg {
+      & ul li:nth-child(2) .itemBox .itemImg,
+      & ul li:nth-child(3) .itemBox .itemImg {
         background-size: 800%;
         background-position: 83% -515px;
       }
@@ -159,7 +156,7 @@
             box-sizing: border-box;
           }
         }
-      } 
+      }
     }
     & > section.custom li.closed .disabled > p {
       top: 110px;

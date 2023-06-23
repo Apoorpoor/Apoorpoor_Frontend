@@ -53,6 +53,9 @@ function transformData(inputData: InputData) {
 
 function RecentMyConsumechart() {
   const navigate = useNavigate();
+  // 나의 가계부 정보 불러오기
+  const accountId = sessionStorage.getItem('accountId');
+
   const scrollPosition = useRecoilValue(containerPositionState);
 
   // 스크롤 이벤트
@@ -119,7 +122,7 @@ function RecentMyConsumechart() {
             marginTop: '20px',
           }}
         />
-        <Button className="common" onClick={() => navigate('/account')}>
+        <Button className="common" onClick={() => navigate(`/account/${accountId}`)}>
           가계부 작성하기
         </Button>
       </div>

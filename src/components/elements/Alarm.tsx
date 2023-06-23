@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Button from './Button';
 import alarmIcon from '../../static/image/ui/alarm.png';
@@ -56,14 +56,22 @@ function Alarm() {
   const alarmCheckedHandler = () => {
     navigate('/AlarmStation');
   };
+  const [notificationCount, setNotificationCount] = useState(false);
 
   const notification = sessionStorage.getItem('notification');
-  const hasNotification = notification !== null && notification.length >= 1;
 
+  useEffect(() => {
+    // notification이 문자열로 취급되어서 감싸고 있는 대괄호도 length로 인식,length가 2 이상이어야 알림 내역이 있음
+    if (notification !== null && notification.length > 2) {
+      setNotificationCount(true);
+    } else {
+      setNotificationCount(false);
+    }
+  }, [notification]);
   return (
     <div>
       <Button
-        className={`iconButton ${hasNotification === true ? 'checkMe' : ''}`}
+        className={`iconButton ${notificationCount === true ? 'checkMe' : ''}`}
         onClick={() => alarmCheckedHandler()}
       >
         <img

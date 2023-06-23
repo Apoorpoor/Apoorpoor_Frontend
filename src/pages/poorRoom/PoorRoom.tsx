@@ -53,6 +53,8 @@ function PoorRoom() {
   const navigateToPreviousPage = () => {
     navigate('/');
   };
+  // 나의 가계부 정보 불러오기
+  const accountId = sessionStorage.getItem('accountId');
 
   // =================================================================
   // *** PoorRoom Data Query *****************************************
@@ -249,6 +251,8 @@ function PoorRoom() {
     localStorage.removeItem('AToken');
     // RToken 삭제
     Cookies.remove('RToken');
+    // 가계부 ID 삭제
+    sessionStorage.removeItem('accountId');
     navigate('/login');
   };
 
@@ -511,7 +515,7 @@ function PoorRoom() {
                 <Button
                   className="textType"
                   onClick={() => {
-                    navigate('/');
+                    navigate(`/account/${accountId}`);
                   }}
                 >
                   가계부 작성하기
@@ -685,7 +689,10 @@ function PoorRoom() {
               )}
             </p>
 
-            <Button className="common" onClick={() => navigate('/Account')}>
+            <Button
+              className="common"
+              onClick={() => navigate(`/account/${accountId}`)}
+            >
               가계부 작성하기
             </Button>
           </div>

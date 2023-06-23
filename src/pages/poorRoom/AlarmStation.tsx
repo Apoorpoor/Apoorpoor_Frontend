@@ -32,7 +32,7 @@ function AlarmStation() {
 
     // 현재 시간 가져오기
     const now = new Date();
-    const currentMonth = now.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더함
+    const currentMonth = now.getMonth() + 1;
     const currentDay = now.getDate();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
@@ -47,14 +47,29 @@ function AlarmStation() {
     if (elapsedMinutes > 60) {
       return `${Math.floor(elapsedMinutes / 60)}시간`;
     }
+    if (elapsedMinutes < 1) {
+      return '방금';
+    }
     return `${elapsedMinutes}분`;
   }
 
-  const checkAlarmHandler = (alarmType: string, key: string | null) => {
+  const checkAlarmHandler = (
+    alarmType: string,
+    msg: string | null,
+    key: string | null
+  ) => {
     if (alarmType === '레벨업') {
       navigate('/poorItemSetting');
     } else if (alarmType === '소비뱃지') {
       navigate('/badgeList');
+    } else if (alarmType === '챌린지') {
+      if (msg === '성공') {
+        navigate('/challengedone');
+      } else if (msg === '실패') {
+        navigate('/challengefail');
+      } else if (msg === '시작') {
+        navigate('/myChallenge');
+      }
     }
     // 클릭한 리스트 아이템의 key 값으로 해당 객체를 찾아서 제거
     const updatedNotification = parsedNotification.filter(
@@ -86,6 +101,7 @@ function AlarmStation() {
                 onClick={() =>
                   checkAlarmHandler(
                     notification.alarmType,
+                    notification.msg,
                     notification.timestamp
                   )
                 }
@@ -101,10 +117,20 @@ function AlarmStation() {
                     여기까지 오시느라 고생하셨어요! 지금 열린 아이템을
                     확인해보세요!
                   </p>
-                ) : (
+                ) : notification.alarmType === '소비뱃지' ? (
                   <p>
                     <span>{notification.msg}</span> 뱃지를 획득했어요! 지금
                     확인하러 가볼까요?
+                  </p>
+                ) : notification.msg === '시작' ? (
+                  <p>
+                    <span>챌린지</span>가 시작되었어요! 일주일동안 힘차게
+                    달려볼까요?
+                  </p>
+                ) : (
+                  <p>
+                    <span>챌린지</span>가 종료되었어요! 결과를 확인하러
+                    가볼까요?
                   </p>
                 )}
               </li>

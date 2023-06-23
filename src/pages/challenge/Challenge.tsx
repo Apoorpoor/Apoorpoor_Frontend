@@ -50,10 +50,10 @@ function Challenge() {
   }, [getMychallengeData]);
 
   // 챌린지 버튼 클릭 핸들러
-  const chooseChallengeHandler = () => {
-    //
-    if (getMychallengeData !== null) {
-      navigate('/myChallenge');
+  const chooseChallengeHandler = (challengeType: string) => {
+    const type = challengeType.split('')[0];
+    if (getMychallengeData.challengeTitle === null) {
+      navigate(`/myChallenge/${type}`);
     } else {
       setShowSnackbar(true);
       setTimeout(() => setShowSnackbar(false), 2500);
@@ -100,7 +100,7 @@ function Challenge() {
           <button
             type="button"
             className={`myChallenge ${
-              getMychallengeData !== null ? '' : 'ing'
+              getMychallengeData.challengeTitle === null ? '' : 'ing'
             }`}
             onClick={() => navigate('/myChallenge')}
           >
@@ -113,7 +113,7 @@ function Challenge() {
                 key={key}
                 onClick={() => {
                   setMyChallengeinfo({ challengeTitle: key, startTime: value });
-                  chooseChallengeHandler();
+                  chooseChallengeHandler(key);
                 }}
               >
                 <p>{key}</p>

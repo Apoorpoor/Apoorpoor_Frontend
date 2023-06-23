@@ -70,6 +70,13 @@
         color: #fff;
       }
     }
+    & .radarChartContainer {
+      height: 450px;
+      margin: 0 auto;
+      @media (min-width: 800px) and (max-width: 1366px) {
+  
+      }
+    }
   }
 
   // 소비뱃지 : 2차 스코프
