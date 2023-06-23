@@ -8,7 +8,7 @@ function IntroTalk() {
   const navigate = useNavigate();
 
   return (
-    <main id="IntroTalkLayout">
+    <div id="IntroTalkLayout">
       <section>
         <div className="PoorImage">
           <PoorCharacter avatarType='MyPoorImage' />
@@ -42,7 +42,7 @@ function IntroTalk() {
         </button>
 
       </section>
-    </main>
+    </div>
   );
 }
 
