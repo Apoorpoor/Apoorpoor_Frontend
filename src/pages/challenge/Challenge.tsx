@@ -5,6 +5,8 @@ import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { SlArrowRight } from 'react-icons/sl';
 import { IoAlertCircleOutline } from 'react-icons/io5';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import { Button, Header } from '../../components';
 import '../../styles/pages/_Challenge.scss';
 import { getMyChallenge } from '../../api/challenge';
@@ -37,7 +39,7 @@ function Challenge() {
   // 진행중인 챌린지 불러오기
   const {
     isLoading,
-    isError,
+    error,
     data: getMychallengeData,
   } = useQuery('getChallenge', getMyChallenge);
 
@@ -49,7 +51,7 @@ function Challenge() {
 
   // 챌린지 버튼 클릭 핸들러
   const chooseChallengeHandler = () => {
-    // 
+    //
     if (getMychallengeData !== null) {
       navigate('/myChallenge');
     } else {
@@ -61,7 +63,16 @@ function Challenge() {
   if (isLoading) {
     return <Loading />;
   }
-  if (isError) {
+  if (error) {
+    if (
+      (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 403
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
     return <Error />;
   }
   return (

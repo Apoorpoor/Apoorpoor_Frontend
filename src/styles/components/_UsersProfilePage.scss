@@ -13,7 +13,7 @@
     background-color: #ccc;
   }
 }
-@media (max-width: 1366px) {
+@media (min-width: 800px) and(max-width: 1366px) {
   .ModalOverlay {
     width: 100%;
   }

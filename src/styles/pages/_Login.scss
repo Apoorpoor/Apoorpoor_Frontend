@@ -133,7 +133,7 @@
   animation-duration: 2s;
   animation-fill-mode: forwards;
 }
-@media (max-width: 1366px) {
+@media (min-width: 800px) and(max-width: 1366px) {
   .splashScreen{
     width: 1366px;
   }

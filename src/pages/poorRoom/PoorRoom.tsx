@@ -260,6 +260,15 @@ function PoorRoom() {
   if (error) {
     if (
       (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 403
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
+    if (
+      (error as AxiosError).response &&
       (error as AxiosError).response?.status === 404
     ) {
       return <PoorInfoError />;

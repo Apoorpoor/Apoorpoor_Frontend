@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Main.scss';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 import accounts from '../../api/accounts';
 import NumberAnimation from '../../components/elements/NumberAnimation';
 import Loading from '../status/Loading';
@@ -91,6 +93,15 @@ function Main(): JSX.Element {
     return <Loading />;
   }
   if (error) {
+    if (
+      (error as AxiosError).response &&
+      (error as AxiosError).response?.status === 403
+    ) {
+      localStorage.removeItem('AToken');
+      localStorage.removeItem('userId');
+      Cookies.remove('RToken');
+      alert('로그인 시간이 만료 되었어요!');
+    }
     return <Error />;
   }
 
