@@ -248,7 +248,7 @@
     padding: 0px 10% 0px 17%;
   }
 
-  @media (max-width: 1366px) {
+  @media (min-width: 800px) and(max-width: 1366px) {
     .socialRankingBox2 {
       width: 100%;
       box-sizing: border-box;

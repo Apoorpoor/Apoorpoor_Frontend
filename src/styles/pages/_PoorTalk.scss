@@ -341,10 +341,16 @@
     .chatMessageImagecontainer{
       // flex-direction: row;
       display: flex;
-      flex-wrap: nowrap;
+      // flex-wrap: nowrap;
       // border: 1px solid blue;
       overflow: hidden;
       // height: 110px;
+//       overflow-x: auto;
+      
+// .chatMessageImagecontainer::-webkit-scrollbar {
+//   width: 1px;
+//   op
+// }
     }
       .chatMessageImage{
         // width: 100px;
@@ -489,6 +495,7 @@
   background:white;
   cursor: auto;
   z-index: 2;
+  overflow: auto;
 }
 .imageListModalCloseForm{
   display: flex;
@@ -519,4 +526,37 @@
   margin: 5px;
   align-self: flex-start;
   border-radius: 8px;
+}
+
+.chatListModalContainer2{
+  width: 100%;
+  height: calc(100vh - 0px);
+  // border: 1px solid red;
+  border-radius: 0px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: auto;
+  z-index: 4;
+  // overflow: hidden; /* 슬라이드 효과를 위해 추가 */
+}
+.asdasdasd{
+  width: 300px;
+  margin: 100px auto;
+  border-radius: 8px;
+
+}
+
+@media (max-width: 1366px) {
+  
+.asdasdasd{
+  width: 40%;
+  margin: 100px auto;
+}
+.currentBackGround{
+  max-width: 800px;
+margin: 0px auto;
+background: white
+}
 }
