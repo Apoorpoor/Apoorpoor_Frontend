@@ -12,6 +12,8 @@ import Button from '../elements/Button';
 
 function MyConsumePropensitychart() {
   const navigate = useNavigate();
+  // 나의 가계부 정보 불러오기
+  const accountId = sessionStorage.getItem('accountId');
   const theme = {
     background: 'transparent', // 배경 설정
     fontFamily: 'Pretendard, sans-serif', // 원하는 폰트 패밀리로 변경
@@ -135,7 +137,10 @@ function MyConsumePropensitychart() {
           alt="기본그래프"
           style={{ width: '90%', marginTop: '60px' }}
         />
-        <Button className="common" onClick={() => navigate('/account')}>
+        <Button
+          className="common"
+          onClick={() => navigate(`/account/${accountId}`)}
+        >
           가계부 작성하기
         </Button>
       </div>
@@ -161,7 +166,7 @@ function MyConsumePropensitychart() {
         keys={['total_sum']}
         indexBy={(d) => newIndex(d.expenditureType)}
         valueFormat=">-.2f"
-        margin={{ top: 60, right: 80, bottom: 0, left: 80 }}
+        margin={{ top: 20, right: 80, bottom: 0, left: 80 }}
         borderColor={{ from: 'color' }}
         gridShape="linear"
         gridLabelOffset={36}

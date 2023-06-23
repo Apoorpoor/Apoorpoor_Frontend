@@ -74,10 +74,11 @@ function Controller() {
     page === '/finished' ||
     page === '/challenge' ||
     page === '/challengeEx' ||
-    page === '/myChallenge' ||
+    page === '/myChallenge/무' ||
     page === '/stampBoard' ||
     page === '/AlarmStation' ||
     page === '/oauth/kakao' ||
+    /^\/myChallenge\/.+$/i.test(page) ||
     /^\/addAccount\/\d+$/.test(page) ||
     /^\/addAccountDone\/\d+$/.test(page) ||
     /^\/editAccount\/\d+$/.test(page)
@@ -105,7 +106,7 @@ function Controller() {
         </button>
         <button
           type="button"
-          className={isSelected(['/', '/account'])}
+          className={isSelected(['/', '/account', '/myChallenge'])}
           onClick={() => controllerHandler(1)}
         >
           홈

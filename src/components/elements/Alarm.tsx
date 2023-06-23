@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Button from './Button';
 import alarmIcon from '../../static/image/ui/alarm.png';
@@ -56,14 +56,22 @@ function Alarm() {
   const alarmCheckedHandler = () => {
     navigate('/AlarmStation');
   };
+  const [notificationCount, setNotificationCount] = useState(false);
 
   const notification = sessionStorage.getItem('notification');
-  const hasNotification = notification !== null && notification.length >= 1;
+
+  useEffect(() => {
+    if (notification !== null && notification.length > 0) {
+      setNotificationCount(true);
+    } else {
+      setNotificationCount(false);
+    }
+  }, [notification]);
 
   return (
     <div>
       <Button
-        className={`iconButton ${hasNotification === true ? 'checkMe' : ''}`}
+        className={`iconButton ${notificationCount === true ? 'checkMe' : ''}`}
         onClick={() => alarmCheckedHandler()}
       >
         <img

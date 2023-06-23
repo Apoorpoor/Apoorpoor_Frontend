@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/_Main.scss';
 import { UseQueryResult, useMutation, useQuery } from 'react-query';
@@ -10,10 +10,10 @@ import Loading from '../status/Loading';
 import Error from '../status/Error';
 import poorImg from '../../static/image/main/mainPoor.png';
 import mainIcon from '../../static/image/main/mainIcon.png';
-import alarmIcon from '../../static/image/ui/alarm.png';
 import accountIcon from '../../static/image/main/accountIcon.png';
 import chalIcon from '../../static/image/main/chalIcon.png';
 import Tutorial from '../../components/elements/Tutorial';
+import Alarm from '../../components/elements/Alarm';
 
 function Main(): JSX.Element {
   const navigate = useNavigate();
@@ -35,6 +35,14 @@ function Main(): JSX.Element {
 
   const { isLoading, error, data, refetch }: UseQueryResult<MyAccountsList[]> =
     useQuery('getAccountList', accounts.getAccountList);
+
+  // 가계부 아이디 저장, 푸어룸과 챌린지에서 나의 가계부 이동을 위해 저장
+  useEffect(() => {
+    if (data) {
+      const accountId = data[0].id;
+      sessionStorage.setItem('accountId', accountId);
+    }
+  }, [data]);
 
   // 가계부 생성
   const addAccountMutation = useMutation(
@@ -122,9 +130,7 @@ function Main(): JSX.Element {
           <button type="button" onClick={tutorialOpen}>
             <img src={mainIcon} alt="mainIcon" />
           </button>
-          <button type="button" onClick={() => navigate('/alarmStation')}>
-            <img src={alarmIcon} alt="alarmIcon" />
-          </button>
+          <Alarm />
         </div>
 
         {data?.length === 0 ? (

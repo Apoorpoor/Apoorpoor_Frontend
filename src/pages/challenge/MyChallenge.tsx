@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
@@ -22,6 +22,21 @@ function MyChallenge() {
   const navigateToPreviousPage = () => {
     navigate(-1);
   };
+  // 나의 가계부 정보 불러오기
+  const accountId = sessionStorage.getItem('accountId');
+
+  // 클릭한 챌린지 타입
+  const param = useLocation();
+  const amount = param.pathname.split('')[13];
+  let challengeType = '';
+  // console.log(amount);
+  if (amount === '무') {
+    challengeType = '0';
+  } else if (amount === '1') {
+    challengeType = String(Number(amount) * 100000);
+  } else {
+    challengeType = String(Number(amount) * 10000);
+  }
 
   // =================================================================
   // *** Challenge Data Query ****************************************
@@ -54,10 +69,13 @@ function MyChallenge() {
   const today = new Date().getDate();
 
   useEffect(() => {
-    if (myChallengeData && myChallengeData.challengeTitle) {
-      setTargetAmount(
-        Number(myChallengeData.challengeTitle.split('')[0]) * 10000
-      );
+    if (myChallengeData) {
+      // 챌린지가 진행 중일땐 목표 금액 설정
+      if (myChallengeData.challengeTitle !== null) {
+        setTargetAmount(
+          Number(myChallengeData?.challengeTitle.split('')[0]) * 10000
+        );
+      }
 
       // 챌린지 진행 주차 캘린더 구하기
       const getChallengeCalendar = (dateStr: string) => {
@@ -85,8 +103,14 @@ function MyChallenge() {
         return weekDates;
       };
 
-      const result = getChallengeCalendar(myChallengeData.startTime);
-      setCalendar(result);
+      if (myChallengeData.challengeTitle !== null) {
+        const result = getChallengeCalendar(myChallengeData.startTime);
+        setCalendar(result);
+      } else if (myChallengeData.challengeTitle === null) {
+        const result = getChallengeCalendar('2023-06-21(Wed)');
+        console.log('챌린지 예시');
+        setCalendar(result);
+      }
     }
   }, [myChallengeData]);
 
@@ -113,10 +137,10 @@ function MyChallenge() {
   // 챌린지동안 사용한 금액 저장
   const [usedAmount, setUsedAmount] = useState(0);
 
-  // 챌린지 진행 상태 퍼센트
+  // 챌린지 진행 상태 퍼센트 저장
   const [usedPercent, setUsedPercent] = useState(0);
 
-  // 챌린지 상태 문구
+  // 챌린지 상태 문구 저장
   const [challengeMessege, setChallengeMessage] = useState('');
   const [challengeTheme, setChallengeTheme] = useState('step1');
 
@@ -194,7 +218,8 @@ function MyChallenge() {
   // 챌린지 시작하기
   const startChallengeHandler = async () => {
     try {
-      await postChallenge(myChallengeData.challengeTitle);
+      await postChallenge(`CHALLENGE_${challengeType}`);
+      navigate(`/myChallenge`);
     } catch (error) {
       console.log(error);
     }
@@ -226,7 +251,7 @@ function MyChallenge() {
   return (
     <main id="challengeSt">
       <Header navigateToPreviousPage={navigateToPreviousPage}>
-        {myChallengeData === null
+        {myChallengeData.challengeTitle === null
           ? '챌린지 예시'
           : myChallengeData.challengeTitle &&
             myChallengeData.challengeTitle[0] === '0'
@@ -239,13 +264,29 @@ function MyChallenge() {
 
       <article>
         <section className="myChallenge">
-          <div className={`${myChallengeData !== null ? '' : 'example'}`}>
+          <div
+            className={`${
+              myChallengeData.challengeTitle === null ? 'example' : ''
+            }`}
+          >
             <div>
-              <p className="challengeMessage">{challengeMessege}</p>
+              <p className="challengeMessage">
+                {myChallengeData.challengeTitle === null
+                  ? '두근두근 챌린지를 시작할 준비가 되셨나요?'
+                  : `${challengeMessege}`}
+              </p>
               <div className="challengeProcessBar">
                 <p>
-                  {myChallengeData === null
-                    ? '5만원'
+                  {myChallengeData.challengeTitle === null
+                    ? `${
+                        amount === '1'
+                          ? '10만원'
+                          : amount === '%'
+                          ? '무지출'
+                          : amount === '2'
+                          ? '2만원'
+                          : '5만원'
+                      }`
                     : myChallengeData.challengeTitle &&
                       myChallengeData.challengeTitle[0] === '0'
                     ? '무지출'
@@ -257,9 +298,20 @@ function MyChallenge() {
                 <div className="progressTrack">
                   <div
                     className={`progressValue ${challengeTheme}`}
-                    style={{ width: `${usedPercent}%`, minWidth: '16px' }}
+                    style={{
+                      width: `${
+                        myChallengeData.challengeTitle !== null
+                          ? `${usedPercent}%`
+                          : `40%`
+                      }`,
+                      minWidth: '16px',
+                    }}
                   >
-                    <span>{usedAmount} 원</span>
+                    <span>
+                      {myChallengeData.challengeTitle !== null
+                        ? `- ${usedAmount} 원`
+                        : `17000 원`}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -270,13 +322,15 @@ function MyChallenge() {
                       <label>{date.day}</label>
                       <button
                         type="button"
-                        className={
+                        className={`${
                           today < Number(date.date)
                             ? 'next'
                             : today === Number(date.date)
                             ? 'today'
                             : ''
-                        }
+                        } ${
+                          selectedDay === Number(date.date) ? 'selected' : ''
+                        }`}
                         onClick={() => selectedDayHandler(Number(date.date))}
                       >
                         {date.date}
@@ -286,7 +340,22 @@ function MyChallenge() {
                 </ul>
                 <div className="challengeAccount">
                   <ul>
-                    {myChallengeData && accountHistoryData ? (
+                    {myChallengeData.challengeTitle === null ? (
+                      <li>
+                        <p>
+                          <span>6월 19일</span>
+                          <span>푸어푸어 구매</span>
+                          <span>쇼핑</span>
+                        </p>
+                        <p>????원</p>
+                      </li>
+                    ) : accountHistoryData.challengeLedgerHistoryList.length ===
+                      0 ? (
+                      <li className="emptyList">
+                        <img src={infoIcon} alt="정보" />
+                        챌린지 내역은 가계부와 자동으로 연동돼요
+                      </li>
+                    ) : (
                       accountHistoryData.challengeLedgerHistoryList
                         .filter(
                           (date: ChallengeLedger) =>
@@ -302,32 +371,23 @@ function MyChallenge() {
                             <p>-{list.expenditure}원</p>
                           </li>
                         ))
-                    ) : (
-                      <li>
-                        <p>
-                          <span>6월 19일</span>
-                          <span>푸어푸어 구매</span>
-                          <span>쇼핑</span>
-                        </p>
-                        <p>????원</p>
-                      </li>
                     )}
                   </ul>
                 </div>
               </div>
             </div>
-            {myChallengeData !== null ? (
+            {myChallengeData.challengeTitle !== null ? (
               <Button
                 className="common"
                 onClick={() => {
-                  navigate('/account');
+                  navigate(`/account/${accountId}`);
                 }}
               >
                 가계부 바로가기
               </Button>
             ) : (
-              <>
-                <div className="notice">
+              <div>
+                <div className="notice" style={{ marginBottom: '30px' }}>
                   <p>
                     <img src={infoIcon} alt="정보" />
                     챌린지 내역은 가계부와 자동으로 연동돼요
@@ -337,9 +397,16 @@ function MyChallenge() {
                   className="common"
                   onClick={() => startChallengeHandler()}
                 >
+                  {amount === '1'
+                    ? '10만원 '
+                    : amount === '%'
+                    ? '무지출 '
+                    : amount === '2'
+                    ? '2만원 '
+                    : '5만원 '}
                   챌린지 시작하기
                 </Button>
-              </>
+              </div>
             )}
           </div>
         </section>
