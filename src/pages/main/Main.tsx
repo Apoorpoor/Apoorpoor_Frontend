@@ -197,7 +197,7 @@ function Main(): JSX.Element {
             <button type="button" onClick={() => navigate('/challenge')}>
               <div>
                 <p className="titleName">소비 챌린지</p>
-                <p>아직 준비 중입니다! 조금만 기다려주세요</p>
+                <p>1주일 소비 챌린지</p>
               </div>
               <img src={chalIcon} alt="chalIcon" />
             </button>
