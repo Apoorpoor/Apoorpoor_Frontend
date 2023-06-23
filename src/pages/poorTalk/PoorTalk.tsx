@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import '../../styles/pages/_PoorTalk.scss';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
@@ -25,6 +25,8 @@ import rightArrow from '../../static/image/poortalk/rightArrow.png'
 import x from '../../static/image/poortalk/x.png'
 
 function PoorTalk(): JSX.Element {
+  // 쿼리 클라이언트
+  const queryClient = useQueryClient()
   const navigate = useNavigate();
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
@@ -33,9 +35,7 @@ function PoorTalk(): JSX.Element {
 
   // 처음에 받아오는 내 푸어 정보
   const [user, setUser] = useState<any>(null);
-  // 보여지는 메세지들, 닉네임 정보
-  const [chatMessages, setChatMessages] = useState<IMessage[]>([]);
-  // 보내는 메세지
+  // 보내는 메세지 인풋값
   const [sendMessage, setSendMessage] = useState<string>('');
   // 보내는 이미지
   const [image, setImage] = useState<string | Blob>('');
@@ -45,7 +45,7 @@ function PoorTalk(): JSX.Element {
   const [inMessageUserId, setinMessageUserId] = useState<number>(user?.userId);
   // 상대 유저 프로필 모달창
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  // 채팅 리스트 모달창
+  // 채팅 참여 인원 확인 모달창
   const [chatListModal, setChatListModal] = useState(false)
   // 채팅 이미지 리스트 모달창
   const [imageListModal, setImageListModal] = useState(false)
@@ -53,29 +53,28 @@ function PoorTalk(): JSX.Element {
   const token = localStorage.getItem('AToken');
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
-  // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
-  const { data: ChatList } = useQuery(['getChatList'], async () => {
-    const asdasd = await getChatList()
-    return asdasd
-  }, {
-    // refetchInterval: 500,
-    refetchIntervalInBackground: true,
-  });
-  // 저장된 채팅 받아오기
-  const { data: messageList } = useQuery(['getMessageList'], async () => {
-    const asdasd = await getMessageList()
-    return asdasd
-  }, {
-    // refetchInterval: 500,
-  });
-  // 받아온 채팅 저장
-  const chatListRef = useRef<{ current: typeof chatMessages | null }>({ current: null });
-  const chatListRefCurrent = chatListRef.current;
-  // 받아온 채팅 초기값에 저장
-  if (chatListRefCurrent) {
-    chatListRefCurrent.current = messageList?.chatList;
-  }
 
+  // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
+  const [chatList, setChatList] = useState([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: chatList2 } = useQuery('getChatList', getChatList, {
+    onSuccess: (res) => {
+      setChatList(res)
+      // console.log("res= ", res)
+    },
+  })
+
+  // 보여지는 메세지들, 닉네임 정보
+  const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: messageList } = useQuery("getMessageList", getMessageList, {
+    refetchOnWindowFocus: false,
+    onSuccess: (res) => {
+      setmessageListAll(res.chatList)
+      // console.log("res.messageList= ", res.chatList)
+    },
+  })
+  // a3 저장된 사진들 
   const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
   const imageList = Array.isArray(imageList2) ? imageList2 : [];
 
@@ -88,7 +87,6 @@ function PoorTalk(): JSX.Element {
   const stompClientRef = useRef<Client | null>(null);
   // 최신글이 올라오면 맨 밑으로 포커싱
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
 
   const today = new Date(); // today 객체에 Date()의 결과를 넣어줬다
   const time = {
@@ -104,7 +102,7 @@ function PoorTalk(): JSX.Element {
   // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages, messageList]);
+  }, [messageListAll]);
 
   // 웹소켓 연결
   useEffect(() => {
@@ -123,14 +121,12 @@ function PoorTalk(): JSX.Element {
         onConnect: () => {
           client.subscribe('/sub/chat/room', (chatContent) => {
             const newMessage = JSON.parse(chatContent.body) as IMessage;
-
             if (newMessage.beggar_id !== null) {
-              setChatMessages((originalMessages) => [
+              setmessageListAll((originalMessages) => [
                 ...originalMessages,
                 newMessage,
               ]);
             }
-            getMessageList()
           });
           // 서버에서 정해둔 URL 필요 => 구독 후 입장시 메세지 보내는 로직
           client.publish({
@@ -195,6 +191,10 @@ function PoorTalk(): JSX.Element {
         destination: '/pub/chat/send',
         body: JSON.stringify(sendList),
       });
+      queryClient.invalidateQueries("getUser")
+      queryClient.invalidateQueries("getChatList")
+      queryClient.invalidateQueries("getMessageList")
+      queryClient.invalidateQueries("getImageList")
     }
     setSendMessage('');
   };
@@ -287,11 +287,10 @@ function PoorTalk(): JSX.Element {
     setImageDetailModal(!imageDetailModal)
   }
 
-  // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
   // console.log("userId = ", userId)
   // console.log("ChatList = ", ChatList)
-  console.log(chatListRef.current.current)
+  // console.log(chatListRef.current.current)
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk<button type='button' onClick={chatListModalHandler}>
@@ -371,7 +370,7 @@ function PoorTalk(): JSX.Element {
               <div className='chatListHeader'>
                 <img className='chatListHeaderPeople' src={people} alt='피플' />대화상대
               </div>
-              {ChatList?.map((poor: any, index: React.Key | null | undefined) =>
+              {chatList?.map((poor: any, index: React.Key | null | undefined) =>
                 <div key={index} className='chatListModalForm'>
                   <div className={`chatListModalWrap${poor?.level}`}>{poor.level}</div>
                   <div>{poor.sender}</div>
@@ -381,7 +380,7 @@ function PoorTalk(): JSX.Element {
           </button>
         </div>}
         <div className='AllUsers'>
-          <img src={people2} alt='피플' />{ChatList?.length}</div>
+          <img src={people2} alt='피플' />{chatList?.length}</div>
       </Header>
       {modalOpen && (
         <UsersProfilePage
@@ -389,9 +388,9 @@ function PoorTalk(): JSX.Element {
           inMessageUserId={inMessageUserId}
         />
       )}
-      {chatMessages && chatMessages.length > 0 && (
+      {messageListAll && messageListAll.length > 0 && (
         <div className="Messagesbox">
-          {chatListRef.current.current?.map((message, index) => (
+          {messageListAll?.map((message, index) => (
             <div className="chatBox" key={index}>
               {message.type === 'ENTER' && message.beggar_id !== null && (
                 <div className="introMessage">{message.message}</div>
