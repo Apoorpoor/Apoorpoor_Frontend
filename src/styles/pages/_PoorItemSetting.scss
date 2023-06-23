@@ -5,6 +5,8 @@
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+    max-width: 800px;
+    margin: 0 auto;
     & > button {
       padding: 15px 10px;
     }
@@ -159,7 +161,7 @@
             box-sizing: border-box;
           }
         }
-      } 
+      }
     }
     & > section.custom li.closed .disabled > p {
       top: 110px;

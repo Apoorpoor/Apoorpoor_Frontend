@@ -52,8 +52,7 @@ function MyChallenge() {
   const today = new Date().getDate();
 
   useEffect(() => {
-    if (myChallengeData) {
-      // data가 로딩 되면 목표 금액 설정
+    if (myChallengeData && myChallengeData.challengeTitle) {
       setTargetAmount(
         Number(myChallengeData.challengeTitle.split('')[0]) * 10000
       );
@@ -216,10 +215,15 @@ function MyChallenge() {
       <Header navigateToPreviousPage={navigateToPreviousPage}>
         {myChallengeData === null
           ? '챌린지 예시'
-          : myChallengeData.challengeTitle.split('')[0] === 0
+          : myChallengeData.challengeTitle &&
+            myChallengeData.challengeTitle[0] === '0'
           ? '무지출 챌린지'
-          : `${myChallengeData.challengeTitle.split('')[0]}만원 챌린지`}
+          : `${
+              myChallengeData.challengeTitle &&
+              myChallengeData.challengeTitle[0]
+            }만원 챌린지`}
       </Header>
+
       <article>
         <section className="myChallenge">
           <div className={`${myChallengeData !== null ? '' : 'example'}`}>
@@ -229,9 +233,13 @@ function MyChallenge() {
                 <p>
                   {myChallengeData === null
                     ? '5만원'
-                    : myChallengeData.challengeTitle.split('')[0] === 0
+                    : myChallengeData.challengeTitle &&
+                      myChallengeData.challengeTitle[0] === '0'
                     ? '무지출'
-                    : `${myChallengeData.challengeTitle.split('')[0]}만원`}
+                    : `${
+                        myChallengeData.challengeTitle &&
+                        myChallengeData.challengeTitle[0]
+                      }만원`}
                 </p>
                 <div className="progressTrack">
                   <div
@@ -265,7 +273,7 @@ function MyChallenge() {
                 </ul>
                 <div className="challengeAccount">
                   <ul>
-                    {myChallengeData !== null ? (
+                    {myChallengeData && accountHistoryData ? (
                       accountHistoryData.challengeLedgerHistoryList
                         .filter(
                           (date: ChallengeLedger) =>
