@@ -11,7 +11,6 @@ import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getUser, getChatList, getMessageList, getImageList } from '../../api/members';
 import { Header, SlickSlider } from '../../components';
 import instance from '../../api/instance';
@@ -44,7 +43,7 @@ function PoorTalk(): JSX.Element {
   const [thumbnailImage, setThumbnailImage] = useState<string>('');
   // 메세지에서 추출한 유저 아이디 모달창으로 전달
   const [inMessageUserId, setinMessageUserId] = useState<number>(user?.userId);
-  // 상대 유저들 모달창
+  // 상대 유저 프로필 모달창
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   // 채팅 리스트 모달창
   const [chatListModal, setChatListModal] = useState(false)
@@ -52,12 +51,9 @@ function PoorTalk(): JSX.Element {
   const [imageListModal, setImageListModal] = useState(false)
   // 토큰
   const token = localStorage.getItem('AToken');
-  // 유정 고유 아이디
-  // const userId = localStorage.getItem("userId");
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
-
-  // 채팅 유저들 받아오기
+  // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
   const { data: ChatList } = useQuery(['getChatList'], async () => {
     const asdasd = await getChatList()
     return asdasd
@@ -65,27 +61,24 @@ function PoorTalk(): JSX.Element {
     // refetchInterval: 500,
     refetchIntervalInBackground: true,
   });
-  // 메세지 받아오기
-  // const { data: messageList } = useQuery(['getMessageList'], async () => {
-  //   const asdasd = await getMessageList()
-  //   return asdasd
-  // }, {
-  //   refetchInterval: 500,
-  //   refetchIntervalInBackground: true,
-  // });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // 저장된 채팅 받아오기
   const { data: messageList } = useQuery(['getMessageList'], async () => {
     const asdasd = await getMessageList()
     return asdasd
   }, {
     // refetchInterval: 500,
   });
-  interface ImageListType {
-    imageId: number,
-    imageUrl: string,
+  // 받아온 채팅 저장
+  const chatListRef = useRef<{ current: typeof chatMessages | null }>({ current: null });
+  const chatListRefCurrent = chatListRef.current;
+  // 받아온 채팅 초기값에 저장
+  if (chatListRefCurrent) {
+    chatListRefCurrent.current = messageList?.chatList;
   }
+
   const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
   const imageList = Array.isArray(imageList2) ? imageList2 : [];
+
   // 이미지 디테일 (확대)
   const [imageDetailModal, setImageDetailModal] = useState(false)
   // 이미지 디테일에 보내주는 img src값 src={imageDetailModalSrc}
@@ -97,25 +90,6 @@ function PoorTalk(): JSX.Element {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
 
-  // // 테스트
-  // const chatListRef = useRef<HTMLDivElement | null>(null);
-  // // 날짜 데이터
-  // const chatListRefCurrent = chatListRef.current; // 현재 값 저장
-
-  // if (chatListRefCurrent) {
-  //   chatListRefCurrent.current = chatMessages;
-  // }
-
-  const chatListRef = useRef<{ current: typeof chatMessages | null }>({ current: null });
-  const chatListRefCurrent = chatListRef.current;
-
-  if (chatListRefCurrent) {
-    chatListRefCurrent.current = messageList?.chatList;
-  }
-
-
-  // console.log("chatListRef = ", chatListRef.current.current?.map((itme) => itme.beggar_id));
-  // console.log(chatListRef.current.current)
   const today = new Date(); // today 객체에 Date()의 결과를 넣어줬다
   const time = {
     year: today.getFullYear(), // 현재 년도
@@ -130,13 +104,9 @@ function PoorTalk(): JSX.Element {
   // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-
   }, [chatMessages, messageList]);
 
-  // useEffect(() => {
-  //   console.log(imageList)
-  // }, [imageList]);
-
+  // 웹소켓 연결
   useEffect(() => {
     if (data !== undefined) {
       setUser(data);
@@ -153,6 +123,7 @@ function PoorTalk(): JSX.Element {
         onConnect: () => {
           client.subscribe('/sub/chat/room', (chatContent) => {
             const newMessage = JSON.parse(chatContent.body) as IMessage;
+
             if (newMessage.beggar_id !== null) {
               setChatMessages((originalMessages) => [
                 ...originalMessages,
@@ -302,23 +273,25 @@ function PoorTalk(): JSX.Element {
     return <Error />;
   }
 
-
+  // 채팅 참여 목록 모달
   const chatListModalHandler = () => {
     setChatListModal(!chatListModal)
   }
+  // 채팅 참여 목록 모달 속 이미지 모달 하나 더 있음
   const imageListModalHandler = () => {
     setImageListModal(!imageListModal)
   }
+  // 이미지 디테일(확대) 핸들러
   const imageDetailModalHandler = (imageUrl: string | undefined) => {
     setImageDetailModalSrc(imageUrl);
     setImageDetailModal(!imageDetailModal)
   }
+
   // console.log("chatMessages = ", chatMessages)
   // console.log("data = ", data)
   // console.log("userId = ", userId)
   // console.log("ChatList = ", ChatList)
-
-
+  console.log(chatListRef.current.current)
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk<button type='button' onClick={chatListModalHandler}>
@@ -447,10 +420,10 @@ function PoorTalk(): JSX.Element {
                         )}
                       </div>
                       <div className="nowTime1">
-                        {Number(message.date.split(' ')[1]) > 12
-                          ? `오후 ${Number(message.date.split(' ')[1]) - 12
-                          } : ${message.date.split(' ')[3]}`
-                          : `오전 ${message.date.split(' ')[1]} : ${message.date.split(' ')[3]
+                        {Number(message.date?.split(' ')[1]) > 12
+                          ? `오후 ${Number(message.date?.split(' ')[1]) - 12
+                          } : ${message.date?.split(' ')[3]}`
+                          : `오전 ${message.date?.split(' ')[1]} : ${message.date?.split(' ')[3]
                           }`}
                       </div>
                     </>
@@ -581,3 +554,9 @@ interface IMessage {
 //   userId: number;
 //   level: number;
 // }
+
+
+interface ImageListType {
+  imageId: number,
+  imageUrl: string,
+}
