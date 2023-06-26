@@ -553,7 +553,7 @@
   top: 0px;
   background: rgba(0, 0, 0, 0.3);
   cursor: auto;
-  z-index: 4;
+  z-index: 3;
   // overflow: hidden; /* 슬라이드 효과를 위해 추가 */
 }
 .asdasdasd{
@@ -574,4 +574,30 @@
 margin: 0px auto;
 background: white
 }
+}
+
+.poorTalkSlide {
+  & .slick-initialized .slick-slide {
+    position: relative;
+    width: 100px !important;
+      display: flex;
+    margin-left: 10px;
+  }
+
+  & .slick-slider .slick-track {
+    position: relative;
+  }
+  & .item {
+    position: relative;
+    height: 110px;
+    flex: 0 0 auto;
+    & > img {
+      position: absolute;
+      display: flex;
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      z-index: 3;
+    }
+  }
 }
