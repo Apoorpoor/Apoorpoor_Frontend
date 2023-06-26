@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
+import React, { useEffect, useRef, useState, ChangeEvent, useMemo } from 'react';
 import '../../styles/pages/_PoorTalk.scss';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -12,8 +13,11 @@ import { FaCamera, FaArrowCircleUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
+import Slider, { Settings } from 'react-slick';
 import { getUser, getChatList, getMessageList, getImageList } from '../../api/members';
 import { Header, SlickSlider } from '../../components';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import instance from '../../api/instance';
 import UsersProfilePage from './UsersProfilePage';
 import Loading from '../status/Loading';
@@ -134,7 +138,7 @@ function PoorTalk(): JSX.Element {
             body: JSON.stringify({
               beggar_id: data?.beggarId,
               date: timestring,
-              message: `${data.nickname}님 입장213231하셨습니다.`,
+              message: `${data.nickname}님 입장하셨습니다.`,
               sender: data.nickname,
               type: 'ENTER',
               userId: data.userId,
@@ -312,6 +316,51 @@ function PoorTalk(): JSX.Element {
   // 초기 실행
   deleteDataAtMidnight();
 
+
+  function calculateSlidesToShow(width: number) {
+    let returnCount;
+
+    if (width <= 400) {
+      returnCount = 2;
+    } else if (width <= 428) {
+      returnCount = 3;
+    } else if (width <= 520) {
+      returnCount = 4;
+    } else if (width >= 800) {
+      returnCount = 5;
+    }
+
+    return returnCount;
+  }
+
+  function calculateSlidesToScroll(width: number) {
+    let returnCount;
+
+    if (width <= 400) {
+      returnCount = 2;
+    } else if (width <= 428) {
+      returnCount = 3;
+    } else if (width <= 520) {
+      returnCount = 4;
+    } else if (width >= 800) {
+      returnCount = 5;
+    }
+
+    return returnCount;
+
+  }
+  // width 값 받아오는 로직
+  const boxElement = document.getElementById('boxWidth');
+
+  const width = boxElement?.offsetWidth;
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3
+  };
+  // console.log(width);
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk<button type='button' onClick={chatListModalHandler}>
@@ -363,31 +412,16 @@ function PoorTalk(): JSX.Element {
                 </div>
                 <img src={rightArrow} alt='애로우' />
               </div>
-              <div className='chatMessageImagecontainer'>
-                {/* {imageList?.map((item: { imageId: React.Key | number | null | undefined; imageUrl: string | undefined; }) => (
-                  <div key={item.imageId}>
+              <Slider {...settings} className="poorTalkSlide">
+                {imageList?.map((item: { imageId: React.Key | number | null | undefined; imageUrl: string | undefined; }, index) => (
+                  <div key={item.imageId}
+                    className="item" role="button" tabIndex={index}>
                     {item.imageUrl !== null && item.imageUrl !== undefined && (
-                      <img className='chatMessageImage' src={item.imageUrl} alt='' />
+                      <img src={item.imageUrl} alt='' />
                     )}
                   </div>
-                ))} */}
-                <SlickSlider
-                  id="poorTalkSlide"
-                  loop={false}
-                  slidesToShow={3}
-                  slidesToScroll={1}
-                  arrows={false}
-                >
-                  {imageList?.map((item: { imageId: React.Key | number | null | undefined; imageUrl: string | undefined; }) => (
-                    <div key={item.imageId}
-                      className="item" role="button" tabIndex={0}>
-                      {item.imageUrl !== null && item.imageUrl !== undefined && (
-                        <img src={item.imageUrl} alt='' />
-                      )}
-                    </div>
-                  ))}
-                </SlickSlider>
-              </div>
+                ))}
+              </Slider>
               <div className='chatListHeader'>
                 <img className='chatListHeaderPeople' src={people} alt='피플' />대화상대
               </div>
@@ -410,7 +444,7 @@ function PoorTalk(): JSX.Element {
         />
       )}
       {messageListAll && messageListAll.length > 0 && (
-        <div className="Messagesbox">
+        <div className="Messagesbox" id='boxWidth'>
           {messageListAll?.map((message, index) => (
             <div className="chatBox" key={index}>
               {message.type === 'ENTER' && message.beggar_id !== null && (
