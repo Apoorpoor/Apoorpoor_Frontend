@@ -8,6 +8,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 import PoorCharacter from '../poorRoom/PoorCharacter';
 import { myPoorState } from '../../shared/MyPoor';
 import beggars from '../../api/beggars';
+import { getChatList } from '../../api/members';
 
 function IntroTalk() {
   const navigate = useNavigate();
@@ -23,6 +24,11 @@ function IntroTalk() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setMyPoorInfo]);
+
+  const enterTalk = () => {
+    getChatList()
+    navigate('/poorTalk')
+  }
 
   return (
     <div id="IntroTalkLayout">
@@ -53,7 +59,7 @@ function IntroTalk() {
         <button
           className="StartChat2"
           type="button"
-          onClick={() => navigate('/poorTalk')}
+          onClick={enterTalk}
         >
           채팅 시작하기
         </button>
