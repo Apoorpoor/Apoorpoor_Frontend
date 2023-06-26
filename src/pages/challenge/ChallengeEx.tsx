@@ -19,16 +19,13 @@ function ChallengeEx() {
   };
   return (
     <main id="challengeSt">
-      <Header navigateToPreviousPage={navigateToPreviousPage}>
-        챌린지가 무엇인가요?
-      </Header>
+      <Header navigateToPreviousPage={navigateToPreviousPage}>&nbsp;</Header>
       <article>
         <section>
           <h1>
             <span>1주일동안</span> 한정된 금액으로
           </h1>
           <p>무지출 부터 10만원까지 한정된 금액으로 1주일 동안 살아보기!</p>
-          <p>챌린지를 시작하면 챌린지 진행 상황과 챌린지 기간 중 사용내역을 조회할 수 있어요</p>
           <div className="challengeProcessBar">
             <p>{data.challengeAmount / 10000}만원</p>
             <div className="progressTrack">
@@ -38,6 +35,10 @@ function ChallengeEx() {
               </div>
             </div>
           </div>
+          <p>
+            챌린지를 시작하면 챌린지 진행 상황과 챌린지 기간 중 사용내역을
+            조회할 수 있어요
+          </p>
           <div className="challengeCalendar">
             <ul>
               <li>
@@ -158,13 +159,9 @@ function ChallengeEx() {
           >
             <p>
               <img src={infoIcon} alt="정보" />
-              모든 챌린지는 <span>월요일에 오픈</span>돼요
+              <span>1주일에 한가지 챌린지</span>만 도전 가능해요
             </p>
             <div>
-              <p>
-                <img src={infoIcon} alt="정보" />
-                <span>1주일에 한가지 챌린지</span>만 도전 가능해요
-              </p>
               <p>
                 <img src={infoIcon} alt="정보" />
                 포인트 획득 기준을 알려드릴게요

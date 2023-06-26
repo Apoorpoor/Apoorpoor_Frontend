@@ -78,6 +78,7 @@ function App() {
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challengeEx" element={<ChallengeEx />} />
         <Route path="/myChallenge" element={<MyChallenge />} />
+        <Route path="/myChallenge/:id" element={<MyChallenge />} />
         <Route path="/challengedone" element={<ChallengeDone />} />
         <Route path="/challengefail" element={<ChallengeFail />} />
         <Route path="/stampBoard" element={<StampBoard />} />
