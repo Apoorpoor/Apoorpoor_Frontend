@@ -53,10 +53,12 @@ function Controller() {
   const isSelected = (targetPages: string[]) => {
     const regex = /^\/account\/\d+$/; // '/account'로 시작하고 뒤에 숫자가 오는지 확인
     const regex2 = /^\/addAccount\/\d+$/; // '/addAccount'로 시작하고 뒤에 숫자가 오는지 확인
+    const regex3 = /^\/myChallenge\/.+$/i;
 
     return targetPages.includes(page) ||
       (regex.test(page) && targetPages.includes('/account')) ||
-      (regex2.test(page) && targetPages.includes('/addAccount'))
+      (regex2.test(page) && targetPages.includes('/addAccount')) ||
+      (regex3.test(page) && targetPages.includes('/myChallenge'))
       ? 'select'
       : 'noSelect';
   };
@@ -74,11 +76,9 @@ function Controller() {
     page === '/finished' ||
     page === '/challenge' ||
     page === '/challengeEx' ||
-    page === '/myChallenge/무' ||
     page === '/stampBoard' ||
     page === '/AlarmStation' ||
     page === '/oauth/kakao' ||
-    /^\/myChallenge\/.+$/i.test(page) ||
     /^\/addAccount\/\d+$/.test(page) ||
     /^\/addAccountDone\/\d+$/.test(page) ||
     /^\/editAccount\/\d+$/.test(page)

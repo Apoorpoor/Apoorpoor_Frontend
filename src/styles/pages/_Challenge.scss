@@ -11,7 +11,6 @@
   background-size: 100%;
   width: 100%;
 }
-
 @mixin stampImg(
   $stampStatus,
   $path: '../../static/image/challenge/stamp_',
@@ -290,7 +289,7 @@
           width: 95px;
           font-size: 16px;
           font-weight: 700;
-          text-align: right;
+          text-align: left;
           color: $primary;
         }
       }
@@ -381,12 +380,12 @@
         margin-top: 50px;
         transform: translateX(-20px);
       }
-      & > p:first-of-type {
+      & div > p:first-of-type {
         font-size: 26px;
         font-weight: 700;
         margin: 20px 0;
       }
-      & > p:last-of-type {
+      & div > p:last-of-type {
         display: inline;
         padding: 6px 12px;
         font-size: 14px;
