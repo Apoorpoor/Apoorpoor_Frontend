@@ -27,39 +27,6 @@
 
 #challenge {
   position: relative;
-  & .snackbar {
-    position: fixed;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 410px;
-    background-color: $primaryD-500;
-    z-index: 6;
-    transition: 0.5s ease-in-out;
-    display: flex;
-    align-items: center;
-    color: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    box-sizing: border-box;
-    z-index: 51;
-    & svg {
-      width: 25px;
-      height: 25px;
-      color: #93bbf1;
-      margin-right: 7px;
-    }
-  }
-  & .snackbar.show {
-    top: 10px;
-  }
-  @media (min-width: 800px) and (max-width: 1366px) {
-    & .snackbar {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-  }
   & article {
     padding: 0 20px 20px;
     box-sizing: border-box;

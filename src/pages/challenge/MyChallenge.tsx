@@ -219,7 +219,7 @@ function MyChallenge() {
   const startChallengeHandler = async () => {
     try {
       await postChallenge(`CHALLENGE_${challengeType}`);
-      navigate(`/myChallenge`);
+      navigate(`/challenge`);
     } catch (error) {
       console.log(error);
     }

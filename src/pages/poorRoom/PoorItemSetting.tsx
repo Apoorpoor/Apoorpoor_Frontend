@@ -7,6 +7,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from 'react-query';
+import { IoAlertCircleOutline } from 'react-icons/io5';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router';
 import beggars from '../../api/beggars';
@@ -28,6 +29,8 @@ function PoorItemSetting() {
   const queryClient = useQueryClient();
   const myPoorInfo = useRecoilValue(myPoorState);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [wearItem, setWearItem] = useState('');
   const [purchaseItem, setPurchaseItem] = useState({
     itemName: '',
     itemImage: '',
@@ -138,6 +141,9 @@ function PoorItemSetting() {
         itemListEnum: extractedValue,
         unWearEnum: null,
       });
+      setWearItem(itemName);
+      setShowSnackbar(true);
+      setTimeout(() => setShowSnackbar(false), 2500);
       // state가 EQUIPPED일 경우엔 옷 벗기
     } else {
       poorItemMutation.mutate({
@@ -153,6 +159,10 @@ function PoorItemSetting() {
 
   return (
     <main id="poorItemSetting">
+      <div className={`snackbar ${showSnackbar === false ? '' : 'show'}`}>
+        <IoAlertCircleOutline />
+        &#39;{wearItem}&#39;&nbsp;아이템을 착용하였습니다!
+      </div>
       <Header navigateToPreviousPage={navigateToPreviousPage}>아이템</Header>
       <nav>
         <Button
