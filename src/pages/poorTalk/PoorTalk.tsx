@@ -31,7 +31,7 @@ import x from '../../static/image/poortalk/x.png'
 
 function PoorTalk(): JSX.Element {
   // 쿼리 클라이언트
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const navigate = useNavigate();
   // Header 이전 버튼
   const navigateToPreviousPage = () => {
@@ -51,7 +51,7 @@ function PoorTalk(): JSX.Element {
   // 상대 유저 프로필 모달창
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   // 채팅 참여 인원 확인 모달창
-  const [chatListModal, setChatListModal] = useState(false);
+  const [chatListModal, setChatListModal] = useState(false)
   // 채팅 이미지 리스트 모달창
   const [imageListModal, setImageListModal] = useState(false)
   // 토큰
@@ -63,25 +63,22 @@ function PoorTalk(): JSX.Element {
   const [chatList, setChatList] = useState([])
   const { data: chatList2 } = useQuery('getChatList', getChatList, {
     onSuccess: (res) => {
-      setChatList(res);
+      setChatList(res)
       // console.log("res= ", res)
     },
-  });
+  })
 
   // 보여지는 메세지들, 닉네임 정보
   const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
   const { data: messageList } = useQuery("getMessageList", getMessageList, {
     refetchOnWindowFocus: false,
     onSuccess: (res) => {
-      setmessageListAll(res.chatList);
+      setmessageListAll(res.chatList)
       // console.log("res.messageList= ", res.chatList)
     },
-  });
-  // a3 저장된 사진들
-  const { data: imageList2 = [] }: ImageListType | any = useQuery(
-    'getImageList',
-    getImageList
-  );
+  })
+  // a3 저장된 사진들 
+  const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
   const imageList = Array.isArray(imageList2) ? imageList2 : [];
 
   // 이미지 디테일 (확대)
@@ -277,19 +274,18 @@ function PoorTalk(): JSX.Element {
       localStorage.removeItem('userId');
       Cookies.remove('RToken');
       alert('로그인 시간이 만료 되었어요!');
-      navigate('/login');
     }
     return <Error />;
   }
 
   // 채팅 참여 목록 모달
   const chatListModalHandler = () => {
-    setChatListModal(!chatListModal);
-  };
+    setChatListModal(!chatListModal)
+  }
   // 채팅 참여 목록 모달 속 이미지 모달 하나 더 있음
   const imageListModalHandler = () => {
-    setImageListModal(!imageListModal);
-  };
+    setImageListModal(!imageListModal)
+  }
   // 이미지 디테일(확대) 핸들러
   const imageDetailModalHandler = (imageUrl: string | undefined) => {
     setImageDetailModalSrc(imageUrl);
@@ -429,13 +425,17 @@ function PoorTalk(): JSX.Element {
               <div className='chatListHeader'>
                 <img className='chatListHeaderPeople' src={people} alt='피플' />대화상대
               </div>
-            </button>
-          </div>
-        )}
-        <div className="AllUsers">
-          <img src={people2} alt="피플" />
-          {chatList?.length}
-        </div>
+              {chatList?.map((poor: any, index: React.Key | null | undefined) =>
+                <div key={index} className='chatListModalForm'>
+                  <div className={`chatListModalWrap${poor?.level}`}>{poor.level}</div>
+                  <div>{poor.sender}</div>
+                </div>
+              )}
+            </div>
+          </button>
+        </div>}
+        <div className='AllUsers'>
+          <img src={people2} alt='피플' />{chatList?.length}</div>
       </Header>
       {modalOpen && (
         <UsersProfilePage
@@ -475,12 +475,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime1">
                         {Number(message.date?.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date?.split(' ')[1]) - 12
-                            } : ${message.date?.split(' ')[3]}`
-                          : `오전 ${message.date?.split(' ')[1]} : ${
-                              message.date?.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date?.split(' ')[1]) - 12
+                          } : ${message.date?.split(' ')[3]}`
+                          : `오전 ${message.date?.split(' ')[1]} : ${message.date?.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   ) : (
@@ -610,6 +608,7 @@ interface IMessage {
 //   userId: number;
 //   level: number;
 // }
+
 
 interface ImageListType {
   imageId: number,
