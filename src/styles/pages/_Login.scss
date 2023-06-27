@@ -10,6 +10,7 @@
 
   & .carouselBg {
     width: 100%;
+    max-width: 800px;
     height: 560px;
     overflow: hidden;
     position: relative;
@@ -99,7 +100,7 @@
 .splashScreen > p {
   margin-top: 8px;
   font-size: 14px;
-  color: #4194F1;
+  color: #4194f1;
   font-weight: 700;
 }
 @keyframes fadeIn {
@@ -119,7 +120,7 @@
   }
 }
 .splashScreen > img:nth-child(2),
-.splashScreen > img:nth-child(3){
+.splashScreen > img:nth-child(3) {
   animation-delay: 1s;
   animation-name: fadeIn;
   animation-duration: 2s;
@@ -127,14 +128,14 @@
 }
 
 .splashScreen > img:nth-child(2),
-.splashScreen > img:nth-child(3){
+.splashScreen > img:nth-child(3) {
   // animation-delay: 2s;
   animation-name: fadeOut;
   animation-duration: 2s;
   animation-fill-mode: forwards;
 }
 @media (min-width: 800px) and(max-width: 1366px) {
-  .splashScreen{
+  .splashScreen {
     width: 1366px;
   }
 }
