@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
@@ -61,7 +62,6 @@ function PoorTalk(): JSX.Element {
 
   // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
   const [chatList, setChatList] = useState([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: chatList2 } = useQuery('getChatList', getChatList, {
     onSuccess: (res) => {
       setChatList(res);
@@ -71,7 +71,6 @@ function PoorTalk(): JSX.Element {
 
   // 보여지는 메세지들, 닉네임 정보
   const [messageListAll, setmessageListAll] = useState<IMessage[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: messageList } = useQuery('getMessageList', getMessageList, {
     refetchOnWindowFocus: false,
     onSuccess: (res) => {
@@ -139,6 +138,7 @@ function PoorTalk(): JSX.Element {
               ]);
             }
           });
+          getChatList();
           // 서버에서 정해둔 URL 필요 => 구독 후 입장시 메세지 보내는 로직
           client.publish({
             destination: '/pub/chat/enter',
@@ -202,10 +202,16 @@ function PoorTalk(): JSX.Element {
         destination: '/pub/chat/send',
         body: JSON.stringify(sendList),
       });
-      queryClient.invalidateQueries('getUser');
-      queryClient.invalidateQueries('getChatList');
-      queryClient.invalidateQueries('getMessageList');
-      queryClient.invalidateQueries('getImageList');
+      queryClient.invalidateQueries([
+        'getUser',
+        'getChatList',
+        'getMessageList',
+        'getImageList',
+      ]);
+      // queryClient.invalidateQueries("getUser")
+      // queryClient.invalidateQueries("getChatList")
+      // queryClient.invalidateQueries("getMessageList")
+      // queryClient.invalidateQueries("getImageList")
     }
     setSendMessage('');
   };
@@ -297,11 +303,31 @@ function PoorTalk(): JSX.Element {
     setImageDetailModalSrc(imageUrl);
     setImageDetailModal(!imageDetailModal);
   };
+  // 자정에 데이터 삭제
+  function deleteDataAtMidnight() {
+    // 현재 시간 가져오기
+    const currentDate = new Date();
+    // 다음 자정의 시간 설정 (다음 날 자정 00:00:00)
+    const nextMidnight = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() + 1, // 다음 날
+      0, // 시간
+      0, // 분
+      0 // 초
+    );
+    // 다음 자정까지 남은 시간 계산
+    const timeUntilMidnight = nextMidnight.getTime() - currentDate.getTime();
+    // 다음 자정에 실행될 함수 예약
+    setTimeout(() => {
+      setmessageListAll([]);
+      // 다음 날의 자정에 다시 함수를 예약합니다 (반복 실행)
+      deleteDataAtMidnight();
+    }, timeUntilMidnight);
+  }
+  // 초기 실행
+  deleteDataAtMidnight();
 
-  // console.log("data = ", data)
-  // console.log("userId = ", userId)
-  // console.log("ChatList = ", ChatList)
-  // console.log(chatListRef.current.current)
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>

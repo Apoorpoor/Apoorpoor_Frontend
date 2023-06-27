@@ -50,6 +50,7 @@ function Chart({ id, currentMonth }: ChartProps): JSX.Element {
         },
       }
     );
+  console.log('차트:', data);
 
   // 페이지네이션 버튼
   const handleLoadMore = () => {

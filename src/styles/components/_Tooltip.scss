@@ -17,7 +17,7 @@
     display: none;
     position: absolute;
     top: 40px;
-    right: -100%;
+    right: -140%;
     min-width: 220px;
     z-index: 10;
     padding: 20px;
@@ -31,7 +31,7 @@
     }
     & h3 {
       font-size: 18px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     & ul {
       & li {
@@ -43,12 +43,6 @@
           color: $primary;
         }
       }
-      & p {
-        font-size: 12px;
-        text-align: left;
-        list-style: disc;
-        font-weight: 100;
-      }
     }
     & p{
       
@@ -57,4 +51,9 @@
   & .tooltipContents.show {
     display: block;
   }
+}
+.socialBg .socialRankingBox .row .socialRanking p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
 }
