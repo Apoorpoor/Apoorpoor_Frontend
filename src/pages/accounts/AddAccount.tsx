@@ -312,7 +312,7 @@ function AddAccount(): JSX.Element {
             setCategory('ELSE');
           }
         }
-        setMessage(response.meassage);
+        setMessage(response.message);
         setPoint(response.point);
       },
       onError: (error) => {
