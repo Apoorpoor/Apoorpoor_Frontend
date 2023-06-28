@@ -72,6 +72,7 @@ function Challenge() {
       localStorage.removeItem('userId');
       Cookies.remove('RToken');
       alert('로그인 시간이 만료 되었어요!');
+      navigate('/login');
     }
     return <Error />;
   }

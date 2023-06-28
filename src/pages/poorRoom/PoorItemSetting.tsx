@@ -143,7 +143,7 @@ function PoorItemSetting() {
       });
       setWearItem(itemName);
       setShowSnackbar(true);
-      setTimeout(() => setShowSnackbar(false), 2500);
+      setTimeout(() => setShowSnackbar(false), 1500);
       // state가 EQUIPPED일 경우엔 옷 벗기
     } else {
       poorItemMutation.mutate({
