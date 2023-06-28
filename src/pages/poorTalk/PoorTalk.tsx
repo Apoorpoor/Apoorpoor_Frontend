@@ -72,9 +72,10 @@ function PoorTalk(): JSX.Element {
   const [chatList, setChatList] = useState([]);
   const { data: chatList2 } = useQuery('getChatList', getChatList, {
     onSuccess: (res) => {
-      setChatList(res);
-    },
-  });
+      setChatList(res)
+    }
+  })
+
   // 보여지는 메세지들, 닉네임 정보
   const [messageListAll, setmessageListAll] = useState<IMessage[]>([]);
   const { data: messageList } = useQuery('getMessageList', getMessageList, {
@@ -177,7 +178,7 @@ function PoorTalk(): JSX.Element {
     if (nowChatMessage.trim() === '') {
       return;
     }
-    const message2 = `${nowChatMessage}  `;
+    const message2 = `${nowChatMessage} `;
     const sendList = {
       beggar_id: data.beggarId,
       date: timestring,
@@ -284,9 +285,9 @@ function PoorTalk(): JSX.Element {
   // 이미지 디테일(확대) 핸들러
   const imageDetailModalHandler = (imageUrl: string | undefined) => {
     setImageDetailModalSrc(imageUrl);
-    setImageDetailModal(!imageDetailModal);
-  };
-  // 자정에 데이터 삭제
+    setImageDetailModal(!imageDetailModal)
+  }
+  // 자정에 데이터 삭제 핸들러
   function deleteDataAtMidnight() {
     // 현재 시간 가져오기
     const currentDate = new Date();
@@ -310,7 +311,7 @@ function PoorTalk(): JSX.Element {
   }
   // 초기 실행
   deleteDataAtMidnight();
-  // 가로 슬라이더
+  // 사진첩 가로 슬라이더 
   const settings: Settings = {
     children: [],
     className: 'poorTalkSlide',
@@ -356,8 +357,6 @@ function PoorTalk(): JSX.Element {
       },
     ],
   };
-
-  <Slider {...settings} />;
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>
