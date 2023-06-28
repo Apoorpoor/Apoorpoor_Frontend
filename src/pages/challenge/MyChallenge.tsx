@@ -219,7 +219,7 @@ function MyChallenge() {
   const startChallengeHandler = async () => {
     try {
       await postChallenge(`CHALLENGE_${challengeType}`);
-      navigate(`/myChallenge`);
+      navigate(`/challenge`);
     } catch (error) {
       console.log(error);
     }
@@ -318,16 +318,22 @@ function MyChallenge() {
               </div>
               <div className="challengeCalendar">
                 <ul>
-                  {calendar.map((date) => (
+                  {calendar.map((date, i) => (
                     <li key={date.day}>
                       <label>{date.day}</label>
                       <button
                         type="button"
                         className={`${
-                          today < Number(date.date)
-                            ? 'next'
-                            : today === Number(date.date)
+                          today === Number(date.date)
                             ? 'today'
+                            : (today > 25 && today < Number(date.date)) ||
+                              Number(date.date) === 1 ||
+                              Number(date.date) === 2 ||
+                              Number(date.date) === 3 ||
+                              Number(date.date) === 4 ||
+                              Number(date.date) === 5 ||
+                              Number(date.date) === 6
+                            ? 'next'
                             : ''
                         } ${
                           selectedDay === Number(date.date) ? 'selected' : ''

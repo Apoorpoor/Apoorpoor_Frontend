@@ -11,7 +11,6 @@
   background-size: 100%;
   width: 100%;
 }
-
 @mixin stampImg(
   $stampStatus,
   $path: '../../static/image/challenge/stamp_',
@@ -28,39 +27,6 @@
 
 #challenge {
   position: relative;
-  & .snackbar {
-    position: fixed;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 410px;
-    background-color: $primaryD-500;
-    z-index: 6;
-    transition: 0.5s ease-in-out;
-    display: flex;
-    align-items: center;
-    color: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    box-sizing: border-box;
-    z-index: 51;
-    & svg {
-      width: 25px;
-      height: 25px;
-      color: #93bbf1;
-      margin-right: 7px;
-    }
-  }
-  & .snackbar.show {
-    top: 10px;
-  }
-  @media (min-width: 800px) and (max-width: 1366px) {
-    & .snackbar {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-  }
   & article {
     padding: 0 20px 20px;
     box-sizing: border-box;
@@ -290,7 +256,7 @@
           width: 95px;
           font-size: 16px;
           font-weight: 700;
-          text-align: right;
+          text-align: left;
           color: $primary;
         }
       }
@@ -381,12 +347,12 @@
         margin-top: 50px;
         transform: translateX(-20px);
       }
-      & > p:first-of-type {
+      & div > p:first-of-type {
         font-size: 26px;
         font-weight: 700;
         margin: 20px 0;
       }
-      & > p:last-of-type {
+      & div > p:last-of-type {
         display: inline;
         padding: 6px 12px;
         font-size: 14px;
