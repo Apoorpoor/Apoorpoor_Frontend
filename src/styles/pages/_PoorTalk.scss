@@ -7,23 +7,17 @@
 .Messagesbox {
   width: 100%;
   height: calc(100vh - 180px);
-  // position: absolute;
   overflow: auto;
-  // border-top: 1px solid #f5f5f5;
-  // display: flexbox;
   flex-direction: column;
-  // padding-top: 20px;
   scrollbar-width: thin;
   scrollbar-color: #888888 #f5f5f5;
 }
 .Messagesbox::-webkit-scrollbar {
   width: 1px;
 }
-
 .Messagesbox::-webkit-scrollbar-track {
   background-color: #f5f5f5;
 }
-
 .Messagesbox::-webkit-scrollbar-thumb {
   background-color: #888888;
 }
@@ -55,15 +49,13 @@
   align-self: flex-start;
   margin-left: 60px;
   max-width: 260px;
-  display: flex; /* 추가 */
+  display: flex;
   word-wrap: break-word; /* 줄바꿈을 가능하게 함 */
-  // margin-top:20px;
 }
 // 다른 유저 닉네임
 .yourChatNickName {
   color: #777777;
   font-size: 12px;
-  // position: absolute;
   align-self: flex-start;
   margin-left: 60px;
   margin-top: -30px;
@@ -142,7 +134,6 @@
 .sendYourImageBox {
   background-color: #f5f5f5;
   width: 200px;
-  // height: 150px;
   margin-right: 20px;
   border-radius: 10px;
   margin: -12px -12px -16px -15px;
@@ -170,10 +161,8 @@
 }
 // 내가 쓴 이미지
 .sendMyImageBox {
-  // border-radius: 100px 40px 100px 100px;
   background-color: #f5f5f5;
   width: 200px;
-  // height: 150px;
   margin-right: 20px;
   border-radius: 10px;
   margin: -12px -12px -16px -15px;
@@ -187,7 +176,6 @@
   align-self: flex-end;
   margin-right: 25px;
 }
-
 .sendInputWrap {
   position: relative;
   width: 100%;
@@ -226,7 +214,6 @@
     width: 40px;
     font-size: 30px;
     color: #999;
-    // left: 75%;
     &:hover {
       color: #4194f1;
     }
@@ -291,19 +278,15 @@
   top: 50px;
   left: 50%;
   transform: translateX(-120%);
-  // margin: 0px auto;
   color: $gray-300;
   font-size: 12px;
   line-height: 18px;
   gap:2px;
   z-index: 0;
 }
-
-
 .chatListModalContainer{
   width: 100%;
   height: calc(100vh - 0px);
-  // border: 1px solid red;
   border-radius: 0px;
   position: absolute;
   right: 0px;
@@ -311,8 +294,6 @@
   background: rgba(0, 0, 0, 0.3);
   cursor: auto;
   z-index: 1;
-  // overflow: hidden; /* 슬라이드 효과를 위해 추가 */
-
   .chatListModalWrapper{
     background-color: #FFFFFF;
     width: 80%;
@@ -339,25 +320,13 @@
       }
 
     .chatMessageImagecontainer{
-      // flex-direction: row;
       display: flex;
-      // flex-wrap: nowrap;
-      // border: 1px solid blue;
       overflow: hidden;
-      // height: 110px;
-//       overflow-x: auto;
-      
-// .chatMessageImagecontainer::-webkit-scrollbar {
-//   width: 1px;
-//   op
-// }
     }
       .chatMessageImage{
-        // width: 100px;
         height: 100px;
         margin: 5px;
         border-radius: 8px;
-        // flex-wrap: nowrap
       }
 
     .chatListHeaderImage{      
@@ -487,7 +456,6 @@
 .imageListModalOpen{
   width: 100%;
   height: calc(100vh - 0px);
-  // border: 1px solid red;
   border-radius: 0px;
   position: absolute;
   right: 0px;
@@ -505,7 +473,6 @@
   // height: 30%; /* 스크롤바의 길이 */
   // background: #217af4; /* 스크롤바의 색상 */
   opacity: 0;
-  
   border-radius: 10px;
 }
 
@@ -515,8 +482,6 @@
 .imageListModalCloseForm{
   display: flex;
   margin-bottom: 36px;
-  // position: relative;
-
 }
 .imageListModalClose{
   width: 44px;
@@ -546,7 +511,6 @@
 .chatListModalContainer2{
   width: 100%;
   height: calc(100vh - 0px);
-  // border: 1px solid red;
   border-radius: 0px;
   position: absolute;
   right: 0px;
@@ -554,17 +518,14 @@
   background: rgba(0, 0, 0, 0.3);
   cursor: auto;
   z-index: 3;
-  // overflow: hidden; /* 슬라이드 효과를 위해 추가 */
 }
 .asdasdasd{
   width: 300px;
   margin: 100px auto;
   border-radius: 8px;
-
 }
 
 @media (max-width: 1366px) {
-  
 .asdasdasd{
   width: 40%;
   margin: 100px auto;

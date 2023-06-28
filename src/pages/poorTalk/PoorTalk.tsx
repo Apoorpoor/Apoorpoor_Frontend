@@ -4,7 +4,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState, ChangeEvent, useMemo } from 'react';
+import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import '../../styles/pages/_PoorTalk.scss';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -15,7 +15,7 @@ import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import Slider, { Settings } from 'react-slick';
 import { getUser, getChatList, getMessageList, getImageList } from '../../api/members';
-import { Header, SlickSlider } from '../../components';
+import { Header } from '../../components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import instance from '../../api/instance';
@@ -33,10 +33,11 @@ function PoorTalk(): JSX.Element {
   // 쿼리 클라이언트
   const queryClient = useQueryClient()
   const navigate = useNavigate();
-  // Header 이전 버튼
   const navigateToPreviousPage = () => {
     navigate('/introTalk');
   };
+  // 토큰
+  const token = localStorage.getItem('AToken');
 
   // 처음에 받아오는 내 푸어 정보
   const [user, setUser] = useState<any>(null);
@@ -54,37 +55,34 @@ function PoorTalk(): JSX.Element {
   const [chatListModal, setChatListModal] = useState(false)
   // 채팅 이미지 리스트 모달창
   const [imageListModal, setImageListModal] = useState(false)
-  // 토큰
-  const token = localStorage.getItem('AToken');
-  // 내 정보 받아오기
-  const { isLoading, error, data } = useQuery('getUser', getUser);
-
   // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
   const [chatList, setChatList] = useState([])
-  const { data: chatList2 } = useQuery('getChatList', getChatList, {
-    onSuccess: (res) => {
-      setChatList(res)
-      // console.log("res= ", res)
-    },
-  })
-
   // 보여지는 메세지들, 닉네임 정보
   const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
-  const { data: messageList } = useQuery("getMessageList", getMessageList, {
-    refetchOnWindowFocus: false,
-    onSuccess: (res) => {
-      setmessageListAll(res.chatList)
-      // console.log("res.messageList= ", res.chatList)
-    },
-  })
-  // a3 저장된 사진들 
-  const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
-  const imageList = Array.isArray(imageList2) ? imageList2 : [];
-
   // 이미지 디테일 (확대)
   const [imageDetailModal, setImageDetailModal] = useState(false)
   // 이미지 디테일에 보내주는 img src값 src={imageDetailModalSrc}
   const [imageDetailModalSrc, setImageDetailModalSrc] = useState<string | undefined>('')
+
+  // 내 정보 받아오기
+  const { isLoading, error, data } = useQuery('getUser', getUser);
+
+  const { data: chatList2 } = useQuery('getChatList', getChatList, {
+    onSuccess: (res) => {
+      setChatList(res)
+    },
+  })
+
+  const { data: messageList } = useQuery("getMessageList", getMessageList, {
+    refetchOnWindowFocus: false,
+    onSuccess: (res) => {
+      setmessageListAll(res.chatList)
+    },
+  })
+  // a3 저장된 사진들 
+  const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
+
+  const imageList = Array.isArray(imageList2) ? imageList2 : [];
 
   // 클라이언트
   const stompClientRef = useRef<Client | null>(null);
@@ -175,7 +173,6 @@ function PoorTalk(): JSX.Element {
   // 채팅 업로드 핸들러
   const sendMessages = (nowChatMessage: string): void => {
     if (nowChatMessage.trim() === '') {
-      // console.log('내용을 입력해주세요.');
       return;
     }
     const message2 = `${nowChatMessage}  `;
@@ -189,17 +186,12 @@ function PoorTalk(): JSX.Element {
       userId: data.userId,
       level: data.level,
     };
-    // console.log("sendList = ", sendList)
     if (stompClientRef.current) {
       stompClientRef.current.publish({
         destination: '/pub/chat/send',
         body: JSON.stringify(sendList),
       });
       queryClient.invalidateQueries(["getUser", "getChatList", "getMessageList", "getImageList"])
-      // queryClient.invalidateQueries("getUser")
-      // queryClient.invalidateQueries("getChatList")
-      // queryClient.invalidateQueries("getMessageList")
-      // queryClient.invalidateQueries("getImageList")
     }
     setSendMessage('');
   };
@@ -219,7 +211,6 @@ function PoorTalk(): JSX.Element {
       setImage(file);
     }
   };
-
   // 이미지 업로드 핸들러
   const sendImage = async () => {
     const newList = new FormData();
@@ -243,7 +234,6 @@ function PoorTalk(): JSX.Element {
         userId: data.userId,
         level: data.level,
       };
-
       if (stompClientRef.current) {
         stompClientRef.current.publish({
           destination: '/pub/chat/send',
@@ -277,7 +267,6 @@ function PoorTalk(): JSX.Element {
     }
     return <Error />;
   }
-
   // 채팅 참여 목록 모달
   const chatListModalHandler = () => {
     setChatListModal(!chatListModal)
@@ -315,52 +304,50 @@ function PoorTalk(): JSX.Element {
   }
   // 초기 실행
   deleteDataAtMidnight();
-
-
-  function calculateSlidesToShow(width: number) {
-    let returnCount;
-
-    if (width <= 400) {
-      returnCount = 2;
-    } else if (width <= 428) {
-      returnCount = 3;
-    } else if (width <= 520) {
-      returnCount = 4;
-    } else if (width >= 800) {
-      returnCount = 5;
-    }
-
-    return returnCount;
-  }
-
-  function calculateSlidesToScroll(width: number) {
-    let returnCount;
-
-    if (width <= 400) {
-      returnCount = 2;
-    } else if (width <= 428) {
-      returnCount = 3;
-    } else if (width <= 520) {
-      returnCount = 4;
-    } else if (width >= 800) {
-      returnCount = 5;
-    }
-
-    return returnCount;
-
-  }
-  // width 값 받아오는 로직
-  const boxElement = document.getElementById('boxWidth');
-
-  const width = boxElement?.offsetWidth;
-
-  const settings = {
+  // 가로 슬라이더 
+  const settings: Settings = {
+    children: [],
+    className: "poorTalkSlide",
     infinite: true,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: 3
+    slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 630,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      }, {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        },
+      }, {
+        breakpoint: 350,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      }, {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      }, {
+        breakpoint: 1365,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        },
+      },
+    ],
   };
-  // console.log(width);
+
+  <Slider {...settings} />
   return (
     <div className="currentBackGround">
       <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk<button type='button' onClick={chatListModalHandler}>
@@ -556,7 +543,6 @@ function PoorTalk(): JSX.Element {
         >
           <FaArrowCircleUp />
         </button>
-
         <div className="filebox">
           <label htmlFor="ex_file">
             <FaCamera className="PoorTalkCamera" />
@@ -587,7 +573,6 @@ function PoorTalk(): JSX.Element {
     </div>
   );
 }
-
 export default PoorTalk;
 
 interface IMessage {
@@ -600,16 +585,6 @@ interface IMessage {
   userId: number;
   level: number;
 }
-
-// interface ChatListType {
-//   length: ReactNode;
-//   beggarId: number;
-//   sender: string;
-//   userId: number;
-//   level: number;
-// }
-
-
 interface ImageListType {
   imageId: number,
   imageUrl: string,
