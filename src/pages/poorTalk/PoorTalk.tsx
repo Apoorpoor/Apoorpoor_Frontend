@@ -55,24 +55,21 @@ function PoorTalk(): JSX.Element {
   const [chatListModal, setChatListModal] = useState(false)
   // 채팅 이미지 리스트 모달창
   const [imageListModal, setImageListModal] = useState(false)
-  // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
-  const [chatList, setChatList] = useState([])
-  // 보여지는 메세지들, 닉네임 정보
-  const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
   // 이미지 디테일 (확대)
   const [imageDetailModal, setImageDetailModal] = useState(false)
   // 이미지 디테일에 보내주는 img src값 src={imageDetailModalSrc}
   const [imageDetailModalSrc, setImageDetailModalSrc] = useState<string | undefined>('')
-
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
-
+  // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
+  const [chatList, setChatList] = useState([])
   const { data: chatList2 } = useQuery('getChatList', getChatList, {
     onSuccess: (res) => {
       setChatList(res)
     },
   })
-
+  // 보여지는 메세지들, 닉네임 정보
+  const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
   const { data: messageList } = useQuery("getMessageList", getMessageList, {
     refetchOnWindowFocus: false,
     onSuccess: (res) => {
@@ -81,7 +78,6 @@ function PoorTalk(): JSX.Element {
   })
   // a3 저장된 사진들 
   const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
-
   const imageList = Array.isArray(imageList2) ? imageList2 : [];
 
   // 클라이언트
@@ -93,7 +89,7 @@ function PoorTalk(): JSX.Element {
   const time = {
     year: today.getFullYear(), // 현재 년도
     month: (today.getMonth() + 1).toString().padStart(2, '0'), // 현재 월
-    date: today.getDate().toString().padStart(2, '0'), // 현제 날짜
+    date: today.getDate().toString().padStart(2, '0'), // 현재 날짜
     hours: today.getHours().toString().padStart(2, '0'), // 현재 시간
     minutes: today.getMinutes().toString().padStart(2, '0'), // 현재 분
     seconds: today.getSeconds().toString().padStart(2, '0'), // 현재 초
@@ -176,7 +172,6 @@ function PoorTalk(): JSX.Element {
       return;
     }
     const message2 = `${nowChatMessage}  `;
-
     const sendList = {
       beggar_id: data.beggarId,
       date: timestring,
