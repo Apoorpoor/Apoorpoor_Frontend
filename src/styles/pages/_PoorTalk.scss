@@ -496,10 +496,16 @@
   position: absolute;
   top: 4%;
 }
+.imageListModalImageForm2{
+  display: flex;
+  left: 50%;
+  transform: translateX(7%);
+}
 .imageListModalImageForm{
   display: flex;
   flex-wrap: wrap;
   padding: 20px 20px 20px 20px;
+  justify-content: flex-start;
 }
 .imageListModalImage{
   height: 100px;
@@ -507,6 +513,7 @@
   margin: 5px;
   align-self: flex-start;
   border-radius: 8px;
+  
 }
 
 .chatListModalContainer2{
