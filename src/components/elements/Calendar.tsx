@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 import { QueryObserverResult, UseQueryResult, useQuery } from 'react-query';
 import '../../styles/components/_Calender.scss';
 import { useParams } from 'react-router';
-import { isAfter } from 'date-fns';
+import { isAfter, isSameDay } from 'date-fns';
 import CalendarModal from './CalendarModal';
 import accounts from '../../api/accounts';
 
@@ -82,12 +82,18 @@ function Calendar({
   const [modalAnimation, setModalAnimation] = useState('');
 
   const calendarModalOpen = (date: string): void => {
+    if (isSameDay(new Date(date), new Date())) {
+      setSelectedDate(date);
+      setCalendarModal(true);
+      setModalAnimation('modalAnimation');
+    }
     if (!isAfter(new Date(date), new Date())) {
       setSelectedDate(date);
       setCalendarModal(true);
       setModalAnimation('modalAnimation');
     }
   };
+  console.log(new Date());
 
   const firstWeek = today.clone().startOf('month').week();
   const lastWeek =
