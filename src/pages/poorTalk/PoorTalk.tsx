@@ -389,28 +389,30 @@ function PoorTalk(): JSX.Element {
               </button>
               <div className="imageListModalCloseBack">사진</div>
             </div>
-            <div className="imageListModalImageForm">
-              {imageList?.map(
-                (item: {
-                  imageId: React.Key | null | undefined;
-                  imageUrl: string | undefined;
-                }) => (
-                  <div key={item.imageId}>
-                    {item.imageUrl !== null && item.imageUrl !== undefined && (
-                      <button
-                        type="button"
-                        onClick={() => imageDetailModalHandler(item.imageUrl)}
-                      >
-                        <img
-                          className="imageListModalImage"
-                          src={item.imageUrl}
-                          alt=""
-                        />
-                      </button>
-                    )}
-                  </div>
-                )
-              )}
+            <div className="imageListModalImageForm2">
+              <div className="imageListModalImageForm">
+                {imageList?.map(
+                  (item: {
+                    imageId: React.Key | null | undefined;
+                    imageUrl: string | undefined;
+                  }) => (
+                    <div key={item.imageId}>
+                      {item.imageUrl !== null && item.imageUrl !== undefined && (
+                        <button
+                          type="button"
+                          onClick={() => imageDetailModalHandler(item.imageUrl)}
+                        >
+                          <img
+                            className="imageListModalImage"
+                            src={item.imageUrl}
+                            alt=""
+                          />
+                        </button>
+                      )}
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -523,12 +525,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime1">
                         {Number(message.date?.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date?.split(' ')[1]) - 12
-                            } : ${message.date?.split(' ')[3]}`
-                          : `오전 ${message.date?.split(' ')[1]} : ${
-                              message.date?.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date?.split(' ')[1]) - 12
+                          } : ${message.date?.split(' ')[3]}`
+                          : `오전 ${message.date?.split(' ')[1]} : ${message.date?.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   ) : (
@@ -557,12 +557,10 @@ function PoorTalk(): JSX.Element {
                       </div>
                       <div className="nowTime2">
                         {Number(message.date?.split(' ')[1]) > 12
-                          ? `오후 ${
-                              Number(message.date?.split(' ')[1]) - 12
-                            } : ${message.date?.split(' ')[3]}`
-                          : `오전 ${message.date?.split(' ')[1]} : ${
-                              message.date?.split(' ')[3]
-                            }`}
+                          ? `오후 ${Number(message.date?.split(' ')[1]) - 12
+                          } : ${message.date?.split(' ')[3]}`
+                          : `오전 ${message.date?.split(' ')[1]} : ${message.date?.split(' ')[3]
+                          }`}
                       </div>
                     </>
                   )}
