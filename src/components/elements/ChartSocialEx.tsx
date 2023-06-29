@@ -24,17 +24,17 @@ function ChartSocialEx({ data }: ChartSocialExProps) {
   // 숫자 형식화 함수
   const formatNumber = (value: number) => {
     if (value >= 100000000) {
-      const stringValue = value.toString();
+      const stringValue = Math.floor(value).toString();
       const remainingDigits = stringValue.substring(0, stringValue.length - 8);
       return `${remainingDigits}억원`;
     }
     if (value >= 100000) {
-      const stringValue = value.toString();
+      const stringValue = Math.floor(value).toString();
       const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
       return `${firstTwoDigits}만원`;
     }
     if (value >= 10000 && value < 100000) {
-      const stringValue = value.toString();
+      const stringValue = Math.floor(value).toString();
       const firstDigit = stringValue[0];
       const secondDigit = stringValue[1];
       return `${firstDigit}만${secondDigit}천원`;
