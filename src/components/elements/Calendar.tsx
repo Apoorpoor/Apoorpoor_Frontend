@@ -93,7 +93,6 @@ function Calendar({
       setModalAnimation('modalAnimation');
     }
   };
-  console.log(new Date());
 
   const firstWeek = today.clone().startOf('month').week();
   const lastWeek =
