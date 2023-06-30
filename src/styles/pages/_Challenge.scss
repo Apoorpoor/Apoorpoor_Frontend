@@ -190,6 +190,7 @@
   }
   & .myChallenge {
     height: calc(100vh - 80px);
+    overflow-x: hidden;
     & > div {
       height: calc(100% - 55px);
       display: flex;
@@ -202,6 +203,9 @@
       @media (min-width: 800px) and (max-width: 1366px) {
         height: calc(100% - 80px);
       }
+    }
+    & .common {
+      min-height: 56px;
     }
     & > .example {
       & .progressValue {
@@ -253,7 +257,7 @@
           position: absolute;
           top: 20px;
           left: 70%;
-          width: 95px;
+          width: 100%;
           font-size: 16px;
           font-weight: 700;
           text-align: left;
@@ -263,7 +267,7 @@
       & .progressValue.step2 {
         background-color: $secondary;
         & span {
-          color: $primary;
+          color: $secondary;
         }
       }
       & .progressValue.step3 {

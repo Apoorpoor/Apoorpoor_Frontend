@@ -107,7 +107,7 @@ function MyChallenge() {
         const result = getChallengeCalendar(myChallengeData.startTime);
         setCalendar(result);
       } else if (myChallengeData.challengeTitle === null) {
-        const result = getChallengeCalendar('2023-06-21(Wed)');
+        const result = getChallengeCalendar('2023/06/27 01:56:17');
         console.log('챌린지 예시');
         setCalendar(result);
       }
@@ -192,6 +192,7 @@ function MyChallenge() {
 
         return totalAmount;
       };
+
       setUsedAmount(AmountUsed(accountHistoryData));
 
       // 챌린지 진행 상태 표시
@@ -214,6 +215,39 @@ function MyChallenge() {
       }
     }
   }, [accountHistoryData, challengeMessege]);
+
+  const formatNumber = (value: number) => {
+    if (value >= 100000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 8);
+      return `${remainingDigits}억원`;
+    }
+    if (value >= 100000) {
+      const stringValue = value.toString();
+      const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
+      return `${firstTwoDigits}만원`;
+    }
+    if (value >= 10000 && value < 100000) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue[0];
+      const secondDigit = stringValue[1];
+      let remainingDigits = stringValue.substring(2);
+      if (remainingDigits[0] === '0') {
+        remainingDigits = '';
+      }
+      return `${firstDigit}만${secondDigit}천${remainingDigits}원`;
+    }
+    if (value >= 1000 && value < 10000) {
+      const firstDigit = Math.floor(value / 1000);
+      let remainingDigits = (value % 1000).toString();
+      if (remainingDigits === '0') {
+        remainingDigits = '';
+      }
+      return `${firstDigit}천${remainingDigits}원`;
+    }
+    const roundedValue = Math.round(value * 100) / 100; // 소수점 둘째 자리까지 반올림
+    return `${roundedValue.toLocaleString().split('.')[0]}원`;
+  };
 
   // 챌린지 시작하기
   const startChallengeHandler = async () => {
@@ -310,7 +344,7 @@ function MyChallenge() {
                   >
                     <span>
                       {myChallengeData.challengeTitle !== null
-                        ? `- ${usedAmount} 원`
+                        ? `- ${formatNumber(usedAmount)}`
                         : `17000 원`}
                     </span>
                   </div>
