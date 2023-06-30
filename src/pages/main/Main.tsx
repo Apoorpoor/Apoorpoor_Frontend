@@ -38,7 +38,7 @@ function Main(): JSX.Element {
 
   // 가계부 아이디 저장, 푸어룸과 챌린지에서 나의 가계부 이동을 위해 저장
   useEffect(() => {
-    if (data) {
+    if (Array.isArray(data)) {
       const accountId = data[0].id;
       sessionStorage.setItem('accountId', accountId);
     }
