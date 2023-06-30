@@ -216,37 +216,63 @@ function MyChallenge() {
     }
   }, [accountHistoryData, challengeMessege]);
 
-  const formatNumber = (value: number) => {
+  const formatNumber = (value: number): string => {
+    if (value === 0) {
+      return '영원';
+    }
+
+    let billion: string | undefined;
+    let tenThousands: string | undefined;
+    let thousands: string | undefined;
+    let hundreds: string | undefined;
+
     if (value >= 100000000) {
       const stringValue = value.toString();
       const remainingDigits = stringValue.substring(0, stringValue.length - 8);
-      return `${remainingDigits}억원`;
+      billion = `${remainingDigits}억`;
     }
-    if (value >= 100000) {
+
+    if (value >= 10000) {
       const stringValue = value.toString();
-      const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
-      return `${firstTwoDigits}만원`;
+      const firstTwoDigits = stringValue.substring(
+        stringValue.length - 8,
+        stringValue.length - 4
+      );
+      if (firstTwoDigits !== '0000') {
+        tenThousands = `${firstTwoDigits}만`;
+      }
     }
-    if (value >= 10000 && value < 100000) {
+
+    if (value >= 1000) {
       const stringValue = value.toString();
-      const firstDigit = stringValue[0];
-      const secondDigit = stringValue[1];
-      let remainingDigits = stringValue.substring(2);
-      if (remainingDigits[0] === '0') {
-        remainingDigits = '';
+      const firstDigit = stringValue.substring(
+        stringValue.length - 4,
+        stringValue.length - 3
+      );
+      if (firstDigit !== '0') {
+        thousands = `${firstDigit}천`;
       }
-      return `${firstDigit}만${secondDigit}천${remainingDigits}원`;
     }
-    if (value >= 1000 && value < 10000) {
-      const firstDigit = Math.floor(value / 1000);
-      let remainingDigits = (value % 1000).toString();
-      if (remainingDigits === '0') {
-        remainingDigits = '';
+
+    if (value >= 100) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue.substring(
+        stringValue.length - 3,
+        stringValue.length - 2
+      );
+      if (firstDigit !== '0') {
+        hundreds = `${firstDigit}백`;
       }
-      return `${firstDigit}천${remainingDigits}원`;
     }
-    const roundedValue = Math.round(value * 100) / 100; // 소수점 둘째 자리까지 반올림
-    return `${roundedValue.toLocaleString().split('.')[0]}원`;
+
+    if (value < 100) {
+      const roundedValue = Math.round(value * 100) / 100; // 소수점 둘째 자리까지 반올림
+      return `${roundedValue.toLocaleString().split('.')[0]}원`;
+    }
+
+    return `${billion ?? ''}${tenThousands ?? ''}${thousands ?? ''}${
+      hundreds ?? ''
+    }원`;
   };
 
   // 챌린지 시작하기

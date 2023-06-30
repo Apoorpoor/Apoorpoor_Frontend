@@ -89,7 +89,7 @@ div.modalbg.active {
 
 // 뱃지 리스트 모달
 .modal.badge {
-  display: none;
+  bottom:0;
 }
 .modal.badge.show {
   display: flex;
@@ -97,6 +97,7 @@ div.modalbg.active {
   min-height: 490px;
   & .badge {
     position: relative;
+    bottom:0;
     width: 96px;
     height: 132px;
     background-color: $gray-150;
