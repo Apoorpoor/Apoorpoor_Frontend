@@ -48,8 +48,7 @@ const postNickname = async (nickname: string): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error as ErrorType;
+    throw error as ErrorType;
   }
 };
 
@@ -61,7 +60,7 @@ const putAge = async (age: number): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    return error as ErrorType;
+    throw error as ErrorType;
   }
 };
 
@@ -73,7 +72,7 @@ const putGender = async (gender: string): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    return error as ErrorType;
+    throw error as ErrorType;
   }
 };
 

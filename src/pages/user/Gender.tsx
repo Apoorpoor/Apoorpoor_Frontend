@@ -17,7 +17,6 @@ interface ErrorType extends Error {
     data: {
       message: string;
       code: number;
-      status: string;
     };
     status: number;
   };
@@ -30,8 +29,9 @@ function Age() {
   const [userNickname, setUserNickname] = useRecoilState(UserNickname);
   const [userAge, setUserAge] = useRecoilState(UserAge);
   const [userGender, setUserGender] = useRecoilState(UserGender);
+
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarMention, setSnackbarMention] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -56,25 +56,35 @@ function Age() {
 
   const onNextClickButton = async () => {
     try {
-      await postNickname(userNickname);
-      await putAge(userAge);
-      console.log('성공?');
-      await putGender(userGender);
-      navigate('/finished');
+      const nicknameData = await postNickname(userNickname);
+      const ageData = await putAge(userAge);
+      const genderData = await putGender(userGender);
+      // console.log('data =', nicknameData, ageData, genderData);
+      if (
+        nicknameData &&
+        !nicknameData.error &&
+        ageData &&
+        !ageData.error &&
+        genderData &&
+        !genderData.error
+      ) {
+        navigate('/finished');
+      }
     } catch (error) {
       if (userNickname === '') {
+        setSnackbarMessage('닉네임이 입력되지 않았습니다.');
         setShowSnackbar(true);
         setTimeout(() => setShowSnackbar(false), 2500);
-        setSnackbarMention('닉네임이 입력되지 않았습니다.');
       } else if (userGender === '') {
+        setSnackbarMessage('성별이 입력되지 않았습니다.');
         setShowSnackbar(true);
         setTimeout(() => setShowSnackbar(false), 2500);
-        setSnackbarMention('성별이 입력되지 않았습니다.');
-      } else if ((error as ErrorType).response.status === 400) {
-        console.log('이미 카카오톡 가입한 유저임');
+      }
+      if ((error as ErrorType).response.status === 400) {
+        setSnackbarMessage('이미 카카오톡 회원가입이 등록된 유저입니다.');
         setShowSnackbar(true);
         setTimeout(() => setShowSnackbar(false), 2500);
-        setSnackbarMention('이미 카카오톡 회원가입이 등록된 유저입니다.');
+        setTimeout(() => navigate('/login'), 2500);
       }
     }
   };
@@ -92,7 +102,7 @@ function Age() {
     <main className="genderPage">
       <div className={`snackbar ${showSnackbar === false ? '' : 'show'}`}>
         <IoAlertCircleOutline />
-        {snackbarMention}
+        {snackbarMessage}
       </div>
       <article>
         <div>
