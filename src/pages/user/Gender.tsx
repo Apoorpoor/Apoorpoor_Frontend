@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
+import { IoAlertCircleOutline } from 'react-icons/io5';
 import { FaChevronLeft, FaCheckSquare } from 'react-icons/fa';
 import '../../styles/pages/_Gender.scss';
 import { useNavigate } from 'react-router';
@@ -16,6 +17,7 @@ interface ErrorType extends Error {
     data: {
       message: string;
       code: number;
+      status: string;
     };
     status: number;
   };
@@ -28,6 +30,8 @@ function Age() {
   const [userNickname, setUserNickname] = useRecoilState(UserNickname);
   const [userAge, setUserAge] = useRecoilState(UserAge);
   const [userGender, setUserGender] = useRecoilState(UserGender);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMention, setSnackbarMention] = useState('');
 
   const navigate = useNavigate();
 
@@ -54,18 +58,23 @@ function Age() {
     try {
       await postNickname(userNickname);
       await putAge(userAge);
+      console.log('성공?');
       await putGender(userGender);
       navigate('/finished');
     } catch (error) {
       if (userNickname === '') {
-        alert('닉네임이 입력되지 않았습니다.');
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500);
+        setSnackbarMention('닉네임이 입력되지 않았습니다.');
       } else if (userGender === '') {
-        alert('성별이 입력되지 않았습니다.');
-      }
-      if ((error as ErrorType).response.status === 400) {
-        alert(
-          '이미 카카오톡 회원가입이 등록된 유저입니다. 로그인을 진행해주세요'
-        );
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500);
+        setSnackbarMention('성별이 입력되지 않았습니다.');
+      } else if ((error as ErrorType).response.status === 400) {
+        console.log('이미 카카오톡 가입한 유저임');
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500);
+        setSnackbarMention('이미 카카오톡 회원가입이 등록된 유저입니다.');
       }
     }
   };
@@ -81,6 +90,10 @@ function Age() {
 
   return (
     <main className="genderPage">
+      <div className={`snackbar ${showSnackbar === false ? '' : 'show'}`}>
+        <IoAlertCircleOutline />
+        {snackbarMention}
+      </div>
       <article>
         <div>
           <button type="button" onClick={() => navigate('/age')}>
