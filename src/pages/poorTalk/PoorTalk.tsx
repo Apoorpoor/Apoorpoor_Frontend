@@ -14,7 +14,12 @@ import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import Slider, { Settings } from 'react-slick';
-import { getUser, getChatList, getMessageList, getImageList } from '../../api/members';
+import {
+  getUser,
+  getChatList,
+  getMessageList,
+  getImageList,
+} from '../../api/members';
 import { Header } from '../../components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -22,16 +27,16 @@ import instance from '../../api/instance';
 import UsersProfilePage from './UsersProfilePage';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
-import hamburgerBt from '../../static/image/poortalk/hamburgerBt.png'
-import people from '../../static/image/poortalk/people.png'
-import people2 from '../../static/image/poortalk/people2.png'
-import photo from '../../static/image/poortalk/photo.png'
-import rightArrow from '../../static/image/poortalk/rightArrow.png'
-import x from '../../static/image/poortalk/x.png'
+import hamburgerBt from '../../static/image/poortalk/hamburgerBt.png';
+import people from '../../static/image/poortalk/people.png';
+import people2 from '../../static/image/poortalk/people2.png';
+import photo from '../../static/image/poortalk/photo.png';
+import rightArrow from '../../static/image/poortalk/rightArrow.png';
+import x from '../../static/image/poortalk/x.png';
 
 function PoorTalk(): JSX.Element {
   // 쿼리 클라이언트
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const navigateToPreviousPage = () => {
     navigate('/introTalk');
@@ -52,39 +57,43 @@ function PoorTalk(): JSX.Element {
   // 상대 유저 프로필 모달창
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   // 채팅 참여 인원 확인 모달창
-  const [chatListModal, setChatListModal] = useState(false)
+  const [chatListModal, setChatListModal] = useState(false);
   // 채팅 이미지 리스트 모달창
-  const [imageListModal, setImageListModal] = useState(false)
+  const [imageListModal, setImageListModal] = useState(false);
   // 이미지 디테일 (확대)
-  const [imageDetailModal, setImageDetailModal] = useState(false)
+  const [imageDetailModal, setImageDetailModal] = useState(false);
   // 이미지 디테일에 보내주는 img src값 src={imageDetailModalSrc}
-  const [imageDetailModalSrc, setImageDetailModalSrc] = useState<string | undefined>('')
+  const [imageDetailModalSrc, setImageDetailModalSrc] = useState<
+    string | undefined
+  >('');
   // 내 정보 받아오기
   const { isLoading, error, data } = useQuery('getUser', getUser);
   // 채팅 유저들 받아오기(채팅 참여 목록, 인원수 확인용)
-  const [chatList, setChatList] = useState([])
+  const [chatList, setChatList] = useState([]);
   const { data: chatList2 } = useQuery('getChatList', getChatList, {
     onSuccess: (res) => {
       setChatList(res)
-    },
+    }
   })
+
   // 보여지는 메세지들, 닉네임 정보
-  const [messageListAll, setmessageListAll] = useState<IMessage[]>([])
-  const { data: messageList } = useQuery("getMessageList", getMessageList, {
+  const [messageListAll, setmessageListAll] = useState<IMessage[]>([]);
+  const { data: messageList } = useQuery('getMessageList', getMessageList, {
     refetchOnWindowFocus: false,
     onSuccess: (res) => {
-      setmessageListAll(res.chatList)
+      setmessageListAll(res.chatList);
     },
-  })
-  // a3 저장된 사진들 
-  const { data: imageList2 = [] }: ImageListType | any = useQuery('getImageList', getImageList)
+  });
+  // a3 저장된 사진들
+  const { data: imageList2 = [] }: ImageListType | any = useQuery(
+    'getImageList',
+    getImageList
+  );
   const imageList = Array.isArray(imageList2) ? imageList2 : [];
-
   // 클라이언트
   const stompClientRef = useRef<Client | null>(null);
   // 최신글이 올라오면 맨 밑으로 포커싱
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
   const today = new Date(); // today 객체에 Date()의 결과를 넣어줬다
   const time = {
     year: today.getFullYear(), // 현재 년도
@@ -95,19 +104,18 @@ function PoorTalk(): JSX.Element {
     seconds: today.getSeconds().toString().padStart(2, '0'), // 현재 초
   };
   const timestring = `${time.year}-${time.month}-${time.date} ${time.hours} : ${time.minutes} ${time.seconds}`;
-
   // 스크롤 부분(채팅방 입장시 가장 아래로, 채팅로그가 업데이트 될 때마다 가장 아래로)
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messageListAll]);
-
   // 웹소켓 연결
   useEffect(() => {
     if (data !== undefined) {
       setUser(data);
       // 클라이언트 생성 후 소켓 연결(헤더에 토큰)
       const client = new Client({
-        webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`),
+        webSocketFactory: () =>
+          new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-edit`),
         connectHeaders: {
           ACCESS_KEY: `Bearer ${token}`,
         },
@@ -125,7 +133,7 @@ function PoorTalk(): JSX.Element {
               ]);
             }
           });
-          getChatList()
+          getChatList();
           // 서버에서 정해둔 URL 필요 => 구독 후 입장시 메세지 보내는 로직
           client.publish({
             destination: '/pub/chat/enter',
@@ -165,13 +173,12 @@ function PoorTalk(): JSX.Element {
       if (stompClientRef.current) stompClientRef.current.deactivate();
     };
   }, [data]);
-
   // 채팅 업로드 핸들러
   const sendMessages = (nowChatMessage: string): void => {
     if (nowChatMessage.trim() === '') {
       return;
     }
-    const message2 = `${nowChatMessage}  `;
+    const message2 = `${nowChatMessage} `;
     const sendList = {
       beggar_id: data.beggarId,
       date: timestring,
@@ -186,7 +193,12 @@ function PoorTalk(): JSX.Element {
         destination: '/pub/chat/send',
         body: JSON.stringify(sendList),
       });
-      queryClient.invalidateQueries(["getUser", "getChatList", "getMessageList", "getImageList"])
+      queryClient.invalidateQueries([
+        'getUser',
+        'getChatList',
+        'getMessageList',
+        'getImageList',
+      ]);
     }
     setSendMessage('');
   };
@@ -264,18 +276,18 @@ function PoorTalk(): JSX.Element {
   }
   // 채팅 참여 목록 모달
   const chatListModalHandler = () => {
-    setChatListModal(!chatListModal)
-  }
+    setChatListModal(!chatListModal);
+  };
   // 채팅 참여 목록 모달 속 이미지 모달 하나 더 있음
   const imageListModalHandler = () => {
-    setImageListModal(!imageListModal)
-  }
+    setImageListModal(!imageListModal);
+  };
   // 이미지 디테일(확대) 핸들러
   const imageDetailModalHandler = (imageUrl: string | undefined) => {
     setImageDetailModalSrc(imageUrl);
     setImageDetailModal(!imageDetailModal)
   }
-  // 자정에 데이터 삭제
+  // 자정에 데이터 삭제 핸들러
   function deleteDataAtMidnight() {
     // 현재 시간 가져오기
     const currentDate = new Date();
@@ -292,17 +304,17 @@ function PoorTalk(): JSX.Element {
     const timeUntilMidnight = nextMidnight.getTime() - currentDate.getTime();
     // 다음 자정에 실행될 함수 예약
     setTimeout(() => {
-      setmessageListAll([])
+      setmessageListAll([]);
       // 다음 날의 자정에 다시 함수를 예약합니다 (반복 실행)
       deleteDataAtMidnight();
     }, timeUntilMidnight);
   }
   // 초기 실행
   deleteDataAtMidnight();
-  // 가로 슬라이더 
+  // 사진첩 가로 슬라이더 
   const settings: Settings = {
     children: [],
-    className: "poorTalkSlide",
+    className: 'poorTalkSlide',
     infinite: true,
     speed: 500,
     slidesToShow: 3,
@@ -314,25 +326,29 @@ function PoorTalk(): JSX.Element {
           slidesToShow: 4,
           slidesToScroll: 4,
         },
-      }, {
+      },
+      {
         breakpoint: 800,
         settings: {
           slidesToShow: 5,
           slidesToScroll: 5,
         },
-      }, {
+      },
+      {
         breakpoint: 350,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
         },
-      }, {
+      },
+      {
         breakpoint: 500,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
         },
-      }, {
+      },
+      {
         breakpoint: 1365,
         settings: {
           slidesToShow: 5,
@@ -341,83 +357,137 @@ function PoorTalk(): JSX.Element {
       },
     ],
   };
-
-  <Slider {...settings} />
   return (
     <div className="currentBackGround">
-      <Header navigateToPreviousPage={navigateToPreviousPage}>푸어talk<button type='button' onClick={chatListModalHandler}>
-        <img className='HamburgerBt' src={hamburgerBt} alt='햄버거 버튼' />
-      </button>{imageDetailModal && (
-        <div className='chatListModalContainer2' onClick={() => setImageDetailModal(!imageDetailModal)}>
-          <img className='asdasdasd' src={imageDetailModalSrc} alt='' />
-        </div>
-      )}
-        {imageListModal &&
-          <div className='imageListModalOpen'
+      <Header navigateToPreviousPage={navigateToPreviousPage}>
+        푸어talk
+        <button type="button" onClick={chatListModalHandler}>
+          <img className="HamburgerBt" src={hamburgerBt} alt="햄버거 버튼" />
+        </button>
+        {imageDetailModal && (
+          <div
+            className="chatListModalContainer2"
+            onClick={() => setImageDetailModal(!imageDetailModal)}
+          >
+            <img className="asdasdasd" src={imageDetailModalSrc} alt="" />
+          </div>
+        )}
+        {imageListModal && (
+          <div
+            className="imageListModalOpen"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
             role="button"
             tabIndex={0}
           >
-            <div className='imageListModalCloseForm' onClick={imageListModalHandler}>
-              <button type='button' onClick={imageListModalHandler}>
-                <img className='imageListModalClose' src={x} alt='x 버튼' />
+            <div
+              className="imageListModalCloseForm"
+              onClick={imageListModalHandler}
+            >
+              <button type="button" onClick={imageListModalHandler}>
+                <img className="imageListModalClose" src={x} alt="x 버튼" />
               </button>
-              <div className='imageListModalCloseBack'>사진</div>
+              <div className="imageListModalCloseBack">사진</div>
             </div>
-            <div className='imageListModalImageForm'>
-              {imageList?.map((item: { imageId: React.Key | null | undefined; imageUrl: string | undefined; }) => (
-                <div key={item.imageId}>
-                  {item.imageUrl !== null && item.imageUrl !== undefined && (
-                    <button type='button' onClick={() => imageDetailModalHandler(item.imageUrl)}>
-                      <img className='imageListModalImage' src={item.imageUrl} alt='' />
-                    </button>
-                  )}
-                </div>
-              ))}
+            <div className="imageListModalImageForm2">
+              <div className="imageListModalImageForm">
+                {imageList?.map(
+                  (item: {
+                    imageId: React.Key | null | undefined;
+                    imageUrl: string | undefined;
+                  }) => (
+                    <div key={item.imageId}>
+                      {item.imageUrl !== null && item.imageUrl !== undefined && (
+                        <button
+                          type="button"
+                          onClick={() => imageDetailModalHandler(item.imageUrl)}
+                        >
+                          <img
+                            className="imageListModalImage"
+                            src={item.imageUrl}
+                            alt=""
+                          />
+                        </button>
+                      )}
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
-        }
-        {chatListModal && <div>
-          <button className='chatListModalContainer'
-            onClick={chatListModalHandler} >
-            <div className='chatListModalWrapper'
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
-              role="button"
-              tabIndex={0}
+        )}
+        {chatListModal && (
+          <div>
+            <button
+              className="chatListModalContainer"
+              onClick={chatListModalHandler}
             >
-              <div className='chatListHeaderImage'
-                onClick={imageListModalHandler}>
-                <div>
-                  <img src={photo} alt='피플' />사진
-                </div>
-                <img src={rightArrow} alt='애로우' />
-              </div>
-              <Slider {...settings} className="poorTalkSlide">
-                {imageList?.map((item: { imageId: React.Key | number | null | undefined; imageUrl: string | undefined; }, index) => (
-                  <div key={item.imageId}
-                    className="item" role="button" tabIndex={index}>
-                    {item.imageUrl !== null && item.imageUrl !== undefined && (
-                      <img src={item.imageUrl} alt='' />
-                    )}
+              <div
+                className="chatListModalWrapper"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                role="button"
+                tabIndex={0}
+              >
+                <div
+                  className="chatListHeaderImage"
+                  onClick={imageListModalHandler}
+                >
+                  <div>
+                    <img src={photo} alt="피플" />
+                    사진
                   </div>
-                ))}
-              </Slider>
-              <div className='chatListHeader'>
-                <img className='chatListHeaderPeople' src={people} alt='피플' />대화상대
-              </div>
-              {chatList?.map((poor: any, index: React.Key | null | undefined) =>
-                <div key={index} className='chatListModalForm'>
-                  <div className={`chatListModalWrap${poor?.level}`}>{poor.level}</div>
-                  <div>{poor.sender}</div>
+                  <img src={rightArrow} alt="애로우" />
                 </div>
-              )}
-            </div>
-          </button>
-        </div>}
-        <div className='AllUsers'>
-          <img src={people2} alt='피플' />{chatList?.length}</div>
+                <Slider {...settings} className="poorTalkSlide">
+                  {imageList?.map(
+                    (
+                      item: {
+                        imageId: React.Key | number | null | undefined;
+                        imageUrl: string | undefined;
+                      },
+                      index
+                    ) => (
+                      <div
+                        key={item.imageId}
+                        className="item"
+                        role="button"
+                        tabIndex={index}
+                      >
+                        {item.imageUrl !== null &&
+                          item.imageUrl !== undefined && (
+                            <img src={item.imageUrl} alt="" />
+                          )}
+                      </div>
+                    )
+                  )}
+                </Slider>
+                <div className="chatListHeader">
+                  <img
+                    className="chatListHeaderPeople"
+                    src={people}
+                    alt="피플"
+                  />
+                  대화상대
+                </div>
+                {chatList?.map(
+                  (poor: any, index: React.Key | null | undefined) => (
+                    <div key={index} className="chatListModalForm">
+                      <div className={`chatListModalWrap${poor?.level}`}>
+                        {poor.level}
+                      </div>
+                      <div>{poor.sender}</div>
+                    </div>
+                  )
+                )}
+              </div>
+            </button>
+          </div>
+        )}
+        <div className="AllUsers">
+          <img src={people2} alt="피플" />
+          {chatList?.length}
+        </div>
       </Header>
       {modalOpen && (
         <UsersProfilePage
@@ -426,7 +496,7 @@ function PoorTalk(): JSX.Element {
         />
       )}
       {messageListAll && messageListAll.length > 0 && (
-        <div className="Messagesbox" id='boxWidth'>
+        <div className="Messagesbox" id="boxWidth">
           {messageListAll?.map((message, index) => (
             <div className="chatBox" key={index}>
               {message.type === 'ENTER' && message.beggar_id !== null && (
@@ -450,9 +520,7 @@ function PoorTalk(): JSX.Element {
                             />
                           </div>
                         ) : (
-                          <div>
-                            {message.message}
-                          </div>
+                          <div>{message.message}</div>
                         )}
                       </div>
                       <div className="nowTime1">
@@ -469,9 +537,7 @@ function PoorTalk(): JSX.Element {
                       <button
                         type="button"
                         className={`yourChatProfile${message?.level}`}
-                        onClick={() =>
-                          usersProfileHandler(message.userId)
-                        }
+                        onClick={() => usersProfileHandler(message.userId)}
                       >
                         {message.level}
                       </button>
@@ -569,7 +635,6 @@ function PoorTalk(): JSX.Element {
   );
 }
 export default PoorTalk;
-
 interface IMessage {
   beggar_id: number;
   date: string;
@@ -581,6 +646,6 @@ interface IMessage {
   level: number;
 }
 interface ImageListType {
-  imageId: number,
-  imageUrl: string,
+  imageId: number;
+  imageUrl: string;
 }

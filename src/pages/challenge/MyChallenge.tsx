@@ -107,7 +107,7 @@ function MyChallenge() {
         const result = getChallengeCalendar(myChallengeData.startTime);
         setCalendar(result);
       } else if (myChallengeData.challengeTitle === null) {
-        const result = getChallengeCalendar('2023-06-21(Wed)');
+        const result = getChallengeCalendar('2023/06/27 01:56:17');
         console.log('챌린지 예시');
         setCalendar(result);
       }
@@ -192,6 +192,7 @@ function MyChallenge() {
 
         return totalAmount;
       };
+
       setUsedAmount(AmountUsed(accountHistoryData));
 
       // 챌린지 진행 상태 표시
@@ -215,11 +216,70 @@ function MyChallenge() {
     }
   }, [accountHistoryData, challengeMessege]);
 
+  const formatNumber = (value: number): string => {
+    if (value === 0) {
+      return '영원';
+    }
+
+    let billion: string | undefined;
+    let tenThousands: string | undefined;
+    let thousands: string | undefined;
+    let hundreds: string | undefined;
+
+    if (value >= 100000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 8);
+      billion = `${remainingDigits}억`;
+    }
+
+    if (value >= 10000) {
+      const stringValue = value.toString();
+      const firstTwoDigits = stringValue.substring(
+        stringValue.length - 8,
+        stringValue.length - 4
+      );
+      if (firstTwoDigits !== '0000') {
+        tenThousands = `${firstTwoDigits}만`;
+      }
+    }
+
+    if (value >= 1000) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue.substring(
+        stringValue.length - 4,
+        stringValue.length - 3
+      );
+      if (firstDigit !== '0') {
+        thousands = `${firstDigit}천`;
+      }
+    }
+
+    if (value >= 100) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue.substring(
+        stringValue.length - 3,
+        stringValue.length - 2
+      );
+      if (firstDigit !== '0') {
+        hundreds = `${firstDigit}백`;
+      }
+    }
+
+    if (value < 100) {
+      const roundedValue = Math.round(value * 100) / 100; // 소수점 둘째 자리까지 반올림
+      return `${roundedValue.toLocaleString().split('.')[0]}원`;
+    }
+
+    return `${billion ?? ''}${tenThousands ?? ''}${thousands ?? ''}${
+      hundreds ?? ''
+    }원`;
+  };
+
   // 챌린지 시작하기
   const startChallengeHandler = async () => {
     try {
       await postChallenge(`CHALLENGE_${challengeType}`);
-      navigate(`/myChallenge`);
+      navigate(`/challenge`);
     } catch (error) {
       console.log(error);
     }
@@ -310,7 +370,7 @@ function MyChallenge() {
                   >
                     <span>
                       {myChallengeData.challengeTitle !== null
-                        ? `- ${usedAmount} 원`
+                        ? `- ${formatNumber(usedAmount)}`
                         : `17000 원`}
                     </span>
                   </div>
@@ -318,16 +378,22 @@ function MyChallenge() {
               </div>
               <div className="challengeCalendar">
                 <ul>
-                  {calendar.map((date) => (
+                  {calendar.map((date, i) => (
                     <li key={date.day}>
                       <label>{date.day}</label>
                       <button
                         type="button"
                         className={`${
-                          today < Number(date.date)
-                            ? 'next'
-                            : today === Number(date.date)
+                          today === Number(date.date)
                             ? 'today'
+                            : (today > 25 && today < Number(date.date)) ||
+                              Number(date.date) === 1 ||
+                              Number(date.date) === 2 ||
+                              Number(date.date) === 3 ||
+                              Number(date.date) === 4 ||
+                              Number(date.date) === 5 ||
+                              Number(date.date) === 6
+                            ? 'next'
                             : ''
                         } ${
                           selectedDay === Number(date.date) ? 'selected' : ''
