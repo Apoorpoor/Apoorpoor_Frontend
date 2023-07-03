@@ -413,10 +413,10 @@ function PoorRoom() {
               <h2>푸어포인트로 거지를 꾸밀 수 있어요.</h2>
               <ul>
                 <li>
-                  가계부 작성<span>10P</span>
+                  가계부 작성 <span>100P</span>
                 </li>
                 <li>
-                  소비뱃지 획득<span>20P</span>
+                  소비뱃지 획득 <span>20P</span>
                 </li>
               </ul>
             </Tooltip>

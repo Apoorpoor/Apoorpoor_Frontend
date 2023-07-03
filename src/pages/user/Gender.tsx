@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
+import { IoAlertCircleOutline } from 'react-icons/io5';
 import { FaChevronLeft, FaCheckSquare } from 'react-icons/fa';
 import '../../styles/pages/_Gender.scss';
 import { useNavigate } from 'react-router';
@@ -29,6 +30,9 @@ function Age() {
   const [userAge, setUserAge] = useRecoilState(UserAge);
   const [userGender, setUserGender] = useRecoilState(UserGender);
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
   const navigate = useNavigate();
 
   const malegenderHandler = () => {
@@ -52,20 +56,35 @@ function Age() {
 
   const onNextClickButton = async () => {
     try {
-      await postNickname(userNickname);
-      await putAge(userAge);
-      await putGender(userGender);
-      navigate('/finished');
+      const nicknameData = await postNickname(userNickname);
+      const ageData = await putAge(userAge);
+      const genderData = await putGender(userGender);
+      // console.log('data =', nicknameData, ageData, genderData);
+      if (
+        nicknameData &&
+        !nicknameData.error &&
+        ageData &&
+        !ageData.error &&
+        genderData &&
+        !genderData.error
+      ) {
+        navigate('/finished');
+      }
     } catch (error) {
       if (userNickname === '') {
-        alert('닉네임이 입력되지 않았습니다.');
+        setSnackbarMessage('닉네임이 입력되지 않았습니다.');
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500);
       } else if (userGender === '') {
-        alert('성별이 입력되지 않았습니다.');
+        setSnackbarMessage('성별이 입력되지 않았습니다.');
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500);
       }
       if ((error as ErrorType).response.status === 400) {
-        alert(
-          '이미 카카오톡 회원가입이 등록된 유저입니다. 로그인을 진행해주세요'
-        );
+        setSnackbarMessage('이미 카카오톡 회원가입이 등록된 유저입니다.');
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500);
+        setTimeout(() => navigate('/login'), 2500);
       }
     }
   };
@@ -81,6 +100,10 @@ function Age() {
 
   return (
     <main className="genderPage">
+      <div className={`snackbar ${showSnackbar === false ? '' : 'show'}`}>
+        <IoAlertCircleOutline />
+        {snackbarMessage}
+      </div>
       <article>
         <div>
           <button type="button" onClick={() => navigate('/age')}>

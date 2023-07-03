@@ -100,11 +100,11 @@ function ChallengeEx() {
             </ul>
             <div className="challengeAccount">
               {data.success === true ? (
-                <>
+                <div style={{ marginBottom: '47px' }}>
                   <img src={challengeSuccess} alt="챌린지 성공" />
                   <p>챌린지 성공!</p>
                   <p>스탬프도 모아보세요</p>
-                </>
+                </div>
               ) : (
                 <ul>
                   <li>가계부 리스트입니다.</li>
