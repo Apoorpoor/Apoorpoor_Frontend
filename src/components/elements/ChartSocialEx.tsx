@@ -43,7 +43,10 @@ function ChartSocialEx({ data }: ChartSocialExProps) {
       const firstDigit = Math.floor(value / 1000);
       return `${firstDigit}천원`;
     }
-    return `${value.toLocaleString().split('.')[0]}원`;
+    if (value > 1000) {
+      return `${value.toLocaleString().split('.')[0]}원`;
+    }
+    return '0원';
   };
 
   const calculateBarHeight = (value: number) => {
