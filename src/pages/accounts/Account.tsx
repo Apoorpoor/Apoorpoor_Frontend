@@ -623,6 +623,7 @@ function Account(): JSX.Element {
         <div id="accountHeader">
           <div className="month">
             <button
+              id="preMonthButton"
               aria-label="preMonthButton"
               className="sideBtn"
               type="button"
@@ -640,6 +641,7 @@ function Account(): JSX.Element {
             </button>
 
             <button
+              id="nextMonthButton"
               aria-label="nextMonthButton"
               type="button"
               className="sideBtn"
@@ -654,6 +656,7 @@ function Account(): JSX.Element {
           </div>
 
           <button
+            id="goAddAccountButton"
             aria-label="goAddAccountButton"
             type="button"
             className="goAddAccountBtn"
