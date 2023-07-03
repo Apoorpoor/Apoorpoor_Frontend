@@ -270,6 +270,7 @@ function ChartLastMonth({ currentMonth }: ChartLastMonthProps): JSX.Element {
       <div className="chartHeader">
         <div className="chartHeaderTitle">
           <Select
+            aria-label="compareSelect"
             defaultValue={compareOptions[0]}
             options={compareOptions}
             onChange={(e: any) => {
