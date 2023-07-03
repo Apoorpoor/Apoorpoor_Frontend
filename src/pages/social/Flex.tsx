@@ -57,31 +57,6 @@ function Flex() {
     10: 6,
   };
 
-  const formatNumber = (value: number) => {
-    if (value === null) {
-      return '0원'; // 또는 원하는 처리 방식에 따라 적절한 값을 반환
-    }
-    if (value >= 100000) {
-      const stringValue = value.toString();
-      const firstTwoDigits = stringValue.substring(0, 2);
-      return `${firstTwoDigits}만원`;
-    }
-    if (value >= 10000 && value < 100000) {
-      const stringValue = value.toString();
-      const firstDigit = stringValue[0];
-      const secondDigit = stringValue[1];
-      if (secondDigit === '0') {
-        return `${firstDigit}만원`;
-      }
-      return `${firstDigit}만${secondDigit}천원`;
-    }
-    if (value >= 1000 && value < 10000) {
-      const firstDigit = Math.floor(value / 1000);
-      return `${firstDigit}천원`;
-    }
-    return `${value.toLocaleString()}원`;
-  };
-
   if (isLoading) {
     return <Loading />;
   }
@@ -194,19 +169,19 @@ function Flex() {
       <div className="Top1Nickname">
         {topList && topList[0]?.nickname}
         <div className="Top1Price">
-          {topList && formatNumber(topList[0].total)}원
+          {topList && topList[0].total.toLocaleString()}원
         </div>
       </div>
       <div className="Top2Nickname2">
         {topList && topList[1]?.nickname}
         <div className="Top2Price">
-          {topList && formatNumber(topList[1]?.total)}원
+          {topList && topList[1]?.total.toLocaleString()}원
         </div>
       </div>
       <div className="Top3Nickname2">
         {topList && topList[2]?.nickname}
         <div className="Top3Price">
-          {topList && formatNumber(topList[2]?.total)}원
+          {topList && topList[2]?.total.toLocaleString()}원
         </div>
       </div>
       <div className="socialRankingBox2">
