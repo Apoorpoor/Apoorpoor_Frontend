@@ -623,6 +623,7 @@ function Account(): JSX.Element {
         <div id="accountHeader">
           <div className="month">
             <button
+              aria-label="preMonthButton"
               className="sideBtn"
               type="button"
               onClick={() => {
@@ -639,6 +640,7 @@ function Account(): JSX.Element {
             </button>
 
             <button
+              aria-label="nextMonthButton"
               type="button"
               className="sideBtn"
               onClick={() => {
@@ -652,6 +654,7 @@ function Account(): JSX.Element {
           </div>
 
           <button
+            aria-label="goAddAccountButton"
             type="button"
             className="goAddAccountBtn"
             onClick={goAddAccount}

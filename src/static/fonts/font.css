@@ -2,6 +2,7 @@
   font-family: 'Pretendard';
   font-style: normal;
   src: url(./Pretendard-Regular.woff);
+  font-display: swap;
 }
 
 @font-face {
@@ -9,6 +10,7 @@
   font-style: normal;
   font-weight: 700;
   src: url(./Pretendard-Bold.woff);
+  font-display: swap;
 }
 
 @font-face {
@@ -16,4 +18,5 @@
   font-style: normal;
   font-weight: 100;
   src: url(./Pretendard-Light.woff);
+  font-display: swap;
 }
