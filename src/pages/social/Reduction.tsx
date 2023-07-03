@@ -29,7 +29,7 @@ function Reduction() {
       rank_num: 0,
       top_url: '',
       total: 0,
-      custom_url: ''
+      custom_url: '',
     },
   ]);
   // 데이터 조회
@@ -55,6 +55,31 @@ function Reduction() {
     8: 6,
     9: 6,
     10: 6,
+  };
+
+  const formatNumber = (value: number) => {
+    if (value === null) {
+      return '0원'; // 또는 원하는 처리 방식에 따라 적절한 값을 반환
+    }
+    if (value >= 100000) {
+      const stringValue = value.toString();
+      const firstTwoDigits = stringValue.substring(0, 2);
+      return `${firstTwoDigits}만원`;
+    }
+    if (value >= 10000 && value < 100000) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue[0];
+      const secondDigit = stringValue[1];
+      if (secondDigit === '0') {
+        return `${firstDigit}만원`;
+      }
+      return `${firstDigit}만${secondDigit}천원`;
+    }
+    if (value >= 1000 && value < 10000) {
+      const firstDigit = Math.floor(value / 1000);
+      return `${firstDigit}천원`;
+    }
+    return `${value.toLocaleString()}원`;
   };
 
   if (isLoading) {
@@ -89,8 +114,9 @@ function Reduction() {
             {topList && topList[1] && topList[1].level && (
               <img
                 className="Top2Poor"
-                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[1].level]
-                  }.svg`}
+                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                  poorCharacter[topList[1].level]
+                }.svg`}
                 alt=""
               />
             )}
@@ -101,7 +127,11 @@ function Reduction() {
               <img className="Top2PoorItem" src={topList[1].acc_url} alt="" />
             )}
             {topList && topList[1] && topList[1].custom_url && (
-              <img className="Top2PoorItem" src={topList[1].custom_url} alt="" />
+              <img
+                className="Top2PoorItem"
+                src={topList[1].custom_url}
+                alt=""
+              />
             )}
           </div>
           <img className="SilverMedal" src={SilverMedal} alt="" />
@@ -109,8 +139,9 @@ function Reduction() {
             {topList && topList[2] && topList[2].level && (
               <img
                 className="Top3Poor"
-                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[2].level]
-                  }.svg`}
+                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                  poorCharacter[topList[2].level]
+                }.svg`}
                 alt=""
               />
             )}
@@ -121,7 +152,11 @@ function Reduction() {
               <img className="Top3PoorItem" src={topList[2].acc_url} alt="" />
             )}
             {topList && topList[2] && topList[2].custom_url && (
-              <img className="Top3PoorItem" src={topList[2].custom_url} alt="" />
+              <img
+                className="Top3PoorItem"
+                src={topList[2].custom_url}
+                alt=""
+              />
             )}
           </div>
           <img className="CopperMedal" src={CopperMedal} alt="" />
@@ -130,8 +165,9 @@ function Reduction() {
             {topList && topList[0] && topList[0].level && (
               <img
                 className="Top1Poor"
-                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[0].level]
-                  }.svg`}
+                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                  poorCharacter[topList[0].level]
+                }.svg`}
                 alt=""
               />
             )}
@@ -142,7 +178,11 @@ function Reduction() {
               <img className="Top1PoorItem" src={topList[0].acc_url} alt="" />
             )}
             {topList && topList[0] && topList[0].custom_url && (
-              <img className="Top1PoorItem" src={topList[0].custom_url} alt="" />
+              <img
+                className="Top1PoorItem"
+                src={topList[0].custom_url}
+                alt=""
+              />
             )}
           </div>
           <img className="GoldMedal" src={GoldMedal} alt="" />
@@ -154,19 +194,19 @@ function Reduction() {
       <div className="Top1Nickname">
         {topList && topList[0]?.nickname}
         <div className="Top1Price">
-          {topList && topList[0].total.toLocaleString()}원
+          {topList && formatNumber(topList[0].total)}원
         </div>
       </div>
       <div className="Top2Nickname">
         {topList && topList[1]?.nickname}
         <div className="Top2Price">
-          {topList && topList[1]?.total.toLocaleString()}원
+          {topList && formatNumber(topList[1]?.total)}원
         </div>
       </div>
       <div className="Top3Nickname">
         {topList && topList[2]?.nickname}
         <div className="Top3Price">
-          {topList && topList[2]?.total.toLocaleString()}원
+          {topList && formatNumber(topList[2]?.total)}원
         </div>
       </div>
       <div className="socialRankingBox2">
@@ -183,8 +223,9 @@ function Reduction() {
                     <div className="Top10PoorsImage">
                       <img
                         className="Top10Image"
-                        src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[poor.level]
-                          }.svg`}
+                        src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                          poorCharacter[poor.level]
+                        }.svg`}
                         alt="푸어 이미지"
                       />
                       <img
