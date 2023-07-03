@@ -32,28 +32,6 @@ https://www.apoorpoor.com
 <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"> <br />
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"> <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white"> <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"> <img src="https://img.shields.io/badge/googlesheets-34A853?style=for-the-badge&logo=googlesheets&logoColor=white">
 
-## 🌊 화면 구성
-**1️⃣ 튜토리얼** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/ffa5a8f1-99fe-4fbc-933a-980ca7b59f99) <br />
-
-**2️⃣ 메인** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/cecbdfb0-7c20-4a14-be13-99d61dc6ce05)
-
-**3️⃣ 가계부** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/20936bd9-44d3-4fc3-b484-8789c270df01)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/0f9d5c83-3344-4fd7-94d3-490d18664723)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/cf758ef5-a09d-49f6-be3a-7dcee938d85a)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/01d11a7a-38c1-48e4-bdbc-d1ee437d46f2)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/2c8ddfbc-ae45-466e-94c3-c608ebaac25e)
-
-**4️⃣ 푸어룸** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/d806f8f1-62db-4552-8c3a-a9b94ec15585)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/a0a7abee-aca0-4f29-a3d6-6a8df3eef26a)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/926048e9-4132-4c09-833c-ab3d179a755d)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/e81332a7-2907-4ff5-a881-979aef347155)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/14be0cb0-f192-4e7b-8d7c-ca25d4d29f95)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/61004647-e16c-4aa9-9548-358b58d1262d)
-
-**5️⃣ 랭킹** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/04bbc97a-3626-4e6d-9233-876fb66b83eb)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/0b10135f-ccb3-4865-a124-9c2ff1327357)
-
-**6️⃣ 푸어톡** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/fadc3fd6-c45a-4214-a7b3-eaab5cb5a3d5)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/f53b92ad-ad5a-4d6c-a31b-469a59404ca1)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/08f0ad95-869f-46d3-8d1b-25dc042bb05b)
-
-**7️⃣ 챌린지** <br />
-![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/80a1e1a1-721f-4528-be21-90f40905a444)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/c5c1e16e-e184-4aad-8f3d-380a5d326928)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/ba90e410-101c-498e-934d-043db7f5c696)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/42c00111-5bb6-4f85-8286-a34cafbf90b1)
-
 ## 🌊 주요 기능
 **🍀 가계부 작성 / 조회**
 - 작성한 가계부 데이터를 캘린더에서 일일 `수입`, `지출` 합계 금액으로 확인 가능
@@ -82,3 +60,25 @@ https://www.apoorpoor.com
 
 ## 🌊 기타 문서
 [어푸어푸 api명세 등](https://docs.google.com/spreadsheets/d/1KdPC1GW8KxtWxX5jGaHe6r8tpokIT2xPr7AI5BdSE3M/edit#gid=0)
+
+## 🌊 화면 구성
+**1️⃣ 튜토리얼** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/ffa5a8f1-99fe-4fbc-933a-980ca7b59f99) <br />
+
+**2️⃣ 메인** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/cecbdfb0-7c20-4a14-be13-99d61dc6ce05)
+
+**3️⃣ 가계부** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/20936bd9-44d3-4fc3-b484-8789c270df01)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/0f9d5c83-3344-4fd7-94d3-490d18664723)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/cf758ef5-a09d-49f6-be3a-7dcee938d85a)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/01d11a7a-38c1-48e4-bdbc-d1ee437d46f2)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/2c8ddfbc-ae45-466e-94c3-c608ebaac25e)
+
+**4️⃣ 푸어룸** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/d806f8f1-62db-4552-8c3a-a9b94ec15585)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/a0a7abee-aca0-4f29-a3d6-6a8df3eef26a)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/926048e9-4132-4c09-833c-ab3d179a755d)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/e81332a7-2907-4ff5-a881-979aef347155)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/14be0cb0-f192-4e7b-8d7c-ca25d4d29f95)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/61004647-e16c-4aa9-9548-358b58d1262d)
+
+**5️⃣ 랭킹** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/04bbc97a-3626-4e6d-9233-876fb66b83eb)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/0b10135f-ccb3-4865-a124-9c2ff1327357)
+
+**6️⃣ 푸어톡** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/fadc3fd6-c45a-4214-a7b3-eaab5cb5a3d5)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/f53b92ad-ad5a-4d6c-a31b-469a59404ca1)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/08f0ad95-869f-46d3-8d1b-25dc042bb05b)
+
+**7️⃣ 챌린지** <br />
+![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/80a1e1a1-721f-4528-be21-90f40905a444)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/c5c1e16e-e184-4aad-8f3d-380a5d326928)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/ba90e410-101c-498e-934d-043db7f5c696)![image](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/42c00111-5bb6-4f85-8286-a34cafbf90b1)
