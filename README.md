@@ -50,7 +50,7 @@ https://www.apoorpoor.com
 
 **🍀 랭킹 확인**
 
-![랭킹](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/b489eaa4-f15b-4f9f-b30b-962164a8a785)
+![랭킹](https://github.com/Apoorpoor/Apoorpoor_Frontend/assets/127721029/d425b061-2cb3-4f76-8a34-719b3917e76c)
 - 사용자와 같은 연령대, 성별을 가진 사용자들의 평균 수입, 지출 내역으로 `순위` 확인 가능
 
 **🍀 오픈 채팅**
