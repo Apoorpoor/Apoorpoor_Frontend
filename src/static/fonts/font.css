@@ -1,7 +1,8 @@
 @font-face {
   font-family: 'Pretendard';
   font-style: normal;
-  src: url(./Pretendard-Regular.woff);
+  src: url(./Pretendard-Regular.woff2) format('woff2'),
+    url(./Pretendard-Regular.woff) format('woff');
   font-display: swap;
 }
 
@@ -9,7 +10,8 @@
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 700;
-  src: url(./Pretendard-Bold.woff);
+  src: url(./Pretendard-Bold.woff2) format('woff2'),
+    url(./Pretendard-Bold.woff) format('woff');
   font-display: swap;
 }
 
@@ -17,6 +19,7 @@
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 100;
-  src: url(./Pretendard-Light.woff);
+  src: url(./Pretendard-Light.woff2) format('woff2'),
+    url(./Pretendard-Light.woff) format('woff');
   font-display: swap;
 }
