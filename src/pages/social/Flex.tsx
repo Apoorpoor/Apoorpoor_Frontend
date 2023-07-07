@@ -29,7 +29,7 @@ function Flex() {
       rank_num: 0,
       top_url: '',
       total: 0,
-      custom_url: ''
+      custom_url: '',
     },
   ]);
   // 데이터 조회
@@ -123,8 +123,9 @@ function Flex() {
             {topList && topList[1] && topList[1].level && (
               <img
                 className="Top2Poor"
-                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[1].level]
-                  }.svg`}
+                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                  poorCharacter[topList[1].level]
+                }.svg`}
                 alt=""
               />
             )}
@@ -135,7 +136,11 @@ function Flex() {
               <img className="Top2PoorItem" src={topList[1].acc_url} alt="" />
             )}
             {topList && topList[1] && topList[1].custom_url && (
-              <img className="Top2PoorItem" src={topList[1].custom_url} alt="" />
+              <img
+                className="Top2PoorItem"
+                src={topList[1].custom_url}
+                alt=""
+              />
             )}
           </div>
           <img className="SilverMedal" src={SilverMedal} alt="" />
@@ -143,8 +148,9 @@ function Flex() {
             {topList && topList[2] && topList[2].level && (
               <img
                 className="Top3Poor"
-                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[2].level]
-                  }.svg`}
+                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                  poorCharacter[topList[2].level]
+                }.svg`}
                 alt=""
               />
             )}
@@ -155,7 +161,11 @@ function Flex() {
               <img className="Top3PoorItem" src={topList[2].acc_url} alt="" />
             )}
             {topList && topList[2] && topList[2].custom_url && (
-              <img className="Top3PoorItem" src={topList[2].custom_url} alt="" />
+              <img
+                className="Top3PoorItem"
+                src={topList[2].custom_url}
+                alt=""
+              />
             )}
           </div>
           <img className="CopperMedal" src={CopperMedal} alt="" />
@@ -164,8 +174,9 @@ function Flex() {
             {topList && topList[0] && topList[0].level && (
               <img
                 className="Top1Poor"
-                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[topList[0].level]
-                  }.svg`}
+                src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                  poorCharacter[topList[0].level]
+                }.svg`}
                 alt=""
               />
             )}
@@ -176,7 +187,11 @@ function Flex() {
               <img className="Top1PoorItem" src={topList[0].acc_url} alt="" />
             )}
             {topList && topList[0] && topList[0].custom_url && (
-              <img className="Top1PoorItem" src={topList[0].custom_url} alt="" />
+              <img
+                className="Top1PoorItem"
+                src={topList[0].custom_url}
+                alt=""
+              />
             )}
           </div>
           <img className="GoldMedal" src={GoldMedal} alt="" />
@@ -217,8 +232,9 @@ function Flex() {
                     <div className="Top10PoorsImage">
                       <img
                         className="Top10Image"
-                        src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${poorCharacter[poor.level]
-                          }.svg`}
+                        src={`https://apoorapoors3.s3.ap-northeast-2.amazonaws.com/poor/poor_lv${
+                          poorCharacter[poor.level]
+                        }.svg`}
                         alt="푸어 이미지"
                       />
                       <img

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import instance from './instance';
 
-const userId = localStorage.getItem("userId");
+const userId = localStorage.getItem('userId');
 
 interface ErrorType extends Error {
   response: {
@@ -48,7 +48,7 @@ const postNickname = async (nickname: string): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    return error as ErrorType;
+    throw error as ErrorType;
   }
 };
 
@@ -60,7 +60,7 @@ const putAge = async (age: number): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    return error as ErrorType;
+    throw error as ErrorType;
   }
 };
 
@@ -72,7 +72,7 @@ const putGender = async (gender: string): Promise<any> => {
     });
     return response.data;
   } catch (error) {
-    return error as ErrorType;
+    throw error as ErrorType;
   }
 };
 
@@ -176,5 +176,5 @@ export {
   checkNicknameValidation,
   getChatList,
   getMessageList,
-  getImageList
+  getImageList,
 };
