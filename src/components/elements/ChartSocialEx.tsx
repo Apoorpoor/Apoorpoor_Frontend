@@ -22,19 +22,30 @@ function ChartSocialEx({ data }: ChartSocialExProps) {
   const borderRadius = 12;
 
   // 숫자 형식화 함수
+
   const formatNumber = (value: number) => {
+    if (value >= 1000000000000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 16);
+      return `약 ${remainingDigits}경원`;
+    }
+    if (value >= 1000000000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 12);
+      return `약 ${remainingDigits}조원`;
+    }
     if (value >= 100000000) {
-      const stringValue = Math.floor(value).toString();
+      const stringValue = value.toString();
       const remainingDigits = stringValue.substring(0, stringValue.length - 8);
-      return `${remainingDigits}억원`;
+      return `약 ${remainingDigits}억원`;
     }
     if (value >= 100000) {
-      const stringValue = Math.floor(value).toString();
+      const stringValue = value.toString();
       const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
       return `${firstTwoDigits}만원`;
     }
     if (value >= 10000 && value < 100000) {
-      const stringValue = Math.floor(value).toString();
+      const stringValue = value.toString();
       const firstDigit = stringValue[0];
       const secondDigit = stringValue[1];
       return `${firstDigit}만${secondDigit}천원`;
@@ -43,10 +54,7 @@ function ChartSocialEx({ data }: ChartSocialExProps) {
       const firstDigit = Math.floor(value / 1000);
       return `${firstDigit}천원`;
     }
-    if (value > 1000) {
-      return `${value.toLocaleString().split('.')[0]}원`;
-    }
-    return '0원';
+    return `${value}원`;
   };
 
   const calculateBarHeight = (value: number) => {
