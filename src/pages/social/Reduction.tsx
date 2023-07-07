@@ -73,7 +73,40 @@ function Reduction() {
     }
     return <Error />;
   }
-
+  // 숫자 형식화 함수
+  const formatNumber = (value: number) => {
+    if (value >= 1000000000000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 16);
+      return `약 ${remainingDigits}경원`;
+    }
+    if (value >= 1000000000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 12);
+      return `약 ${remainingDigits}조원`;
+    }
+    if (value >= 100000000) {
+      const stringValue = value.toString();
+      const remainingDigits = stringValue.substring(0, stringValue.length - 8);
+      return `약 ${remainingDigits}억원`;
+    }
+    if (value >= 100000) {
+      const stringValue = value.toString();
+      const firstTwoDigits = stringValue.substring(0, stringValue.length - 4);
+      return `${firstTwoDigits}만원`;
+    }
+    if (value >= 10000 && value < 100000) {
+      const stringValue = value.toString();
+      const firstDigit = stringValue[0];
+      const secondDigit = stringValue[1];
+      return `${firstDigit}만${secondDigit}천원`;
+    }
+    if (value >= 1000 && value < 10000) {
+      const firstDigit = Math.floor(value / 1000);
+      return `${firstDigit}천원`;
+    }
+    return `${value}원`;
+  };
   return (
     <div className="socialBg2">
       <div id="socialHeader">
@@ -154,19 +187,19 @@ function Reduction() {
       <div className="Top1Nickname">
         {topList && topList[0]?.nickname}
         <div className="Top1Price">
-          {topList && topList[0].total.toLocaleString()}원
+          {topList && formatNumber(topList[0].total)}
         </div>
       </div>
       <div className="Top2Nickname">
         {topList && topList[1]?.nickname}
         <div className="Top2Price">
-          {topList && topList[1]?.total.toLocaleString()}원
+          {topList && formatNumber(topList[1]?.total)}
         </div>
       </div>
       <div className="Top3Nickname">
         {topList && topList[2]?.nickname}
         <div className="Top3Price">
-          {topList && topList[2]?.total.toLocaleString()}원
+          {topList && formatNumber(topList[2]?.total)}
         </div>
       </div>
       <div className="socialRankingBox2">
@@ -206,7 +239,7 @@ function Reduction() {
                     {poor.nickname}
                   </div>
                   <div className="Top10PoorsPrice">
-                    {poor.total.toLocaleString()}원
+                    {formatNumber(poor.total)}
                   </div>
                 </div>
               </div>
