@@ -15,6 +15,7 @@ import { Button, Header } from '../../components';
 import infoIcon from '../../static/image/ui/info_ic.png';
 import Error from '../status/Error';
 import Loading from '../status/Loading';
+import { AccountHistoryType, ChallengeLedger } from '../../types/challengeTypes';
 
 function MyChallenge() {
   const navigate = useNavigate();
@@ -117,16 +118,16 @@ function MyChallenge() {
   // =================================================================
   // *** Challenge Account History Query *****************************
   // =================================================================
-  type ChallengeLedger = {
-    title: string;
-    expenditureType: string;
-    expenditure: number;
-    date: string;
-  };
+  // type ChallengeLedger = {
+  //   title: string;
+  //   expenditureType: string;
+  //   expenditure: number;
+  //   date: string;
+  // };
 
-  type AccountHistoryType = {
-    challengeLedgerHistoryList: ChallengeLedger[];
-  };
+  // type AccountHistoryType = {
+  //   challengeLedgerHistoryList: ChallengeLedger[];
+  // };
 
   const {
     isLoading: accountHistoryLoading,

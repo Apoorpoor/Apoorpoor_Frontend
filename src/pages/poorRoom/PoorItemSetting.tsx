@@ -17,6 +17,7 @@ import Portal from '../../shared/Portal';
 import '../../styles/pages/_PoorItemSetting.scss';
 import Error from '../status/Error';
 import Loading from '../status/Loading';
+import { MyPoorData, PoorItem } from '../../types/poorRoomTypes';
 
 function PoorItemSetting() {
   const navigate = useNavigate();
@@ -39,31 +40,7 @@ function PoorItemSetting() {
   // disabled item 초기값
   const disabled = true;
 
-  interface MyPoorData {
-    beggarId: string;
-    userId: string;
-    nickname: string;
-    exp: number;
-    point: number;
-    level: number;
-    description: string;
-    age: number;
-    gender: string;
-    topImage: string;
-    bottomImage: string;
-    accImage: string;
-    customImage: string;
-  }
-
-  interface MyData {
-    itemNum: number;
-    itemName: string;
-    itemPrice: number;
-    itemState: string;
-    itemType: string;
-    levelLimit: number;
-    itemImage: string;
-  }
+  
 
   const {
     isLoading: myPoorInfoLoading,
@@ -74,7 +51,7 @@ function PoorItemSetting() {
     beggars.getMyPoorRoom
   );
 
-  const { isLoading, error, data }: UseQueryResult<MyData[]> = useQuery(
+  const { isLoading, error, data }: UseQueryResult<PoorItem[]> = useQuery(
     'getMyPoorItem',
     beggars.getMyPoorItem
   );
@@ -200,8 +177,8 @@ function PoorItemSetting() {
         <section className={selectedItem === 'top' ? 'active' : ''}>
           <ul>
             {data
-              ?.filter((item: MyData) => item.itemType === 'top')
-              .map((item: MyData) => (
+              ?.filter((item: PoorItem) => item.itemType === 'top')
+              .map((item: PoorItem) => (
                 <li
                   key={item.itemNum}
                   className={
@@ -259,8 +236,8 @@ function PoorItemSetting() {
         >
           <ul>
             {data
-              ?.filter((item: MyData) => item.itemType === 'bottom')
-              .map((item: MyData) => (
+              ?.filter((item: PoorItem) => item.itemType === 'bottom')
+              .map((item: PoorItem) => (
                 <li
                   key={item.itemNum}
                   className={
@@ -318,8 +295,8 @@ function PoorItemSetting() {
         >
           <ul>
             {data
-              ?.filter((item: MyData) => item.itemType === 'shoes')
-              .map((item: MyData) => (
+              ?.filter((item: PoorItem) => item.itemType === 'shoes')
+              .map((item: PoorItem) => (
                 <li
                   key={item.itemNum}
                   className={
@@ -375,8 +352,8 @@ function PoorItemSetting() {
         <section className={`acc ${selectedItem === 'acc' ? 'active' : ''}`}>
           <ul>
             {data
-              ?.filter((item: MyData) => item.itemType === 'acc')
-              .map((item: MyData) => (
+              ?.filter((item: PoorItem) => item.itemType === 'acc')
+              .map((item: PoorItem) => (
                 <li
                   key={item.itemNum}
                   className={
@@ -434,8 +411,8 @@ function PoorItemSetting() {
         >
           <ul>
             {data
-              ?.filter((item: MyData) => item.itemType === 'custom')
-              .map((item: MyData) => (
+              ?.filter((item: PoorItem) => item.itemType === 'custom')
+              .map((item: PoorItem) => (
                 <li
                   key={item.itemNum}
                   className={
