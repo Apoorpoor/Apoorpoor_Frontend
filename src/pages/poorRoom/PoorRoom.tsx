@@ -37,6 +37,7 @@ import Portal from '../../shared/Portal';
 import NicknamedbCheck from '../../components/elements/NicknamedbCheck';
 import nonePoorInfoImg from '../../static/image/poor/nonePoorInfo.png';
 import PoorInfoError from '../status/PoorInfoError';
+import { Badge, MyData, MyPointData, RecoilBadge } from '../../types/poorRoomTypes';
 
 function PoorRoom() {
   // PoorRoom Hooks & State
@@ -59,48 +60,6 @@ function PoorRoom() {
   // =================================================================
   // *** PoorRoom Data Query *****************************************
   // =================================================================
-  type Badge = {
-    badgeImage: string;
-    badgeNum: number;
-    badgeTitle: string;
-    createdAt: string;
-    id: number;
-    modifiedAt: string;
-  };
-
-  type RecoilBadge = {
-    title: string;
-    name: string;
-    n_description: string;
-  };
-
-  interface MyData {
-    beggarId: string;
-    userId: string;
-    nickname: string;
-    exp: number;
-    point: number;
-    level: number;
-    description: string;
-    age: number;
-    gender: string;
-    topImage: string;
-    bottomImage: string;
-    shoesImage: string;
-    accImage: string;
-    customImage: string;
-    badgeList: Badge[];
-  }
-
-  interface MyPointData {
-    point_id: number;
-    pointDescription: string;
-    earnedPoint: number | null;
-    usedPoints: number | null;
-    beggar_id: number;
-    createdAt: string;
-  }
-
   const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
     'getMyPoorRoom',
     beggars.getMyPoorRoom

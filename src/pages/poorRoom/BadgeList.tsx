@@ -12,6 +12,7 @@ import '../../styles/pages/_PoorRoomModal.scss';
 import Loading from '../status/Loading';
 import Error from '../status/Error';
 import BadgeState from '../../shared/BadgeList';
+import { BadgeDes, MyData } from '../../types/poorRoomTypes';
 
 function BadgeList() {
   const navigate = useNavigate();
@@ -21,39 +22,14 @@ function BadgeList() {
     navigate(-1);
   };
 
-  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [selectedBadge, setSelectedBadge] = useState<BadgeDes | null>(null);
   const [selectedClassName, setSelectedClassName] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [badgeModal, setBadgeModal] = useState(false);
   const BadgeListState = useRecoilValue(BadgeState);
 
   // 마이푸어룸 데이터 불러오기
-  type BadgeList = {
-    badgeImage: string;
-    badgeNum: number;
-    badgeTitle: string;
-    createdAt: string;
-    id: number;
-    modifiedAt: string;
-  };
-
-  interface MyData {
-    beggarId: string;
-    userId: string;
-    nickname: string;
-    exp: number;
-    point: number;
-    level: number;
-    description: string;
-    age: number;
-    gender: string;
-    topImage: string;
-    bottomImage: string;
-    accImage: string;
-    customImage: string;
-    badgeList: BadgeList[];
-  }
-
+  
   const { isLoading, error, data }: UseQueryResult<MyData> = useQuery(
     'getMyPoorRoom',
     beggars.getMyPoorRoom
@@ -66,15 +42,7 @@ function BadgeList() {
     return <Error />;
   }
 
-  type Badge = {
-    title: string;
-    name: string;
-    description: string;
-    sub_description: string;
-    n_description: string;
-  };
-
-  const handleBadgeClick = (badge: Badge) => {
+  const handleBadgeClick = (badge: BadgeDes) => {
     setIsModalOpen(!isModalOpen);
     setSelectedBadge(badge);
     const className = data?.badgeList.some(
