@@ -1,60 +1,62 @@
-import React, { useEffect } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import React from 'react';
+// import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+// import Cookies from 'js-cookie';
 import { Layout } from './components';
-import {
-  Account,
-  AddAccount,
-  EditAccount,
-  AddAccountDone,
-  IntroTalk,
-  Login,
-  Main,
-  Nickname,
-  PoorRoom,
-  PoorTalk,
-  Redirection,
-  Age,
-  Gender,
-  Finished,
-  PoorItemSetting,
-  BadgeList,
-  AlarmStation,
-  Social,
-  Reduction,
-  Flex,
-  Challenge,
-  ChallengeEx,
-  MyChallenge,
-  StampBoard,
-  ChallengeDone,
-  ChallengeFail,
-} from './pages/index';
+import ServerError from './pages/status/ServerError';
+// import {
+//   Account,
+//   AddAccount,
+//   EditAccount,
+//   AddAccountDone,
+//   IntroTalk,
+//   Login,
+//   Main,
+//   Nickname,
+//   PoorRoom,
+//   PoorTalk,
+//   Redirection,
+//   Age,
+//   Gender,
+//   Finished,
+//   PoorItemSetting,
+//   BadgeList,
+//   AlarmStation,
+//   Social,
+//   Reduction,
+//   Flex,
+//   Challenge,
+//   ChallengeEx,
+//   MyChallenge,
+//   StampBoard,
+//   ChallengeDone,
+//   ChallengeFail,
+// } from './pages/index';
 
 function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
   // 토큰 있는지 확인 -> 없으면 login 이동
-  useEffect(() => {
-    const token = localStorage.getItem('AToken') || Cookies.get('RToken');
-    const accountPageRegex = /^\/(account|account)\/\d+$/;
-    const accountAddPageRegex = /^\/(account|addAccount)\/\d+$/;
-    const accountDonePageRegex = /^\/(account|addAccountDone)\/\d+$/;
-    const accountEditPageRegex = /^\/(account|editAccount)\/\d+$/;
+  // useEffect(() => {
+  //   const token = localStorage.getItem('AToken') || Cookies.get('RToken');
+  //   const accountPageRegex = /^\/(account|account)\/\d+$/;
+  //   const accountAddPageRegex = /^\/(account|addAccount)\/\d+$/;
+  //   const accountDonePageRegex = /^\/(account|addAccountDone)\/\d+$/;
+  //   const accountEditPageRegex = /^\/(account|editAccount)\/\d+$/;
 
-    if (
-      (!token && !accountPageRegex.test(location.pathname)) ||
-      (!token && !accountAddPageRegex.test(location.pathname)) ||
-      (!token && !accountDonePageRegex.test(location.pathname)) ||
-      (!token && !accountEditPageRegex.test(location.pathname))
-    ) {
-      navigate('/login');
-    }
-  }, [navigate, location.pathname]);
+  //   if (
+  //     (!token && !accountPageRegex.test(location.pathname)) ||
+  //     (!token && !accountAddPageRegex.test(location.pathname)) ||
+  //     (!token && !accountDonePageRegex.test(location.pathname)) ||
+  //     (!token && !accountEditPageRegex.test(location.pathname))
+  //   ) {
+  //     navigate('/login');
+  //   }
+  // }, [navigate, location.pathname]);
   return (
     <Layout>
-      <Routes>
+      <ServerError />
+      {/* <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/nickname" element={<Nickname />} />
         <Route path="/" element={<Main />} />
@@ -82,7 +84,7 @@ function App() {
         <Route path="/challengedone" element={<ChallengeDone />} />
         <Route path="/challengefail" element={<ChallengeFail />} />
         <Route path="/stampBoard" element={<StampBoard />} />
-      </Routes>
+      </Routes> */}
     </Layout>
   );
 }
